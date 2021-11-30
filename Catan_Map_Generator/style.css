@@ -1,0 +1,22 @@
+header {
+  background-color: #F15537;
+  font: 40px Georgia, serif;
+  padding: 30px;
+  text-align: center;
+  color: yellow;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.tiles {
+  height: 100px;
+}
+
+.content_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

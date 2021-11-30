@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Catan Map Generator V0</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <Body>
+    <div class="container-fluid">
+      <header>CATAN Map Generator</header>
+    </div>
+
+    <br>
+
+    <div class="d-flex justify-content-center">
+      <button onclick="createMap();" class="btn btn-primary">Create New Map</button>
+    </div>
+
+    <br>
+    
+    <div class="container">
+      <div class="row tiles" id="tileGen-2"></div>
+      <div class="row tiles" id="tileGen-1"></div>
+      <div class="row tiles" id="tileGen0"></div>
+      <div class="row tiles" id="tileGen1"></div>
+      <div class="row tiles" id="tileGen2"></div>
+    </div>
+
+    <br>
+
+<!--     <div class="container">
+    
+      <div class="row tiles">
+        <div class="col-sm-2 offset-sm-3 border border-secondary content_center">1 <br> (0,-2)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">2 <br> (1,-2)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">3 <br> (2,-2)</div>
+      </div>
+      <div class="row tiles">
+        <div class="col-sm-2 offset-sm-2 border border-secondary content_center">4 <br> (-1,-1)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">5 <br> (0,-1)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">6 <br> (1,-1)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">7 <br> (2,-1)</div>
+      </div>
+      <div class="row tiles">
+        <div class="col-sm-2 offset-sm-1 border border-secondary content_center">8 <br> (-2,0)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">9 <br> (-1,0)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">10 <br> (0,0)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">11 <br> (1,0)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">12 <br> (2,0)</div>
+      </div>
+      <div class="row tiles">
+        <div class="col-sm-2 offset-sm-2 border border-secondary content_center">13 <br> (-2,1)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">14 <br> (-1,1)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">15 <br> (0,1)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">16 <br> (1,1)</div>
+      </div>
+      <div class="row tiles">
+        <div class="col-sm-2 offset-sm-3 border border-secondary content_center">17 <br> (-2,2)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">18 <br> (-1,2)</div>
+        <div class="col-sm-2 offset-sm-0 border border-secondary content_center">19 <br> (0,2)</div>
+      </div>
+    
+    </div> -->
+
+    <div id="tileData"></div>
+    <br>
+
+  </Body>
+
+</html>

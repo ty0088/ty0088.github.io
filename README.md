@@ -1,2 +1,3 @@
 # ty0088.github.io
-My github
+
+A repository for my projects :)
