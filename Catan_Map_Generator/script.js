@@ -78,8 +78,16 @@ const hexCoords = {
   },
 }
 
-//initialise tile array
-let tile = [];
+//Object to hold tile types according to 1-6 key
+const tileType = {
+  1: "Forest",
+  2: "Pasture",
+  3: "Field",
+  4: "Hill",
+  5: "Mountain",
+  6: "Desert"
+}
+
 
 //function to generate random integer between a min and max value and excluding one value
 function randomExcluded(min, max, excluded) {
@@ -87,120 +95,105 @@ function randomExcluded(min, max, excluded) {
   if (n >= excluded) n++;
   return n;
 }
+
 //function to generate random integer between a min and max value
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+//function to check tile type
+//Only allows 4x Forest, 4x Pasture, 4x field, 3x Hill, 3x Mountain and 1x Desert to be picked
+function tileCheck(tile, tileChose) {
+
+  //takes in randomly chosen tile
+  //check tile array to see how many of that tile exists and whether anymore is allowed
+  //returns true if allowed or false if not allowed
+  if (
+    tileChose === "Forest" &&
+    tile.filter(({
+      Type
+    }) => Type === "Forest").length < 4
+  ) {
+    return true;
+  } else if (
+    tileChose === "Pasture" &&
+    tile.filter(({
+      Type
+    }) => Type === "Pasture").length < 4
+  ) {
+    return true;
+  } else if (
+    tileChose === "Field" &&
+    tile.filter(({
+      Type
+    }) => Type === "Field").length < 4
+  ) {
+    return true;
+  } else if (
+    tileChose === "Hill" &&
+    tile.filter(({
+      Type
+    }) => Type === "Hill").length < 3
+  ) {
+    return true;
+  } else if (
+    tileChose === "Mountain" &&
+    tile.filter(({
+      Type
+    }) => Type === "Mountain").length < 3
+  ) {
+    return true;
+  } else if (
+    tileChose === "Desert" &&
+    tile.filter(({
+      Type
+    }) => Type === "Desert").length < 1
+  ) {
+    return true;
+  }
+  return false;
+}
+
+
 //create 19 tile array when requested
 function createMap() {
 
   let tileCount = 0;
-  tile = [];
+  let tile = [];
 
   //loop to assign properties of each of the 19 tiles
   while (tileCount < 19) {
 
-    let tileType = "";
-    let tileChose = random(1, 6);
+    //Randomly assigns tile types - 1: Forest, 2: Pasture, 3: Field, 4: Hill, 5: Mountain and 6: Desert
+    let tileChose = tileType[random(1, 6)];
+
     console.log("Tile to pick is " + tileChose);
     console.log("Tile count is " + tileCount);
 
-    //Randomly assigns tile types - 1: Forest, 2: Pasture, 3: Field, 4: Hill, 5: Mountain and 6: Desert
-    //Only allows 4x Forest, 4x Pasture, 4x field, 3x Hill, 3x Mountain and 1x Desert
+
+    //Checks chosen tile using tileCheck function whether tile type is permitted and stores to array
     //Randomly assigns a value between 2 and 12 to each tile
-    if (
-      tileChose === 1 &&
-      tile.filter(({
-        Type
-      }) => Type === "Forest").length < 4
-    ) {
-      console.log(
-        tile.filter(({
-          Type
-        }) => Type === "Forest").length +
-        " Forests, so add 1 more"
-      );
+    //Assigns co-ordinate values to each tile based on the tile number
+
+    if (tileCheck(tile, tileChose) && tileChose !== "Desert") {
       tileCount++;
-      tileType = "Forest";
       tile.push({
         Number: tileCount, //tile number from 1 to 19
-        Type: tileType,
-        Value: randomExcluded(2, 12, 7) //random tile value
+        Type: tileChose,
+        Value: randomExcluded(2, 12, 7), //random tile value if tile is not desert
+        hexQ: hexCoords[tileCount].q, //q co-ordinate
+        hexR: hexCoords[tileCount].r //r co-ordinate
       });
-    } else if (
-      tileChose === 2 &&
-      tile.filter(({
-        Type
-      }) => Type === "Pasture").length < 4
-    ) {
-      console.log(
-        tile.filter(({
-          Type
-        }) => Type === "Forest").length +
-        " Pasture, so add 1 more"
-      );
+    } else if (tileCheck(tile, tileChose) && tileChose === "Desert") {
       tileCount++;
-      tileType = "Pasture";
       tile.push({
         Number: tileCount, //tile number from 1 to 19
-        Type: tileType,
-        Value: randomExcluded(2, 12, 7) //random tile value
-      });
-    } else if (
-      tileChose === 3 &&
-      tile.filter(({
-        Type
-      }) => Type === "Field").length < 4
-    ) {
-      tileCount++;
-      tileType = "Field";
-      tile.push({
-        Number: tileCount, //tile number from 1 to 19
-        Type: tileType,
-        Value: randomExcluded(2, 12, 7) //random tile value
-      });
-    } else if (
-      tileChose === 4 &&
-      tile.filter(({
-        Type
-      }) => Type === "Hill").length < 3
-    ) {
-      tileCount++;
-      tileType = "Hill";
-      tile.push({
-        Number: tileCount, //tile number from 1 to 19
-        Type: tileType,
-        Value: randomExcluded(2, 12, 7) //random tile value
-      });
-    } else if (
-      tileChose === 5 &&
-      tile.filter(({
-        Type
-      }) => Type === "Mountain").length < 3
-    ) {
-      tileCount++;
-      tileType = "Mountain";
-      tile.push({
-        Number: tileCount, //tile number from 1 to 19
-        Type: tileType,
-        Value: randomExcluded(2, 12, 7) //random tile value
-      });
-    } else if (
-      tileChose === 6 &&
-      tile.filter(({
-        Type
-      }) => Type === "Desert").length < 1
-    ) {
-      tileCount++;
-      tileType = "Desert";
-      tile.push({
-        Number: tileCount, //tile number from 1 to 19
-        Type: tileType,
-        Value: "" //No value for desert
+        Type: tileChose,
+        Value: 0, //0 tile value for desert
+        hexQ: hexCoords[tileCount].q, //q co-ordinate
+        hexR: hexCoords[tileCount].r //r co-ordinate    
       });
     }
-    console.log(tile[tileCount - 1]);
   }
 
 
@@ -263,21 +256,5 @@ function createMap() {
   div.innerHTML = divCont2;
   document.getElementById("tileGen2").innerHTML = "";
   document.getElementById("tileGen2").innerHTML = divCont2;
-
-
-
-  //Output generated tile values to page
-  let divX = document.createElement("div");
-  let divContX = tile[0].Number + " : " + tile[0].Type + " : Value = " + tile[0].Value;
-
-  for (let i = 1; i < tile.length; i++) {
-    divContX = divContX.concat("<br>", tile[i].Number + " : " + tile[i].Type + " : Value = " + tile[i].Value);
-  }
-
-  divX.innerHTML = divContX;
-  document.getElementById("tileData").innerHTML = "";
-  document.getElementById("tileData").appendChild(divX);
-  console.log(tile);
-
 
 }
