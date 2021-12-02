@@ -108,107 +108,123 @@ const valProbs = {
 //checks the total probability value of a current tile and the 2 adjacent tiles forming an intersection around it
 //does this check for all intersections of current tile
 //if all intersection probabilities are less than the define probLim then it returns true otherwise return false
+//also checks that no tile has anymore than 2 more of the same type of tile adjacent to it
 function valueCheck(curQ, curR, probLim) {
+
+  let typeVal = 0;
 
   let obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
   let totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+  let prevType = obj.Type;
 
   obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR - 1)); //find 1st intersection
   if (obj !== undefined) { //checks tile exists
     totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+    if (obj.Type === prevType) { typeVal += 1; } //if adjacent tile is the same as current add 1 
   }
 
-  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR - 1)); //find 1st intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR - 1));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  if (totalVal >= probLim) {
+  if (totalVal >= probLim || typeVal > 2) {
+    return false; //if either probability value or type value exceeds limits then returns false
+  }
+
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR);
+  totalVal = valProbs[obj.Value];
+
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR - 1));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
+  }
+
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR + 0));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
+  }
+
+  if (totalVal >= probLim || typeVal > 2) {
     return false;
   }
 
-  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
-  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR);
+  totalVal = valProbs[obj.Value];
 
-  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR - 1)); //find 2nd intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR + 0));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR + 0)); //find 2nd intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR + 1));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  if (totalVal >= probLim) {
+  if (totalVal >= probLim || typeVal > 2) {
     return false;
   }
 
-  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
-  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR);
+  totalVal = valProbs[obj.Value];
 
-  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR + 0)); //find 3rd intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR + 1));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR + 1)); //find 3rd intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 1));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  if (totalVal >= probLim) {
+  if (totalVal >= probLim || typeVal > 2) {
     return false;
   }
 
-  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
-  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR);
+  totalVal = valProbs[obj.Value];
 
-  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR + 1)); //find 4th intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 1));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 1)); //find 4th intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 0));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  if (totalVal >= probLim) {
+  if (totalVal >= probLim || typeVal > 2) {
     return false;
   }
 
-  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
-  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR);
+  totalVal = valProbs[obj.Value];
 
-  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 1)); //find 5th intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 0));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 0)); //find 5th intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR - 1));
+  if (obj !== undefined) {
+    totalVal += valProbs[obj.Value];
+    if (obj.Type === prevType) { typeVal += 1; }
   }
 
-  if (totalVal >= probLim) {
-    return false;
-  }
-
-  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
-  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
-
-  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 0)); //find 6th intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
-  }
-
-  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR - 1)); //find 6th intersection
-  if (obj !== undefined) { //checks tile exists
-    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
-  }
-
-  if (totalVal >= probLim) {
+  if (totalVal >= probLim || typeVal > 2) {
     return false;
   }
 
