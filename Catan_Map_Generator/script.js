@@ -1,3 +1,5 @@
+let tile = [];
+
 //Tile co-ordinates
 const hexCoords = {
   1: {
@@ -88,6 +90,131 @@ const tileType = {
   6: "Desert"
 }
 
+// Probability values for each tile value
+const valProbs = {
+  0: 0,
+  2: 1,
+  3: 2,
+  4: 3,
+  5: 4,
+  6: 5,
+  8: 5,
+  9: 4,
+  10: 3,
+  11: 2,
+  12: 1
+}
+
+//checks the total probability value of a current tile and the 2 adjacent tiles forming an intersection around it
+//does this check for all intersections of current tile
+//if all intersection probabilities are less than the define probLim then it returns true otherwise return false
+function valueCheck(curQ, curR, probLim) {
+
+  let obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
+  let totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+
+  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR - 1)); //find 1st intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR - 1)); //find 1st intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  if (totalVal >= probLim) {
+    return false;
+  }
+
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
+  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR - 1)); //find 2nd intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR + 0)); //find 2nd intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  if (totalVal >= probLim) {
+    return false;
+  }
+
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
+  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+
+  obj = tile.find(o => o.hexQ === (curQ + 1) && o.hexR === (curR + 0)); //find 3rd intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR + 1)); //find 3rd intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  if (totalVal >= probLim) {
+    return false;
+  }
+
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
+  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+
+  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR + 1)); //find 4th intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 1)); //find 4th intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  if (totalVal >= probLim) {
+    return false;
+  }
+
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
+  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 1)); //find 5th intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 0)); //find 5th intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  if (totalVal >= probLim) {
+    return false;
+  }
+
+  obj = tile.find(o => o.hexQ === curQ && o.hexR === curR); //find current tile
+  totalVal = valProbs[obj.Value]; //initialise total probability value as probability of current tile
+
+  obj = tile.find(o => o.hexQ === (curQ - 1) && o.hexR === (curR + 0)); //find 6th intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  obj = tile.find(o => o.hexQ === (curQ + 0) && o.hexR === (curR - 1)); //find 6th intersection
+  if (obj !== undefined) { //checks tile exists
+    totalVal += valProbs[obj.Value]; //add probability value of adjacent tile if exists
+  }
+
+  if (totalVal >= probLim) {
+    return false;
+  }
+
+  return true;
+
+}
 
 //function to generate random integer between a min and max value and excluding one value
 function randomExcluded(min, max, excluded) {
@@ -103,100 +230,58 @@ function random(min, max) {
 
 //function to check tile type
 //Only allows 4x Forest, 4x Pasture, 4x field, 3x Hill, 3x Mountain and 1x Desert to be picked
-function tileCheck(tile, tileChose) {
+function tileCheck(tileChose) {
 
   //takes in randomly chosen tile
   //check tile array to see how many of that tile exists and whether anymore is allowed
   //returns true if allowed or false if not allowed
   if (
-    tileChose === "Forest" &&
+    (tileChose === "Forest" || tileChose === "Pasture" || tileChose === "Field") &&
     tile.filter(({
       Type
-    }) => Type === "Forest").length < 4
+    }) => Type === tileChose).length < 4
   ) {
     return true;
   } else if (
-    tileChose === "Pasture" &&
+    (tileChose === "Hill" || tileChose === "Mountain") &&
     tile.filter(({
       Type
-    }) => Type === "Pasture").length < 4
-  ) {
-    return true;
-  } else if (
-    tileChose === "Field" &&
-    tile.filter(({
-      Type
-    }) => Type === "Field").length < 4
-  ) {
-    return true;
-  } else if (
-    tileChose === "Hill" &&
-    tile.filter(({
-      Type
-    }) => Type === "Hill").length < 3
-  ) {
-    return true;
-  } else if (
-    tileChose === "Mountain" &&
-    tile.filter(({
-      Type
-    }) => Type === "Mountain").length < 3
+    }) => Type === tileChose).length < 3
   ) {
     return true;
   } else if (
     tileChose === "Desert" &&
     tile.filter(({
       Type
-    }) => Type === "Desert").length < 1
+    }) => Type === tileChose).length < 1
   ) {
     return true;
   }
   return false;
 }
 
+//checks amount of chosen token value to see if it can be assigned
+//2 & 12 tokens should only have 1 each, all other tokens should be 2 each
+function tokenCheck(val) {
 
-//create 19 tile array when requested
-function createMap() {
-
-  let tileCount = 0;
-  let tile = [];
-
-  //loop to assign properties of each of the 19 tiles
-  while (tileCount < 19) {
-
-    //Randomly assigns tile types - 1: Forest, 2: Pasture, 3: Field, 4: Hill, 5: Mountain and 6: Desert
-    let tileChose = tileType[random(1, 6)];
-
-    console.log("Tile to pick is " + tileChose);
-    console.log("Tile count is " + tileCount);
-
-
-    //Checks chosen tile using tileCheck function whether tile type is permitted and stores to array
-    //Randomly assigns a value between 2 and 12 to each tile
-    //Assigns co-ordinate values to each tile based on the tile number
-
-    if (tileCheck(tile, tileChose) && tileChose !== "Desert") {
-      tileCount++;
-      tile.push({
-        Number: tileCount, //tile number from 1 to 19
-        Type: tileChose,
-        Value: randomExcluded(2, 12, 7), //random tile value if tile is not desert
-        hexQ: hexCoords[tileCount].q, //q co-ordinate
-        hexR: hexCoords[tileCount].r //r co-ordinate
-      });
-    } else if (tileCheck(tile, tileChose) && tileChose === "Desert") {
-      tileCount++;
-      tile.push({
-        Number: tileCount, //tile number from 1 to 19
-        Type: tileChose,
-        Value: 0, //0 tile value for desert
-        hexQ: hexCoords[tileCount].q, //q co-ordinate
-        hexR: hexCoords[tileCount].r //r co-ordinate    
-      });
-    }
+  if (
+    (val === 2 || val === 12) &&
+    (tile.filter(({
+      Value
+    }) => Value === val).length < 1)) {
+    return val;
+  } else if (
+    (val === 3 || val === 4 || val === 5 || val === 6 || val === 8 || val === 9 || val === 10 || val === 11) &&
+    (tile.filter(({
+      Value
+    }) => Value === val).length < 2)) {
+    return val;
   }
+  return tokenCheck(randomExcluded(2, 12, 7));
+}
 
-
+//generate html code for tile grid
+function gridHTML() {
   //Generate tiles with assigned data to tiles 1 to 3
   let div = document.createElement("div");
   let divContn2 = '<div class="col-sm-2 offset-sm-3 border border-secondary content_center">' + tile[0].Value + '<br>' + tile[0].Type + '<br> (' + hexCoords[1].q + ',' + hexCoords[1].r + ') </div>';
@@ -256,5 +341,58 @@ function createMap() {
   div.innerHTML = divCont2;
   document.getElementById("tileGen2").innerHTML = "";
   document.getElementById("tileGen2").innerHTML = divCont2;
+
+}
+
+
+//create 19 tile array when requested
+function createMap() {
+
+  console.log("createMap() started...");
+  let tileCount = 0;
+  tile = [];
+
+  //loop to assign properties of each of the 19 tiles
+  while (tileCount < 19) {
+
+    //Randomly assigns tile types - 1: Forest, 2: Pasture, 3: Field, 4: Hill, 5: Mountain and 6: Desert
+    let tileChose = tileType[random(1, 6)];
+    let tokenValue = 0; //initialise tile token value
+
+    //Checks chosen tile using tileCheck function whether tile type is permitted and stores to array
+    //Randomly assigns a value between 2 and 12 to each tile
+    //Assigns co-ordinate values to each tile based on the tile number
+    if (tileCheck(tileChose) && tileChose !== "Desert") {
+      tileCount++;
+      tokenValue = tokenCheck(randomExcluded(2, 12, 7)); //random tile value if tile is not desert
+      tile.push({
+        Number: tileCount, //tile number from 1 to 19
+        Type: tileChose,
+        Value: tokenValue,
+        hexQ: hexCoords[tileCount].q, //q co-ordinate
+        hexR: hexCoords[tileCount].r //r co-ordinate
+      });
+    } else if (tileCheck(tileChose) && tileChose === "Desert") {
+      tileCount++;
+      tile.push({
+        Number: tileCount, //tile number from 1 to 19
+        Type: tileChose,
+        Value: 0, //0 token value for desert
+        hexQ: hexCoords[tileCount].q, //q co-ordinate
+        hexR: hexCoords[tileCount].r //r co-ordinate    
+      });
+    }
+  }
+
+  //checks for tile token value probability limit using valueCheck function
+  for (let i = 0; i < tile.length; i++) {
+    if (!valueCheck(tile[i].hexQ, tile[i].hexR, 12)) {
+      createMap();
+    }
+
+  }
+
+  gridHTML();
+  console.log("createMap() Completed!");
 
 }
