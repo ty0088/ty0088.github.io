@@ -284,10 +284,10 @@ function tokenCheck(val) {
 function gridHTML() {
   //Generate tiles with assigned data to tiles 1 to 3
   let div = document.createElement("div");
-  let divContn2 = '<div class="col-sm-2 offset-sm-3 border border-secondary content_center">' + tile[0].Value + '<br>' + tile[0].Type + '<br> (' + hexCoords[1].q + ',' + hexCoords[1].r + ') </div>';
+  let divContn2 = '<div class="grid col-sm-2 offset-sm-3 border border-secondary content_center"><div class="' + tile[0].Type + '"></div>' + tile[0].Value + '<br>' + tile[0].Type + '<br> (' + hexCoords[1].q + ',' + hexCoords[1].r + ') </div>';
 
   for (let j = 1; j < 3; j++) {
-    divContn2 = divContn2.concat('<div class="col-sm-2 offset-sm-0 border border-secondary content_center">' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
+    divContn2 = divContn2.concat('<div class="grid col-sm-2 offset-sm-0 border border-secondary content_center"><div class="' + tile[j].Type + '"></div>' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
   }
 
   div.innerHTML = divContn2;
@@ -296,10 +296,10 @@ function gridHTML() {
 
 
   //Generate tiles with assigned data to tiles 4 to 7
-  let divContn1 = '<div class="col-sm-2 offset-sm-2 border border-secondary content_center">' + tile[3].Value + '<br>' + tile[3].Type + '<br> (' + hexCoords[4].q + ',' + hexCoords[4].r + ') </div>';
+  let divContn1 = '<div class="grid col-sm-2 offset-sm-2 border border-secondary content_center"><div class="' + tile[3].Type + '"></div>' + tile[3].Value + '<br>' + tile[3].Type + '<br> (' + hexCoords[4].q + ',' + hexCoords[4].r + ') </div>';
 
   for (j = 4; j < 7; j++) {
-    divContn1 = divContn1.concat('<div class="col-sm-2 offset-sm-0 border border-secondary content_center">' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
+    divContn1 = divContn1.concat('<div class="grid col-sm-2 offset-sm-0 border border-secondary content_center"><div class="' + tile[j].Type + '"></div>' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
   }
 
   div.innerHTML = divContn1;
@@ -308,10 +308,10 @@ function gridHTML() {
 
 
   //Generate tiles with assigned data to tiles 8 to 12
-  let divCont0 = '<div class="col-sm-2 offset-sm-1 border border-secondary content_center">' + tile[7].Value + '<br>' + tile[7].Type + '<br> (' + hexCoords[8].q + ',' + hexCoords[8].r + ') </div>';
+  let divCont0 = '<div class="grid col-sm-2 offset-sm-1 border border-secondary content_center"><div class="' + tile[7].Type + '"></div>' + tile[7].Value + '<br>' + tile[7].Type + '<br> (' + hexCoords[8].q + ',' + hexCoords[8].r + ') </div>';
 
   for (j = 8; j < 12; j++) {
-    divCont0 = divCont0.concat('<div class="col-sm-2 offset-sm-0 border border-secondary content_center">' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
+    divCont0 = divCont0.concat('<div class="grid col-sm-2 offset-sm-0 border border-secondary content_center"><div class="' + tile[j].Type + '"></div>' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
   }
 
   div.innerHTML = divCont0;
@@ -320,10 +320,10 @@ function gridHTML() {
 
 
   //Generate tiles with assigned data to tiles 13 to 16
-  let divCont1 = '<div class="col-sm-2 offset-sm-2 border border-secondary content_center">' + tile[12].Value + '<br>' + tile[12].Type + '<br> (' + hexCoords[13].q + ',' + hexCoords[13].r + ') </div>';
+  let divCont1 = '<div class="grid col-sm-2 offset-sm-2 border border-secondary content_center"><div class="' + tile[12].Type + '"></div>' + tile[12].Value + '<br>' + tile[12].Type + '<br> (' + hexCoords[13].q + ',' + hexCoords[13].r + ') </div>';
 
   for (j = 13; j < 16; j++) {
-    divCont1 = divCont1.concat('<div class="col-sm-2 offset-sm-0 border border-secondary content_center">' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
+    divCont1 = divCont1.concat('<div class="grid col-sm-2 offset-sm-0 border border-secondary content_center"><div class="' + tile[j].Type + '"></div>' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
   }
 
   div.innerHTML = divCont1;
@@ -332,10 +332,10 @@ function gridHTML() {
 
 
   //Generate tiles with assigned data to tiles 17 to 19
-  let divCont2 = '<div class="col-sm-2 offset-sm-3 border border-secondary content_center">' + tile[16].Value + '<br>' + tile[16].Type + '<br> (' + hexCoords[17].q + ',' + hexCoords[17].r + ') </div>';
+  let divCont2 = '<div class="grid col-sm-2 offset-sm-3 border border-secondary content_center"><div class="' + tile[16].Type + '"></div>' + tile[16].Value + '<br>' + tile[16].Type + '<br> (' + hexCoords[17].q + ',' + hexCoords[17].r + ') </div>';
 
   for (j = 17; j < 19; j++) {
-    divCont2 = divCont2.concat('<div class="col-sm-2 offset-sm-0 border border-secondary content_center">' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
+    divCont2 = divCont2.concat('<div class="grid col-sm-2 offset-sm-0 border border-secondary content_center"><div class="' + tile[j].Type + '"></div>' + tile[j].Value + '<br>' + tile[j].Type + '<br> (' + hexCoords[j + 1].q + ',' + hexCoords[j + 1].r + ') </div>');
   }
 
   div.innerHTML = divCont2;

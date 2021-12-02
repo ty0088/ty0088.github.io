@@ -13,6 +13,91 @@ header {
 
 .tiles {
   height: 100px;
+  font-weight: bold;
+}
+
+.grid {
+  position: relative;
+  z-index: 1;
+}
+
+.grid .Forest {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('Forest_1.jpg') center center;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+}
+
+.grid .Pasture {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('Pasture_1.jpg') center center;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+}
+
+.grid .Field{
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('Field_1.jpg') center center;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+}
+
+
+.grid .Hill {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('Hill_1.jpg') center center;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+}
+
+.grid .Mountain {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('Mountain_1.jpg') center center;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+}
+
+.grid .Desert {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('Desert_1.jpg') center center;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
 }
 
 .content_center {
