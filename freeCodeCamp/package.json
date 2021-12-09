@@ -2,6 +2,7 @@
   "name": "react-learning",
   "author": "ty0088",
   "version": "0.1.0",
+  "description": "A project that does something awesome",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
