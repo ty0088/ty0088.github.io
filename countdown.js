@@ -1,8 +1,8 @@
-function countdown(n) {
+function countDown(n) {
     
     if (n===0) return;
     console.log(n);
-    countdown(n-1);
+    countDown(n-1);
 }
 
-countdown(10);
+countDown(10);
