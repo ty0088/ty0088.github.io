@@ -44,12 +44,64 @@ function playRound(playerSelection, computerSelection) {
        
 }
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt("Please enter Rock, Paper or Scissors");
-        const computerSelection = computerPlay();
-        console.log(playRound(playerSelection, computerSelection));
-    }
-}
+const buttons = document.querySelectorAll('button');
+let winCount = 0;
+let loseCount = 0;
 
-game();
+buttons.forEach((button) => {
+
+    button.addEventListener('click', () => {
+
+        const resultText = playRound(button.id, computerPlay());
+        console.log(resultText);
+
+        if (resultText.includes('Win')) {
+            winCount ++;
+            console.log("wins= " + winCount);
+        } else if (resultText.includes('Lose')) {
+            loseCount ++;
+            console.log("loses = " + loseCount);
+        };
+
+        const results = document.querySelector('#gameresults');
+        const counter = document.querySelector('#gamecount');
+        const announcer = document.querySelector('#announce')
+
+        const content = document.createElement('div');
+        const winContentCount = document.createElement('div');
+        const loseContentCount = document.createElement('div');
+        const announceText = document.createElement('div');
+
+
+        content.textContent = resultText;
+        winContentCount.textContent = "Your Wins: " + winCount;
+        loseContentCount.textContent = "Computer Wins: " + loseCount;
+
+        results.innerHTML = "";
+        results.appendChild(content);
+
+        counter.innerHTML = "";
+        counter.appendChild(winContentCount);
+        counter.appendChild(loseContentCount);
+
+        if (winCount === 5) {
+            announceText.textContent = "YOU WIN!"
+            winCount = 0;
+            loseCount = 0;
+        } else if (loseCount === 5) {
+            announceText.textContent = "YOU LOSE!"
+            winCount = 0;
+            loseCount = 0;
+        }
+
+        announcer.innerHTML = '';
+        announcer.appendChild(announceText);
+
+    });
+
+});
+
+
+
+
+
