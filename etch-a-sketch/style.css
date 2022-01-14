@@ -1,0 +1,27 @@
+#container {
+    display: table;
+    justify-content: center;
+    border: 1px solid black;
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(30, 15px);
+    grid-template-rows: repeat(30, 15px);
+    background-color: black;
+    grid-gap: 1px;
+}
+
+.box {
+    background-color: white;
+}
+
+.hover {
+    background-color: black;
+}
+
+.center {
+    text-align: center
+}
