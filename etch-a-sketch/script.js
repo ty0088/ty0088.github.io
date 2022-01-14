@@ -45,6 +45,9 @@ const changeButton = document.getElementById('change_grid');
 const gridSize = 30;
 let currGrid = gridSize;
 
+grid.style.gridTemplateColumns = 'repeat(' + gridSize + ', 15px)';
+grid.style.gridTemplateRows = 'repeat(' + gridSize + ', 15px)';
+
 makeGrid(currGrid);
 
 grid.addEventListener('mousedown', (e) => {
