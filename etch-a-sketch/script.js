@@ -21,15 +21,20 @@ function fillGrid(e) {
     }
 }
 
-function checkNum(input) {
-    if (isNaN(input) || input === '' || input === '0') {
+function checkNum() {
+
+    let num = prompt("Please enter grid size (max 100)", 30)
+
+    if (isNaN(num) || num === '' || num === '0') {
         alert("Invalid input. Must be a number");
         return 30;
-    } else if (input > 100) {
+    } else if (num > 100) {
         alert("Invalid input. Must be a number <= 100");
         return 30;
+    } if (num === null) {
+        return 30;
     } else {
-        return parseInt(input);
+        return num;
     }
 }
 
@@ -56,7 +61,7 @@ clearButton.addEventListener('click', () => {
 });
 
 changeButton.addEventListener('click', () => {
-    gridSize = checkNum(prompt("Please enter grid size (max 100)", 30));
+    gridSize = checkNum();
     grid.style.gridTemplateColumns = 'repeat(' + gridSize + ', 15px)';
     grid.style.gridTemplateRows = 'repeat(' + gridSize + ', 15px)';
     makeGrid(gridSize);
