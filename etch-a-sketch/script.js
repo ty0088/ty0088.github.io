@@ -23,16 +23,16 @@ function fillGrid(e) {
 
 function checkNum() {
 
-    let num = prompt("Please enter grid size (max 100)", 30)
+    let num = prompt("Please enter grid size (max 100)", gridSize)
 
     if (isNaN(num) || num === '' || num === '0') {
         alert("Invalid input. Must be a number");
-        return 30;
+        return gridSize;
     } else if (num > 100) {
         alert("Invalid input. Must be a number <= 100");
-        return 30;
+        return gridSize;
     } if (num === null) {
-        return 30;
+        return gridSize;
     } else {
         return num;
     }
@@ -42,9 +42,10 @@ function checkNum() {
 const grid = document.getElementById('grid');
 const clearButton = document.getElementById('clear_grid');
 const changeButton = document.getElementById('change_grid');
-let gridSize = 30;
+const gridSize = 30;
+let currGrid = gridSize;
 
-makeGrid(gridSize);
+makeGrid(currGrid);
 
 grid.addEventListener('mousedown', (e) => {
     e.preventDefault();
@@ -57,13 +58,13 @@ grid.addEventListener('mousedown', (e) => {
 
 clearButton.addEventListener('click', () => {
     clearGrid();
-    makeGrid(gridSize);
+    makeGrid(currGrid);
 });
 
 changeButton.addEventListener('click', () => {
-    gridSize = checkNum();
-    grid.style.gridTemplateColumns = 'repeat(' + gridSize + ', 15px)';
-    grid.style.gridTemplateRows = 'repeat(' + gridSize + ', 15px)';
-    makeGrid(gridSize);
+    currGrid = checkNum();
+    grid.style.gridTemplateColumns = 'repeat(' + currGrid + ', 15px)';
+    grid.style.gridTemplateRows = 'repeat(' + currGrid + ', 15px)';
+    makeGrid(currGrid);
 });
 
