@@ -23,7 +23,12 @@ function operate(operator, a, b) {
         case 'multiply':
             return multiply(a, b);
         case 'divide':
-            return divide(a, b);
+            if (b === 0) {
+                alert("Can't divide by 0...");
+                return 0;
+            } else {
+                return divide(a, b);
+            }
         default:
             alert("!")
     }
@@ -32,8 +37,8 @@ function operate(operator, a, b) {
 function clear() {
     a = null;
     b = null;
+    input = '';
     output = null;
-    input = null;
     currOp = '';
     prevOp = '';
     display.textContent = '';
@@ -54,42 +59,88 @@ display.textContent = '';
 buttons.forEach((button) => {
         button.addEventListener('click', () => {
             console.log(button.id);
-            console.log(`Previous: a = ${a}, b = ${b}, input = ${input}, output = ${output}, operator = ${currOp}`);
+            console.log(`Previous: a = ${a}, b = ${b}, input = ${input}, output = ${output}, operator = ${prevOp}`);
 
-            if (isNaN(parseInt(button.id))) {
-                currOp = button.id;
-                console.log(currOp)
-                if (currOp === 'clear') {
+            if (isNaN(parseInt(button.id))) {   //check whether a number button or operator button is pressed
+
+                if (button.id === 'clear') {
+
                     clear();
-                } else if (currOp === 'equals') {
-                    if (a !== null && b !== null && prevOp !== '') {
+
+                } else if (input === '' && a !== null) {    //changing operators
+
+                    prevOp = currOp;
+                    currOp = button.id;
+                    console.log(`prevOp: ${prevOp}`)
+                    console.log(`currOp: ${currOp}`)
+
+                } else if (input !== '' && currOp !== 'equals') {   //do calc or clear
+                    
+                    prevOp = currOp;
+                    currOp = button.id;
+                    console.log(`prevOp: ${prevOp}`)
+                    console.log(`currOp: ${currOp}`)
+
+                    if (currOp === 'clear') {
+
+                        clear();
+
+                    } else if (currOp === 'dot') {
+                        //decimal coding here
+
+                    } else if (currOp === 'equals') {
+                        //equals code here
+                        b = parseInt(input);
+                        input = '';
                         output = operate(prevOp, a, b);
                         display.textContent = output;
+                        a = output;
+                        b = null;
+
+                    } else {
+                        //if add, minus, multiply or divide is pressed
+                        if (a === null && b === null) {
+
+                            a = parseInt(input);
+                            input = '';
+
+                        } else if (a !== null && b === null) {
+
+                            b = parseInt(input);
+                            input = '';
+                            output = operate(prevOp, a, b);
+                            display.textContent = output;
+                            a = output;
+                            b = null;
+
+                        }                        
                     }
-                }
+
+                } 
+                
             } else {
-                input += button.id;
-                console.log(input)
-                display.textContent = input;
-                if (a === null && b === null && currOp === '') {
-                    a = parseInt(input);
-                } else if (a !== null && currOp === '' && b === null) {
-                    a = parseInt(input);
-                } else if (a !== null && currOp !== '' && b === null) {
-                    b = parseInt(input);
+
+                if (currOp === 'equals') {  //user must choose an valid operator before entering any further numbers
+
+                    alert('Chose a valid operator (add, subtract, multiply, divide, clear)!');
+
+                } 
+                
+                // else if (input !== '' && prevOp === '') {
+
+                //     alert('Chose a valid operator (add, subtract, multiply, divide, clear)!');
+
+                // } 
+                
+                else {
+
+                    input += button.id;
+                    display.textContent = input;
+
                 }
+                
+
             }
-            
-            // if (a === null && b === null && operator === '') {
-            //     a = input;
-            // } else if (a !== null && operator !== '' && b === null) {
-            //     b = input;
-            // }
-            
-            // if (a !== null && b !== null && currOp !== '') {
-            //     output = operate(currOp, a, b);
-            //     display.textContent = output;
-            // }
             
             console.log(`Current: a = ${a}, b = ${b}, input = ${input}, output = ${output}, operator = ${currOp}`);
 
