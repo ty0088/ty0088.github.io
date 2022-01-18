@@ -26,3 +26,10 @@ button {
     font-size: 25px;
     margin: 3px;
 }
+
+#equals {
+    grid-column-start: 5;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 6;
+}
