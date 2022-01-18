@@ -67,19 +67,20 @@ buttons.forEach((button) => {
 
                     clear();
 
+                } else if (button.id === 'back') {
+
+                    input = input.slice(0,-1);
+                    display.textContent = input;
+
                 } else if (input === '' && a !== null) {    //changing operators
 
                     prevOp = currOp;
                     currOp = button.id;
-                    console.log(`prevOp: ${prevOp}`)
-                    console.log(`currOp: ${currOp}`)
 
                 } else if (input !== '' && currOp !== 'equals') {   //do calc or clear
                     
                     prevOp = currOp;
                     currOp = button.id;
-                    console.log(`prevOp: ${prevOp}`)
-                    console.log(`currOp: ${currOp}`)
 
                     if (currOp === 'clear') {
 
@@ -88,7 +89,7 @@ buttons.forEach((button) => {
                     } else if (currOp === 'dot') {
                         //decimal coding here
 
-                    } else if (currOp === 'equals') {
+                    } else if (a !== null && currOp === 'equals') {
                         //equals code here
                         b = parseInt(input);
                         input = '';
@@ -125,13 +126,7 @@ buttons.forEach((button) => {
                     alert('Chose a valid operator (add, subtract, multiply, divide, clear)!');
 
                 } 
-                
-                // else if (input !== '' && prevOp === '') {
-
-                //     alert('Chose a valid operator (add, subtract, multiply, divide, clear)!');
-
-                // } 
-                
+                                
                 else {
 
                     input += button.id;
