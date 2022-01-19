@@ -74,24 +74,32 @@ buttons.forEach((button) => {
 
                 } else if (input === '' && a !== null) {    //changing operators
 
-                    prevOp = currOp;
+                    if (currOp !== '.') {
+                        prevOp = currOp;
+                    }
                     currOp = button.id;
 
                 } else if (input !== '' && currOp !== 'equals') {   //do calc or clear
                     
-                    prevOp = currOp;
+                    if (currOp !== '.') {   //stops decimal point being used as an operator
+                        prevOp = currOp;
+                    }
                     currOp = button.id;
 
                     if (currOp === 'clear') {
 
                         clear();
 
-                    } else if (currOp === 'dot') {
-                        //decimal coding here
+                    } else if (currOp === '.') {
+                        
+                        if (!input.includes('.')) {
+                            input += button.id;
+                            display.textContent = input;
+                        }
 
                     } else if (a !== null && currOp === 'equals') {
-                        //equals code here
-                        b = parseInt(input);
+                        
+                        b = parseFloat(input);
                         input = '';
                         output = operate(prevOp, a, b);
                         display.textContent = output;
@@ -102,12 +110,12 @@ buttons.forEach((button) => {
                         //if add, minus, multiply or divide is pressed
                         if (a === null && b === null) {
 
-                            a = parseInt(input);
+                            a = parseFloat(input);
                             input = '';
 
                         } else if (a !== null && b === null) {
 
-                            b = parseInt(input);
+                            b = parseFloat(input);
                             input = '';
                             output = operate(prevOp, a, b);
                             display.textContent = output;
