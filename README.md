@@ -18,3 +18,7 @@ https://ty0088.github.io/etch-a-sketch/
 
 https://ty0088.github.io/calculator/
 
+https://ty0088.github.io/sign_up_form
+
+https://ty0088.github.io/dashboard_project
+
