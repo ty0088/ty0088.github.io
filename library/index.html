@@ -13,9 +13,28 @@
         <div id="bookList"></div>
         <br>
         <div id="newBookForm">
-            <button id="newBookBtn" onclick="newBook()">New Book</button>
-            <div id="form">
-                
+            <button type="button" onclick="newBook()">Add New Book</button>
+            <div>
+                <form id="form" action="">
+                    <br>
+                        <label for="title">Title</label>
+                        <input type="text" id="title">
+                    <br>
+                    <br>
+                        <label for="author">Author</label>
+                        <input type="text" id="author">
+                    <br>
+                    <br>
+                        <label for="pages">No. of Pages</label>
+                        <input type="number" id="pages">
+                    <br>
+                    <br>
+                        <label for="read">Read?</label>
+                        <input type="checkbox" id="read">
+                    <br>
+                    <br>
+                    <button type="button" onclick="btnSub()">Submit Book</button>
+                </form>
             </div>
         </div>
     </div>
