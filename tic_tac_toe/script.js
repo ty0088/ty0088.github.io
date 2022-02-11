@@ -1,27 +1,27 @@
 const gameBoard = (() => {
     let gameArr = ['', '', '', '', '', '', '', '', ''];
-    let gameOn = false;
+    let gameCount = 0;
 
     function arrUpdate(index, type) {
         gameArr.splice(index, 1, type);
+        gameCount++;
         console.log(gameArr);
     }
 
     function checkCell(cellIndex, playerType) {
-        if (gameArr[cellIndex] === '') { 
-            gameOn = true;
+        if (gameArr[cellIndex] === '') {
             arrUpdate(cellIndex, playerType);
             document.getElementById(cellIndex).innerHTML = playerType;
-            winner(playerType);
             gameController.nextPlayer();
+            winner(playerType);
         }
     }
 
     function resetBoard() {
         gameArr = ['', '', '', '', '', '', '', '', ''];
-        gameOn = false;
+        gameCount = 0;
         document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = '');
-        document.getElementById('winner').innerHTML = '';
+        document.getElementById('announce').innerHTML = '';
         gameController.pickPlayer();
         gameController.startGame();
     }
@@ -52,8 +52,9 @@ const gameBoard = (() => {
         } else  if (gameArr[2] === currPlayer && gameArr[5] === currPlayer && gameArr[8] === currPlayer) {
             gameController.annouceWinner();
             gameController.stopGame();
-        } else if (gameOn && ) {
-            console.log('draw');
+        } else if (gameCount > 8) {
+            gameController.announceDraw();
+            gameController.stopGame();
         }
 
     }
@@ -82,7 +83,14 @@ const gameController = (() => {
     
 
     function nextPlayer() {
-        return (currPlayer === 'X' ? currPlayer = 'O' : currPlayer = 'X');
+        if (currPlayer === 'X') {
+            currPlayer = 'O'
+            document.getElementById('player').innerHTML = currPlayer + "'s turn"
+        } else {
+            currPlayer = 'X'
+            document.getElementById('player').innerHTML = currPlayer + "'s turn"
+        }
+        return currPlayer;
     }
 
     function playerClick(event) {
@@ -91,7 +99,11 @@ const gameController = (() => {
     }
 
     function annouceWinner() {
-        document.getElementById('winner').innerHTML = currPlayer + ' WINS!';
+        document.getElementById('announce').innerHTML = currPlayer + ' WINS!';
+    }
+
+    function announceDraw() {
+        document.getElementById('announce').innerHTML = "It's a DRAW!";
     }
 
     function startGame() {
@@ -99,6 +111,7 @@ const gameController = (() => {
     }
 
     function stopGame() {
+        document.getElementById('player').innerHTML = '';
         document.querySelectorAll('.cell').forEach(cell => cell.removeEventListener('click', gameController.playerClick));
     }
 
@@ -106,6 +119,7 @@ const gameController = (() => {
         playerClick,
         nextPlayer,
         annouceWinner,
+        announceDraw,
         startGame,
         stopGame,
         pickPlayer,
