@@ -22,3 +22,7 @@ https://ty0088.github.io/sign_up_form
 
 https://ty0088.github.io/dashboard_project
 
+https://ty0088.github.io/library
+
+https://ty0088.github.io/tic_tac_toe
+
