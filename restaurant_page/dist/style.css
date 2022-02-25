@@ -36,6 +36,16 @@ body, html {
     width: 80%;
 }
 
+.socials {
+    position: absolute;
+    bottom: 60px;
+    display: grid;
+    grid-template: auto / repeat(3, 30px);
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+}
+
 .band {
     width: 100%;
     height: 5px;
@@ -210,4 +220,20 @@ body, html {
     font-size: 20px;
     padding-top: 30px;
     padding-bottom: 30px;
+}
+
+@media only screen and (max-width: 420px) {
+    .socials {
+        position: absolute;
+        bottom: 60px;
+        display: grid;
+        grid-template: repeat(3, 30px) / auto;
+        gap: 10px;
+        justify-items: center;
+        align-items: center;
+    }
+
+    .left-logo {
+        visibility: hidden;
+    }
 }

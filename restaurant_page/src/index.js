@@ -16,11 +16,29 @@ function leftContainer() {
     logoImg.setAttribute('alt', 'logo');
     logoImg.setAttribute('class', 'left-logo');
 
+    const socialLinks = document.createElement('div');
+    socialLinks.setAttribute('class', 'socials');
+
+    const twitter = document.createElement('img');
+    twitter.setAttribute('src', 'twitter.png');
+    twitter.setAttribute('alt', 'Twitter');
+    const instagram = document.createElement('img');
+    instagram.setAttribute('src', 'instagram.png');
+    instagram.setAttribute('alt', 'Instagram');
+    const facebook = document.createElement('img');
+    facebook.setAttribute('src', 'facebook.png');
+    facebook.setAttribute('alt', 'Facebook');
+
+    socialLinks.appendChild(twitter);
+    socialLinks.appendChild(instagram);
+    socialLinks.appendChild(facebook);
+
     const band = document.createElement('div');
     band.setAttribute('class', 'band');
 
     leftContainer.appendChild(iconImg);
     leftContainer.appendChild(logoImg);
+    leftContainer.appendChild(socialLinks);
     leftContainer.appendChild(band);
 
     document.getElementById('content').appendChild(leftContainer);    
