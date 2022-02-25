@@ -19,19 +19,30 @@ function leftContainer() {
     const socialLinks = document.createElement('div');
     socialLinks.setAttribute('class', 'socials');
 
+    const twitLink = document.createElement('a');
+    twitLink.setAttribute('href', 'https://twitter.com/brgrandbeer')
     const twitter = document.createElement('img');
     twitter.setAttribute('src', 'twitter.png');
     twitter.setAttribute('alt', 'Twitter');
+    twitter.setAttribute('alt', 'Twitter'); 
+    const instaLink = document.createElement('a');
+    instaLink.setAttribute('href', 'https://www.instagram.com/chknandbeer/')
     const instagram = document.createElement('img');
     instagram.setAttribute('src', 'instagram.png');
     instagram.setAttribute('alt', 'Instagram');
+    const faceLink = document.createElement('a');
+    faceLink.setAttribute('href', 'https://www.facebook.com/brgrandbeer/')
     const facebook = document.createElement('img');
     facebook.setAttribute('src', 'facebook.png');
     facebook.setAttribute('alt', 'Facebook');
 
-    socialLinks.appendChild(twitter);
-    socialLinks.appendChild(instagram);
-    socialLinks.appendChild(facebook);
+    twitLink.appendChild(twitter);
+    instaLink.appendChild(instagram);
+    faceLink.appendChild(facebook);
+
+    socialLinks.appendChild(twitLink);
+    socialLinks.appendChild(instaLink);
+    socialLinks.appendChild(faceLink);
 
     const band = document.createElement('div');
     band.setAttribute('class', 'band');
@@ -182,6 +193,7 @@ export {
     leftContainer,
     homePage
 }
+
 
 leftContainer();
 homePage();
