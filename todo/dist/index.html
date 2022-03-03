@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="main-container">
+
+        <div class="left-container">
+            <div class="header">Todo</div>
+            <div class="nav-bar">
+                <div class="task-nav">
+                    <div class="nav-link">
+                        <span class="nav material-icons link">assignment</span>
+                        <span class="nav-title link">All</span>
+                    </div>
+                    <div class="nav-link">
+                        <span class="nav material-icons link">today</span>
+                        <span class="nav-title link">Today</span>
+                    </div>
+                    <div class="nav-link">
+                        <span class="nav material-icons link">date_range</span>
+                        <span class="nav-title link">Week</span>
+                    </div>
+                    <div class="nav-link">
+                        <span class="nav material-icons link">assignment_turned_in</span>
+                        <span class="nav-title link">Completed</span>
+                    </div>
+                </div>
+                <div class="project-list">
+                    <div class="header">Projects</div>
+                    <div class="project-link">
+                        <span class="material-icons">format_list_bulleted</span>
+                        <span class="project-title link">Housework</span>
+                    </div>
+                    <div class="project-link">
+                        <span class="material-icons">format_list_bulleted</span>
+                        <span class="project-title link">Hobby</span>
+                    </div>
+                    <div class="project-link">
+                        <span class="material-icons">format_list_bulleted</span>
+                        <span class="project-title link">Work</span>
+                    </div>
+                </div>
+                <div class="add-new">
+                    <span class="material-icons link">add</span>
+                    <span class="add-title link">Add Project</span>
+                </div>
+                <div class="project-add-form">
+                    <form action="">
+                        <label for="project-name">Project Name:</label>
+                        <input type="text" id="project-name" name="projectName">
+                        <div class="submit-buttons">
+                            <span class="material-icons link">add_circle_outline</span>
+                            <span class="material-icons link">highlight_off</span>
+                        </div>              
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-container">
+            <div class="long-container">
+                <div class="header">All</div>
+                <div class="sort">
+                    Priority
+                    <span class="material-icons link">sort</span>
+                </div>
+                <div class="sort">
+                    Due Date
+                    <span class="material-icons link">sort</span>
+                </div>
+            </div>
+            <div class="add-new">
+                <span class="material-icons link">add</span>
+                <span class="add-title link">Add Task</span>
+            </div>
+            <div class="task-add-form">
+                <form action="">
+                    <label for="task-name">Task Name:</label><input type="text" id="task-name" name="taskName">
+                    <label for="task-note">Notes:</label><textarea id="task-note" name="taskNotes" rows="3"></textarea>
+                    <label for="task-proj-name">Project:</label><input type="text" id="task-proj-name" name="taskProjName">
+                    <label for="task-priority">Priority:</label>
+                    <select name="taskPriority" id="task-priority">
+                        <option value="high">High</option>
+                        <option value="med">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                    <label for="task-date">Due Date:</label><input type="date" id="task-date" name="taskDate">
+                    <div class="submit-buttons">
+                        <span class="material-icons link">add_circle_outline</span>
+                        <span class="material-icons link">highlight_off</span>
+                    </div>
+                </form>
+            </div>
+            <div class="task-content">
+                <div class="task-list">
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Do laundry</span>
+                        <span class="sort high">High</span>
+                        <span class="sort">03/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box</span>
+                        <span class="task-title">Clean bathrooms</span>
+                        <span class="sort med">medium</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                    <div class="long-container task">
+                        <span class="material-icons link">check_box_outline_blank</span>
+                        <span class="task-title">Vacuum house</span>
+                        <span class="sort low">Low</span>
+                        <span class="sort">05/03/2022</span>
+                        <span class="material-icons link">note_alt</span>
+                        <span class="material-icons link">delete</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>
