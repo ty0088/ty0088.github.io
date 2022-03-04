@@ -1,16 +1,19 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: {
+    todoLogic: './src/todoLogic.js',
+    domLogic: './src/domLogic.js',
+  },
   devtool: 'inline-source-map',
-  plugins: [
-    new HtmlWebpackPlugin({
-      //title: 'Output Management',
-      title: 'Development',
-    }),
-  ],
+  // plugins: [
+  //   new HtmlWebpackPlugin({
+  //     title: 'Output Management',
+  //     title: 'Development',
+  //   }),
+  // ],
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
