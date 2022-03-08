@@ -1,49 +1,59 @@
 const list = (() => {
     let todoList = [];
-    let projectListArr = [];
+    let projectList = [];
 
-    const addTask = (taskName, taskNote, taskProjName, taskPriority, taskDate) => {
-        todoList.push({taskName, taskNote, taskProjName, taskPriority, taskDate})
-    };
+    function addTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus) {
+        todoList.push({ todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus });
+    }
 
-    const modTask = () => {
+    function modTodo() {
+    }
 
-    };
+    function deleteTodo() {
+    }
 
-    const deleteTask = () => {
+    function addProject(newProjName) {
+        projectList.push(newProjName);
+    }
 
-    };
+    function modProjectList() {
+    }
 
-    const addProject = () => {
-        
-    };
+    function viewTodoList() {
+        const todoCopy = [...todoList];
+        return todoCopy;
+    }
 
-    const modProjectList = () => {
-
-    };
-
-    const viewList = () => {
-        const listCopy = [...todoList];
-        return listCopy;
-    };
+    function viewProjList() {
+        const projCopy = [...projectList];
+        return projCopy;
+    }
 
     return {
-        addTask,
+        addTodo,
         addProject,
-        modTask,
-        deleteTask,
+        modTodo,
+        deleteTodo,
         modProjectList,
-        viewList,
+        viewTodoList,
+        viewProjList,
     };
 
 })();
 
 const toDoController = (() => {
+
 })();
 
-list.addTask('taskName', 'taskNote', 'taskProjName', 'taskPriority', 'taskDate')
+list.addTodo('Laundry', '2x loads', 'Housework', 'High', '08/03/2020', true);
+list.addTodo('Tidy up', 'Kitchen and living room', 'Housework', 'Medium', '10/03/2020', false);
+list.addTodo('Vacuum House', 'Whole house', 'Housework', 'Low', '11/03/2020', false);
+list.addTodo('Go running', '5km', 'Hobbies', 'Low', '15/03/2020', false);
+list.addTodo('Update CV', '', 'Work', 'High', '09/03/2020', false);
+list.addTodo('Cut grass', '', 'Garden', 'Medium', '12/03/2020', false);
+list.addProject('Housework');
+list.addProject('Hobbies');
+list.addProject('Work');
+list.addProject('Garden');
 
-console.log(list.viewList());
-
-
-// export {};
+export {list};

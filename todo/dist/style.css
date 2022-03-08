@@ -27,19 +27,19 @@ body, html {
     z-index: 1;
 }
 
-.long-container > .header {
+.long-container > #cat-header {
     grid-column-start: 1;
     grid-column-end: 3;
 }
 
-.header {
+#cat-header,.logo {
     display: flex;
     align-items: center;
     font-size: 40px;
     font-weight: 700;
 }
 
-.task-nav {
+.todo-nav {
     padding-bottom: 15px;
 }
 
@@ -168,7 +168,7 @@ body, html {
     font-size: 25px;
 }
 
-.task-add-form {
+.todo-add-form {
     display: none;
     width: 550px;
     padding: 10px 10px 10px 10px;
@@ -177,54 +177,54 @@ body, html {
     border-radius: 10px;
 }
 
-.task-add-form > form {
+.todo-add-form > form {
     display: flex;
     flex-direction: column;
 }
 
-.task-add-form label {
+.todo-add-form label {
     font-size: 15px;
 
 }
 
-.task-add-form input {
+.todo-add-form input {
     width: 100%;
     border-radius: 10px;
 }
 
-.task-add-form #task-note {
+.todo-add-form #todo-note {
     border-radius: 10px;
     border-style: inset;
     border-width: 2px;
 }
 
-.task-add-form select {
+.todo-add-form select {
     width: 100%;
     border-radius: 10px;
     border-style: inset;
     border-width: 2px;
 }
 
-.task-list {
+.todo-list {
     height: auto;
     overflow-y: auto;
 }   
 
-.task {
+.todo {
     grid-template: 30px / 30px minmax(270px, 6fr) minmax(100px, 2fr) minmax(100px, 2fr) 30px 30px;
 }
 
-.high {
+.High {
     border: 1px solid red;
     border-radius: 5px;
 }
 
-.med {
+.Medium {
     border: 1px solid #ffc400;
     border-radius: 5px;
 }
 
-.low {
+.Low {
     border: 1px solid #00ff00;
     border-radius: 5px;
 }
@@ -234,7 +234,7 @@ body, html {
         grid-template: 100vh / 50px minmax(510px, 1fr);
     }
 
-    .header {
+    #cat-header,.logo {
         font-size: 15px;
         font-weight: 600;
     }
@@ -282,15 +282,15 @@ body, html {
         grid-template: 50px / 30px 4fr minmax(90px, 2fr) minmax(90px, 2fr) 30px 30px;
     }
 
-    .task-add-form {
+    .todo-add-form {
         width: 300px;
     }
 
-    .task {
+    .todo {
         grid-template: 30px / 30px minmax(200px, 4fr) minmax(100px, 2fr) minmax(100px, 2fr) 30px 30px;
     }
 
-    .long-container > .header {
+    .long-container > #cat-header {
         font-size: 20px;
         font-weight: 600;
     }
