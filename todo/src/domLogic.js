@@ -1,37 +1,11 @@
 import {list} from './todoLogic'
 
-const showLists = (() => {
-
-    function newTodoElement(todoObj, todoListArr) {
-        const todoElem = document.createElement('div');
-        todoElem.setAttribute('class', 'long-container todo');
-
-        const statusClass = (todoObj.todoStatus) ? 'check_box' : 'check_box_outline_blank';
-
-        todoElem.innerHTML = `
-            <span class="material-icons link" data-click="check-box">${statusClass}</span>
-            <span class="todo-title link" data-click="todo" data-index="${todoListArr.indexOf(todoObj)}">${todoObj.todoName}</span>
-            <span class="sort ${todoObj.todoPriority}">${todoObj.todoPriority}</span>
-            <span class="sort">${todoObj.todoDate}</span>
-            <span class="material-icons link" data-click="edit">note_alt</span>
-            <span class="material-icons link" data-click="delete">delete</span>
-        `;
-        return todoElem;
-    }
+const filterLists = (() => {
 
     function byAll() {
-        //remove DOM elements and move to domController
-        const todoListElem = document.createElement('div'); //
-        todoListElem.setAttribute('class', 'todo-list'); //
-
-        const todoListArr = [...list.viewTodoList()]; 
-        todoListArr.map(todoObj => {
-            if (!todoObj.todoStatus) { //filter out completed todos
-                todoListElem.appendChild(newTodoElement(todoObj, todoListArr));
-            }
-        });
-
-        document.getElementById('todo-content').appendChild(todoListElem);
+        const listArr = [...list.viewTodoList()];
+        const newListArr = listArr.filter(todoObj => !todoObj.todoStatus);
+        return newListArr;  
     }
 
     function byToday() {
@@ -46,48 +20,16 @@ const showLists = (() => {
     }
 
     function byCompleted() {
-        const todoListArr = [...list.viewTodoList()];
-
-        const todoListElem = document.createElement('div');
-        todoListElem.setAttribute('class', 'todo-list');
-
-        todoListArr.map(todoObj => {
-            if (todoObj.todoStatus) {
-                todoListElem.appendChild(newTodoElement(todoObj, todoListArr));
-            }
-        });
-
-        document.getElementById('todo-content').appendChild(todoListElem);
+        const listArr = [...list.viewTodoList()];
+        const newListArr = listArr.filter(todoObj => todoObj.todoStatus);
+        return newListArr;  
     }
 
     function byProject(projName) {
-        //filter todoListArr by todos project
-        //update DOM with filtered list
-    }
-
-    function projList() {
-        const projListArr = [...list.viewProjList()];
-
-        const projListElem = document.createElement('div');
-        projListElem.setAttribute('class', 'project-list');
-        const projHeader = document.createElement('div');
-        projHeader.setAttribute('class', 'header');
-        projHeader.textContent = 'Projects';
-
-        projListElem.appendChild(projHeader);
-
-        projListArr.map(proj => {
-            const projElem = document.createElement('div');
-            projElem.setAttribute('class', 'project-link')
-
-            projElem.innerHTML = `
-                <span class="material-icons">format_list_bulleted</span>
-                <span class="project-title link" data-click="proj" data-index="${projListArr.indexOf(proj)}">${proj}</span>
-            `;
-            projListElem.appendChild(projElem);
-        });
-
-        document.getElementById('project-content').appendChild(projListElem);
+        const listArr = [...list.viewTodoList()];
+        console.log(projName)
+        const newListArr = listArr.filter(todoObj => todoObj.todoProjName === projName);
+        return newListArr;
     }
 
     return {
@@ -96,7 +38,6 @@ const showLists = (() => {
         byWeek,
         byCompleted,
         byProject,
-        projList,
     };
 
 })();
@@ -105,20 +46,26 @@ const domController = (() => {
 
     function clickController(event) {
         const clickType = event.target.getAttribute('data-click');
-        const elemIndex = event.target.getAttribute('data-index');//
-
-        console.log(clickType);
+        const elemIndex = event.target.getAttribute('data-index');
 
         if (clickType === 'all') {
-            refreshContent(clickType);
+            refreshContent(filterLists.byAll());
+            showHeader('All');
         } else if (clickType === 'today') {
-            refreshContent(clickType);
+            showHeader('Today');
         } else if (clickType === 'week') {
-            refreshContent(clickType);
+            showHeader('Week');
         } else if (clickType === 'comp') {
-            refreshContent(clickType);
+            refreshContent(filterLists.byCompleted());
+            showHeader('Completed');
         } else if (clickType === 'proj') {
-            refreshContent(clickType, event.target.textContent);
+            const projName = event.target.textContent;
+            let list = filterLists.byProject(projName); //move to filter list or separate out into other function
+            let incompList = list.filter(todoObj => !todoObj.todoStatus); //
+            let compList = list.filter(todoObj => todoObj.todoStatus); //
+            let joinedList = incompList.concat(compList); //
+            refreshContent(joinedList);
+            showHeader(projName);
         } else if (clickType === 'add-proj') {
             
         } else if (clickType === 'sort-priority') {
@@ -148,31 +95,63 @@ const domController = (() => {
         document.getElementById('cat-header').textContent = listType;
     }
 
-    function refreshContent(listType, projName) {
+    function newTodoElement(todoObj, todoListArr) {
+        const todoElem = document.createElement('div');
+        todoElem.setAttribute('class', 'long-container todo');
+
+        const statusClass = (todoObj.todoStatus) ? 'check_box' : 'check_box_outline_blank';
+
+        todoElem.innerHTML = `
+            <span class="material-icons link" data-click="check-box">${statusClass}</span>
+            <span class="todo-title link" data-click="todo" data-index="${todoListArr.indexOf(todoObj)}">${todoObj.todoName}</span>
+            <span class="sort ${todoObj.todoPriority}">${todoObj.todoPriority}</span>
+            <span class="sort">${todoObj.todoDate}</span>
+            <span class="material-icons link" data-click="edit">note_alt</span>
+            <span class="material-icons link" data-click="delete">delete</span>
+        `;
+        return todoElem;
+    }
+
+    function refreshContent(list) {
         document.getElementById('project-content').innerHTML = '';
         document.getElementById('cat-header').textContent = '';
         document.getElementById('todo-content').innerHTML = '';
 
-        if (listType === 'all') {
-            //should contain DOM elements inside showLists.byAll
-            showLists.byAll();
-            showHeader('All');
-        } else if (listType === 'today') {
-            showLists.byToday();
-            showHeader('Today');
-        } else if (listType === 'week') {
-            showLists.byWeek();
-            showHeader('Week');
-        } else if (listType === 'comp') {
-            showLists.byCompleted();
-            showHeader('Completed');
-        } else if (listType === 'proj') {
-            showLists.byProject(projName);
-            showHeader(projName);
-        }
+        const todoListElem = document.createElement('div');
+        todoListElem.setAttribute('class', 'todo-list');
 
-        showLists.projList();
+        list.map(todoObj => {
+            todoListElem.appendChild(newTodoElement(todoObj, list))
+        });
+        document.getElementById('todo-content').appendChild(todoListElem);
+
+        refreshProjList()
         clickListener();
+    }
+
+    function refreshProjList() {
+        const projListArr = [...list.viewProjList()];
+
+        const projListElem = document.createElement('div');
+        projListElem.setAttribute('class', 'project-list');
+        const projHeader = document.createElement('div');
+        projHeader.setAttribute('class', 'header');
+        projHeader.textContent = 'Projects';
+
+        projListElem.appendChild(projHeader);
+
+        projListArr.map(proj => {
+            const projElem = document.createElement('div');
+            projElem.setAttribute('class', 'project-link')
+
+            projElem.innerHTML = `
+                <span class="material-icons">format_list_bulleted</span>
+                <span class="project-title link" data-click="proj" data-index="${projListArr.indexOf(proj)}">${proj}</span>
+            `;
+            projListElem.appendChild(projElem);
+        });
+
+        document.getElementById('project-content').appendChild(projListElem);
     }
 
     function addTodoForm() {
@@ -183,12 +162,12 @@ const domController = (() => {
 
     return {
         refreshContent,
+        clickListener,
+        refreshProjList,
     };
 
 })();
 
 
-
-domController.refreshContent('all');
-
-//event listeners
+domController.refreshProjList()
+domController.clickListener();
