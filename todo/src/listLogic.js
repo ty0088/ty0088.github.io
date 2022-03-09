@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 const list = (() => {
     let todoList = [];
     let projectList = [];
@@ -45,15 +47,22 @@ const toDoController = (() => {
 
 })();
 
-list.addTodo('Laundry', '2x loads', 'Housework', 'High', '08/03/2020', true);
-list.addTodo('Tidy up', 'Kitchen and living room', 'Housework', 'Medium', '10/03/2020', false);
-list.addTodo('Vacuum House', 'Whole house', 'Housework', 'Low', '11/03/2020', false);
-list.addTodo('Go running', '5km', 'Hobbies', 'Low', '15/03/2020', false);
-list.addTodo('Update CV', '', 'Work', 'High', '09/03/2020', false);
-list.addTodo('Cut grass', '', 'Garden', 'Medium', '12/03/2020', false);
+const seven = format(new Date(2022, 2, 7), 'dd/MM/yyyy');
+const nine = format(new Date(2022, 2, 9), 'dd/MM/yyyy');
+const ten = format(new Date(2022, 2, 10), 'dd/MM/yyyy');
+const eleven = format(new Date(2022, 2, 11), 'dd/MM/yyyy');
+const twelve = format(new Date(2022, 2, 12), 'dd/MM/yyyy');
+const thirty = format(new Date(2022, 2, 30), 'dd/MM/yyyy');
+
+list.addTodo('Laundry', '2x loads', 'Housework', 'High', seven, true);
+list.addTodo('Tidy up', 'Kitchen and living room', 'Housework', 'Medium', nine, false);
+list.addTodo('Vacuum House', 'Whole house', 'Housework', 'Low', ten, false);
+list.addTodo('Go running', '5km', 'Hobbies', 'Low', eleven, false);
+list.addTodo('Update CV', '', 'Work', 'High', twelve, false);
+list.addTodo('Cut grass', '', 'Garden', 'Medium', thirty, false);
 list.addProject('Housework');
 list.addProject('Hobbies');
 list.addProject('Work');
 list.addProject('Garden');
 
-export {list};
+export { list };

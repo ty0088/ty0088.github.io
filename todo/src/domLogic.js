@@ -1,70 +1,41 @@
-import {list} from './todoLogic'
-
-const filterLists = (() => {
-
-    function byAll() {
-        const listArr = [...list.viewTodoList()];
-        const newListArr = listArr.filter(todoObj => !todoObj.todoStatus);
-        return newListArr;  
-    }
-
-    function byToday() {
-        const todoListArr = [...list.viewTodoList()];
-        //filter todoListArr by todays date
-        //update DOM with filtered list
-    }
-
-    function byWeek() {
-        //filter todoListArr by current week range
-        //update DOM with filtered list
-    }
-
-    function byCompleted() {
-        const listArr = [...list.viewTodoList()];
-        const newListArr = listArr.filter(todoObj => todoObj.todoStatus);
-        return newListArr;  
-    }
-
-    function byProject(projName) {
-        const listArr = [...list.viewTodoList()];
-        console.log(projName)
-        const newListArr = listArr.filter(todoObj => todoObj.todoProjName === projName);
-        return newListArr;
-    }
-
-    return {
-        byAll,
-        byToday,
-        byWeek,
-        byCompleted,
-        byProject,
-    };
-
-})();
+import { list } from './listLogic'
+import { filterLists } from './filterLogic'
+import { isToday, isThisWeek, format, parse} from 'date-fns'
 
 const domController = (() => {
 
+    function clickListener() {
+        const link = document.querySelectorAll('.link');
+        link.forEach(element => element.addEventListener('click', clickController));
+    };
+
     function clickController(event) {
         const clickType = event.target.getAttribute('data-click');
-        const elemIndex = event.target.getAttribute('data-index');
+        const elemIndex = event.target.getAttribute('data-index');//
+
+        console.log(event.target.getAttribute('data-click'));//
 
         if (clickType === 'all') {
             refreshContent(filterLists.byAll());
             showHeader('All');
         } else if (clickType === 'today') {
+            const list = filterLists.byToday();
+            const sortedList = sortByUnchecked(list);
+            refreshContent(sortedList);
             showHeader('Today');
         } else if (clickType === 'week') {
+            const list = filterLists.byWeek();
+            const sortedList = sortByUnchecked(list);
+            refreshContent(sortedList);
             showHeader('Week');
         } else if (clickType === 'comp') {
             refreshContent(filterLists.byCompleted());
             showHeader('Completed');
         } else if (clickType === 'proj') {
             const projName = event.target.textContent;
-            let list = filterLists.byProject(projName); //move to filter list or separate out into other function
-            let incompList = list.filter(todoObj => !todoObj.todoStatus); //
-            let compList = list.filter(todoObj => todoObj.todoStatus); //
-            let joinedList = incompList.concat(compList); //
-            refreshContent(joinedList);
+            const list = filterLists.byProject(projName);
+            const sortedList = sortByUnchecked(list);
+            refreshContent(sortedList);
             showHeader(projName);
         } else if (clickType === 'add-proj') {
             
@@ -86,30 +57,8 @@ const domController = (() => {
 
     }
 
-    function clickListener() {
-        const link = document.querySelectorAll('.link');
-        link.forEach(element => element.addEventListener('click', clickController));
-    };
-
     function showHeader(listType) {
         document.getElementById('cat-header').textContent = listType;
-    }
-
-    function newTodoElement(todoObj, todoListArr) {
-        const todoElem = document.createElement('div');
-        todoElem.setAttribute('class', 'long-container todo');
-
-        const statusClass = (todoObj.todoStatus) ? 'check_box' : 'check_box_outline_blank';
-
-        todoElem.innerHTML = `
-            <span class="material-icons link" data-click="check-box">${statusClass}</span>
-            <span class="todo-title link" data-click="todo" data-index="${todoListArr.indexOf(todoObj)}">${todoObj.todoName}</span>
-            <span class="sort ${todoObj.todoPriority}">${todoObj.todoPriority}</span>
-            <span class="sort">${todoObj.todoDate}</span>
-            <span class="material-icons link" data-click="edit">note_alt</span>
-            <span class="material-icons link" data-click="delete">delete</span>
-        `;
-        return todoElem;
     }
 
     function refreshContent(list) {
@@ -127,6 +76,30 @@ const domController = (() => {
 
         refreshProjList()
         clickListener();
+    }
+
+    function sortByUnchecked(list) {
+        const incompList = list.filter(todoObj => !todoObj.todoStatus);
+        const compList = list.filter(todoObj => todoObj.todoStatus);
+        const joinedList = incompList.concat(compList);
+        return joinedList;
+    }
+
+    function newTodoElement(todoObj, todoListArr) {
+        const todoElem = document.createElement('div');
+        todoElem.setAttribute('class', 'long-container todo');
+
+        const statusClass = (todoObj.todoStatus) ? 'check_box' : 'check_box_outline_blank';
+
+        todoElem.innerHTML = `
+            <span class="material-icons link" data-click="check-box">${statusClass}</span>
+            <span class="todo-title link" data-click="todo" data-index="${todoListArr.indexOf(todoObj)}">${todoObj.todoName}</span>
+            <span class="sort ${todoObj.todoPriority}">${todoObj.todoPriority}</span>
+            <span class="sort">${todoObj.todoDate}</span>
+            <span class="material-icons link" data-click="edit">note_alt</span>
+            <span class="material-icons link" data-click="delete">delete</span>
+        `;
+        return todoElem;
     }
 
     function refreshProjList() {
@@ -162,12 +135,13 @@ const domController = (() => {
 
     return {
         refreshContent,
+        showHeader,
         clickListener,
         refreshProjList,
     };
 
 })();
 
-
-domController.refreshProjList()
+domController.refreshContent(filterLists.byAll());
+domController.showHeader('All');
 domController.clickListener();

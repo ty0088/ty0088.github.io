@@ -4,8 +4,9 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   entry: {
-    todoLogic: './src/todoLogic.js',
+    listLogic: './src/listLogic.js',
     domLogic: './src/domLogic.js',
+    filterLogic: './src/filterLogic.js'
   },
   devtool: 'inline-source-map',
   // plugins: [

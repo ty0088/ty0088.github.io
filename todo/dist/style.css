@@ -169,7 +169,7 @@ body, html {
 }
 
 .todo-add-form {
-    display: none;
+    /* display: none; */
     width: 550px;
     padding: 10px 10px 10px 10px;
     margin: 5px 0 5px 0;
