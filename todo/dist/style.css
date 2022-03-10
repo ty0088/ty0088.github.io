@@ -11,7 +11,8 @@ body, html {
 
 #main-container {
     height: 100vh;
-    width: 100vw;
+    min-width: 770px;
+    max-width: 800px;
     display: grid;
     grid-template: 100vh / 200px minmax(570px, 1fr);
     overflow-x: auto;
@@ -48,6 +49,7 @@ body, html {
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-left: 3px;
     padding-bottom: 5px;
 }
 
@@ -193,6 +195,7 @@ body, html {
 }
 
 .todo-add-form #todo-note {
+    max-width: 530px;
     border-radius: 10px;
     border-style: inset;
     border-width: 2px;
@@ -231,6 +234,7 @@ body, html {
 
 @media only screen and (max-width: 770px) {
     #main-container {
+        min-width: 560px;
         grid-template: 100vh / 50px minmax(510px, 1fr);
     }
 
@@ -284,6 +288,10 @@ body, html {
 
     .todo-add-form {
         width: 300px;
+    }
+
+    .todo-add-form #todo-note {
+        max-width: 280px;
     }
 
     .todo {
