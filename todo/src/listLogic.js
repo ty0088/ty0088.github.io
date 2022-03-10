@@ -43,10 +43,6 @@ const list = (() => {
 
 })();
 
-const toDoController = (() => {
-
-})();
-
 const seven = format(new Date(2022, 2, 7), 'dd/MM/yyyy');
 const nine = format(new Date(2022, 2, 9), 'dd/MM/yyyy');
 const ten = format(new Date(2022, 2, 10), 'dd/MM/yyyy');
@@ -54,12 +50,12 @@ const eleven = format(new Date(2022, 2, 11), 'dd/MM/yyyy');
 const twelve = format(new Date(2022, 2, 12), 'dd/MM/yyyy');
 const thirty = format(new Date(2022, 2, 30), 'dd/MM/yyyy');
 
-list.addTodo('Laundry', '2x loads', 'Housework', 'High', '', true);
+list.addTodo('Laundry', '2x loads', 'Housework', 'High', seven, true);
 list.addTodo('Tidy up', 'Kitchen and living room', 'Housework', 'Medium', nine, false);
-list.addTodo('Vacuum House', 'Whole house', 'Housework', 'Low', ten, false);
+list.addTodo('Vacuum House', 'Whole house', 'Housework', 'Low', thirty, false);
 list.addTodo('Go running', '5km', 'Hobbies', 'Low', eleven, false);
-list.addTodo('Update CV', '', 'Work', 'High', '', false);
-list.addTodo('Cut grass', '', 'Garden', 'Medium', thirty, false);
+list.addTodo('Update CV', '', 'Work', 'High', twelve, false);
+list.addTodo('Cut grass', '', 'Garden', 'Medium', ten, false);
 list.addProject('Housework');
 list.addProject('Hobbies');
 list.addProject('Work');

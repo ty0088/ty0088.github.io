@@ -49,7 +49,6 @@ body, html {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-left: 3px;
     padding-bottom: 5px;
 }
 
@@ -115,8 +114,7 @@ body, html {
     font-size: 16px;
 }
 
-.project-add-form {
-    display: none;
+#project-add-form {
     margin-top: 5px;
     padding: 5px 10px 5px 10px;
     width: 300px;
@@ -132,11 +130,11 @@ body, html {
     gap: 30px;
 }
 
-.project-add-form label {
+#project-add-form label {
     font-size: 12px;
 }
 
-.project-add-form input {
+#project-add-form input {
     width: 100%;
     border-radius: 5px;
 }
@@ -170,8 +168,7 @@ body, html {
     font-size: 25px;
 }
 
-.todo-add-form {
-    /* display: none; */
+#todo-add-form {
     width: 550px;
     padding: 10px 10px 10px 10px;
     margin: 5px 0 5px 0;
@@ -179,36 +176,36 @@ body, html {
     border-radius: 10px;
 }
 
-.todo-add-form > form {
+#todo-add-form > form {
     display: flex;
     flex-direction: column;
 }
 
-.todo-add-form label {
+#todo-add-form label {
     font-size: 15px;
 
 }
 
-.todo-add-form input {
+#todo-add-form input {
     width: 100%;
     border-radius: 10px;
 }
 
-.todo-add-form #todo-note {
+#todo-add-form #todo-note {
     max-width: 530px;
     border-radius: 10px;
     border-style: inset;
     border-width: 2px;
 }
 
-.todo-add-form select {
+#todo-add-form select {
     width: 100%;
     border-radius: 10px;
     border-style: inset;
     border-width: 2px;
 }
 
-.todo-list {
+#todo-list {
     height: auto;
     overflow-y: auto;
 }   
@@ -241,6 +238,10 @@ body, html {
     #cat-header,.logo {
         font-size: 15px;
         font-weight: 600;
+    }
+
+    .nav-link {
+        padding-left: 3px;
     }
 
     .nav-title {
@@ -286,11 +287,11 @@ body, html {
         grid-template: 50px / 30px 4fr minmax(90px, 2fr) minmax(90px, 2fr) 30px 30px;
     }
 
-    .todo-add-form {
+    #todo-add-form {
         width: 300px;
     }
 
-    .todo-add-form #todo-note {
+    #todo-add-form #todo-note {
         max-width: 280px;
     }
 
