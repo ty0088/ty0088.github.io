@@ -50,15 +50,12 @@ const eleven = format(new Date(2022, 2, 11), 'dd/MM/yyyy');
 const twelve = format(new Date(2022, 2, 12), 'dd/MM/yyyy');
 const thirty = format(new Date(2022, 2, 30), 'dd/MM/yyyy');
 
-list.addTodo('Laundry', '2x loads', 'Housework', 'High', seven, true);
-list.addTodo('Tidy up', 'Kitchen and living room', 'Housework', 'Medium', nine, false);
-list.addTodo('Vacuum House', 'Whole house', 'Housework', 'Low', thirty, false);
-list.addTodo('Go running', '5km', 'Hobbies', 'Low', eleven, false);
-list.addTodo('Update CV', '', 'Work', 'High', twelve, false);
-list.addTodo('Cut grass', '', 'Garden', 'Medium', ten, false);
-list.addProject('Housework');
-list.addProject('Hobbies');
-list.addProject('Work');
-list.addProject('Garden');
+list.addProject('Demo');
+list.addTodo('Laundry', '2x loads', 'Demo', 'High', seven, true);
+list.addTodo('Tidy up', 'Kitchen and living room', 'Demo', 'Medium', nine, false);
+list.addTodo('Vacuum House', 'Whole house', 'Demo', 'Low', thirty, false);
+list.addTodo('Go running', '5km', 'Demo', 'Low', eleven, false);
+list.addTodo('Update CV', '', 'Demo', 'High', twelve, false);
+list.addTodo('Cut grass', '', 'Demo', 'Medium', ten, false);
 
 export { list };
