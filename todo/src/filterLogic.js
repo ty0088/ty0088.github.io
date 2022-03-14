@@ -1,5 +1,5 @@
 import { list } from './listLogic'
-import { isToday, isThisWeek, format, parse} from 'date-fns'
+import { isToday, isThisWeek, parse} from 'date-fns'
 
 const filterLists = (() => {
 

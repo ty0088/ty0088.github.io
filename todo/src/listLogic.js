@@ -1,17 +1,29 @@
-import { format } from 'date-fns'
+import { parse } from 'date-fns'
 
 const list = (() => {
     let todoList = [];
     let projectList = [];
 
     function addTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus) {
-        todoList.push({ todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus });
+        const todoID = Math.floor(Date.now() * Math.random());
+        todoList.push({ todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID });
     }
 
-    function modTodo() {
+    function modTodo(todoName, todoNote, todoProjName, todoPriority) {
     }
 
-    function deleteTodo() {
+    function completeTodo(id) {
+        const index = todoList.findIndex(todoObj => todoObj.todoID === id);
+        if (todoList[index].todoStatus) {
+            todoList[index].todoStatus = false;
+        } else if (!todoList[index].todoStatus) {
+            todoList[index].todoStatus = true;
+        }
+    }
+
+    function deleteTodo(id) {
+        const index = todoList.findIndex(todoObj => todoObj.todoID === id);
+        todoList.splice(index, 1);
     }
 
     function addProject(newProjName) {
@@ -22,18 +34,17 @@ const list = (() => {
     }
 
     function viewTodoList() {
-        const todoCopy = [...todoList];
-        return todoCopy;
+        return [...todoList];
     }
 
     function viewProjList() {
-        const projCopy = [...projectList];
-        return projCopy;
+        return [...projectList];
     }
 
     return {
         addTodo,
         addProject,
+        completeTodo,
         modTodo,
         deleteTodo,
         modProjectList,
@@ -43,19 +54,50 @@ const list = (() => {
 
 })();
 
-const seven = format(new Date(2022, 2, 7), 'dd/MM/yyyy');
-const nine = format(new Date(2022, 2, 9), 'dd/MM/yyyy');
-const ten = format(new Date(2022, 2, 10), 'dd/MM/yyyy');
-const eleven = format(new Date(2022, 2, 11), 'dd/MM/yyyy');
-const twelve = format(new Date(2022, 2, 12), 'dd/MM/yyyy');
-const thirty = format(new Date(2022, 2, 30), 'dd/MM/yyyy');
+const sortList = (() => {
 
-list.addProject('Demo');
-list.addTodo('Laundry', '2x loads', 'Demo', 'High', seven, true);
-list.addTodo('Tidy up', 'Kitchen and living room', 'Demo', 'Medium', nine, false);
-list.addTodo('Vacuum House', 'Whole house', 'Demo', 'Low', thirty, false);
-list.addTodo('Go running', '5km', 'Demo', 'Low', eleven, false);
-list.addTodo('Update CV', '', 'Demo', 'High', twelve, false);
-list.addTodo('Cut grass', '', 'Demo', 'Medium', ten, false);
+    function priorityScore(value) {
 
-export { list };
+        switch (value) {
+            case 'High':
+                return 3;
+            case 'Medium':
+                return 2;
+            case 'Low':
+                return 1;
+        }
+        
+    }
+
+    function sortPriority(tempList, priorityOrder) {
+        const listNoPriority = tempList.filter(todoObj => todoObj.todoPriority.length === 0);
+        const listWithPriority = tempList.filter(todoObj => todoObj.todoPriority.length > 0);
+        listWithPriority.sort(function(a,b){
+            return (priorityOrder ? priorityScore(a.todoPriority) - priorityScore(b.todoPriority) : priorityScore(b.todoPriority) - priorityScore(a.todoPriority));
+        });
+        return listWithPriority.concat(listNoPriority);
+    }
+
+    function sortDate(tempList, dateOrder) {
+        const listNoDate = tempList.filter(todoObj => todoObj.todoDate.length === 0);
+        const listWithDate = tempList.filter(todoObj => todoObj.todoDate.length > 0);
+        listWithDate.sort(function(a,b){
+            return (dateOrder ? parse(b.todoDate, 'dd/MM/yyyy', new Date()) - parse(a.todoDate, 'dd/MM/yyyy', new Date()) : parse(a.todoDate, 'dd/MM/yyyy', new Date()) - parse(b.todoDate, 'dd/MM/yyyy', new Date()));
+        });
+        return listWithDate.concat(listNoDate);
+    }
+
+    function sortByUnchecked(tempList) {
+        const incompList = tempList.filter(todoObj => !todoObj.todoStatus);
+        const compList = tempList.filter(todoObj => todoObj.todoStatus);
+        return incompList.concat(compList);
+    }
+
+    return {
+        sortPriority,
+        sortDate,
+        sortByUnchecked,
+    }
+})();
+
+export { list, sortList };

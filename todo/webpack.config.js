@@ -5,8 +5,9 @@ module.exports = {
   mode: 'development',
   entry: {
     listLogic: './src/listLogic.js',
-    domLogic: './src/domLogic.js',
-    filterLogic: './src/filterLogic.js'
+    controllerLogic: './src/controllerLogic.js',
+    filterLogic: './src/filterLogic.js',
+    contentLogic: './src/contentLogic.js'
   },
   devtool: 'inline-source-map',
   // plugins: [
