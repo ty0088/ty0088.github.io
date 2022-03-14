@@ -12,8 +12,8 @@ const gameBoard = (() => {
         if (gameArr[cellIndex] === '') {
             arrUpdate(cellIndex, playerType);
             document.getElementById(cellIndex).innerHTML = playerType;
-            gameController.nextPlayer();
             winner(playerType);
+            gameController.nextPlayer();
         }
     }
 
