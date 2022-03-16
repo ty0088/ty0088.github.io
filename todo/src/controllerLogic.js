@@ -3,8 +3,6 @@ import { filterLists } from './filterLogic'
 import { contentUpdater } from './contentLogic'
 import { format, add } from 'date-fns'
 
-
-
 const controller = (() => {
     let tempList = [];
     let listHead = '';
@@ -27,7 +25,11 @@ const controller = (() => {
 
     function clickController(event) {
         const clickType = event.target.getAttribute('data-click');
-        
+
+        //only 1 ID attribute required at wrapping div of todo
+        //searchID can be found and used for any child element-------------
+        const searchID = parseInt(event.target.getAttribute('data-index'));
+
         console.log(event.target.getAttribute('data-click'));//--------
 
         if (clickType === 'all') {
@@ -117,7 +119,6 @@ const controller = (() => {
 
         } else if (clickType === 'check-box') {
 
-            const searchID = parseInt(event.target.getAttribute('data-index'));
             list.completeTodo(searchID);
             currList();
             contentUpdater.refreshContent(tempList, listHead)
@@ -125,15 +126,48 @@ const controller = (() => {
             
         } else if (clickType === 'todo') {
 
-
+            const todoObj = list.viewTodo(searchID);
+            contentUpdater.detailElement(searchID, todoObj);
             
         } else if (clickType === 'edit-todo') {
 
+            //refresh current list content on click
+            currList(); 
+            contentUpdater.refreshContent(tempList, listHead)
+            clickListener();
+
+            //bring up detail card of todo
+            const todoObj = list.viewTodo(searchID);
+            contentUpdater.detailElement(searchID, todoObj);
+            //add submit and cancel buttons
+            const todoForm = document.querySelector(`[data-index="${searchID}"][class="detail-border"]`);
+            const buttonElem = `
+                <div class="submit-buttons">
+                    <span class="material-icons link" data-click="submit-proj">add_circle_outline</span>
+                    <span class="material-icons link" data-click="cancel-proj">highlight_off</span>
+                </div>
+            `;
+            todoForm.insertAdjacentHTML('beforeend', buttonElem);
+
+            //disable all other buttons except those on detail card - clicklistener
+
+            //replace elements with inputs
+            const nameElem = document.querySelector(`[data-click="todo"][data-index="${searchID}"]`);
+            const nameInput = document.createElement('input');
+            nameElem.setAttribute('id', 'nameEdit');
+            nameElem.setAttribute('data-index', searchID);
+            nameElem.setAttribute('value', nameElem.textContent);
+            nameElem.parentNode.replaceChild(nameInput, nameElem);
+
+            const priorityElem = document.querySelector(`[data-index="${searchID}"] .sort`);
+            console.log(priorityElem)
+
+            //if cancel action - refresh current list
+            //if submit, then mod todo and refresh list
 
             
         } else if (clickType === 'delete-todo') {
 
-            const searchID = parseInt(event.target.getAttribute('data-index'));
             list.deleteTodo(searchID);
             currList();
             contentUpdater.refreshContent(tempList, listHead);
@@ -154,6 +188,14 @@ const controller = (() => {
         } else if (clickType === 'cancel-todo') {
 
             contentUpdater.toggleTodoForm(true);
+            
+        } else if (clickType === 'submit-edit') {
+
+            
+            
+        } else if (clickType === 'cancel-edit') {
+
+            
             
         } else {
 
@@ -178,6 +220,8 @@ const controller = (() => {
         const inputValue = document.getElementById('project-name').value;
         if (inputValue === '') {
             contentUpdater.emptyWarning();
+        } else if (!list.viewProjList().indexOf(inputValue)) {
+            contentUpdater.duplicateWarning();
         } else {
             list.addProject(inputValue);
             contentUpdater.refreshProjList();
@@ -228,7 +272,7 @@ const controller = (() => {
            const projList = filterLists.byProject(listHead);
            tempList = sortList.sortByUnchecked(projList);
         }
-        console.log(listHead)
+        
     }
 
     function firstLoad() {

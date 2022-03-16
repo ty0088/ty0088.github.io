@@ -20,8 +20,10 @@ const contentUpdater = (() => {
     }
 
     function newTodoElement(todoObj) {
+        const todoContainer = document.createElement('div');
+        todoContainer.setAttribute('data-index', todoObj.todoID);
         const todoElem = document.createElement('div');
-        todoElem.setAttribute('class', 'long-container todo');
+        todoElem.setAttribute('class', 'todo');
 
         const statusClass = (todoObj.todoStatus) ? 'check_box' : 'check_box_outline_blank';
 
@@ -33,7 +35,23 @@ const contentUpdater = (() => {
             <span class="material-icons link" data-click="edit-todo" data-index="${todoObj.todoID}">note_alt</span>
             <span class="material-icons link" data-click="delete-todo" data-index="${todoObj.todoID}">delete</span>
         `; 
-        return todoElem;
+        todoContainer.appendChild(todoElem);
+        return todoContainer;
+    }
+
+    function detailElement(id, todoObj) {
+        const existDetail = document.querySelectorAll('.detail');
+        existDetail.forEach(elem => elem.remove());
+        const existBorder = document.querySelectorAll('.detail-border');
+        existBorder.forEach(elem => elem.classList.remove('detail-border'))
+
+        const findElem = document.querySelector(`[data-index="${id}"]`);
+        findElem.setAttribute('class', 'detail-border');
+        const detailElem = `
+            <div class="detail"><span>Project: </span><span>${todoObj.todoProjName}</span></div>
+            <div class="detail"><span>Notes: </span><span>${todoObj.todoNote}</span></div>
+        `;
+        findElem.insertAdjacentHTML('beforeend', detailElem);
     }
 
     function refreshProjList() {
@@ -72,8 +90,8 @@ const contentUpdater = (() => {
                     <input type="text" id="project-name">
                     <div id="warning"></div>
                     <div class="submit-buttons">
-                        <span class="material-icons link" data-click="submit-proj">add_circle_outline</span>
-                        <span class="material-icons link" data-click="cancel-proj">highlight_off</span>
+                        <span class="material-icons link" data-click="submit-edit">add_circle_outline</span>
+                        <span class="material-icons link" data-click="cancel-edit">highlight_off</span>
                     </div>
                 </form>
             `;
@@ -187,7 +205,11 @@ const contentUpdater = (() => {
     }
 
     function emptyWarning() {
-        document.getElementById('warning').textContent = '*Name cannot be empty*'
+        document.getElementById('warning').textContent = '*Name cannot be empty*';
+    }
+
+    function duplicateWarning() {
+        document.getElementById('warning').textContent = '*Name already exists*';
     }
 
     return{
@@ -196,6 +218,8 @@ const contentUpdater = (() => {
         toggleProjForm,
         toggleTodoForm,
         emptyWarning,
+        duplicateWarning,
+        detailElement,
     }
 })();
 

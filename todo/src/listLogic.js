@@ -37,6 +37,11 @@ const list = (() => {
         return [...todoList];
     }
 
+    function viewTodo(id) {
+        const index = todoList.findIndex(todoObj => todoObj.todoID === id);
+        return {...todoList[index]};
+    }
+
     function viewProjList() {
         return [...projectList];
     }
@@ -50,6 +55,7 @@ const list = (() => {
         modProjectList,
         viewTodoList,
         viewProjList,
+        viewTodo,
     };
 
 })();
