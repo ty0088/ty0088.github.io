@@ -28,7 +28,7 @@ const controller = (() => {
 
         //only 1 ID attribute required at wrapping div of todo
         //searchID can be found and used for any child element-------------
-        const searchID = parseInt(event.target.getAttribute('data-index'));
+        const searchID = parseInt(event.target.getAttribute('data-index'));//----------------------
 
         console.log(event.target.getAttribute('data-click'));//--------
 
@@ -155,7 +155,7 @@ const controller = (() => {
             const nameElem = document.querySelector(`[data-click="todo"][data-index="${searchID}"]`);
             const nameInput = document.createElement('input');
             nameElem.setAttribute('id', 'nameEdit');
-            nameElem.setAttribute('data-index', searchID);
+            nameElem.setAttribute('data-index', searchID); //--------------
             nameElem.setAttribute('value', nameElem.textContent);
             nameElem.parentNode.replaceChild(nameInput, nameElem);
 

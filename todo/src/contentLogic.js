@@ -24,6 +24,7 @@ const contentUpdater = (() => {
         todoContainer.setAttribute('data-index', todoObj.todoID);
         const todoElem = document.createElement('div');
         todoElem.setAttribute('class', 'todo');
+        todoElem.setAttribute('data-index', todoObj.todoID);
 
         const statusClass = (todoObj.todoStatus) ? 'check_box' : 'check_box_outline_blank';
 
