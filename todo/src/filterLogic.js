@@ -1,14 +1,14 @@
 import { list } from './listLogic'
 import { isToday, isThisWeek, parse} from 'date-fns'
 
-const filterLists = (() => {
+const filterLists = (function () {
 
     let listArr = [];
-    
+
     function byAll() {
         listArr = [...list.viewTodoList()];
         const newListArr = listArr.filter(todoObj => !todoObj.todoStatus);
-        return newListArr;  
+        return newListArr;
     }
 
     function byToday() {
@@ -20,13 +20,13 @@ const filterLists = (() => {
     function byWeek() {
         listArr = [...list.viewTodoList()];
         const newListArr = listArr.filter(todoObj => isThisWeek(parse(todoObj.todoDate, 'dd/MM/yyyy', new Date()), { weekStartsOn: 1 }));
-        return newListArr; 
+        return newListArr;
     }
 
     function byCompleted() {
         listArr = [...list.viewTodoList()];
         const newListArr = listArr.filter(todoObj => todoObj.todoStatus);
-        return newListArr;  
+        return newListArr;
     }
 
     function byProject(projName) {

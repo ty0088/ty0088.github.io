@@ -1,6 +1,7 @@
 import { list } from './listLogic'
+import { format, parse } from 'date-fns'
 
-const contentUpdater = (() => {
+const contentUpdater = (function () {
 
     function refreshContent(tempList, header) {
         document.getElementById('project-content').innerHTML = '';
@@ -13,7 +14,7 @@ const contentUpdater = (() => {
         todoListElem.setAttribute('class', 'todo-list');
 
         tempList.map(todoObj => {
-            todoListElem.appendChild(newTodoElement(todoObj))
+            todoListElem.appendChild(newTodoElement(todoObj));
         });
         document.getElementById('todo-content').appendChild(todoListElem);
         refreshProjList();
@@ -22,6 +23,7 @@ const contentUpdater = (() => {
     function newTodoElement(todoObj) {
         const todoContainer = document.createElement('div');
         todoContainer.setAttribute('data-index', todoObj.todoID);
+        todoContainer.setAttribute('class', 'todo-container');
         const todoElem = document.createElement('div');
         todoElem.setAttribute('class', 'todo');
         todoElem.setAttribute('data-index', todoObj.todoID);
@@ -29,30 +31,29 @@ const contentUpdater = (() => {
         const statusClass = (todoObj.todoStatus) ? 'check_box' : 'check_box_outline_blank';
 
         todoElem.innerHTML = `
-            <span class="material-icons link" data-click="check-box" data-index="${todoObj.todoID}">${statusClass}</span>
-            <span class="todo-title link" data-click="todo" data-index="${todoObj.todoID}">${todoObj.todoName}</span>
-            <span class="sort ${todoObj.todoPriority}">${todoObj.todoPriority}</span>
-            <span class="sort">${todoObj.todoDate}</span>
-            <span class="material-icons link" data-click="edit-todo" data-index="${todoObj.todoID}">note_alt</span>
-            <span class="material-icons link" data-click="delete-todo" data-index="${todoObj.todoID}">delete</span>
-        `; 
+            <span class="material-icons link" data-type="check-box">${statusClass}</span>
+            <span class="todo-title link" data-type="todo">${todoObj.todoName}</span>
+            <span class="sort ${todoObj.todoPriority}" data-type="priority">${todoObj.todoPriority}</span>
+            <span class="sort" data-type="date">${todoObj.todoDate}</span>
+            <span class="material-icons link" data-type="edit-todo">note_alt</span>
+            <span class="material-icons link" data-type="delete-todo">delete</span>
+        `;
         todoContainer.appendChild(todoElem);
         return todoContainer;
     }
 
     function detailElement(id, todoObj) {
-        const existDetail = document.querySelectorAll('.detail');
-        existDetail.forEach(elem => elem.remove());
-        const existBorder = document.querySelectorAll('.detail-border');
-        existBorder.forEach(elem => elem.classList.remove('detail-border'))
 
-        const findElem = document.querySelector(`[data-index="${id}"]`);
-        findElem.setAttribute('class', 'detail-border');
+        const findElem = document.querySelector(`[data-index="${id}"][class="todo-container"]`);
+        findElem.classList.add('detail-border');
+
         const detailElem = `
-            <div class="detail"><span>Project: </span><span>${todoObj.todoProjName}</span></div>
-            <div class="detail"><span>Notes: </span><span>${todoObj.todoNote}</span></div>
+            <div id="warning"></div>
+            <div class="detail"><span>Project: </span><span data-type="proj-name">${todoObj.todoProjName}</span></div>
+            <div class="detail"><span>Notes: </span><span data-type="note">${todoObj.todoNote}</span></div>
         `;
         findElem.insertAdjacentHTML('beforeend', detailElem);
+
     }
 
     function refreshProjList() {
@@ -72,16 +73,92 @@ const contentUpdater = (() => {
             projElem.setAttribute('class', 'project-link');
             projElem.innerHTML = `
                 <span class="material-icons">format_list_bulleted</span>
-                <span class="project-title link" data-click="proj" data-index="${projListArr.indexOf(proj)}">${proj}</span>
-            `; 
+                <span class="project-title link" data-type="proj" data-index="${projListArr.indexOf(proj)}">${proj}</span>
+            `;
             projListElem.appendChild(projElem);
         });
 
         document.getElementById('project-content').appendChild(projListElem);
     }
 
-    function toggleProjForm(toggle) {
+    function editForm(todoID) {
+        const todoForm = document.querySelector(`[data-index="${todoID}"].detail-border`);
+        const buttonElem = `
+             <div class="submit-buttons" data-index="${todoID}">
+                 <span class="material-icons link" data-type="submit-edit">add_circle_outline</span>
+                 <span class="material-icons link" data-type="cancel-edit">highlight_off</span>
+             </div>
+         `;
+        todoForm.insertAdjacentHTML('beforeend', buttonElem);
+        
+        const nameElem = document.querySelector(`[data-index="${todoID}"] [data-type="todo"]`);
+        const nameInput = document.createElement('input');
+        nameInput.setAttribute('id', 'name-edit');
+        nameInput.setAttribute('value', nameElem.textContent);
+        nameElem.parentNode.replaceChild(nameInput, nameElem);
+        
+        const priorityElem = document.querySelector(`[data-index="${todoID}"] [data-type="priority"]`);
+        const priorityInput = document.createElement('select');
+        priorityInput.setAttribute('id', 'priority-edit');
+        const noPriority = document.createElement('option');
+        noPriority.setAttribute('value', '');
+        priorityInput.appendChild(noPriority);
+        const highPriority = document.createElement('option');
+        highPriority.setAttribute('value', 'High');
+        highPriority.innerText = 'High';
+        priorityInput.appendChild(highPriority);
+        const medPriority = document.createElement('option');
+        medPriority.setAttribute('value', 'Medium');
+        medPriority.innerText = 'Medium';
+        priorityInput.appendChild(medPriority);
+        const lowPriority = document.createElement('option');
+        lowPriority.setAttribute('value', 'Low');
+        lowPriority.innerText = 'Low';
+        priorityInput.appendChild(lowPriority);
+        priorityElem.parentNode.replaceChild(priorityInput, priorityElem);
+        const currPriority = priorityElem.textContent;
+        const priorityOption = document.querySelector(`option[value="${currPriority}"]`);
+        priorityOption.setAttribute('selected', 'selected');
+        
+        const dateElem = document.querySelector(`[data-index="${todoID}"] [data-type="date"]`);
+        const dateInput = document.createElement('input');
+        dateInput.setAttribute('type', 'date');
+        dateInput.setAttribute('id', 'date-edit');
+        const currDate = dateElem.textContent;
+        let newDate = '';
+        if (isNaN(currDate)) {
+            newDate = format(parse(dateElem.textContent, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd');
+        }
+        dateInput.setAttribute('value', newDate);
+        dateElem.parentNode.replaceChild(dateInput, dateElem);
+        
+        const projElem = document.querySelector(`[data-index="${todoID}"] [data-type="proj-name"]`);
+        const projInput = document.createElement('select');
+        projInput.setAttribute('id', 'proj-edit');
+        const blankOption = document.createElement('option');
+        blankOption.setAttribute('value', '');
+        projInput.appendChild(blankOption);
+        let tempProjList = list.viewProjList();
+        tempProjList.map(projName => {
+            const projOption = document.createElement('option');
+            projOption.setAttribute('value', projName);
+            projOption.textContent = projName;
+            projInput.appendChild(projOption);
+        });
+        projElem.parentNode.replaceChild(projInput, projElem);
+        const currProj = projElem.textContent;
+        const projOption = document.querySelector(`option[value="${currProj}"]`);
+        projOption.setAttribute('selected', 'selected');
+        
+        const noteElem = document.querySelector(`[data-index="${todoID}"] [data-type="note"]`);
+        const noteInput = document.createElement('textarea');
+        noteInput.setAttribute('id', 'note-edit');
+        noteInput.setAttribute('rows', '1');
+        noteElem.parentNode.replaceChild(noteInput, noteElem);
+        noteInput.value = noteElem.textContent;
+    }
 
+    function toggleProjForm(toggle) {
         if (!toggle) {
             const projContainer = document.createElement('div');
             projContainer.setAttribute('id', 'project-add-form');
@@ -91,8 +168,8 @@ const contentUpdater = (() => {
                     <input type="text" id="project-name">
                     <div id="warning"></div>
                     <div class="submit-buttons">
-                        <span class="material-icons link" data-click="submit-edit">add_circle_outline</span>
-                        <span class="material-icons link" data-click="cancel-edit">highlight_off</span>
+                        <span class="material-icons link" data-type="submit-proj">add_circle_outline</span>
+                        <span class="material-icons link" data-type="cancel-proj">highlight_off</span>
                     </div>
                 </form>
             `;
@@ -100,11 +177,9 @@ const contentUpdater = (() => {
         } else {
             document.getElementById('proj-form-container').innerHTML = '';
         }
-
     }
 
     function toggleTodoForm(toggle) {
-
         if (!toggle) {
 
             const formElem = document.createElement('form');
@@ -116,11 +191,11 @@ const contentUpdater = (() => {
             nameInput.setAttribute('type', 'text');
             nameInput.setAttribute('id', 'todo-name');
             formElem.appendChild(nameInput);
-    
+
             const warningElem = document.createElement('div');
             warningElem.setAttribute('id', 'warning');
             formElem.appendChild(warningElem);
-    
+
             const noteLabel = document.createElement('label');
             noteLabel.setAttribute('for', 'todo-note');
             noteLabel.innerText = 'Notes:';
@@ -129,7 +204,7 @@ const contentUpdater = (() => {
             noteInput.setAttribute('id', 'todo-note');
             noteInput.setAttribute('rows', '3');
             formElem.appendChild(noteInput);
-    
+
             const projLabel = document.createElement('label');
             projLabel.setAttribute('for', 'todo-proj-name');
             projLabel.innerText = 'Project:';
@@ -147,7 +222,7 @@ const contentUpdater = (() => {
                 projInput.appendChild(projOption);
             });
             formElem.appendChild(projInput);
-    
+
             const priorityLabel = document.createElement('label');
             priorityLabel.setAttribute('for', 'todo-priority');
             priorityLabel.innerText = 'Priority:';
@@ -170,7 +245,7 @@ const contentUpdater = (() => {
             lowPriority.innerText = 'Low';
             priorityInput.appendChild(lowPriority);
             formElem.appendChild(priorityInput);
-    
+
             const dateLabel = document.createElement('label');
             dateLabel.setAttribute('for', 'todo-date');
             dateLabel.innerText = 'Due Date:';
@@ -179,21 +254,21 @@ const contentUpdater = (() => {
             dateInput.setAttribute('type', 'date');
             dateInput.setAttribute('id', 'todo-date');
             formElem.appendChild(dateInput);
-    
+
             const subButtons = document.createElement('div');
             subButtons.setAttribute('class', 'submit-buttons');
             const addIcon = document.createElement('span');
             addIcon.setAttribute('class', 'material-icons link');
-            addIcon.setAttribute('data-click', 'submit-todo');
+            addIcon.setAttribute('data-type', 'submit-todo');
             addIcon.innerText = 'add_circle_outline';
             subButtons.appendChild(addIcon);
             const cancelButton = document.createElement('span');
             cancelButton.setAttribute('class', 'material-icons link');
-            cancelButton.setAttribute('data-click', 'cancel-todo');
+            cancelButton.setAttribute('data-type', 'cancel-todo');
             cancelButton.innerText = 'highlight_off';
             subButtons.appendChild(cancelButton);
             formElem.appendChild(subButtons);
-    
+
             const todoContainer = document.createElement('div');
             todoContainer.setAttribute('id', 'todo-add-form');
             todoContainer.appendChild(formElem);
@@ -202,7 +277,6 @@ const contentUpdater = (() => {
         } else {
             document.getElementById('todo-form-container').innerHTML = '';
         }
-
     }
 
     function emptyWarning() {
@@ -213,7 +287,7 @@ const contentUpdater = (() => {
         document.getElementById('warning').textContent = '*Name already exists*';
     }
 
-    return{
+    return {
         refreshContent,
         refreshProjList,
         toggleProjForm,
@@ -221,7 +295,8 @@ const contentUpdater = (() => {
         emptyWarning,
         duplicateWarning,
         detailElement,
-    }
+        editForm,
+    };
 })();
 
 export { contentUpdater }

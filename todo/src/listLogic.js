@@ -1,6 +1,6 @@
 import { parse } from 'date-fns'
 
-const list = (() => {
+const list = (function () {
     let todoList = [];
     let projectList = [];
 
@@ -9,7 +9,13 @@ const list = (() => {
         todoList.push({ todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID });
     }
 
-    function modTodo(todoName, todoNote, todoProjName, todoPriority) {
+    function modTodo(id, name, note, projName, priority, date) {
+        const index = todoList.findIndex(todoObj => todoObj.todoID === id);
+        todoList[index].todoName = name;
+        todoList[index].todoNote = note;
+        todoList[index].todoProjName = projName;
+        todoList[index].todoPriority = priority;
+        todoList[index].todoDate = date;
     }
 
     function completeTodo(id) {
@@ -39,7 +45,7 @@ const list = (() => {
 
     function viewTodo(id) {
         const index = todoList.findIndex(todoObj => todoObj.todoID === id);
-        return {...todoList[index]};
+        return { ...todoList[index] };
     }
 
     function viewProjList() {
@@ -60,7 +66,7 @@ const list = (() => {
 
 })();
 
-const sortList = (() => {
+const sortList = (function () {
 
     function priorityScore(value) {
 
@@ -72,13 +78,13 @@ const sortList = (() => {
             case 'Low':
                 return 1;
         }
-        
+
     }
 
     function sortPriority(tempList, priorityOrder) {
         const listNoPriority = tempList.filter(todoObj => todoObj.todoPriority.length === 0);
         const listWithPriority = tempList.filter(todoObj => todoObj.todoPriority.length > 0);
-        listWithPriority.sort(function(a,b){
+        listWithPriority.sort(function (a, b) {
             return (priorityOrder ? priorityScore(a.todoPriority) - priorityScore(b.todoPriority) : priorityScore(b.todoPriority) - priorityScore(a.todoPriority));
         });
         return listWithPriority.concat(listNoPriority);
@@ -87,7 +93,7 @@ const sortList = (() => {
     function sortDate(tempList, dateOrder) {
         const listNoDate = tempList.filter(todoObj => todoObj.todoDate.length === 0);
         const listWithDate = tempList.filter(todoObj => todoObj.todoDate.length > 0);
-        listWithDate.sort(function(a,b){
+        listWithDate.sort(function (a, b) {
             return (dateOrder ? parse(b.todoDate, 'dd/MM/yyyy', new Date()) - parse(a.todoDate, 'dd/MM/yyyy', new Date()) : parse(a.todoDate, 'dd/MM/yyyy', new Date()) - parse(b.todoDate, 'dd/MM/yyyy', new Date()));
         });
         return listWithDate.concat(listNoDate);
@@ -103,7 +109,7 @@ const sortList = (() => {
         sortPriority,
         sortDate,
         sortByUnchecked,
-    }
+    };
 })();
 
 export { list, sortList };

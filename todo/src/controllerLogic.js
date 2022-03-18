@@ -1,77 +1,70 @@
 import { list, sortList } from './listLogic'
 import { filterLists } from './filterLogic'
 import { contentUpdater } from './contentLogic'
-import { format, add } from 'date-fns'
+import { listener } from './listenerLogic'
+import { format, add} from 'date-fns'
 
-const controller = (() => {
+const controller = (function () {
     let tempList = [];
     let listHead = '';
     let dateOrder = true;
     let priorityOrder = true;
 
-    function clickListener() {
-        const link = document.querySelectorAll('.link');
-        link.forEach(element => element.addEventListener('click', clickController));
-    };
+    function click(event) {
+        const clickType = event.target.getAttribute('data-type');
+        const todoID = parseInt(event.target.parentNode.getAttribute('data-index'));
 
-    function enterListener() {
-        document.addEventListener("keydown", function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                enterKey();
-            }
-        });
-    }
-
-    function clickController(event) {
-        const clickType = event.target.getAttribute('data-click');
-
-        //only 1 ID attribute required at wrapping div of todo
-        //searchID can be found and used for any child element-------------
-        const searchID = parseInt(event.target.getAttribute('data-index'));//----------------------
-
-        console.log(event.target.getAttribute('data-click'));//--------
+        console.log(event.target.getAttribute('data-type') + ' : ' + todoID); //--------
 
         if (clickType === 'all') {
 
+            contentUpdater.toggleTodoForm(true);
+            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
             tempList = filterLists.byAll();
             listHead = 'All';
             contentUpdater.refreshContent(tempList, listHead);
-            clickListener();
+            listener.clickAll();
 
         } else if (clickType === 'today') {
 
+            contentUpdater.toggleTodoForm(true);
+            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
             tempList = filterLists.byToday();
             listHead = 'Today';
             const sortedList = sortList.sortByUnchecked(tempList);
             contentUpdater.refreshContent(sortedList, listHead);
-            clickListener();
+            listener.clickAll();
 
         } else if (clickType === 'week') {
 
-            dateOrder = true;
+            contentUpdater.toggleTodoForm(true);
+            contentUpdater.toggleProjForm(true);
             priorityOrder = true;
             tempList = filterLists.byWeek();
             listHead = 'Week';
             const sortedList = sortList.sortByUnchecked(tempList);
             contentUpdater.refreshContent(sortedList, listHead);
-            clickListener();
+            listener.clickAll();
 
         } else if (clickType === 'comp') {
 
+            contentUpdater.toggleTodoForm(true);
+            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
-            tempList = filterLists.byCompleted()
+            tempList = filterLists.byCompleted();
             listHead = 'Completed';
             contentUpdater.refreshContent(tempList, listHead);
-            clickListener();
-            
+            listener.clickAll();
+
         } else if (clickType === 'proj') {
 
+            contentUpdater.toggleTodoForm(true);
+            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
             const projName = event.target.textContent;
@@ -79,17 +72,17 @@ const controller = (() => {
             listHead = projName;
             const sortedList = sortList.sortByUnchecked(tempList);
             contentUpdater.refreshContent(sortedList, projName);
-            clickListener();
+            listener.clickAll();
 
         } else if (clickType === 'add-proj') {
 
+            refreshCurrList(listHead);
             if (!!document.getElementById('project-add-form')) {
                 contentUpdater.toggleProjForm(true);
             } else {
                 contentUpdater.toggleProjForm(false);
                 contentUpdater.toggleTodoForm(true);
-                clickListener();
-                //disable all other buttons except add/cancel??
+                listener.clickProj();
             }
 
         } else if (clickType === 'sort-priority') {
@@ -97,196 +90,198 @@ const controller = (() => {
             priorityOrder = !priorityOrder;
             tempList = sortList.sortPriority(tempList, priorityOrder);
             contentUpdater.refreshContent(tempList, listHead);
-            clickListener();
+            listener.clickAll();
 
         } else if (clickType === 'sort-date') {
 
             dateOrder = !dateOrder;
             tempList = sortList.sortDate(tempList, dateOrder);
             contentUpdater.refreshContent(tempList, listHead);
-            clickListener();
+            listener.clickAll();
 
         } else if (clickType === 'add-todo') {
 
+            refreshCurrList(listHead);
             if (!!document.getElementById('todo-add-form')) {
                 contentUpdater.toggleTodoForm(true);
             } else {
                 contentUpdater.toggleTodoForm(false);
                 contentUpdater.toggleProjForm(true);
-                clickListener();
-                //disable all other buttons except add/cancel??
-            }        
+                listener.clickTodo();
+            }
 
         } else if (clickType === 'check-box') {
 
-            list.completeTodo(searchID);
-            currList();
-            contentUpdater.refreshContent(tempList, listHead)
-            clickListener();
-            
+            list.completeTodo(todoID);
+            refreshCurrList(listHead);
+
         } else if (clickType === 'todo') {
 
-            const todoObj = list.viewTodo(searchID);
-            contentUpdater.detailElement(searchID, todoObj);
-            
+            if (!!document.querySelector('.detail-border') && parseInt(document.querySelector('.detail-border').getAttribute('data-index')) === todoID) {
+                refreshCurrList(listHead);
+            } else {
+                refreshCurrList(listHead);
+                const todoObj = list.viewTodo(todoID);
+                contentUpdater.detailElement(todoID, todoObj);
+            }
+
         } else if (clickType === 'edit-todo') {
 
-            //refresh current list content on click
-            currList(); 
-            contentUpdater.refreshContent(tempList, listHead)
-            clickListener();
+            refreshCurrList(listHead);
+            contentUpdater.toggleProjForm(true);
+            contentUpdater.toggleTodoForm(true);
 
-            //bring up detail card of todo
-            const todoObj = list.viewTodo(searchID);
-            contentUpdater.detailElement(searchID, todoObj);
-            //add submit and cancel buttons
-            const todoForm = document.querySelector(`[data-index="${searchID}"][class="detail-border"]`);
-            const buttonElem = `
-                <div class="submit-buttons">
-                    <span class="material-icons link" data-click="submit-proj">add_circle_outline</span>
-                    <span class="material-icons link" data-click="cancel-proj">highlight_off</span>
-                </div>
-            `;
-            todoForm.insertAdjacentHTML('beforeend', buttonElem);
+            const todoObj = list.viewTodo(todoID);
+            contentUpdater.detailElement(todoID, todoObj);
+            contentUpdater.editForm(todoID);
+            listener.clickEdit();
 
-            //disable all other buttons except those on detail card - clicklistener
-
-            //replace elements with inputs
-            const nameElem = document.querySelector(`[data-click="todo"][data-index="${searchID}"]`);
-            const nameInput = document.createElement('input');
-            nameElem.setAttribute('id', 'nameEdit');
-            nameElem.setAttribute('data-index', searchID); //--------------
-            nameElem.setAttribute('value', nameElem.textContent);
-            nameElem.parentNode.replaceChild(nameInput, nameElem);
-
-            const priorityElem = document.querySelector(`[data-index="${searchID}"] .sort`);
-            console.log(priorityElem)
-
-            //if cancel action - refresh current list
-            //if submit, then mod todo and refresh list
-
-            
         } else if (clickType === 'delete-todo') {
 
-            list.deleteTodo(searchID);
-            currList();
-            contentUpdater.refreshContent(tempList, listHead);
-            clickListener();
-            
+            list.deleteTodo(todoID);
+            refreshCurrList(listHead);
+
         } else if (clickType === 'submit-proj') {
 
             submitProjValue();
-            
+            listener.clickAll();
+
         } else if (clickType === 'cancel-proj') {
 
             contentUpdater.toggleProjForm(true);
+            listener.clickAll();
 
         } else if (clickType === 'submit-todo') {
 
             submitTodoValues();
-            
+            listener.clickAll();
+
         } else if (clickType === 'cancel-todo') {
 
-            contentUpdater.toggleTodoForm(true);
-            
+            contentUpdater.toggleTodoForm(true)
+            listener.clickAll();
+
         } else if (clickType === 'submit-edit') {
 
-            
-            
+            submitEditValues(todoID);
+            listener.clickAll();
+
         } else if (clickType === 'cancel-edit') {
 
-            
-            
-        } else {
-
-            console.log('unknown: ' + event.target.getAttribute('data-click')); //---------
+            refreshCurrList(listHead);
+            listener.clickAll();
 
         }
-
     }
 
-    function enterKey() {
+    function editProjName(event) {
+        const projName = event.target.textContent;
+        console.log(projName)//-----------
+    }
 
+    function enterValues() {
         if (!!document.getElementById('project-add-form')) {
             submitProjValue();
         } else if (!!document.getElementById('todo-add-form')) {
             submitTodoValues();
+        } else if (!!document.querySelector('.detail-border')) {
+            const todoID = parseInt(document.querySelector('.detail-border').getAttribute('data-index'));
+            submitEditValues(todoID);
         }
-
     }
 
     function submitProjValue() {
-
-        const inputValue = document.getElementById('project-name').value;
-        if (inputValue === '') {
+        const inputValue = document.getElementById('project-name').value
+        if (!inputValue || !inputValue.trim()) {
             contentUpdater.emptyWarning();
         } else if (!list.viewProjList().indexOf(inputValue)) {
             contentUpdater.duplicateWarning();
         } else {
-            list.addProject(inputValue);
+            list.addProject(inputValue)
             contentUpdater.refreshProjList();
             contentUpdater.toggleProjForm(true);
         }
-        clickListener();
-
     }
 
     function submitTodoValues() {
-
         const nameValue = document.getElementById('todo-name').value;
         const noteValue = document.getElementById('todo-note').value;
         const projNameValue = document.getElementById('todo-proj-name').value;
         const priorityValue = document.getElementById('todo-priority').value;
         const tempDate = new Date(document.getElementById('todo-date').value);
         let dateValue = '';
-        
+
         if (!isNaN(tempDate)) {
-            dateValue = format(new Date(document.getElementById('todo-date').value), 'dd/MM/yyyy');
+            dateValue = format(new Date(tempDate), 'dd/MM/yyyy');
         }
 
-        if (nameValue === '') {
+        if (!nameValue || !nameValue.trim()) {
             contentUpdater.emptyWarning();
         } else {
             list.addTodo(nameValue, noteValue, projNameValue, priorityValue, dateValue, false);
-            currList();
-            contentUpdater.refreshContent(tempList, listHead);
+            refreshCurrList(listHead);
             contentUpdater.toggleTodoForm(true);
         }
-        clickListener();
-
     }
 
-    function currList() {
+    function submitEditValues(id) {
 
-        if (listHead === 'All') {
-            tempList = filterLists.byAll();
-        } else if (listHead === 'Today' ){
-            const dayList = filterLists.byToday();
-            tempList = sortList.sortByUnchecked(dayList);
-        } else if (listHead === 'Week' ){
-            const weekList = filterLists.byWeek();
-            tempList = sortList.sortByUnchecked(weekList);
-        } else if (listHead === 'Completed' ){
-            tempList = filterLists.byCompleted();
-        } else {
-           const projList = filterLists.byProject(listHead);
-           tempList = sortList.sortByUnchecked(projList);
+        const nameEditValue  = document.getElementById('name-edit').value;
+        const noteEditValue = document.getElementById('note-edit').value;
+        const projEditValue = document.getElementById('proj-edit').value;
+        const priorityEditValue = document.getElementById('priority-edit').value;
+        const dateEditValue = document.getElementById('date-edit').value;
+        let dateValue = '';
+
+        if (isNaN(dateEditValue)) {
+            dateValue = format(new Date(dateEditValue), 'dd/MM/yyyy');
         }
-        
+
+        if (!nameEditValue || !nameEditValue.trim()) {
+            contentUpdater.emptyWarning();
+        } else {
+            list.modTodo(id, nameEditValue, noteEditValue, projEditValue, priorityEditValue, dateValue);
+            refreshCurrList(listHead);
+        }
+    }
+
+    function currList(listHead) {
+        if (listHead === 'All') {
+            return filterLists.byAll();
+        } else if (listHead === 'Today') {
+            const dayList = filterLists.byToday();
+            return sortList.sortByUnchecked(dayList);
+        } else if (listHead === 'Week') {
+            const weekList = filterLists.byWeek();
+            return sortList.sortByUnchecked(weekList);
+        } else if (listHead === 'Completed') {
+            return filterLists.byCompleted();
+        } else {
+            const projList = filterLists.byProject(listHead);
+            return sortList.sortByUnchecked(projList);
+        }
+    }
+
+    function refreshCurrList(listHead) {
+        tempList = currList(listHead);
+        contentUpdater.refreshContent(tempList, listHead);
+        listener.clickAll();
     }
 
     function firstLoad() {
         tempList = filterLists.byAll();
         listHead = 'All';
         contentUpdater.refreshContent(tempList, listHead);
-        clickListener();
-        enterListener();
+        listener.clickAll();
+        listener.enterKey();
     }
-    
+
     return {
-        clickListener,
+        click,
+        editProjName,
+        enterValues,
         firstLoad,
-    };
+    }
 
 })();
 
@@ -310,3 +305,5 @@ function demoValues() {
 
 demoValues();
 controller.firstLoad();
+
+export { controller }
