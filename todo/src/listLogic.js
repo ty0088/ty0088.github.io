@@ -9,7 +9,7 @@ const list = (function () {
         todoList.push({ todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID });
     }
 
-    function modTodo(id, name, note, projName, priority, date) {
+    function modTodo(id, projName, name, note, priority, date) {
         const index = todoList.findIndex(todoObj => todoObj.todoID === id);
         todoList[index].todoName = name;
         todoList[index].todoNote = note;
@@ -36,7 +36,12 @@ const list = (function () {
         projectList.push(newProjName);
     }
 
-    function modProjectList() {
+    function editProjectName(index, nameEdit) {
+        projectList[index] = nameEdit;
+    }
+
+    function deleteProject(index) {
+        projectList.splice(index, 1);
     }
 
     function viewTodoList() {
@@ -58,7 +63,8 @@ const list = (function () {
         completeTodo,
         modTodo,
         deleteTodo,
-        modProjectList,
+        editProjectName,
+        deleteProject,
         viewTodoList,
         viewProjList,
         viewTodo,

@@ -7,19 +7,18 @@ import { format, add} from 'date-fns'
 const controller = (function () {
     let tempList = [];
     let listHead = '';
+    let currProjName = '';
     let dateOrder = true;
     let priorityOrder = true;
 
     function click(event) {
         const clickType = event.target.getAttribute('data-type');
-        const todoID = parseInt(event.target.parentNode.getAttribute('data-index'));
+        const indexID = parseInt(event.target.parentNode.getAttribute('data-index'));
 
-        console.log(event.target.getAttribute('data-type') + ' : ' + todoID); //--------
+        console.log(event.target.getAttribute('data-type') + ' : ' + indexID); //--------
 
         if (clickType === 'all') {
 
-            contentUpdater.toggleTodoForm(true);
-            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
             tempList = filterLists.byAll();
@@ -29,8 +28,6 @@ const controller = (function () {
 
         } else if (clickType === 'today') {
 
-            contentUpdater.toggleTodoForm(true);
-            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
             tempList = filterLists.byToday();
@@ -41,8 +38,6 @@ const controller = (function () {
 
         } else if (clickType === 'week') {
 
-            contentUpdater.toggleTodoForm(true);
-            contentUpdater.toggleProjForm(true);
             priorityOrder = true;
             tempList = filterLists.byWeek();
             listHead = 'Week';
@@ -52,8 +47,6 @@ const controller = (function () {
 
         } else if (clickType === 'comp') {
 
-            contentUpdater.toggleTodoForm(true);
-            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
             tempList = filterLists.byCompleted();
@@ -63,8 +56,6 @@ const controller = (function () {
 
         } else if (clickType === 'proj') {
 
-            contentUpdater.toggleTodoForm(true);
-            contentUpdater.toggleProjForm(true);
             dateOrder = true;
             priorityOrder = true;
             const projName = event.target.textContent;
@@ -77,13 +68,20 @@ const controller = (function () {
         } else if (clickType === 'add-proj') {
 
             refreshCurrList(listHead);
-            if (!!document.getElementById('project-add-form')) {
-                contentUpdater.toggleProjForm(true);
-            } else {
-                contentUpdater.toggleProjForm(false);
-                contentUpdater.toggleTodoForm(true);
-                listener.clickProj();
-            }
+            contentUpdater.toggleProjForm(false);
+            listener.clickProj();
+
+        } else if (clickType === 'edit-proj') {
+
+            const projList = list.viewProjList();
+            currProjName = projList[indexID];
+            refreshCurrList(currProjName);
+            contentUpdater.editProjForm(indexID, currProjName);
+            listener.clickEditProj();
+
+        } else if (clickType === 'delete-proj') {
+
+            
 
         } else if (clickType === 'sort-priority') {
 
@@ -102,43 +100,35 @@ const controller = (function () {
         } else if (clickType === 'add-todo') {
 
             refreshCurrList(listHead);
-            if (!!document.getElementById('todo-add-form')) {
-                contentUpdater.toggleTodoForm(true);
-            } else {
-                contentUpdater.toggleTodoForm(false);
-                contentUpdater.toggleProjForm(true);
-                listener.clickTodo();
-            }
+            contentUpdater.toggleTodoForm(false);
+            listener.clickTodo();
 
         } else if (clickType === 'check-box') {
 
-            list.completeTodo(todoID);
+            list.completeTodo(indexID);
             refreshCurrList(listHead);
 
         } else if (clickType === 'todo') {
 
-            if (!!document.querySelector('.detail-border') && parseInt(document.querySelector('.detail-border').getAttribute('data-index')) === todoID) {
+            if (!!document.querySelector('.detail-border') && parseInt(document.querySelector('.detail-border').getAttribute('data-index')) === indexID) {
                 refreshCurrList(listHead);
             } else {
                 refreshCurrList(listHead);
-                const todoObj = list.viewTodo(todoID);
-                contentUpdater.detailElement(todoID, todoObj);
+                const todoObj = list.viewTodo(indexID);
+                contentUpdater.detailElement(indexID, todoObj);
             }
 
         } else if (clickType === 'edit-todo') {
 
             refreshCurrList(listHead);
-            contentUpdater.toggleProjForm(true);
-            contentUpdater.toggleTodoForm(true);
-
-            const todoObj = list.viewTodo(todoID);
-            contentUpdater.detailElement(todoID, todoObj);
-            contentUpdater.editForm(todoID);
-            listener.clickEdit();
+            const todoObj = list.viewTodo(indexID);
+            contentUpdater.detailElement(indexID, todoObj);
+            contentUpdater.editTodoForm(indexID);
+            listener.clickEditTodo();
 
         } else if (clickType === 'delete-todo') {
 
-            list.deleteTodo(todoID);
+            list.deleteTodo(indexID);
             refreshCurrList(listHead);
 
         } else if (clickType === 'submit-proj') {
@@ -161,46 +151,83 @@ const controller = (function () {
             contentUpdater.toggleTodoForm(true)
             listener.clickAll();
 
-        } else if (clickType === 'submit-edit') {
+        } else if (clickType === 'submit-edit-todo') {
 
-            submitEditValues(todoID);
+            submitEditTodo(indexID);
             listener.clickAll();
 
-        } else if (clickType === 'cancel-edit') {
+        } else if (clickType === 'cancel-edit-todo') {
 
             refreshCurrList(listHead);
             listener.clickAll();
 
+        } else if (clickType === 'submit-edit-proj') {
+
+            submitEditProj(indexID, currProjName);
+            listener.clickAll();
+
+        } else if (clickType === 'cancel-edit-proj') {
+
+            document.getElementById('proj-edit-form').remove();
+            listener.clickAll();
+
         }
     }
 
-    function editProjName(event) {
-        const projName = event.target.textContent;
-        console.log(projName)//-----------
-    }
-
     function enterValues() {
-        if (!!document.getElementById('project-add-form')) {
+        if (!!document.getElementById('proj-add-form')) {
             submitProjValue();
+            listener.clickAll();
         } else if (!!document.getElementById('todo-add-form')) {
             submitTodoValues();
-        } else if (!!document.querySelector('.detail-border')) {
-            const todoID = parseInt(document.querySelector('.detail-border').getAttribute('data-index'));
-            submitEditValues(todoID);
+            listener.clickAll();
+        } else if (!!document.querySelector('.detail-border #name-edit')) {
+            const indexID = parseInt(document.querySelector('.detail-border').getAttribute('data-index'));
+            submitEditTodo(indexID);
+            listener.clickAll();
+        } else if (!!document.getElementById('proj-edit-form')) {
+            const index = document.getElementById('proj-edit-form').getAttribute('data-index');
+            submitEditProj(index, currProjName);
+            listener.clickAll();
         }
     }
 
     function submitProjValue() {
-        const inputValue = document.getElementById('project-name').value
-        if (!inputValue || !inputValue.trim()) {
+        const nameValue = document.getElementById('proj-name').value.trim();
+        if (!nameValue || !nameValue.trim()) {
             contentUpdater.emptyWarning();
-        } else if (!list.viewProjList().indexOf(inputValue)) {
-            contentUpdater.duplicateWarning();
-        } else {
-            list.addProject(inputValue)
+        } else if (list.viewProjList().findIndex(projName => projName.toLowerCase() === nameValue.toLowerCase()) === -1) {
+            list.addProject(nameValue);
             contentUpdater.refreshProjList();
+            listHead = nameValue;
+            refreshCurrList(listHead);
             contentUpdater.toggleProjForm(true);
+        } else {
+            contentUpdater.duplicateWarning();
         }
+    }
+
+    function submitEditProj(index, currProjName) { //---------------------
+        const nameValue = document.getElementById('edit-proj-name').value.trim();
+        if (!nameValue || !nameValue.trim()) {
+            contentUpdater.emptyWarning();
+        } else if (list.viewProjList().findIndex(projName => projName.toLowerCase() === nameValue.toLowerCase()) === -1) {
+            list.editProjectName(index, nameValue);
+            updateTodoProjName(currProjName, nameValue)
+            contentUpdater.refreshProjList();
+            listHead = nameValue;
+            refreshCurrList(listHead);
+            document.getElementById('proj-edit-form').remove();
+        } else {
+            contentUpdater.duplicateWarning();
+        }
+    }
+
+    function updateTodoProjName(oldName, newName) {
+        let indexArray = list.viewTodoList()
+        .filter(todoObj => todoObj.todoProjName === oldName)
+        .map(todoObj => todoObj.todoID);
+        indexArray.map(index => list.modTodo(index, newName, list.viewTodo(index).todoName, list.viewTodo(index).todoNote, list.viewTodo(index).todoPriority, list.viewTodo(index).todoDate));
     }
 
     function submitTodoValues() {
@@ -224,7 +251,7 @@ const controller = (function () {
         }
     }
 
-    function submitEditValues(id) {
+    function submitEditTodo(id) {
 
         const nameEditValue  = document.getElementById('name-edit').value;
         const noteEditValue = document.getElementById('note-edit').value;
@@ -240,7 +267,7 @@ const controller = (function () {
         if (!nameEditValue || !nameEditValue.trim()) {
             contentUpdater.emptyWarning();
         } else {
-            list.modTodo(id, nameEditValue, noteEditValue, projEditValue, priorityEditValue, dateValue);
+            list.modTodo(id, projEditValue, nameEditValue, noteEditValue, priorityEditValue, dateValue);
             refreshCurrList(listHead);
         }
     }
@@ -278,7 +305,6 @@ const controller = (function () {
 
     return {
         click,
-        editProjName,
         enterValues,
         firstLoad,
     }

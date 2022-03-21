@@ -6,8 +6,6 @@ const listener = (function () {
         removeClick();
         const link = document.querySelectorAll('.link');
         link.forEach(element => element.addEventListener('click', controller.click));
-        const double = document.querySelectorAll('.project-title.link');
-        double.forEach(element => element.addEventListener('dblclick', controller.editProjName));
     }
 
     function clickTodo() {
@@ -18,11 +16,17 @@ const listener = (function () {
 
     function clickProj() {
         removeClick();
-        const link = document.querySelectorAll('#project-add-form .link');
+        const link = document.querySelectorAll('#proj-add-form .link');
         link.forEach(element => element.addEventListener('click', controller.click));
     }
 
-    function clickEdit() {
+    function clickEditProj() {
+        removeClick();
+        const link = document.querySelectorAll('#proj-edit-form .link');
+        link.forEach(element => element.addEventListener('click', controller.click));
+    }
+
+    function clickEditTodo() {
         removeClick();
         const link = document.querySelectorAll('.submit-buttons .link');
         link.forEach(element => element.addEventListener('click', controller.click));
@@ -31,9 +35,7 @@ const listener = (function () {
     function removeClick() {
         const link = document.querySelectorAll('.link');
         link.forEach(element => element.removeEventListener('click', controller.click));
-        const double = document.querySelectorAll('.project-title.link');
-        double.forEach(element => element.removeEventListener('dblclick', controller.editProjName));
-    }
+    }                   
 
     function enterKey() {
         document.addEventListener("keydown", function (event) {
@@ -48,7 +50,8 @@ const listener = (function () {
         clickAll,
         clickTodo,
         clickProj,
-        clickEdit,
+        clickEditTodo,
+        clickEditProj,
         removeClick,
         enterKey,
     };

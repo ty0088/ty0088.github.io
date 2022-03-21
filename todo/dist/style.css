@@ -84,7 +84,7 @@ body, html {
     padding-left: 5px;
     font-size: 16px;
     display: inline-block;
-    width: 150px;
+    width: 125px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -117,13 +117,13 @@ body, html {
     font-size: 16px;
 }
 
-#project-add-form {
+#proj-add-form {
     margin-top: 5px;
     padding: 5px 10px 5px 10px;
     width: 300px;
     background-color: rgb(168, 168, 168);
     border-radius: 10px;
-    position:absolute;
+    box-shadow: 3px 3px 5px rgb(200 200 200);
 }
 
 #warning {
@@ -138,11 +138,11 @@ body, html {
     gap: 30px;
 }
 
-#project-add-form label {
+#proj-add-form label {
     font-size: 12px;
 }
 
-#project-add-form input {
+#proj-add-form input {
     width: 100%;
     border-radius: 5px;
 }
@@ -175,6 +175,7 @@ body, html {
     margin: 5px 0 5px 0;
     background-color: rgb(168, 168, 168);
     border-radius: 10px;
+    box-shadow: 3px 3px 5px rgb(200 200 200);
 }
 
 #todo-add-form > form {
@@ -253,14 +254,39 @@ body, html {
 #proj-edit, #note-edit {
     margin-right: 10px;
     flex: auto;
-    /* width: 100%; */
     border: 1px solid black;
     border-radius: 5px;
 }
 
-@media only screen and (max-width: 770px) {
+#proj-edit-form {
+    position: absolute;
+    padding: 5px;
+    width: 250px;
+    left: 205px;        
+    top: 280px;
+    border-radius: 10px;
+    background-color: rgb(168, 168, 168);
+    box-shadow: 3px 3px 5px rgb(200 200 200);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+#proj-edit-form > input {
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+/* @media only screen and (max-width: 770px) {
+    #proj-edit-form {
+        left: 55px;
+        top: 220px;
+    }
+
     #main-container {
-        min-width: 560px;
+        min-width: 320px;
         grid-template: 100vh / 50px minmax(510px, 1fr);
     }
 
@@ -330,4 +356,4 @@ body, html {
     }
 
 
-}
+} */

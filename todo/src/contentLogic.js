@@ -65,15 +65,17 @@ const contentUpdater = (function () {
         const projHeader = document.createElement('div');
         projHeader.setAttribute('class', 'header');
         projHeader.textContent = 'Projects';
-
         projListElem.appendChild(projHeader);
 
         projListArr.map(proj => {
             const projElem = document.createElement('div');
             projElem.setAttribute('class', 'project-link');
+            projElem.setAttribute('data-index', projListArr.indexOf(proj))
             projElem.innerHTML = `
                 <span class="material-icons">format_list_bulleted</span>
-                <span class="project-title link" data-type="proj" data-index="${projListArr.indexOf(proj)}">${proj}</span>
+                <span class="project-title link" data-type="proj">${proj}</span>
+                <span class="material-icons link" data-type="edit-proj">note_alt</span>
+                <span class="material-icons link" data-type="delete-proj">delete</span>
             `;
             projListElem.appendChild(projElem);
         });
@@ -81,23 +83,39 @@ const contentUpdater = (function () {
         document.getElementById('project-content').appendChild(projListElem);
     }
 
-    function editForm(todoID) {
-        const todoForm = document.querySelector(`[data-index="${todoID}"].detail-border`);
+    function editProjForm(index, projName) {
+        const editProjForm = document.createElement('div');
+        editProjForm.setAttribute('id', 'proj-edit-form');
+        editProjForm.setAttribute('data-index', index);
+        editProjForm.innerHTML  = `
+            <label for="edit-proj-name">Edit Project Name:</label>
+            <input type="text" id="edit-proj-name" value="${projName}">
+            <div id="warning"></div>
+            <div class="submit-buttons" data-index="${index}">
+                <span class="material-icons link" data-type="submit-edit-proj">add_circle_outline</span>
+                <span class="material-icons link" data-type="cancel-edit-proj">highlight_off</span>
+            </div>
+        `;
+        document.getElementById('main-container').appendChild(editProjForm);
+    }
+
+    function editTodoForm(indexID) {
+        const todoForm = document.querySelector(`[data-index="${indexID}"].detail-border`);
         const buttonElem = `
-             <div class="submit-buttons" data-index="${todoID}">
-                 <span class="material-icons link" data-type="submit-edit">add_circle_outline</span>
-                 <span class="material-icons link" data-type="cancel-edit">highlight_off</span>
+             <div class="submit-buttons" data-index="${indexID}">
+                 <span class="material-icons link" data-type="submit-edit-todo">add_circle_outline</span>
+                 <span class="material-icons link" data-type="cancel-edit-todo">highlight_off</span>
              </div>
          `;
         todoForm.insertAdjacentHTML('beforeend', buttonElem);
         
-        const nameElem = document.querySelector(`[data-index="${todoID}"] [data-type="todo"]`);
+        const nameElem = document.querySelector(`[data-index="${indexID}"] [data-type="todo"]`);
         const nameInput = document.createElement('input');
         nameInput.setAttribute('id', 'name-edit');
         nameInput.setAttribute('value', nameElem.textContent);
         nameElem.parentNode.replaceChild(nameInput, nameElem);
         
-        const priorityElem = document.querySelector(`[data-index="${todoID}"] [data-type="priority"]`);
+        const priorityElem = document.querySelector(`[data-index="${indexID}"] [data-type="priority"]`);
         const priorityInput = document.createElement('select');
         priorityInput.setAttribute('id', 'priority-edit');
         const noPriority = document.createElement('option');
@@ -120,7 +138,7 @@ const contentUpdater = (function () {
         const priorityOption = document.querySelector(`option[value="${currPriority}"]`);
         priorityOption.setAttribute('selected', 'selected');
         
-        const dateElem = document.querySelector(`[data-index="${todoID}"] [data-type="date"]`);
+        const dateElem = document.querySelector(`[data-index="${indexID}"] [data-type="date"]`);
         const dateInput = document.createElement('input');
         dateInput.setAttribute('type', 'date');
         dateInput.setAttribute('id', 'date-edit');
@@ -132,7 +150,7 @@ const contentUpdater = (function () {
         dateInput.setAttribute('value', newDate);
         dateElem.parentNode.replaceChild(dateInput, dateElem);
         
-        const projElem = document.querySelector(`[data-index="${todoID}"] [data-type="proj-name"]`);
+        const projElem = document.querySelector(`[data-index="${indexID}"] [data-type="proj-name"]`);
         const projInput = document.createElement('select');
         projInput.setAttribute('id', 'proj-edit');
         const blankOption = document.createElement('option');
@@ -150,7 +168,7 @@ const contentUpdater = (function () {
         const projOption = document.querySelector(`option[value="${currProj}"]`);
         projOption.setAttribute('selected', 'selected');
         
-        const noteElem = document.querySelector(`[data-index="${todoID}"] [data-type="note"]`);
+        const noteElem = document.querySelector(`[data-index="${indexID}"] [data-type="note"]`);
         const noteInput = document.createElement('textarea');
         noteInput.setAttribute('id', 'note-edit');
         noteInput.setAttribute('rows', '1');
@@ -161,11 +179,11 @@ const contentUpdater = (function () {
     function toggleProjForm(toggle) {
         if (!toggle) {
             const projContainer = document.createElement('div');
-            projContainer.setAttribute('id', 'project-add-form');
+            projContainer.setAttribute('id', 'proj-add-form');
             projContainer.innerHTML = `
                 <form action="">
-                    <label for="project-name">Project Name:</label>
-                    <input type="text" id="project-name">
+                    <label for="proj-name">Project Name:</label>
+                    <input type="text" id="proj-name">
                     <div id="warning"></div>
                     <div class="submit-buttons">
                         <span class="material-icons link" data-type="submit-proj">add_circle_outline</span>
@@ -181,7 +199,6 @@ const contentUpdater = (function () {
 
     function toggleTodoForm(toggle) {
         if (!toggle) {
-
             const formElem = document.createElement('form');
             const nameLabel = document.createElement('label');
             nameLabel.setAttribute('for', 'todo-name');
@@ -295,7 +312,8 @@ const contentUpdater = (function () {
         emptyWarning,
         duplicateWarning,
         detailElement,
-        editForm,
+        editTodoForm,
+        editProjForm,
     };
 })();
 
