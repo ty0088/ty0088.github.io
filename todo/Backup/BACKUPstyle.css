@@ -11,9 +11,9 @@ body, html {
 
 #main-container {
     height: 100vh;
-    max-width: 770px;
+    width: 100vw;
     display: grid;
-    grid-template: 100vh / 200px 570px;
+    grid-template: 100vh / 200px minmax(570px, 1fr);
     overflow-x: auto;
 }
 
@@ -27,15 +27,19 @@ body, html {
     z-index: 1;
 }
 
-#cat-header,.logo {
+.long-container > .header {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.header {
     display: flex;
     align-items: center;
-    height: 100px;
     font-size: 40px;
     font-weight: 700;
 }
 
-.todo-nav {
+.task-nav {
     padding-bottom: 15px;
 }
 
@@ -69,7 +73,6 @@ body, html {
 
 .project-link > .material-icons {
     font-size: 20px;
-    margin-right: 5px;
 }
 
 .project-link {
@@ -85,21 +88,13 @@ body, html {
     padding-left: 5px;
     font-size: 16px;
     display: inline-block;
-    width: 115px;
+    width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .add-new {
-    width: 100%;
-    display: grid;
-    grid-template: 30px / 30px minmax(260px, 6fr) minmax(100px, 2fr) minmax(100px, 2fr) 60px;
-    align-items: center;
-    padding-bottom: 5px;
-}
-
-.add-new.project {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -118,18 +113,14 @@ body, html {
     font-size: 16px;
 }
 
-#proj-add-form {
+.project-add-form {
+    /* display: none; */
     margin-top: 5px;
     padding: 5px 10px 5px 10px;
     width: 300px;
     background-color: rgb(168, 168, 168);
     border-radius: 10px;
-    box-shadow: 3px 3px 5px rgb(200 200 200);
-}
-
-#warning {
-    font-size: 12px;
-    color: rgb(200, 0, 0);
+    position:absolute;
 }
 
 .submit-buttons {
@@ -139,11 +130,11 @@ body, html {
     gap: 30px;
 }
 
-#proj-add-form label {
+.project-add-form label {
     font-size: 12px;
 }
 
-#proj-add-form input {
+.project-add-form input {
     width: 100%;
     border-radius: 5px;
 }
@@ -158,6 +149,13 @@ body, html {
     overflow-y: auto;
 }
 
+.long-container {
+    width: 100%;
+    display: grid;
+    grid-template: 100px / 30px minmax(270px, 6fr) minmax(100px, 2fr) minmax(100px, 2fr) 30px 30px;
+    align-items: center;
+}
+
 .sort {
     display: flex;
     flex-wrap: wrap;
@@ -167,172 +165,78 @@ body, html {
 }
 
 .sort > .material-icons {
-    font-size: 20px;
+    font-size: 25px;
 }
 
-#todo-add-form {
+.task-add-form {
+    /* display: none; */
     width: 550px;
     padding: 10px 10px 10px 10px;
     margin: 5px 0 5px 0;
     background-color: rgb(168, 168, 168);
     border-radius: 10px;
-    box-shadow: 3px 3px 5px rgb(200 200 200);
 }
 
-#todo-add-form > form {
+.task-add-form > form {
     display: flex;
     flex-direction: column;
 }
 
-#todo-add-form label {
+.task-add-form label {
     font-size: 15px;
 
 }
 
-#todo-add-form input {
+.task-add-form input {
     width: 100%;
     border-radius: 10px;
 }
 
-#todo-add-form #todo-note {
-    max-width: 530px;
+.task-add-form #task-note {
     border-radius: 10px;
     border-style: inset;
     border-width: 2px;
 }
 
-#todo-add-form select {
+.task-add-form select {
     width: 100%;
     border-radius: 10px;
     border-style: inset;
     border-width: 2px;
 }
 
-#todo-list {
+.task-list {
     height: auto;
     overflow-y: auto;
 }   
 
-.todo {
-    width: 100%;
-    display: grid;
-    grid-template: 30px / 30px minmax(260px, 6fr) minmax(100px, 2fr) minmax(100px, 2fr) 30px 30px;
-    align-items: center;
+.task {
+    grid-template: 30px / 30px minmax(270px, 6fr) minmax(100px, 2fr) minmax(100px, 2fr) 30px 30px;
 }
 
-.detail {
-    padding: 0 0 4px 30px;
-    display: flex;
-}
-
-.detail-border {
-    background-color: rgb(168, 168, 168);
-    box-shadow: 3px 3px 5px rgb(200 200 200);
-    border-radius: 5px;
-    padding: 5px 0 5px 0;
-}
-
-.High {
+.high {
     border: 1px solid red;
     border-radius: 5px;
 }
 
-.Medium {
+.med {
     border: 1px solid #ffc400;
     border-radius: 5px;
 }
 
-.Low {
+.low {
     border: 1px solid #00ff00;
     border-radius: 5px;
 }
 
-#name-edit, #priority-edit, #date-edit {
-    margin-right: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-#proj-edit, #note-edit {
-    margin-right: 10px;
-    flex: auto;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-#proj-edit-form {
-    position: absolute;
-    padding: 5px;
-    width: 250px;
-    border-radius: 10px;
-    background-color: rgb(168, 168, 168);
-    box-shadow: 3px 3px 5px rgb(200 200 200);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-}
-
-#proj-edit-form > input {
-    width: 100%;
-    border-radius: 5px;
-    margin-top: 5px;
-}
-
-#proj-del-form {
-    position: absolute;
-    padding: 5px;
-    width: 270px;
-    left: 205px;
-    border-radius: 10px;
-    background-color: rgb(168, 168, 168);
-    box-shadow: 3px 3px 5px rgb(200 200 200);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-}
-
-#proj-del-form > span:nth-child(1), #proj-del-form > span:nth-child(2) {
-    margin: 2px;
-    padding: 3px;
-    border: 1px solid black;
-    border-radius: 3px;
-    background-color: rgb(200, 200, 200);
-}
-
-#todo-del-form {
-    position: absolute;
-    padding: 5px;
-    width: 150px;
-    border-radius: 10px;
-    background-color: rgb(200, 200, 200);
-    box-shadow: 3px 3px 5px rgb(220 220 220);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-}
-
-/* @media only screen and (max-width: 770px) {
-    #proj-edit-form {
-        left: 55px;
-        top: 220px;
-    }
-
+@media only screen and (max-width: 770px) {
     #main-container {
-        min-width: 320px;
         grid-template: 100vh / 50px minmax(510px, 1fr);
     }
 
-    #cat-header,.logo {
-        height: 50px;
+    .header {
         font-size: 15px;
         font-weight: 600;
-    }
-
-    .nav-link {
-        padding-left: 3px;
     }
 
     .nav-title {
@@ -346,6 +250,7 @@ body, html {
 
     .right-container {
         padding: 5px;
+        
     }
 
     .project-list > .header {
@@ -373,22 +278,26 @@ body, html {
         font-weight: 600;
     }
 
-    #todo-add-form {
+    .long-container {
+        grid-template: 50px / 30px 4fr minmax(90px, 2fr) minmax(90px, 2fr) 30px 30px;
+    }
+
+    .task-add-form {
         width: 300px;
     }
 
-    #todo-add-form #todo-note {
-        max-width: 280px;
-    }
-
-    .todo {
+    .task {
         grid-template: 30px / 30px minmax(200px, 4fr) minmax(100px, 2fr) minmax(100px, 2fr) 30px 30px;
     }
 
+    .long-container > .header {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
     .add-title {
-        width: 0;
-        overflow: hidden;
+        display: none;
     }
 
 
-} */
+}
