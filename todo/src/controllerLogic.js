@@ -81,7 +81,34 @@ const controller = (function () {
 
         } else if (clickType === 'delete-proj') {
 
-            
+            const projList = list.viewProjList();
+            currProjName = projList[indexID];
+            refreshCurrList(currProjName);
+            contentUpdater.deleteProjectForm(indexID, list.viewProjList()[indexID]);
+            listener.clickDelProj();
+
+        } else if (clickType === 'del-proj-name') {
+
+            list.deleteProject(indexID);
+            contentUpdater.refreshProjList();
+            listHead  = 'All';
+            refreshCurrList(listHead);
+            document.getElementById('proj-del-form').remove();
+            listener.clickAll();
+
+        } else if (clickType === 'del-proj-todo') {
+
+            list.deleteProjTodos(indexID);
+            contentUpdater.refreshProjList();
+            listHead  = 'All';
+            refreshCurrList(listHead);
+            document.getElementById('proj-del-form').remove();
+            listener.clickAll();
+
+        } else if (clickType === 'del-proj-cancel') {
+
+            document.getElementById('proj-del-form').remove();
+            listener.clickAll();
 
         } else if (clickType === 'sort-priority') {
 
@@ -100,7 +127,7 @@ const controller = (function () {
         } else if (clickType === 'add-todo') {
 
             refreshCurrList(listHead);
-            contentUpdater.toggleTodoForm(false);
+            contentUpdater.toggleTodoForm(false, listHead);
             listener.clickTodo();
 
         } else if (clickType === 'check-box') {
@@ -128,8 +155,20 @@ const controller = (function () {
 
         } else if (clickType === 'delete-todo') {
 
+            contentUpdater.confirmDelTodo(indexID);
+            listener.clickDelTodo();
+
+        } else if (clickType === 'submit-del-todo') {
+
             list.deleteTodo(indexID);
             refreshCurrList(listHead);
+            document.getElementById('todo-del-form').remove();
+            listener.clickAll();
+
+        } else if (clickType === 'cancel-del-todo') {
+
+            document.getElementById('todo-del-form').remove();
+            listener.clickAll();
 
         } else if (clickType === 'submit-proj') {
 
@@ -207,7 +246,7 @@ const controller = (function () {
         }
     }
 
-    function submitEditProj(index, currProjName) { //---------------------
+    function submitEditProj(index, currProjName) {
         const nameValue = document.getElementById('edit-proj-name').value.trim();
         if (!nameValue || !nameValue.trim()) {
             contentUpdater.emptyWarning();

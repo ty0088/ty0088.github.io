@@ -26,9 +26,22 @@ const listener = (function () {
         link.forEach(element => element.addEventListener('click', controller.click));
     }
 
+    function clickDelProj() {
+        removeClick();
+        const link = document.querySelectorAll('#proj-del-form .link');
+        link.forEach(element => element.addEventListener('click', controller.click));
+    }
+
+
     function clickEditTodo() {
         removeClick();
         const link = document.querySelectorAll('.submit-buttons .link');
+        link.forEach(element => element.addEventListener('click', controller.click));
+    }
+
+    function clickDelTodo() {
+        removeClick();
+        const link = document.querySelectorAll('#todo-del-form .link');
         link.forEach(element => element.addEventListener('click', controller.click));
     }
 
@@ -51,6 +64,8 @@ const listener = (function () {
         clickTodo,
         clickProj,
         clickEditTodo,
+        clickDelTodo,
+        clickDelProj,
         clickEditProj,
         removeClick,
         enterKey,

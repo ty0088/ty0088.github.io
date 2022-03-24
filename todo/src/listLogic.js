@@ -41,7 +41,25 @@ const list = (function () {
     }
 
     function deleteProject(index) {
+        const toDelete = projectList[index];
         projectList.splice(index, 1);
+        todoList.map(todoObj => {
+            if (todoObj.todoProjName === toDelete) {
+                todoObj.todoProjName = '';
+            }
+        });
+    }
+
+    function deleteProjTodos(index) {
+        let toDeleteList =  [];
+        const toDeleteProj = projectList[index];
+        projectList.splice(index, 1);
+        todoList.map(todoObj => {
+            if (todoObj.todoProjName === toDeleteProj) {
+                toDeleteList.push(todoObj.todoID);
+            }
+        });
+        toDeleteList.map(id => deleteTodo(id));
     }
 
     function viewTodoList() {
@@ -65,6 +83,7 @@ const list = (function () {
         deleteTodo,
         editProjectName,
         deleteProject,
+        deleteProjTodos,
         viewTodoList,
         viewProjList,
         viewTodo,

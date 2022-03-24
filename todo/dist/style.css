@@ -69,6 +69,7 @@ body, html {
 
 .project-link > .material-icons {
     font-size: 20px;
+    margin-right: 5px;
 }
 
 .project-link {
@@ -84,7 +85,7 @@ body, html {
     padding-left: 5px;
     font-size: 16px;
     display: inline-block;
-    width: 125px;
+    width: 115px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -225,7 +226,8 @@ body, html {
 }
 
 .detail-border {
-    border: 2px solid rgb(168, 168, 168);
+    background-color: rgb(168, 168, 168);
+    box-shadow: 3px 3px 5px rgb(200 200 200);
     border-radius: 5px;
     padding: 5px 0 5px 0;
 }
@@ -262,8 +264,6 @@ body, html {
     position: absolute;
     padding: 5px;
     width: 250px;
-    left: 205px;        
-    top: 280px;
     border-radius: 10px;
     background-color: rgb(168, 168, 168);
     box-shadow: 3px 3px 5px rgb(200 200 200);
@@ -277,6 +277,41 @@ body, html {
     width: 100%;
     border-radius: 5px;
     margin-top: 5px;
+}
+
+#proj-del-form {
+    position: absolute;
+    padding: 5px;
+    width: 270px;
+    left: 205px;
+    border-radius: 10px;
+    background-color: rgb(168, 168, 168);
+    box-shadow: 3px 3px 5px rgb(200 200 200);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+#proj-del-form > span:nth-child(1), #proj-del-form > span:nth-child(2) {
+    margin: 2px;
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 3px;
+    background-color: rgb(200, 200, 200);
+}
+
+#todo-del-form {
+    position: absolute;
+    padding: 5px;
+    width: 150px;
+    border-radius: 10px;
+    background-color: rgb(200, 200, 200);
+    box-shadow: 3px 3px 5px rgb(220 220 220);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
 }
 
 /* @media only screen and (max-width: 770px) {

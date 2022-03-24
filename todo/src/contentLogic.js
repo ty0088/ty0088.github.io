@@ -84,9 +84,14 @@ const contentUpdater = (function () {
     }
 
     function editProjForm(index, projName) {
+        const projLinkElem = document.querySelector(`.project-link[data-index="${index}"]`);
+        const rectPos = projLinkElem.getBoundingClientRect();
+
         const editProjForm = document.createElement('div');
         editProjForm.setAttribute('id', 'proj-edit-form');
         editProjForm.setAttribute('data-index', index);
+        editProjForm.style.top  = `${rectPos.top-25}px`;
+        editProjForm.style.left  = `${rectPos.left+200}px`;
         editProjForm.innerHTML  = `
             <label for="edit-proj-name">Edit Project Name:</label>
             <input type="text" id="edit-proj-name" value="${projName}">
@@ -97,6 +102,22 @@ const contentUpdater = (function () {
             </div>
         `;
         document.getElementById('main-container').appendChild(editProjForm);
+    }
+
+    function deleteProjectForm(index, projName) {
+        const projLinkElem = document.querySelector(`.project-link[data-index="${index}"]`);
+        const rectPos = projLinkElem.getBoundingClientRect();
+
+        const delProjForm = document.createElement('div');
+        delProjForm.setAttribute('id', 'proj-del-form');
+        delProjForm.setAttribute('data-index', index);
+        delProjForm.style.top  = `${rectPos.top-33}px`;
+        delProjForm.innerHTML = `
+            <span class="link" data-type="del-proj-name">Delete "${projName}" but keep Todos</span>
+            <span class="link" data-type="del-proj-todo">Delete "${projName}" and Todos</span>
+            <span class="material-icons link" data-type="del-proj-cancel">highlight_off</span>
+        `;
+        document.getElementById('main-container').appendChild(delProjForm);
     }
 
     function editTodoForm(indexID) {
@@ -135,7 +156,7 @@ const contentUpdater = (function () {
         priorityInput.appendChild(lowPriority);
         priorityElem.parentNode.replaceChild(priorityInput, priorityElem);
         const currPriority = priorityElem.textContent;
-        const priorityOption = document.querySelector(`option[value="${currPriority}"]`);
+        const priorityOption = document.querySelector(`#priority-edit option[value="${currPriority}"]`);
         priorityOption.setAttribute('selected', 'selected');
         
         const dateElem = document.querySelector(`[data-index="${indexID}"] [data-type="date"]`);
@@ -165,7 +186,7 @@ const contentUpdater = (function () {
         });
         projElem.parentNode.replaceChild(projInput, projElem);
         const currProj = projElem.textContent;
-        const projOption = document.querySelector(`option[value="${currProj}"]`);
+        const projOption = document.querySelector(`#proj-edit option[value="${currProj}"]`);
         projOption.setAttribute('selected', 'selected');
         
         const noteElem = document.querySelector(`[data-index="${indexID}"] [data-type="note"]`);
@@ -174,6 +195,25 @@ const contentUpdater = (function () {
         noteInput.setAttribute('rows', '1');
         noteElem.parentNode.replaceChild(noteInput, noteElem);
         noteInput.value = noteElem.textContent;
+    }
+
+    function confirmDelTodo(index) {
+        const LinkElem = document.querySelector(`[data-index="${index}"] [data-type="delete-todo"]`);
+        const rectPos = LinkElem.getBoundingClientRect();
+
+        const delTodoForm = document.createElement('div');
+        delTodoForm.setAttribute('id', 'todo-del-form');
+        delTodoForm.setAttribute('data-index', index);
+        delTodoForm.style.top  = `${rectPos.top-15}px`;
+        delTodoForm.style.left  = `${rectPos.left-160}px`;
+        delTodoForm.innerHTML = `
+            <span>Confirm delete?</span>
+            <div data-index="${index}">
+                <span class="material-icons link" data-type="submit-del-todo">add_circle_outline</span>
+                <span class="material-icons link" data-type="cancel-del-todo">highlight_off</span>
+            </div>
+        `;
+        document.getElementById('main-container').appendChild(delTodoForm);
     }
 
     function toggleProjForm(toggle) {
@@ -197,7 +237,7 @@ const contentUpdater = (function () {
         }
     }
 
-    function toggleTodoForm(toggle) {
+    function toggleTodoForm(toggle, projName) {
         if (!toggle) {
             const formElem = document.createElement('form');
             const nameLabel = document.createElement('label');
@@ -291,6 +331,12 @@ const contentUpdater = (function () {
             todoContainer.appendChild(formElem);
 
             document.getElementById('todo-form-container').appendChild(todoContainer);
+
+            if (projName !== 'All' && projName !== 'Today' && projName !== 'Week' && projName !== 'Completed') {
+                console.log(projName)
+                const defaultProjOption = document.querySelector(`#todo-proj-name option[value="${projName}"]`);
+                defaultProjOption.setAttribute('selected', 'selected');
+            }
         } else {
             document.getElementById('todo-form-container').innerHTML = '';
         }
@@ -314,6 +360,8 @@ const contentUpdater = (function () {
         detailElement,
         editTodoForm,
         editProjForm,
+        deleteProjectForm,
+        confirmDelTodo,
     };
 })();
 
