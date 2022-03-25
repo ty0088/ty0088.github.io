@@ -1,8 +1,22 @@
-import { parse } from 'date-fns'
+import { format, parse, add } from 'date-fns'
 
 const list = (function () {
     let todoList = [];
     let projectList = [];
+
+    function saveToLocal() {
+        localStorage.setItem('todoList', JSON.stringify(todoList));
+        localStorage.setItem('projectList', JSON.stringify(projectList));
+    }
+
+    function loadFromLocal() {
+        if (localStorage.getItem('todoList') ===  null || localStorage.getItem('projectList') === null) {
+            demoValues();
+        } else {
+            todoList = JSON.parse(localStorage.getItem('todoList'));
+            projectList = JSON.parse(localStorage.getItem('projectList'));
+        }
+    }
 
     function newTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID) {
         return {todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID}
@@ -11,6 +25,7 @@ const list = (function () {
     function addTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus) {
         const todoID = Math.floor(Date.now() * Math.random());
         todoList.push(newTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID));
+        saveToLocal();
     }
 
     function modTodo(id, projName, name, note, priority, date) {
@@ -20,6 +35,7 @@ const list = (function () {
         todoList[index].todoProjName = projName;
         todoList[index].todoPriority = priority;
         todoList[index].todoDate = date;
+        saveToLocal();
     }
 
     function completeTodo(id) {
@@ -29,19 +45,23 @@ const list = (function () {
         } else if (!todoList[index].todoStatus) {
             todoList[index].todoStatus = true;
         }
+        saveToLocal();
     }
 
     function deleteTodo(id) {
         const index = todoList.findIndex(todoObj => todoObj.todoID === id);
         todoList.splice(index, 1);
+        saveToLocal();
     }
 
     function addProject(newProjName) {
         projectList.push(newProjName);
+        saveToLocal();
     }
 
     function editProjectName(index, nameEdit) {
         projectList[index] = nameEdit;
+        saveToLocal();
     }
 
     function deleteProject(index) {
@@ -52,6 +72,7 @@ const list = (function () {
                 todoObj.todoProjName = '';
             }
         });
+        saveToLocal();
     }
 
     function deleteProjTodos(index) {
@@ -64,6 +85,7 @@ const list = (function () {
             }
         });
         toDeleteList.map(id => deleteTodo(id));
+        saveToLocal();
     }
 
     function viewTodoList() {
@@ -91,6 +113,7 @@ const list = (function () {
         viewTodoList,
         viewProjList,
         viewTodo,
+        loadFromLocal,
     };
 
 })();
@@ -140,5 +163,23 @@ const sortList = (function () {
         sortByUnchecked,
     };
 })();
+
+function demoValues() {
+    const a = format(add(Date.now(), {days: 0}), 'dd/MM/yyyy');
+    const b = format(add(Date.now(), {days: 0}), 'dd/MM/yyyy');
+    const c = format(add(Date.now(), {days: 2}), 'dd/MM/yyyy');
+    const d = format(add(Date.now(), {days: 3}), 'dd/MM/yyyy');
+    const e = format(add(Date.now(), {days: 4}), 'dd/MM/yyyy');
+    const f = format(add(Date.now(), {days: 10}), 'dd/MM/yyyy');
+
+    list.addProject('Demo');
+    list.addTodo('Something', '', 'Demo', '', '', false);
+    list.addTodo('Laundry', '2x loads', 'Demo', 'High', a, true);
+    list.addTodo('Tidy up', 'Kitchen and living room', 'Demo', 'Medium', b, false);
+    list.addTodo('Vacuum House', 'Whole house', 'Demo', 'Low', c, false);
+    list.addTodo('Go running', '5km', 'Demo', 'Low', d, false);
+    list.addTodo('Update CV', '', 'Demo', 'High', e, true);
+    list.addTodo('Cut grass', '', 'Demo', 'Medium', f, false);
+}
 
 export { list, sortList };
