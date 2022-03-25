@@ -2,7 +2,7 @@ import { list, sortList } from './listLogic'
 import { filterLists } from './filterLogic'
 import { contentUpdater } from './contentLogic'
 import { listener } from './listenerLogic'
-import { format, add} from 'date-fns'
+import { format } from 'date-fns'
 
 const controller = (function () {
     let tempList = [];
@@ -351,25 +351,6 @@ const controller = (function () {
 
 })();
 
-function demoValues() {
-    const a = format(add(Date.now(), {days: 0}), 'dd/MM/yyyy');
-    const b = format(add(Date.now(), {days: 0}), 'dd/MM/yyyy');
-    const c = format(add(Date.now(), {days: 2}), 'dd/MM/yyyy');
-    const d = format(add(Date.now(), {days: 3}), 'dd/MM/yyyy');
-    const e = format(add(Date.now(), {days: 4}), 'dd/MM/yyyy');
-    const f = format(add(Date.now(), {days: 10}), 'dd/MM/yyyy');
-
-    list.addProject('Demo');
-    list.addTodo('Something', '', 'Demo', '', '', false);
-    list.addTodo('Laundry', '2x loads', 'Demo', 'High', a, true);
-    list.addTodo('Tidy up', 'Kitchen and living room', 'Demo', 'Medium', b, false);
-    list.addTodo('Vacuum House', 'Whole house', 'Demo', 'Low', c, false);
-    list.addTodo('Go running', '5km', 'Demo', 'Low', d, false);
-    list.addTodo('Update CV', '', 'Demo', 'High', e, true);
-    list.addTodo('Cut grass', '', 'Demo', 'Medium', f, false);
-}
-
-demoValues();
 controller.firstLoad();
 
 export { controller }

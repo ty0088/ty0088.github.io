@@ -1,23 +1,21 @@
-import { parse } from 'date-fns'
+import { format, parse, add } from 'date-fns'
 
 const list = (function () {
     let todoList = [];
     let projectList = [];
 
     function saveToLocal() {
-        console.log('!')
         localStorage.setItem('todoList', JSON.stringify(todoList));
-        console.log(JSON.parse(localStorage.getItem('todoList')));
         localStorage.setItem('projectList', JSON.stringify(projectList));
-        console.log(JSON.parse(localStorage.getItem('projectList')));
     }
 
     function loadFromLocal() {
-        console.log('X')
-        // console.log(JSON.parse(localStorage.getItem('todoList')));
-        todoList = JSON.parse(localStorage.getItem('todoList'));
-        projectList = JSON.parse(localStorage.getItem('projectList'));
-        
+        if (localStorage.getItem('todoList') ===  null || localStorage.getItem('projectList') === null) {
+            demoValues();
+        } else {
+            todoList = JSON.parse(localStorage.getItem('todoList'));
+            projectList = JSON.parse(localStorage.getItem('projectList'));
+        }
     }
 
     function newTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID) {
@@ -165,5 +163,23 @@ const sortList = (function () {
         sortByUnchecked,
     };
 })();
+
+function demoValues() {
+    const a = format(add(Date.now(), {days: 0}), 'dd/MM/yyyy');
+    const b = format(add(Date.now(), {days: 0}), 'dd/MM/yyyy');
+    const c = format(add(Date.now(), {days: 2}), 'dd/MM/yyyy');
+    const d = format(add(Date.now(), {days: 3}), 'dd/MM/yyyy');
+    const e = format(add(Date.now(), {days: 4}), 'dd/MM/yyyy');
+    const f = format(add(Date.now(), {days: 10}), 'dd/MM/yyyy');
+
+    list.addProject('Demo');
+    list.addTodo('Something', '', 'Demo', '', '', false);
+    list.addTodo('Laundry', '2x loads', 'Demo', 'High', a, true);
+    list.addTodo('Tidy up', 'Kitchen and living room', 'Demo', 'Medium', b, false);
+    list.addTodo('Vacuum House', 'Whole house', 'Demo', 'Low', c, false);
+    list.addTodo('Go running', '5km', 'Demo', 'Low', d, false);
+    list.addTodo('Update CV', '', 'Demo', 'High', e, true);
+    list.addTodo('Cut grass', '', 'Demo', 'Medium', f, false);
+}
 
 export { list, sortList };
