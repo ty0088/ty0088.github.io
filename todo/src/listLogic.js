@@ -4,9 +4,13 @@ const list = (function () {
     let todoList = [];
     let projectList = [];
 
+    function newTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID) {
+        return {todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID}
+    }
+
     function addTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus) {
         const todoID = Math.floor(Date.now() * Math.random());
-        todoList.push({ todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID });
+        todoList.push(newTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID));
     }
 
     function modTodo(id, projName, name, note, priority, date) {

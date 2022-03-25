@@ -333,7 +333,6 @@ const contentUpdater = (function () {
             document.getElementById('todo-form-container').appendChild(todoContainer);
 
             if (projName !== 'All' && projName !== 'Today' && projName !== 'Week' && projName !== 'Completed') {
-                console.log(projName)
                 const defaultProjOption = document.querySelector(`#todo-proj-name option[value="${projName}"]`);
                 defaultProjOption.setAttribute('selected', 'selected');
             }
