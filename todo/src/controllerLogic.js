@@ -335,6 +335,7 @@ const controller = (function () {
     }
 
     function firstLoad() {
+        list.loadFromLocal();
         tempList = filterLists.byAll();
         listHead = 'All';
         contentUpdater.refreshContent(tempList, listHead);

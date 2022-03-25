@@ -4,6 +4,22 @@ const list = (function () {
     let todoList = [];
     let projectList = [];
 
+    function saveToLocal() {
+        console.log('!')
+        localStorage.setItem('todoList', JSON.stringify(todoList));
+        console.log(JSON.parse(localStorage.getItem('todoList')));
+        localStorage.setItem('projectList', JSON.stringify(projectList));
+        console.log(JSON.parse(localStorage.getItem('projectList')));
+    }
+
+    function loadFromLocal() {
+        console.log('X')
+        // console.log(JSON.parse(localStorage.getItem('todoList')));
+        todoList = JSON.parse(localStorage.getItem('todoList'));
+        projectList = JSON.parse(localStorage.getItem('projectList'));
+        
+    }
+
     function newTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID) {
         return {todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID}
     }
@@ -11,6 +27,7 @@ const list = (function () {
     function addTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus) {
         const todoID = Math.floor(Date.now() * Math.random());
         todoList.push(newTodo(todoName, todoNote, todoProjName, todoPriority, todoDate, todoStatus, todoID));
+        saveToLocal();
     }
 
     function modTodo(id, projName, name, note, priority, date) {
@@ -20,6 +37,7 @@ const list = (function () {
         todoList[index].todoProjName = projName;
         todoList[index].todoPriority = priority;
         todoList[index].todoDate = date;
+        saveToLocal();
     }
 
     function completeTodo(id) {
@@ -29,19 +47,23 @@ const list = (function () {
         } else if (!todoList[index].todoStatus) {
             todoList[index].todoStatus = true;
         }
+        saveToLocal();
     }
 
     function deleteTodo(id) {
         const index = todoList.findIndex(todoObj => todoObj.todoID === id);
         todoList.splice(index, 1);
+        saveToLocal();
     }
 
     function addProject(newProjName) {
         projectList.push(newProjName);
+        saveToLocal();
     }
 
     function editProjectName(index, nameEdit) {
         projectList[index] = nameEdit;
+        saveToLocal();
     }
 
     function deleteProject(index) {
@@ -52,6 +74,7 @@ const list = (function () {
                 todoObj.todoProjName = '';
             }
         });
+        saveToLocal();
     }
 
     function deleteProjTodos(index) {
@@ -64,6 +87,7 @@ const list = (function () {
             }
         });
         toDeleteList.map(id => deleteTodo(id));
+        saveToLocal();
     }
 
     function viewTodoList() {
@@ -91,6 +115,7 @@ const list = (function () {
         viewTodoList,
         viewProjList,
         viewTodo,
+        loadFromLocal,
     };
 
 })();
