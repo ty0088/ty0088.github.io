@@ -1,8 +1,7 @@
 const path = require('path');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     listLogic: './src/listLogic.js',
     controllerLogic: './src/controllerLogic.js',
@@ -10,13 +9,7 @@ module.exports = {
     contentLogic: './src/contentLogic.js',
     listenerLogic: './src/listenerLogic.js'
   },
-  devtool: 'inline-source-map',
-  // plugins: [
-  //   new HtmlWebpackPlugin({
-  //     title: 'Output Management',
-  //     title: 'Development',
-  //   }),
-  // ],
+  devtool: false,
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
