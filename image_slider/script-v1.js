@@ -1,7 +1,7 @@
 //click listeners
 function clickListeners() {
     document.querySelectorAll('#forward, #back').forEach(elem => elem.addEventListener('click', slideController.forwardBack));
-    document.querySelectorAll('.dot').forEach(elem => elem.addEventListener('click', slideController.dotImgLink)); //--------
+    document.querySelectorAll('.dot').forEach(elem => elem.addEventListener('click', slideController.dotImgLink));
 }
 
 //controller functions
@@ -120,4 +120,3 @@ const domController = (() => {
 
 clickListeners();
 setTimeout(domController.firstLoad, 100);
-
