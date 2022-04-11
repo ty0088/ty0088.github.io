@@ -30,4 +30,4 @@ https://ty0088.github.io/restaurant_page/
 
 https://ty0088.github.io/todo/
 
-https://ty0088.github.io/todo/image_slider
+https://ty0088.github.io/image_slider
