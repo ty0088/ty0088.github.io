@@ -117,4 +117,4 @@ const domController = (() => {
 })();
 
 clickListeners();
-setTimeout(domController.firstLoad(), 1000);
+window.addEventListener('load', domController.firstLoad());
