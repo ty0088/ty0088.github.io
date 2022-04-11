@@ -117,4 +117,9 @@ const domController = (() => {
 })();
 
 clickListeners();
-window.addEventListener('load', domController.firstLoad());
+window.onload = function() {
+    const imgElems = document.querySelectorAll('img');
+    imgElems.onload = function() {
+        domController.firstLoad();
+    }
+}
