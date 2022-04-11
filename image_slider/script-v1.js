@@ -89,7 +89,7 @@ const domController = (() => {
     }
 
     function firstLoad() {
-        firstFrame();
+        setTimeout(firstFrame(), 500);
         firstDotFill();
     }
 
