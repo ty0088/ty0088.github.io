@@ -71,6 +71,7 @@ const domController = (() => {
     //Initial frame width
     function firstFrame() {
         let frameWidth = imgElems[0].getBoundingClientRect().width;
+        console.log(frameWidth);
         document.getElementById('frame').style.width = frameWidth + 'px';
     }
 
@@ -89,6 +90,7 @@ const domController = (() => {
     }
 
     function firstLoad() {
+        console.log('!')
         firstFrame();
         firstDotFill();
     }
@@ -117,9 +119,5 @@ const domController = (() => {
 })();
 
 clickListeners();
-window.onload = function() {
-    const imgElems = document.querySelectorAll('img');
-    imgElems.onload = function() {
-        domController.firstLoad();
-    }
-}
+setTimeout(domController.firstLoad, 100);
+

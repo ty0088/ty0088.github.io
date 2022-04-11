@@ -46,7 +46,7 @@ span.material-icons:hover {
 
 #frame {
     height: 606px;
-    width: auto;
+    width: 0;
     overflow: hidden;
     transition: all 700ms ease-out;
 }
