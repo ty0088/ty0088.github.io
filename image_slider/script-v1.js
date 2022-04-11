@@ -89,7 +89,7 @@ const domController = (() => {
     }
 
     function firstLoad() {
-        setTimeout(firstFrame(), 1000);
+        firstFrame();
         firstDotFill();
     }
 
@@ -117,4 +117,4 @@ const domController = (() => {
 })();
 
 clickListeners();
-domController.firstLoad();
+setTimeout(domController.firstLoad(), 1000);
