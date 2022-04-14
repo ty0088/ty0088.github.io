@@ -24,8 +24,8 @@ function refreshBookList() {
     readBtn.setAttribute("type","button");
     readBtn.setAttribute("onclick","isRead(this)");
     const newContent = document.createTextNode("Title: " + book.title + ", Author: " + book.author + ", No. of Pages: " + book.pages + ", Read?: " + book.read);
-    remBtn.innerHTML = "Remove Book";
-    readBtn.innerHTML = "Read/Not Read";
+    remBtn.innerText = "Remove Book";
+    readBtn.innerText = "Read/Not Read";
     newDiv.appendChild(newContent);
     newDiv.appendChild(readBtn);
     newDiv.appendChild(remBtn);
@@ -36,18 +36,6 @@ function refreshBookList() {
 
 function newBook() {
   document.getElementById("form").style.display = "block";
-}
-
-function btnSub() {
-  let title = document.getElementById("title").value;
-  let author = document.getElementById("author").value;
-  let pages = document.getElementById("pages").value;
-  let read = document.getElementById("read").checked;
-
-  addBookToLibrary(title, author, pages, read);
-
-  document.getElementById("form").reset();
-  document.getElementById("form").style.display = "none";
 }
 
 function removeBook(e) {
@@ -66,7 +54,36 @@ function isRead(e) {
   refreshBookList();
 }
 
+function validation() {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.addEventListener('input', () => {
+      input.setCustomValidity('');
+      input.checkValidity();
+    });
+    input.addEventListener('invalid', () => {
+      input.setCustomValidity('Please fill in this field!')
+    });
+  });
+  
+  const form = document.querySelector('form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (form.reportValidity()) {
+      let title = document.getElementById("title").value;
+      let author = document.getElementById("author").value;
+      let pages = document.getElementById("pages").value;
+      let read = document.getElementById("read").checked;
+      addBookToLibrary(title, author, pages, read);
+      document.getElementById("form").reset();
+      document.getElementById("form").style.display = "none";
+    }
+  });
+}
+
 let myLibrary = [];
+
+validation();
 
 addBookToLibrary("Example Book", "J.Blogs", 10, true);
 
