@@ -149,7 +149,12 @@ input {
     border-radius: 5px;
 }
 
-input:focus {
+input:invalid:focus {
+    outline: none;
+    border: 2px solid red;
+}
+
+input:valid:focus {
     outline: none;
     border: 2px solid blue;
 }

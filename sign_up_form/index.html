@@ -31,7 +31,7 @@
             </div>
             <div class="form">
                 <span>Let's do this!</span>
-                <form id="sign_up_form" action="http://httpbin.org/post" method="post">
+                <form id="sign_up_form" action="http://httpbin.org/post" method="post" novalidate>
                     <div class="input-row">
                         <div class="input-box">
                             <label for="first_name">FIRST NAME</label>
@@ -49,18 +49,18 @@
                         </div>
                         <div class="input-box">
                             <label for="phone">PHONE NUMBER</label>
-                            <input type="tel" id="phone" name="phone_num" required>   
+                            <input type="tel" id="phone" name="phone_num" pattern="\+?[0-9]+" minlength="9" required>   
                         </div>
                     </div>
                     <div class="input-row">
                         <div class="input-box">
                             <label for="password">PASSWORD</label>
-                            <input type="password" id="password" name="password" required onkeyup='check();'>
+                            <input type="password" id="password" name="password" required onkeyup='passCheck();'>
                             <span id="error_message"></span>   
                         </div>
                         <div class="input-box">
                             <label for="pass_con">CONFIRM PASSWORD</label>
-                            <input type="password" id="pass_con" name="pass_confirm" required onkeyup='check();'>
+                            <input type="password" id="pass_con" name="pass_confirm" required onkeyup='passCheck();'>
                         </div>
                     </div>
                 </form>
@@ -72,22 +72,6 @@
             </div>
         </div>
     </div>
-    
-    <script>
-        var check = function() {
-            if (document.getElementById('password').value !==
-                document.getElementById('pass_con').value && document.getElementById('pass_con').value !== '') {
-                document.getElementById('password').classList.add("error");
-                document.getElementById('pass_con').classList.add("error");
-                document.getElementById('error_message').innerHTML = '*Passwords do not match';
-                document.getElementById('submit_button').setAttribute("disabled", "");
-            } else {
-                document.getElementById('password').classList.remove("error");
-                document.getElementById('pass_con').classList.remove("error");
-                document.getElementById('submit_button').removeAttribute("disabled");
-                document.getElementById('error_message').innerHTML = '';
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
