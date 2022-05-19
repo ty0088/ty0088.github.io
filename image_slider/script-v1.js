@@ -19,12 +19,10 @@ const slideController  = (() => {
             currImgPos = nextImgPos;
             nextImgPos += 1;
             nextImgPos = Math.min(imgElems.length - 1, nextImgPos);
-            console.log('curr: ' + currImgPos + ' --- next: ' +  nextImgPos);
         } else {
             currImgPos = nextImgPos;
             nextImgPos -= 1;
             nextImgPos = Math.max(0, nextImgPos);
-            console.log('curr: ' + currImgPos + ' --- next: ' +  nextImgPos);
         }
         pixelCalc();
         domController.fillDot(nextImgPos);
@@ -34,7 +32,6 @@ const slideController  = (() => {
     function dotImgLink(event) {
         currImgPos = nextImgPos;
         nextImgPos = parseInt(event.target.getAttribute('data-slide-num'));
-        console.log('curr: ' + currImgPos + ' --- next: ' +  nextImgPos);
         pixelCalc();
         domController.fillDot(nextImgPos);
     }
@@ -53,7 +50,6 @@ const slideController  = (() => {
             return ;
         }
         frameWidth = imgElems[nextImgPos].getBoundingClientRect().width;
-        console.log('transPx: ' + transPx + ' --- frameWidth: ' + frameWidth);
         domController.moveSlide(transPx, frameWidth);
     }
 
@@ -71,7 +67,6 @@ const domController = (() => {
     //Initial frame width
     function firstFrame() {
         let frameWidth = imgElems[0].getBoundingClientRect().width;
-        console.log(frameWidth);
         document.getElementById('frame').style.width = frameWidth + 'px';
     }
 
@@ -90,7 +85,6 @@ const domController = (() => {
     }
 
     function firstLoad() {
-        console.log('!')
         firstFrame();
         firstDotFill();
     }
@@ -119,4 +113,4 @@ const domController = (() => {
 })();
 
 clickListeners();
-setTimeout(domController.firstLoad, 100);
+domController.firstLoad();
