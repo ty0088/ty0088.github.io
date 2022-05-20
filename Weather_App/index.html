@@ -15,13 +15,15 @@
     <div id="mainContainer">
         <div id="weatherContainer">
             <div id="searchBar">
-                <input formnovalidate type="text" id="searchInput" size="13" placeholder="Search City" pattern="[a-zA-Z]+(, ?[a-zA-Z]+)?" required>
+                <input formnovalidate type="text" id="searchInput" size="13" placeholder="Search City" pattern="[a-zA-Z]+( [a-zA-Z]+)?(, ?[a-zA-Z]+)?" required>
                 <span class="material-symbols-outlined" id="searchBtn">search</span>
-                </div>
+            </div>
             <div id="searchWarning"></div>
             <div id="location"></div>
+            <div id="time"></div>
             <div id="temp"></div>
-            <div id="icon"></div>
+            <img id="icon">
+            <div id="description"></div>
             <div id="info"></div>
         </div>
     </div>    
