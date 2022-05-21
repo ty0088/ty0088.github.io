@@ -5,7 +5,6 @@ async function getCurrentWeather(city) {
             const weatherData = await response.json();
             document.getElementById('searchInput').value = ''; //clear input field  if successful response
             updateDOM(weatherData);
-            console.log(weatherData);
         } else {
             console.log(response.status);
             if (response.status === 404) { //if city name is not found, print error to DOM
@@ -35,7 +34,6 @@ async function getLocationbyIP() {
 async function getLocalWeather() { //get current weather based on location from user IP
     try {
         const city = await getLocationbyIP();
-        console.log(city)
         getCurrentWeather(city);
     } catch(err) {
         console.log(err)
@@ -82,10 +80,8 @@ function updateDOM(data) {
     locationDiv.innerText = data.name + ', ' + data.sys.country;
     tempDiv.innerText = roundToHalf(data.main.temp) + '°C';
 
-    const date = new Date(data.dt * 1000);
-    const hr = date.getHours();
-    const min = date.getMinutes();
-    timeDiv.innerText = `${hr}hrs${min}mins`;  //change this to location local time
+    const cityLocalTime = localCityTime(data.dt, data.timezone);
+    timeDiv.innerText = cityLocalTime;
 
     const iconCode = data.weather[0].icon;
     const iconURL = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
@@ -111,8 +107,22 @@ function roundToHalf(temp) {
     return Math.round(temp*2)/2;
 }
 
-function localTime(data) {
-    //function to workout local time
+function localCityTime(dt, timezone) {
+    const currDate = new Date();
+    const currOffset = currDate.getTimezoneOffset() * 60; //get user timezone offset to UTC in seconds
+    const localTimeSec = dt + currOffset + timezone; //user time + local timezone UTC offset + UTC to city timezone offset
+    const localDate = new Date(localTimeSec * 1000);
+    const hrInt = localDate.getHours();
+    let hrStr = hrInt.toString();
+    if (hrInt < 10) {
+        hrStr = '0' + hrStr; 
+    }
+    const minInt = localDate.getMinutes();
+    let minStr = minInt.toString();
+    if (minInt < 10) {
+        minStr = '0' + minStr; 
+    }
+    return `${hrStr}:${minStr} local time`
 };
 
 
