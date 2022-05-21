@@ -1,5 +1,6 @@
 async function getCurrentWeather(city) {
     try {
+        document.getElementById('loadingIcon').classList.toggle('none');
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=89b10e1c46b43bcadf4622579b2a2ba9&units=metric`, {mode: 'cors'});
         if (response.ok) {
             const weatherData = await response.json();
@@ -11,6 +12,7 @@ async function getCurrentWeather(city) {
                 warning404();
             }
         }
+        document.getElementById('loadingIcon').classList.toggle('none');
     } catch(err) {
         console.log(err);
     }
@@ -92,15 +94,24 @@ function updateDOM(data) {
     descr.innerText = weatherDescr;
 
     infoDiv.innerHTML = '';
-    const addInfoHTML = `<div>
-                            <span>feels like: ${roundToHalf(data.main.feels_like)}°C</span>
-                            <span>max temp: ${roundToHalf(data.main.temp_max)}°C</span>
-                            <span>min temp: ${roundToHalf(data.main.temp_min)}°C</span>
-                            <span>Pressure: ${data.main.pressure}hPa</span>
-                            <span>Humidity: ${data.main.humidity}%</span>
-                        </div>`;
-    infoDiv.insertAdjacentHTML("beforeend", addInfoHTML);
 
+    const addInfoHTMLDiv =  document.createElement('div');
+    const feelSpan = document.createElement('span');
+    feelSpan.innerText = `feels like: ${roundToHalf(data.main.feels_like)}°C`;
+    addInfoHTMLDiv.appendChild(feelSpan);
+    const maxTempSpan = document.createElement('span');
+    maxTempSpan.innerText = `max temp: ${roundToHalf(data.main.temp_max)}°C`;
+    addInfoHTMLDiv.appendChild(maxTempSpan);
+    const minTempSpan = document.createElement('span');
+    minTempSpan.innerText = `min temp: ${roundToHalf(data.main.temp_min)}°C`;
+    addInfoHTMLDiv.appendChild(minTempSpan);
+    const pressureSpan = document.createElement('span');
+    pressureSpan.innerText = `Pressure: ${data.main.pressure}hPa`;
+    addInfoHTMLDiv.appendChild(pressureSpan);
+    const humidSpan = document.createElement('span');
+    humidSpan.innerText = `Humidity: ${data.main.humidity}%`;
+    addInfoHTMLDiv.appendChild(humidSpan);
+    infoDiv.appendChild(addInfoHTMLDiv);
 }
 
 function roundToHalf(temp) {

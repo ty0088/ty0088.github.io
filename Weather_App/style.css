@@ -8,9 +8,24 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
+#loadingIcon {
+    position: relative;
+    top: 120px;
+    left: 150px;
+}
+
+#loadingIcon.none {
+    display: none;
+    /* transition: all 1000ms ease-in-out; */
+}
+
+#loadingIcon > .material-symbols-outlined {
+    font-size: 100px;
+}
+
 #mainContainer {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
