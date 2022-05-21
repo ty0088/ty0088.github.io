@@ -86,7 +86,7 @@ function updateDOM(data) {
     timeDiv.innerText = cityLocalTime;
 
     const iconCode = data.weather[0].icon;
-    const iconURL = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    const iconURL = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
     iconDiv.src = iconURL;
     const weatherDescr = data.weather[0].description;
     iconDiv.setAttribute('alt', weatherDescr);
