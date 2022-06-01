@@ -1,4 +1,4 @@
-import { createShip } from "./ship";
+import { createShip } from "./ship.js";
 
 const checkCoords = (startCoord, length, direction) => {
     //check start coord is acceptable for ship location on a 10x10 grid
@@ -53,20 +53,23 @@ const calPosition = (searchArr, coords) => {
     }
 };
 
-const createGameBoard = (player, carrStart, battStart, cruiStart, destStart) => {
+const createGameBoard = (player, startCoordArr) => {
     //place carrier, battle, cruiser and destroyer ships
-    let [startCoord, direction] = carrStart;
+    //carrStart, battStart, cruiStart, destStart
+    let [startCoord, direction] = startCoordArr[0];
     const carrier = createShip(5, returnCoords(5, startCoord, direction));
-    [startCoord, direction] = battStart;
+    [startCoord, direction] = startCoordArr[1];
     const battle = createShip(4, returnCoords(4, startCoord, direction));
-    [startCoord, direction] = cruiStart;
+    [startCoord, direction] = startCoordArr[2];
     const cruiser = createShip(3, returnCoords(3, startCoord, direction));
-    [startCoord, direction] = destStart;
+    [startCoord, direction] = startCoordArr[3];
+    const submarine = createShip(3, returnCoords(3, startCoord, direction));
+    [startCoord, direction] = startCoordArr[4];
     const destroyer = createShip(2, returnCoords(2, startCoord, direction));
     //initialise hits and misses arrays
     const hits = [];
     const misses = [];
-    //attack coordinates inputted. If hit then mark appropriate ship hitInfo and update hit array.
+    //recieve attack method. If coords hit then mark appropriate ship hitInfo and update hit array.
     //if miss then update miss array
     const receiveAttack = (coords) => {
         if (searchCoords(carrier.shipCoords, coords)) {
@@ -81,6 +84,10 @@ const createGameBoard = (player, carrStart, battStart, cruiStart, destStart) => 
             hits.push(coords);
             const hitPos = calPosition(cruiser.shipCoords, coords);
             cruiser.hit(hitPos);
+        } else if (searchCoords(submarine.shipCoords, coords)) {
+            hits.push(coords);
+            const hitPos = calPosition(submarine.shipCoords, coords);
+            submarine.hit(hitPos);
         } else if (searchCoords(destroyer.shipCoords, coords)) {
             hits.push(coords);
             const hitPos = calPosition(destroyer.shipCoords, coords);
@@ -89,7 +96,7 @@ const createGameBoard = (player, carrStart, battStart, cruiStart, destStart) => 
             misses.push(coords);
         }
     };
-    //check whether all of the ships have been sunk
+    //check whether all of the ships have been sunk method
     const checkAllSunk = () => {
         if (!carrier.isSunk()) {
             return false;
@@ -97,13 +104,15 @@ const createGameBoard = (player, carrStart, battStart, cruiStart, destStart) => 
             return false;
         } else if (!cruiser.isSunk()) {
             return false;
+        } else if (!submarine.isSunk()) {
+            return false;
         } else if (!destroyer.isSunk()) {
             return false;
         } else {
             return true;
         }
     };
-    return { player, carrier, battle, cruiser, destroyer, hits, misses, receiveAttack, checkAllSunk };
+    return { player, carrier, battle, cruiser, submarine, destroyer, hits, misses, receiveAttack, checkAllSunk };
 };
 
 export { createGameBoard };

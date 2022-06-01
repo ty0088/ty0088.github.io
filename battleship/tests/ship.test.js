@@ -1,4 +1,4 @@
-import { createShip } from "./ship";
+import { createShip } from "../modules/ship.js";
 
 test('Carrier at [6,4] in direction Y', () => {
     const ship1 = createShip(5, [[6,4], [6,5], [6,6], [6,7], [6,8]])
