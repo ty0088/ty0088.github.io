@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Barlow', sans-serif;;
+}
+
+#pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+#gameInfo > .title {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+#boardContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.boardBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.playerName {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.gameBoard {
+    display: grid;
+    grid-template: repeat(10, 30px) / repeat(10, 30px);
+    background-color: black;
+    grid-gap: 1px;
+    margin: 10px;
+    border: 1px solid black;
+}
+
+.bgWhite {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
+
+.bgBlack {
+    background-color: black;
+}

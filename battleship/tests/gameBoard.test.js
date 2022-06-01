@@ -1,4 +1,4 @@
-import { createGameBoard } from "../modules/gameBoard.js";
+import { createGameBoard } from "../src/gameBoard.js";
 
 test('Carrier length', () => {
     const player1 = createGameBoard('Player 1', [[[6,4], 'Y'], [[1,1], 'X'], [[2,6], 'Y'], [[4,6], 'Y'], [[9,6], 'X']]);
