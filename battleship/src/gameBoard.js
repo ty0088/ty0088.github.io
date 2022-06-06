@@ -1,6 +1,6 @@
 import { createShip } from "./ship.js";
 
-const checkCoords = (startCoord, length, direction) => {
+const checkStartCoords = (startCoord, length, direction) => {
     //check start coord is acceptable for ship location on a 10x10 grid
     if (direction === 'X') {
         if ((startCoord[0] + length - 1) <= 10) {
@@ -17,9 +17,9 @@ const checkCoords = (startCoord, length, direction) => {
     }
 };
 
-const returnCoords = (length, startCoord, direction) => {
+const returnShipCoords = (length, startCoord, direction) => {
     //return coordinates of whole ship
-    if (checkCoords(startCoord, length, direction)) {
+    if (checkStartCoords(startCoord, length, direction)) {
         let coordsArr = [startCoord];
         for (let i = 1; i < length; i ++) {
             if (direction === 'X') {
@@ -57,43 +57,50 @@ const createGameBoard = (player, startCoordArr) => {
     //place carrier, battle, cruiser and destroyer ships
     //carrStart, battStart, cruiStart, destStart
     let [startCoord, direction] = startCoordArr[0];
-    const carrier = createShip(5, returnCoords(5, startCoord, direction));
+    const carrier = createShip(5, returnShipCoords(5, startCoord, direction));
     [startCoord, direction] = startCoordArr[1];
-    const battle = createShip(4, returnCoords(4, startCoord, direction));
+    const battle = createShip(4, returnShipCoords(4, startCoord, direction));
     [startCoord, direction] = startCoordArr[2];
-    const cruiser = createShip(3, returnCoords(3, startCoord, direction));
+    const cruiser = createShip(3, returnShipCoords(3, startCoord, direction));
     [startCoord, direction] = startCoordArr[3];
-    const submarine = createShip(3, returnCoords(3, startCoord, direction));
+    const submarine = createShip(3, returnShipCoords(3, startCoord, direction));
     [startCoord, direction] = startCoordArr[4];
-    const destroyer = createShip(2, returnCoords(2, startCoord, direction));
+    const destroyer = createShip(2, returnShipCoords(2, startCoord, direction));
     //initialise hits and misses arrays
     const hits = [];
     const misses = [];
     //recieve attack method. If coords hit then mark appropriate ship hitInfo and update hit array.
     //if miss then update miss array
     const receiveAttack = (coords) => {
-        if (searchCoords(carrier.shipCoords, coords)) {
-            hits.push(coords);
-            const hitPos = calPosition(carrier.shipCoords, coords);
-            carrier.hit(hitPos);
-        } else if (searchCoords(battle.shipCoords, coords)) {
-            hits.push(coords);
-            const hitPos = calPosition(battle.shipCoords, coords);
-            battle.hit(hitPos);
-        } else if (searchCoords(cruiser.shipCoords, coords)) {
-            hits.push(coords);
-            const hitPos = calPosition(cruiser.shipCoords, coords);
-            cruiser.hit(hitPos);
-        } else if (searchCoords(submarine.shipCoords, coords)) {
-            hits.push(coords);
-            const hitPos = calPosition(submarine.shipCoords, coords);
-            submarine.hit(hitPos);
-        } else if (searchCoords(destroyer.shipCoords, coords)) {
-            hits.push(coords);
-            const hitPos = calPosition(destroyer.shipCoords, coords);
-            destroyer.hit(hitPos);
+        //check if coords already exist in hits/misses
+        if (!searchCoords(hits, coords) || !searchCoords(misses, coords)) {
+            //if coords aren't already registered then check for hit or miss
+            console.log('coord hasnt been chosen yet');
+            if (searchCoords(carrier.shipCoords, coords)) {
+                hits.push(coords);
+                const hitPos = calPosition(carrier.shipCoords, coords);
+                carrier.hit(hitPos);
+            } else if (searchCoords(battle.shipCoords, coords)) {
+                hits.push(coords);
+                const hitPos = calPosition(battle.shipCoords, coords);
+                battle.hit(hitPos);
+            } else if (searchCoords(cruiser.shipCoords, coords)) {
+                hits.push(coords);
+                const hitPos = calPosition(cruiser.shipCoords, coords);
+                cruiser.hit(hitPos);
+            } else if (searchCoords(submarine.shipCoords, coords)) {
+                hits.push(coords);
+                const hitPos = calPosition(submarine.shipCoords, coords);
+                submarine.hit(hitPos);
+            } else if (searchCoords(destroyer.shipCoords, coords)) {
+                hits.push(coords);
+                const hitPos = calPosition(destroyer.shipCoords, coords);
+                destroyer.hit(hitPos);
+            } else {
+                misses.push(coords);
+            }
         } else {
-            misses.push(coords);
+            console.log('coord already picked');
         }
     };
     //check whether all of the ships have been sunk method

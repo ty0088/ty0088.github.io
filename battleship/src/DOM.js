@@ -1,5 +1,7 @@
-//create game grids on page
-const createDOMBoard = () => {
+const DOM = (() => {
+
+    //create game grids on page
+const createBoard = () => {
     //create grid lines on p1Grid
     const p1Grid = document.getElementById('p1Board');
     for (let i = 0; i < 100; i++) {
@@ -46,4 +48,77 @@ const showShips = (board, gameBoardObj) => {
     }); 
 };
 
-export { createDOMBoard,  };
+//render a hit or miss on gameboard
+const boardHitMiss = (attack, coord, player) => {
+    if (attack === 'hit') {
+
+    } else {
+
+    }
+};
+
+//render a start button
+const addStartBtn = () => {
+    const startBtn = document.createElement('span');
+    startBtn.id = 'gameButton';
+    startBtn.classList.add('link');
+    startBtn.innerText = 'Start Game';
+    document.getElementById('buttonContainer').appendChild(startBtn);
+};
+
+//remove start button
+const removeStartBtn = () => {
+    document.getElementById('gameButton').remove();
+};
+
+
+//render text instructions
+const textInstruct = (text) => {
+    const instElem = document.getElementById('instructions');
+    instElem.innerText = '';
+    instElem.innerText = text;
+};
+
+//create an event listener
+const createEventList = (elemID, event, func) => {
+    const elem = document.getElementById(elemID);
+    elem.addEventListener(event, func);
+};
+
+//remove an event listener ------ required?????
+const removeEventList =  (elemID, event, func) => {
+    const elem = document.getElementById(elemID);
+    elem.removeEventListener(event, func);
+};
+
+//returns the coords in an array of grid clicked
+const clickCoord = (event) => {
+    const coordStr = event.target.getAttribute("data-coord");
+    console.log(coordStr)
+    const coordStrArr = coordStr.split(',');
+    let coord = [];
+    coord.push(parseInt(coordStrArr[0]));
+    coord.push(parseInt(coordStrArr[1]));
+    return coord;
+};
+
+const activeBoard = (actBoardID, deactBoardID) => {
+    const actElem = document.getElementById(actBoardID);
+    const deactElem = document.getElementById(deactBoardID);
+    actElem.classList.add('link');
+    deactElem.classList.remove('link');
+};
+
+    return {
+        createBoard,
+        addStartBtn,
+        removeStartBtn,
+        textInstruct,
+        createEventList,
+        removeEventList,
+        clickCoord,
+        activeBoard
+    };
+})();
+
+export { DOM };
