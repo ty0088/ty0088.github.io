@@ -36,13 +36,15 @@ body {
 
 #instructions {
     margin-top: 5px;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 #boardContainer {
     height: 100%;
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -55,6 +57,7 @@ body {
 }
 
 .playerName {
+    margin-bottom: 20px;
     font-size: 20px;
     font-weight: 700;
 }
@@ -64,7 +67,7 @@ body {
     grid-template: repeat(10, 30px) / repeat(10, 30px);
     background-color: black;
     grid-gap: 1px;
-    margin: 10px;
+    margin: 10px 50px 10px 50px;
     border: 2px solid black;
 }
 
@@ -72,7 +75,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 500ms ease-in-out;
+    transition: all 400ms ease-in;
+}
+
+.gameBoard.link > span:hover {
+    background-color: rgb(200, 200, 200);
+    transition: all 30ms ease-in;
+}
+
+.gameBoard > span > span {
+    opacity: 0;
+    transition: opacity 400ms ease-in;
+}
+
+.fadeIn {
+    opacity: 1;
 }
 
 .bgWhite {
@@ -106,4 +123,14 @@ body {
 
 .link {
     cursor: pointer;
+}
+
+#popUp {
+    display: none;
+    height: 300px;
+    width: 400px;
+    top: 50px;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
 }
