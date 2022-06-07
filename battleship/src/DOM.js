@@ -4,6 +4,7 @@ const DOM = (() => {
 const createBoard = () => {
     //create grid lines on p1Grid
     const p1Grid = document.getElementById('p1Board');
+    p1Grid.innerHTML = '';
     for (let i = 0; i < 100; i++) {
         const whiteBox = document.createElement('span');
         whiteBox.classList.add('bgWhite');
@@ -11,6 +12,7 @@ const createBoard = () => {
     }
     //create grid lines on p2Grid
     const p2Grid = document.getElementById('p2Board');
+    p2Grid.innerHTML = '';
     for (let i = 0; i < 100; i++) {
         const whiteBox = document.createElement('span');
         whiteBox.classList.add('bgWhite');
@@ -31,43 +33,57 @@ const createBoard = () => {
     }
 }
 
-//shows ships on game boards on page, possibly not  required!------------------------
+//shows ships on game boards on page
 const showShips = (board, gameBoardObj) => {
-    //collect all ship coordinates
+    //collect all ship coordinates and add bg class
     let coordsArr = []
     const shipsArr = ['carrier', 'battle', 'cruiser',  'submarine', 'destroyer'];
     shipsArr.forEach(ship => {
             gameBoardObj[ship].shipCoords.forEach(coord => {
-                coordsArr.push(coord);
+                // coordsArr.push(coord);
+                const coordString = `${coord[0]},${coord[1]}`;
+                document.querySelector(`#${board}>[data-coord="${coordString}"]`).classList.add('bgShip');
         });
     });
-    //colour ship location by adding css class
-    coordsArr.forEach(coord => {
-        const coordString = `${coord[0]},${coord[1]}`;
-        document.querySelector(`#${board}>[data-coord="${coordString}"]`).classList.add('bgBlack');
-    }); 
 };
 
 //render a hit or miss on gameboard
-const boardHitMiss = (attack, coord, player) => {
-    if (attack === 'hit') {
-
-    } else {
-
-    }
+const boardHitMiss = (board, gameBoardObj) => {
+    //render hits using hits array
+    gameBoardObj.hits.forEach(coord => {
+        const dataCoord = `${coord[0]},${coord[1]}`;
+        const gridElem = document.querySelector(`#${board}>[data-coord="${dataCoord}"]`);
+        gridElem.innerHTML = '';
+        const attckIcn = document.createElement('span');
+        attckIcn.classList.add('material-symbols-outlined');
+        attckIcn.innerText = 'cancel';
+        gridElem.appendChild(attckIcn);
+    });
+    //render misses using misses array
+    gameBoardObj.misses.forEach(coord => {
+        const dataCoord = `${coord[0]},${coord[1]}`;
+        const gridElem = document.querySelector(`#${board}>[data-coord="${dataCoord}"]`);
+        gridElem.innerHTML = '';
+        const missIcn = document.createElement('span');
+        missIcn.classList.add('material-symbols-outlined');
+        missIcn.innerText = 'radio_button_unchecked';
+        gridElem.appendChild(missIcn);
+    });
 };
 
 //render a start button
-const addStartBtn = () => {
-    const startBtn = document.createElement('span');
-    startBtn.id = 'gameButton';
-    startBtn.classList.add('link');
-    startBtn.innerText = 'Start Game';
-    document.getElementById('buttonContainer').appendChild(startBtn);
+const addGameBtn = (text) => {
+    const gameBtn = document.createElement('span');
+    const btnContainer = document.getElementById('buttonContainer');
+    btnContainer.innerHTML = '';
+    gameBtn.id = 'gameButton';
+    gameBtn.classList.add('link');
+    gameBtn.innerText = text;
+    btnContainer.appendChild(gameBtn);
 };
 
 //remove start button
-const removeStartBtn = () => {
+const removeGameBtn = () => {
     document.getElementById('gameButton').remove();
 };
 
@@ -85,7 +101,7 @@ const createEventList = (elemID, event, func) => {
     elem.addEventListener(event, func);
 };
 
-//remove an event listener ------ required?????
+//remove an event listener
 const removeEventList =  (elemID, event, func) => {
     const elem = document.getElementById(elemID);
     elem.removeEventListener(event, func);
@@ -94,7 +110,6 @@ const removeEventList =  (elemID, event, func) => {
 //returns the coords in an array of grid clicked
 const clickCoord = (event) => {
     const coordStr = event.target.getAttribute("data-coord");
-    console.log(coordStr)
     const coordStrArr = coordStr.split(',');
     let coord = [];
     coord.push(parseInt(coordStrArr[0]));
@@ -102,22 +117,28 @@ const clickCoord = (event) => {
     return coord;
 };
 
-const activeBoard = (actBoardID, deactBoardID) => {
+const activeBoard = (actBoardID) => {
     const actElem = document.getElementById(actBoardID);
-    const deactElem = document.getElementById(deactBoardID);
     actElem.classList.add('link');
+};
+
+const deactBoard = (deactBoardID) => {
+    const deactElem = document.getElementById(deactBoardID);
     deactElem.classList.remove('link');
 };
 
     return {
         createBoard,
-        addStartBtn,
-        removeStartBtn,
+        addGameBtn,
+        removeGameBtn,
         textInstruct,
         createEventList,
         removeEventList,
         clickCoord,
-        activeBoard
+        activeBoard,
+        deactBoard,
+        boardHitMiss,
+        showShips
     };
 })();
 

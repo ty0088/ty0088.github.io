@@ -73,9 +73,9 @@ const createGameBoard = (player, startCoordArr) => {
     //if miss then update miss array
     const receiveAttack = (coords) => {
         //check if coords already exist in hits/misses
-        if (!searchCoords(hits, coords) || !searchCoords(misses, coords)) {
+        if (searchCoords(hits, coords) || searchCoords(misses, coords)) {
+        } else {
             //if coords aren't already registered then check for hit or miss
-            console.log('coord hasnt been chosen yet');
             if (searchCoords(carrier.shipCoords, coords)) {
                 hits.push(coords);
                 const hitPos = calPosition(carrier.shipCoords, coords);
@@ -99,8 +99,6 @@ const createGameBoard = (player, startCoordArr) => {
             } else {
                 misses.push(coords);
             }
-        } else {
-            console.log('coord already picked');
         }
     };
     //check whether all of the ships have been sunk method
