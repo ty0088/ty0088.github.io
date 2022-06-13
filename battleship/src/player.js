@@ -1,4 +1,6 @@
-const createPlayer = (name, type) => {
+import { DOM } from "./DOM";
+
+const newPlayer = (name, type) => {
     const ranCoord = (gridSize) => {
         const xCoord = Math.floor(Math.random() * gridSize) + 1;
         const yCoord = Math.floor(Math.random() * gridSize) + 1;
@@ -21,4 +23,4 @@ const createPlayer = (name, type) => {
     }
 }
 
-export { createPlayer };
+export { newPlayer };

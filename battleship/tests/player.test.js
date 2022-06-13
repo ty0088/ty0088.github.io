@@ -1,7 +1,7 @@
-import { createPlayer } from "../src/player";
+import { newPlayer } from "../src/player";
 
 test('Random coordinate and X/Y direction within grid size 10', () => {
-    const player1 = createPlayer('comp', 'computer');
+    const player1 = newPlayer('comp', 'computer');
     const [[xCoord, yCoord], xyDir] = player1.shipStartPos(10);
     expect(xCoord).toBeGreaterThanOrEqual(1);
     expect(xCoord).toBeLessThanOrEqual(10);
@@ -11,7 +11,7 @@ test('Random coordinate and X/Y direction within grid size 10', () => {
 });
 
 test('Random coordinate and X/Y direction within grid size 5', () => {
-    const player1 = createPlayer('comp', 'computer');
+    const player1 = newPlayer('comp', 'computer');
     const [[xCoord, yCoord], xyDir] = player1.shipStartPos(5);
     expect(xCoord).toBeGreaterThanOrEqual(1);
     expect(xCoord).toBeLessThanOrEqual(5);

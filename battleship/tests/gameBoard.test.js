@@ -69,3 +69,18 @@ test('ships overlap', () => {
     p1Board.placeShip([6,4], 'carrier', 5, 'Y');
     expect(p1Board.placeShip([5,5], 'battle', 4, 'X')).toBe(false);
 });
+
+test('Carrier placed off board', ()=> {
+    const p1Board = newGameBoard(10);
+    expect(p1Board.placeShip([10,10], 'carriier', 5, 'X')).toBe(false);
+});
+
+test('Carrier hit 4 times', () => {
+    const p1Board = newGameBoard();
+    p1Board.carrier.addShipCoords([[6,4], [6,5], [6,6], [6,7], [6,8]]);
+    p1Board.receiveAttack([6,4]);
+    p1Board.receiveAttack([6,5]);
+    p1Board.receiveAttack([6,6]);
+    p1Board.receiveAttack([6,7]);
+    expect(p1Board.countHits()).toBe(4);
+});

@@ -1,11 +1,6 @@
-import { newShip } from "./ship.js";
-
-const log = (text) => {
-    console.log(text);
-}
+import { newShip } from "./ship";
 
 const newGameBoard = (gridSize) => {
-    let misses = [];
     //create ship objs
     const carrier = newShip(5, 'carrier');
     const battle = newShip(4, 'battle');
@@ -13,7 +8,8 @@ const newGameBoard = (gridSize) => {
     const submarine = newShip(3, 'submarine');
     const destroyer = newShip(2, 'destroyer');
     const ships = [carrier, battle, cruiser, submarine, destroyer];
-    //check whether chosen coord is a hit or miss
+    //check whether chosen coord is a hit or miss and is a new
+    let misses = [];
     const receiveAttack = (coord) => {
         let hitIndi = false;
         ships.forEach(ship => {
@@ -23,7 +19,9 @@ const newGameBoard = (gridSize) => {
             }
         });
         if (hitIndi === false) {
-            misses.push(coord);
+            if (!searchCoords(misses, coord)) {
+                misses.push(coord);
+            }
         }
     };
     //method to search an array of coordinates for a specific coordinate
@@ -84,7 +82,19 @@ const newGameBoard = (gridSize) => {
         //shipCoords.every(coord => !checkShips.every(ship => !searchCoords(ship.shipCoords, coord)));
         return !checkShips.some(ship => shipCoords.some(coord => searchCoords(ship.shipCoords, coord)));
     };
-    return { carrier, battle, cruiser, submarine, destroyer, misses, receiveAttack, checkAllSunk, placeShip };
+    //count total amount of hits on a board
+    const countHits = () => {
+        let count = 0;
+        ships.forEach(ship => {
+            for (let i = 1; i <= ship.length; i++) {
+                if (ship.hitInfo[i] === 'hit') {
+                    count ++;
+                }
+            }
+        });
+        return count;
+    };
+    return { gridSize, carrier, battle, cruiser, submarine, destroyer, misses, receiveAttack, checkAllSunk, placeShip, countHits };
 };
 
 export { newGameBoard };
