@@ -7,14 +7,36 @@ const gameModule =(() =>  {
     let p2Obj = {};
     let p1Board = {};
     let p2Board = {};
+    let p1name = '';
+    let p2name = '';
+    let p1type = '';
+    let p2type = '';
     let attackCoord = '';
 
-    const newGame = (gridSize) => {
+    const newGame = () => {
         DOM.textInstruct('');
-        //players created in code, DOM input to be added
+        DOM.inputBox('Player 1');
+        DOM.newEventList('inputForm', 'submit', getPlayer1);
+    };
+    //get player 1's name and type values from DOM, then get player 2's details
+    const getPlayer1 = (e) => {
+        DOM.removeEventList('inputForm', 'submit', getPlayer1);
+        [p1name, p1type] = DOM.getInputs(e);
+        DOM.inputBox('Player 2');
+        DOM.newEventList('inputForm', 'submit', getPlayer2);
+    };
+    //get player 2's name and type and load game board
+    const getPlayer2 = (e) => {
+        DOM.removeEventList('inputForm', 'submit', getPlayer2);
+        [p2name, p2type] = DOM.getInputs(e);
+        loadGame(10);
+    };
+    //load game boards
+    const loadGame = (gridSize) =>  {
+         //players created in code, DOM input to be added
         //----------------------------------------------
-        p1Obj = newPlayer('Player 1', 'human');
-        p2Obj = newPlayer('Computer', 'computer');
+        p1Obj = newPlayer(p1name, p1type);
+        p2Obj = newPlayer(p2name, p2type);
         //----------------------------------------------
         p1Board = newGameBoard(gridSize);
         p2Board = newGameBoard(gridSize);
@@ -37,7 +59,6 @@ const gameModule =(() =>  {
         DOM.addGameBtn('Start Game');
         DOM.newEventList('gameButton', 'click', startGame);
     };
-
     //start game loop by removing start button and starting player 1s turn
     const startGame = () => {
         DOM.removeEventList('gameButton', 'click', startGame);
@@ -71,7 +92,6 @@ const gameModule =(() =>  {
         //recieve attack coordinates (DOM for human or method for comp) and confirm hit or miss
         attackCoord = (p1Obj.type === 'computer') ? p1Obj.compAttack(p1Board.gridSize) : DOM.clickCoord(event);
         p2Board.receiveAttack(attackCoord);
-        console.log(attackCoord);
         //if new hit, render hit, call checkAllSunk() and check for winner. If not all ships sunk, next player turn
         if (p2HitCount !== p2Board.countHits()) {
             DOM.boardHit('p2Board', attackCoord);
@@ -110,7 +130,6 @@ const gameModule =(() =>  {
         let p1MissCount = p1Board.misses.length;
         attackCoord = (p2Obj.type === 'computer') ? p2Obj.compAttack(p2Board.gridSize) : DOM.clickCoord(event);
         p1Board.receiveAttack(attackCoord);
-        console.log(attackCoord);
         if (p1HitCount !== p1Board.countHits()) {
             DOM.boardHit('p1Board', attackCoord);
             if (p1Board.checkAllSunk()) {

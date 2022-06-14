@@ -88,7 +88,6 @@ const DOM = (() => {
     const boardHit = (board, hitCoord) => {
         const dataCoord = `${hitCoord[0]},${hitCoord[1]}`;
         const gridElem = document.querySelector(`#${board} > [data-coord="${dataCoord}"]`);
-        // gridElem.innerHTML = '';
         const attckIcn = document.createElement('span');
         attckIcn.classList.add('material-symbols-outlined');
         attckIcn.innerText = 'cancel';
@@ -100,7 +99,6 @@ const DOM = (() => {
     const boardMiss = (board, missCoord) => {
         const dataCoord = `${missCoord[0]},${missCoord[1]}`;
         const gridElem = document.querySelector(`#${board} > [data-coord="${dataCoord}"]`);
-        // gridElem.innerHTML = '';
         const missIcn = document.createElement('span');
         missIcn.classList.add('material-symbols-outlined');
         missIcn.innerText = 'radio_button_unchecked';
@@ -117,6 +115,65 @@ const DOM = (() => {
         coord.push(parseInt(coordStrArr[1]));
         return coord;
     };
+    //render input pop up
+    const inputBox = (player) => {
+        const container = document.getElementById('pageContainer');
+        const inputBox = document.createElement('div');
+        inputBox.id = 'inputBox';
+        container.appendChild(inputBox);
+        
+        const inputinst = document.createElement('span');
+        inputinst.innerText = `Enter ${player} Name and select Player Type`;
+        const inputForm = document.createElement('form');
+        inputForm.id = 'inputForm';
+        const nameInput = document.createElement('input');
+        nameInput.id = 'nameInput';
+        nameInput.type = 'text';
+        nameInput.setAttribute('required', '');
+        const humanSpan = document.createElement('span');
+        const humanInput = document.createElement('input');
+        humanInput.id = 'humanInput';
+        humanInput.name = 'typeInput';
+        humanInput.type = 'radio';
+        humanInput.value = 'human';
+        humanInput.setAttribute('required', '');
+        const humanLabel =  document.createElement('label');
+        humanLabel.htmlFor = 'humanInput';
+        humanLabel.innerText = 'Human';
+        const compSpan = document.createElement('span');
+        const compInput = document.createElement('input');
+        compInput.id = 'humanInput';
+        compInput.name = 'typeInput';
+        compInput.type = 'radio';
+        compInput.value = 'computer';
+        compInput.setAttribute('required', '');
+        const compLabel =  document.createElement('label');
+        compLabel.htmlFor = 'compInput';
+        compLabel.innerText = 'Computer';
+        const submitInput = document.createElement('input');
+        submitInput.id ='submitInput'
+        submitInput.type = 'submit';
+        submitInput.value = 'Enter';
+        inputBox.appendChild(inputinst);
+        inputBox.appendChild(inputForm);
+        inputForm.appendChild(nameInput);
+        humanSpan.appendChild(humanInput);
+        humanSpan.appendChild(humanLabel);
+        inputForm.appendChild(humanSpan);
+        compSpan.appendChild(compInput);
+        compSpan.appendChild(compLabel);
+        inputForm.appendChild(compSpan);
+        inputForm.appendChild(submitInput);
+    };
+    //get player input values and removes inputBox
+    const getInputs = (e) => {
+        e.preventDefault();
+        const name = document.getElementById('nameInput').value;
+        const type = document.querySelector('input[type="radio"]:checked').value;
+        document.getElementById('inputBox').remove();
+        return [name, type];
+    };
+
     return {
         newBoard,
         addGameBtn,
@@ -129,7 +186,9 @@ const DOM = (() => {
         showShips,
         boardHit,
         boardMiss,
-        clickCoord
+        clickCoord,
+        inputBox,
+        getInputs
     };
 })();
 
