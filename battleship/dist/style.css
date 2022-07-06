@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* I do this for all my projects */
+    box-sizing: border-box;
 }
   
 .material-symbols-outlined {
@@ -16,17 +16,22 @@ body {
     font-family: 'Barlow', sans-serif;
 }
 
-#pageContainer {
+.flexColumnCenter {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-top: 15px;
 }
 
-#gameInfo {
+.flexRowCenter {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
+}
+
+#pageContainer {
+    margin-top: 15px;
 }
 
 #title {
@@ -43,17 +48,7 @@ body {
 #boardContainer {
     height: 100%;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
-}
-
-.boardBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .playerName {
@@ -99,7 +94,7 @@ body {
 }
 
 .bgShip {
-    background-color: rgb(180, 180, 180);
+    background-color: rgb(140, 140, 140);
 }
 
 #buttonContainer {
@@ -125,23 +120,13 @@ body {
     cursor: pointer;
 }
 
-#inputBox {
+#playerInputBox {
     top: 65px;
     position: absolute;
     padding: 20px;
     background-color: rgb(180, 180, 180);
     border: 3px solid black;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#inputForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 #nameInput {
@@ -171,4 +156,49 @@ body {
 #submitInput:active {
     background-color: rgb(250, 250, 250);
     border: 1px solid rgb(150, 150, 150);
+}
+
+#shipInputBox {
+    top: 45px;
+    position: absolute;
+    padding: 20px;
+    background-color: rgb(180, 180, 180);
+    border: 3px solid black;
+    border-radius: 10px;
+    width: 600px;
+    height: 350px;
+}
+
+.tenPxMargin {
+    margin: 10px;
+}
+
+#shipInfo > span {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#shipInstr {
+    font-weight: 600;
+}
+
+#shipType {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+#shipIcon {
+    display: grid;
+    background-color: black;
+    grid-gap: 1px;
+    border: 1px solid black;
+}
+
+#xyDirect {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+#xyDirect:hover {
+    color: rgb(100, 100, 100);
 }

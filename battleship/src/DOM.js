@@ -115,17 +115,18 @@ const DOM = (() => {
         coord.push(parseInt(coordStrArr[1]));
         return coord;
     };
-    //render input pop up
-    const inputBox = (player) => {
+    //render player input box
+    const playerInputBox = (player) => {
         const container = document.getElementById('pageContainer');
         const inputBox = document.createElement('div');
-        inputBox.id = 'inputBox';
+        inputBox.id = 'playerInputBox';
+        inputBox.classList.add('flexColumnCenter');
         container.appendChild(inputBox);
-        
         const inputinst = document.createElement('span');
         inputinst.innerText = `Enter ${player} Name and select Player Type`;
         const inputForm = document.createElement('form');
         inputForm.id = 'inputForm';
+        inputForm.classList.add('flexColumnCenter');
         const nameInput = document.createElement('input');
         nameInput.id = 'nameInput';
         nameInput.type = 'text';
@@ -166,12 +167,80 @@ const DOM = (() => {
         inputForm.appendChild(submitInput);
     };
     //get player input values and removes inputBox
-    const getInputs = (e) => {
+    const getPlayerInputs = (e) => {
         e.preventDefault();
         const name = document.getElementById('nameInput').value;
         const type = document.querySelector('input[type="radio"]:checked').value;
-        document.getElementById('inputBox').remove();
+        document.getElementById('playerInputBox').remove();
         return [name, type];
+    };
+    //render input box and input grid to get ship positions
+    const shipInputBox = () => {
+        const container = document.getElementById('pageContainer');
+        const inputBox = document.createElement('div');
+        inputBox.id = 'shipInputBox';
+        inputBox.classList.add('flexRowCenter');
+        container.appendChild(inputBox);
+        const inputGrid = document.createElement('div');
+        inputGrid.classList.add('gameBoard');
+        inputGrid.classList.add('tenPxMargin');
+        inputGrid.id = 'inputBoard';
+        for (let i = 0; i < 100; i++) {
+            const whiteBox = document.createElement('span');
+            whiteBox.classList.add('bgWhite');
+            inputGrid.appendChild(whiteBox);
+        }
+        inputBox.appendChild(inputGrid);
+        const inputBoxSpans = document.querySelectorAll('#inputBoard > span');
+        let spanCount = 0;
+        for (let y = 10; y > 0; y--) {
+            const yCoord  = y;
+            for (let x = 1; x <= 10; x++) {
+                const xCoord = x;
+                inputBoxSpans[spanCount].setAttribute('data-coord', `${xCoord},${yCoord}`);
+                spanCount ++;
+            }
+        }
+        const shipInfo = document.createElement('div');
+        shipInfo.id = 'shipInfo';
+        shipInfo.classList.add('flexColumnCenter');
+        inputBox.appendChild(shipInfo);
+    };
+    //render ship and direction  selection for click and place
+    const showInputShip = (shipName, shipLength, playerName) => {
+        const shipInfo = document.getElementById('shipInfo');
+        shipInfo.innerHTML = '';
+        const textSpan = document.createElement('span');
+        textSpan.id = 'shipInstr';
+        textSpan.innerText = `${playerName}, place the ship by selecting a grid space (the ship direction can be changed by clicking on X/Y)`;
+        shipInfo.appendChild(textSpan);
+        const shipType = document.createElement('span');
+        shipType.id = 'shipType';
+        shipType.innerText = `${shipName} (${shipLength})`;
+        shipInfo.appendChild(shipType);
+        const shipIcon = document.createElement('span');
+        shipIcon.id = 'shipIcon';
+        shipIcon.style.gridTemplate = `30px / repeat(${shipLength}, 30px)`;
+        shipInfo.appendChild(shipIcon);
+        for (let i = 0; i < shipLength; i++) {
+            const whiteBox = document.createElement('span');
+            whiteBox.classList.add('bgShip');
+            shipIcon.appendChild(whiteBox);
+        }
+        const xySpan = document.createElement('span');
+        xySpan.id = 'xyDirect';
+        xySpan.innerText = 'X / Y';
+        xySpan.classList.add('link');
+        shipInfo.appendChild(xySpan);
+    };
+    //change ship direction
+    const changeShipDir = (direct, shipLength) => {
+        const shipIcon = document.getElementById('shipIcon');
+        if (direct === 'X') {
+            shipIcon.style.gridTemplate = `30px / repeat(${shipLength}, 30px)`;
+        } else {
+            shipIcon.style.gridTemplate = `repeat(${shipLength}, 30px) / 30px`;
+        }
     };
 
     return {
@@ -187,8 +256,11 @@ const DOM = (() => {
         boardHit,
         boardMiss,
         clickCoord,
-        inputBox,
-        getInputs
+        playerInputBox,
+        getPlayerInputs,
+        shipInputBox,
+        showInputShip,
+        changeShipDir
     };
 })();
 

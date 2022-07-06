@@ -12,34 +12,59 @@ const gameModule =(() =>  {
     let p1type = '';
     let p2type = '';
     let attackCoord = '';
+    let shipDirect = 'X';
 
-    const newGame = () => {
+    const newGame = (gridSize) => {
+        p1Board = newGameBoard(gridSize);
+        p2Board = newGameBoard(gridSize);
         DOM.textInstruct('');
-        DOM.inputBox('Player 1');
+        DOM.playerInputBox('Player 1');
         DOM.newEventList('inputForm', 'submit', getPlayer1);
     };
     //get player 1's name and type values from DOM, then get player 2's details
     const getPlayer1 = (e) => {
         DOM.removeEventList('inputForm', 'submit', getPlayer1);
-        [p1name, p1type] = DOM.getInputs(e);
-        DOM.inputBox('Player 2');
+        [p1name, p1type] = DOM.getPlayerInputs(e);
+        DOM.playerInputBox('Player 2');
         DOM.newEventList('inputForm', 'submit', getPlayer2);
     };
-    //get player 2's name and type and load game board
+    //get player 2's name and type, create player objects and get ship locations
     const getPlayer2 = (e) => {
         DOM.removeEventList('inputForm', 'submit', getPlayer2);
-        [p2name, p2type] = DOM.getInputs(e);
+        [p2name, p2type] = DOM.getPlayerInputs(e);
+        p1Obj = newPlayer(p1name, p1type);
+        p2Obj = newPlayer(p2name, p2type);
+        getP1Ships();
+    };
+    //get player 1's ship locations
+    const getP1Ships = () => {
+        if (p1Obj.type === 'human') {
+            //if p1 is human, render shipInputBox
+            DOM.shipInputBox();
+            //render showCarrier
+            DOM.showInputShip('Carrier', 5, p1Obj.name);
+            //add event listener for direction change
+            DOM.newEventList('xyDirect', 'click', () => {
+                shipDirect === 'X' ? shipDirect = 'Y' : shipDirect = 'X';
+                DOM.changeShipDir(shipDirect, 5);
+            });
+            //add event listener drag drop, calling getCarrierLoc
+        } else {
+
+        }
+        //getShipInputs
+        //getP2Ships
+    };
+    //get player 2's ship locations
+    const getP2Ships = () => {
+        //re
         loadGame(10);
     };
     //load game boards
-    const loadGame = (gridSize) =>  {
+    const loadGame = () =>  {
          //players created in code, DOM input to be added
         //----------------------------------------------
-        p1Obj = newPlayer(p1name, p1type);
-        p2Obj = newPlayer(p2name, p2type);
         //----------------------------------------------
-        p1Board = newGameBoard(gridSize);
-        p2Board = newGameBoard(gridSize);
         //place ships in code, DOM input to be added
         //-------------------------------------------
         p1Board.placeShip([6,4], 'carrier', 5, 'Y');

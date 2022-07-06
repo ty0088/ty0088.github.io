@@ -1,5 +1,3 @@
-import { DOM } from "./DOM";
-
 const newPlayer = (name, type) => {
     const ranCoord = (gridSize) => {
         const xCoord = Math.floor(Math.random() * gridSize) + 1;
