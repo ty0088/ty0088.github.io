@@ -13,6 +13,24 @@ const gameModule =(() =>  {
     let p2type = '';
     let attackCoord = '';
     let shipDirect = 'X';
+    let currShipType = 'Carrier';
+    let currShipLength = 5;
+
+    //event handlers
+    const shipOverlayClick = (event) => {
+        DOM.shipOverlay(event, shipDirect, currShipLength)
+    };
+    const shipInputClick = (event) => {
+        //check ship placement is acceptable
+        if (p1Board.checkCoord(DOM.clickCoord(event), currShipType, currShipLength, shipDirect)) {
+            //render ship on inputBoard 
+            //if ok, remove shipOverlay listener and inputclick listener
+            DOM.removeEventList('inputBoard', 'mouseover', shipOverlayClick);
+            DOM.removeEventList('inputBoard', 'click', shipInputClick);
+            //ask for confirmation to place ship, if yes, placeship
+            //next ship type
+        }
+    };
 
     const newGame = (gridSize) => {
         p1Board = newGameBoard(gridSize);
@@ -38,19 +56,23 @@ const gameModule =(() =>  {
     };
     //get player 1's ship locations
     const getP1Ships = () => {
+        //[carrier, ...].forEach{}
         if (p1Obj.type === 'human') {
             //if p1 is human, render shipInputBox
             DOM.shipInputBox();
             //render showCarrier
-            DOM.showInputShip('Carrier', 5, p1Obj.name);
+            DOM.showInputShip(currShipType, currShipLength, p1Obj.name);
             //add event listener for direction change
-            DOM.newEventList('xyDirect', 'click', () => {
+            DOM.newEventList('shipIcon', 'click', () => {
                 shipDirect === 'X' ? shipDirect = 'Y' : shipDirect = 'X';
-                DOM.changeShipDir(shipDirect, 5);
+                DOM.changeShipDir(shipDirect, currShipLength);
             });
-            //add event listener drag drop, calling getCarrierLoc
+            //add event listener for inputBoard, on hover should show ship
+            DOM.newEventList('inputBoard', 'mouseover', shipOverlayClick);
+            //add event listener for inputBoard, on click should check ship placement, place ship and ask for confirm
+            DOM.newEventList('inputBoard', 'click', shipInputClick);
         } else {
-
+            //get computer to place ships
         }
         //getShipInputs
         //getP2Ships
@@ -62,9 +84,6 @@ const gameModule =(() =>  {
     };
     //load game boards
     const loadGame = () =>  {
-         //players created in code, DOM input to be added
-        //----------------------------------------------
-        //----------------------------------------------
         //place ships in code, DOM input to be added
         //-------------------------------------------
         p1Board.placeShip([6,4], 'carrier', 5, 'Y');

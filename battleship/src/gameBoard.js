@@ -35,16 +35,11 @@ const newGameBoard = (gridSize) => {
     //place ship with start coordinate and direction, checks ship fits on grid
     //and does not overlap with other ships placed
     const placeShip = (startCoord, currShipType, length, direction) => {
-        if (checkBoardFit(startCoord, length, direction, gridSize)) {
+        if (checkCoord(startCoord, currShipType, length, direction)) {
+            const currShipObj = ships.filter(ship => ship.type == currShipType);
             const shipCoords = returnShipCoords(startCoord, length, direction, currShipType);
-            const checkShips = ships.filter(ship => ship.type !== currShipType);
-            if (checkOverlap(shipCoords, checkShips)) {
-                let currShipObj = ships.filter(ship => ship.type == currShipType);
-                currShipObj[0].addShipCoords(shipCoords);
-                return true;
-            } else {
-                return false;
-            }
+            currShipObj[0].addShipCoords(shipCoords);
+            return true;
         } else {
             return false;
         }
@@ -65,6 +60,21 @@ const newGameBoard = (gridSize) => {
             }
         }
     };
+    //check coords of current ship do not overlap with other ships
+    const checkOverlap = (shipCoords, checkShips) =>  {
+        //shipCoords.every(coord => !checkShips.every(ship => !searchCoords(ship.shipCoords, coord)));
+        return !checkShips.some(ship => shipCoords.some(coord => searchCoords(ship.shipCoords, coord)));
+    };
+    //check coords fit on board and do not overlap another placed ship
+    const checkCoord = (startCoord, currShipType, length, direction) => {
+        const shipCoords = returnShipCoords(startCoord, length, direction, currShipType);
+        const checkShips = ships.filter(ship => ship.type !== currShipType);
+        if (checkBoardFit(startCoord, length, direction, gridSize) && checkOverlap(shipCoords, checkShips)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
     //return coordinates of whole ship
     const returnShipCoords = (startCoord, length, direction) => {
         let shipCoords = [startCoord];
@@ -76,11 +86,6 @@ const newGameBoard = (gridSize) => {
             }
         }
         return shipCoords;
-    };
-    //check coords of current ship do not overlap with other ships
-    const checkOverlap = (shipCoords, checkShips) =>  {
-        //shipCoords.every(coord => !checkShips.every(ship => !searchCoords(ship.shipCoords, coord)));
-        return !checkShips.some(ship => shipCoords.some(coord => searchCoords(ship.shipCoords, coord)));
     };
     //count total amount of hits on a board
     const countHits = () => {
@@ -94,7 +99,7 @@ const newGameBoard = (gridSize) => {
         });
         return count;
     };
-    return { gridSize, carrier, battle, cruiser, submarine, destroyer, misses, receiveAttack, checkAllSunk, placeShip, countHits };
+    return { gridSize, carrier, battle, cruiser, submarine, destroyer, misses, receiveAttack, checkAllSunk, placeShip, checkCoord, countHits };
 };
 
 export { newGameBoard };

@@ -109,11 +109,13 @@ const DOM = (() => {
     //returns the coords in an array of grid clicked
     const clickCoord = (event) => {
         const coordStr = event.target.getAttribute("data-coord");
-        const coordStrArr = coordStr.split(',');
-        let coord = [];
-        coord.push(parseInt(coordStrArr[0]));
-        coord.push(parseInt(coordStrArr[1]));
-        return coord;
+        if (coordStr !== null) {
+            const coordStrArr = coordStr.split(',');
+            let coord = [];
+            coord.push(parseInt(coordStrArr[0]));
+            coord.push(parseInt(coordStrArr[1]));
+            return coord;
+        }
     };
     //render player input box
     const playerInputBox = (player) => {
@@ -206,13 +208,13 @@ const DOM = (() => {
         shipInfo.classList.add('flexColumnCenter');
         inputBox.appendChild(shipInfo);
     };
-    //render ship and direction  selection for click and place
+    //render ship and direction selection for click and place
     const showInputShip = (shipName, shipLength, playerName) => {
         const shipInfo = document.getElementById('shipInfo');
         shipInfo.innerHTML = '';
         const textSpan = document.createElement('span');
         textSpan.id = 'shipInstr';
-        textSpan.innerText = `${playerName}, place the ship by selecting a grid space (the ship direction can be changed by clicking on X/Y)`;
+        textSpan.innerText = `${playerName}, place the ship by selecting a grid space (the ship direction can be changed by clicking on the ship icon)`;
         shipInfo.appendChild(textSpan);
         const shipType = document.createElement('span');
         shipType.id = 'shipType';
@@ -220,26 +222,52 @@ const DOM = (() => {
         shipInfo.appendChild(shipType);
         const shipIcon = document.createElement('span');
         shipIcon.id = 'shipIcon';
-        shipIcon.style.gridTemplate = `30px / repeat(${shipLength}, 30px)`;
+        shipIcon.classList.add('link');
+        shipIcon.style.gridTemplate = `20px / repeat(${shipLength}, 20px)`;
         shipInfo.appendChild(shipIcon);
         for (let i = 0; i < shipLength; i++) {
             const whiteBox = document.createElement('span');
             whiteBox.classList.add('bgShip');
             shipIcon.appendChild(whiteBox);
         }
-        const xySpan = document.createElement('span');
-        xySpan.id = 'xyDirect';
-        xySpan.innerText = 'X / Y';
-        xySpan.classList.add('link');
-        shipInfo.appendChild(xySpan);
     };
     //change ship direction
-    const changeShipDir = (direct, shipLength) => {
+    const changeShipDir = (shipDirect, shipLength) => {
         const shipIcon = document.getElementById('shipIcon');
-        if (direct === 'X') {
-            shipIcon.style.gridTemplate = `30px / repeat(${shipLength}, 30px)`;
+        if (shipDirect === 'X') {
+            shipIcon.style.gridTemplate = `20px / repeat(${shipLength}, 20px)`;
         } else {
-            shipIcon.style.gridTemplate = `repeat(${shipLength}, 30px) / 30px`;
+            shipIcon.style.gridTemplate = `repeat(${shipLength}, 20px) / 20px`;
+        }
+    };
+    //show overlay of ship on inputBoard
+    const shipOverlay = (event, shipDirect, shipLength) => {
+        //render placed ships and current mouse position ship, all other spans to white --------------
+        const boardSpans = document.querySelectorAll('#inputBoard > span');
+        boardSpans.forEach(span => {
+            span.classList.remove('bgShip');
+            span.classList.add('bgWhite');
+        });
+        //-------------------------------------
+        const coord = clickCoord(event);
+        let coordX = coord[0];
+        let coordY = coord[1];
+        if (shipDirect === 'X') {
+            for (let i = 0; i < shipLength; i++) {
+                let nextCoordX = coordX + i;
+                const coordString = `${nextCoordX},${coordY}`;
+                const shipElem = document.querySelector(`#inputBoard > [data-coord="${coordString}"]`);
+                shipElem.classList.toggle('bgWhite');
+                shipElem.classList.add('bgShip');
+            }
+        } else {
+            for (let i = 0; i < shipLength; i++) {
+                let nextCoordY = coordY + i;
+                const coordString = `${coordX},${nextCoordY}`;
+                const shipElem = document.querySelector(`#inputBoard > [data-coord="${coordString}"]`);
+                shipElem.classList.toggle('bgWhite');
+                shipElem.classList.add('bgShip');
+            }
         }
     };
 
@@ -260,7 +288,8 @@ const DOM = (() => {
         getPlayerInputs,
         shipInputBox,
         showInputShip,
-        changeShipDir
+        changeShipDir,
+        shipOverlay
     };
 })();
 
