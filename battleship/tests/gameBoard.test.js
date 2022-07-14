@@ -46,17 +46,17 @@ test('All sunk', () => {
 
 test('Carrier placed at [6,4], Y', () => {
     const p1Board = newGameBoard(10);
-    p1Board.placeShip([6,4], 'carrier', 5, 'Y');
+    p1Board.placeShip([6,4], 'Carrier', 5, 'Y');
     expect(p1Board.carrier.shipCoords).toEqual([[6,4], [6,5], [6,6], [6,7], [6,8]]);
 });
 
 test('all ships placed', () => {
     const p1Board = newGameBoard(10);
-    p1Board.placeShip([6,4], 'carrier', 5, 'Y');
-    p1Board.placeShip([1,1], 'battle', 4, 'X');
-    p1Board.placeShip([2,6], 'cruiser', 3, 'Y');
-    p1Board.placeShip([4,6], 'submarine', 3, 'Y');
-    p1Board.placeShip([9,6], 'destroyer', 2, 'X');
+    p1Board.placeShip([6,4], 'Carrier', 5, 'Y');
+    p1Board.placeShip([1,1], 'Battle', 4, 'X');
+    p1Board.placeShip([2,6], 'Cruiser', 3, 'Y');
+    p1Board.placeShip([4,6], 'Submarine', 3, 'Y');
+    p1Board.placeShip([9,6], 'Destroyer', 2, 'X');
     expect(p1Board.carrier.shipCoords).toEqual([[6,4], [6,5], [6,6], [6,7], [6,8]]);
     expect(p1Board.battle.shipCoords).toEqual([[1,1], [2,1], [3,1], [4,1]]);
     expect(p1Board.cruiser.shipCoords).toEqual([[2,6], [2,7], [2,8]]);
@@ -66,13 +66,19 @@ test('all ships placed', () => {
 
 test('ships overlap', () => {
     const p1Board = newGameBoard(10);
-    p1Board.placeShip([6,4], 'carrier', 5, 'Y');
-    expect(p1Board.placeShip([5,5], 'battle', 4, 'X')).toBe(false);
+    p1Board.placeShip([6,4], 'Carrier', 5, 'Y');
+    expect(p1Board.placeShip([5,5], 'Battle', 4, 'X')).toBe(false);
+});
+
+test('same placement', () => {
+    const p1Board = newGameBoard(10);
+    p1Board.placeShip([6,4], 'Carrier', 5, 'Y');
+    expect(p1Board.placeShip([6,4], 'battle', 4, 'Y')).toBe(false);
 });
 
 test('Carrier placed off board', ()=> {
     const p1Board = newGameBoard(10);
-    expect(p1Board.placeShip([10,10], 'carriier', 5, 'X')).toBe(false);
+    expect(p1Board.placeShip([10,10], 'Carriier', 5, 'X')).toBe(false);
 });
 
 test('Carrier hit 4 times', () => {

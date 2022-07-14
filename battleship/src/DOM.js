@@ -186,6 +186,7 @@ const DOM = (() => {
         const inputGrid = document.createElement('div');
         inputGrid.classList.add('gameBoard');
         inputGrid.classList.add('tenPxMargin');
+        inputGrid.classList.add('link');
         inputGrid.id = 'inputBoard';
         for (let i = 0; i < 100; i++) {
             const whiteBox = document.createElement('span');
@@ -270,6 +271,24 @@ const DOM = (() => {
             }
         }
     };
+    //confirm ship placement
+    const confirmShip = () => {
+        document.getElementById('shipIcon').classList.remove('link');
+        document.getElementById('inputBoard').classList.remove('link');
+        const infoDiv = document.getElementById('shipInfo');
+        const conSpan = document.createElement('span');
+        conSpan.id = 'confShip';
+        conSpan.classList.add('link');
+        conSpan.classList.add('confBtn');
+        conSpan.innerText= 'Confirm';
+        infoDiv.appendChild(conSpan);
+        const cancSpan = document.createElement('span');
+        cancSpan.id = 'cancShip';
+        cancSpan.classList.add('link');
+        cancSpan.classList.add('confBtn');
+        cancSpan.innerText = 'Cancel';
+        infoDiv.appendChild(cancSpan);
+    };
 
     return {
         newBoard,
@@ -289,7 +308,8 @@ const DOM = (() => {
         shipInputBox,
         showInputShip,
         changeShipDir,
-        shipOverlay
+        shipOverlay,
+        confirmShip
     };
 })();
 

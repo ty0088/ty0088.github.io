@@ -2,11 +2,11 @@ import { newShip } from "./ship";
 
 const newGameBoard = (gridSize) => {
     //create ship objs
-    const carrier = newShip(5, 'carrier');
-    const battle = newShip(4, 'battle');
-    const cruiser = newShip(3, 'cruiser');
-    const submarine = newShip(3, 'submarine');
-    const destroyer = newShip(2, 'destroyer');
+    const carrier = newShip(5, 'Carrier');
+    const battle = newShip(4, 'Battle');
+    const cruiser = newShip(3, 'Cruiser');
+    const submarine = newShip(3, 'Submarine');
+    const destroyer = newShip(2, 'Destroyer');
     const ships = [carrier, battle, cruiser, submarine, destroyer];
     //check whether chosen coord is a hit or miss and is a new
     let misses = [];
@@ -62,7 +62,6 @@ const newGameBoard = (gridSize) => {
     };
     //check coords of current ship do not overlap with other ships
     const checkOverlap = (shipCoords, checkShips) =>  {
-        //shipCoords.every(coord => !checkShips.every(ship => !searchCoords(ship.shipCoords, coord)));
         return !checkShips.some(ship => shipCoords.some(coord => searchCoords(ship.shipCoords, coord)));
     };
     //check coords fit on board and do not overlap another placed ship
@@ -99,7 +98,7 @@ const newGameBoard = (gridSize) => {
         });
         return count;
     };
-    return { gridSize, carrier, battle, cruiser, submarine, destroyer, misses, receiveAttack, checkAllSunk, placeShip, checkCoord, countHits };
+    return { gridSize, ships, carrier, battle, cruiser, submarine, destroyer, misses, receiveAttack, checkAllSunk, placeShip, checkCoord, countHits };
 };
 
 export { newGameBoard };

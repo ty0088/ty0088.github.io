@@ -74,7 +74,7 @@ body {
 }
 
 .gameBoard.link > span:hover {
-    background-color: rgb(200, 200, 200);
+    background-color: rgb(140, 140, 140);
     transition: all 30ms ease-in;
 }
 
@@ -178,6 +178,10 @@ body {
     margin-bottom: 10px;
 }
 
+#shipInfo > span:last-child {
+    margin-top: -5px;
+}
+
 #shipInstr {
     font-weight: 600;
 }
@@ -201,4 +205,18 @@ body {
 
 #xyDirect:hover {
     color: rgb(100, 100, 100);
+}
+
+.confBtn {
+    font-size: 20px;
+    font-weight: 700;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.confBtn:hover {
+    background-color: rgb(150, 150, 150);
+    border: 2px solid black;
 }
