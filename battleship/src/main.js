@@ -84,7 +84,9 @@ const gameModule =(() =>  {
         currPlayObj = p2Obj;
         currBoardObj = p2Board;
         if (p2Obj.type === 'human') {
-            nextShip();//-------------- this places ship straight away!
+            currShipType = 'Carrier';
+            currShipLength = 5;
+            showCurrShip();
         } else {
             //get computer to place ships
         }
@@ -92,7 +94,6 @@ const gameModule =(() =>  {
     };
     //load current input ship
     const showCurrShip = () => {
-        console.log(currShipType)
         //show curr ship
         DOM.showInputShip(currShipType, currShipLength, currPlayObj.name);
         //add event listener for direction change
@@ -104,20 +105,15 @@ const gameModule =(() =>  {
     };
     //confirm ship placement and load next ship
     const nextShip = () => {
-        console.log('1')
         //place ship
         currBoardObj.placeShip(currCoord, currShipType, currShipLength, shipDirect, 10);
         //remove event listeners
         DOM.removeEventList('confShip', 'click', nextShip)
         DOM.removeEventList('cancShip', 'click', showCurrShip)
-        console.log('2')
         //update current ship variables and render next ship
         //if all ships placed, move to next player or start game
-        console.log(currBoardObj.ships)
-        if (!currBoardObj.ships.every(ship => { //---------------------
-            console.log('3')
+        if (!currBoardObj.ships.every(ship => {
             if (ship.shipCoords.length === 0) {
-                console.log('4')
                 currShipType = ship.type;
                 currShipLength = ship.length;
                 return false;
@@ -129,26 +125,13 @@ const gameModule =(() =>  {
             if (currPlayObj === p1Obj) {
                 getP2Ships();
             } else {
-                //remove input box and load game ---------------
-                loadGame(10);
+                loadGame();
             }
         }
     };
     //load game boards
     const loadGame = () =>  {
-        //place ships in code, DOM input to be added
-        //-------------------------------------------
-        // p1Board.placeShip([6,4], 'carrier', 5, 'Y');
-        // p1Board.placeShip([1,1], 'battle', 4, 'X');
-        // p1Board.placeShip([2,6], 'cruiser', 3, 'Y');
-        // p1Board.placeShip([4,6], 'submarine', 3, 'Y');
-        // p1Board.placeShip([9,6], 'destroyer', 2, 'X');
-        // p2Board.placeShip([5,10], 'carrier', 5, 'X');
-        // p2Board.placeShip([3,5], 'battle', 4, 'X');
-        // p2Board.placeShip([2,7], 'cruiser', 3, 'Y');
-        // p2Board.placeShip([8,1], 'submarine', 3, 'X');
-        // p2Board.placeShip([9,8], 'destroyer', 2, 'X');
-        //-------------------------------------------
+        document.getElementById('shipInputBox').remove();
         //render game board and start button
         DOM.newBoard(p1Obj, p2Obj);
         DOM.addGameBtn('Start Game');
