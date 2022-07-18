@@ -12,23 +12,22 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
-    <div id="pageContainer">
-        <div id="gameInfo">
+    <div id="pageContainer" class="flexColumnCenter">
+        <div id="gameInfo" class="flexColumnCenter">
             <span id="title">Battleship</span>
-            <span id="instructions">Player 1's turn</span>
+            <span id="instructions"></span>
         </div>
-        <div id="boardContainer">
-            <div class="boardBox">
+        <div id="boardContainer" class="flexRowCenter">
+            <div class="boardBox flexColumnCenter">
                 <div class="gameBoard" id="p1Board"></div>
                 <span class="playerName"></span>
             </div>
-            <div class="boardBox">
+            <div class="boardBox flexColumnCenter">
                 <div class="gameBoard" id="p2Board"></div>
                 <span class="playerName"></span>
             </div>
         </div>
         <div id="buttonContainer"></div>
-        <div id="popUp"></div>
     </div>
     
     <script src="main.bundle.js"></script>

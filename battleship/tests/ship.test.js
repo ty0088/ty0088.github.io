@@ -1,22 +1,25 @@
-import { createShip } from "../src/ship.js";
+import { newShip } from '../src/ship';
 
-test('Carrier at [6,4] in direction Y', () => {
-    const ship1 = createShip(5, [[6,4], [6,5], [6,6], [6,7], [6,8]])
-    expect(ship1.isSunk()).toBe(false);
+test('Add ship coordinates', () => {
+    const carrier = newShip(5, 'carrier');
+    carrier.addShipCoords([[6,4], [6,5], [6,6], [6,7], [6,8]]);
+    expect(carrier.shipCoords).toEqual([[6,4], [6,5], [6,6], [6,7], [6,8]]);
 });
 
 test('Carrier hit at position 1', () => {
-    const ship1 = createShip(5, [[6,4], [6,5], [6,6], [6,7], [6,8]]);
-    ship1.hit(1);
-    expect(ship1.hitInfo).toEqual({1: 'hit', 2: 'ok', 3: 'ok', 4: 'ok', 5: 'ok'});
+    const carrier = newShip(5, 'carrier');
+    carrier.addShipCoords([[6,4], [6,5], [6,6], [6,7], [6,8]]);
+    carrier.hit([6,4]);
+    expect(carrier.hitInfo).toEqual({1: 'hit', 2: 'ok', 3: 'ok', 4: 'ok', 5: 'ok'});
 });
 
 test('Carrier is sunk', () => {
-    const ship1 = createShip(5, [[6,4], [6,5], [6,6], [6,7], [6,8]]);
-    ship1.hit(1);
-    ship1.hit(2);
-    ship1.hit(3);
-    ship1.hit(4);
-    ship1.hit(5);
-    expect(ship1.isSunk()).toEqual(true);
+    const carrier = newShip(5, 'carrier');
+    carrier.addShipCoords([[6,4], [6,5], [6,6], [6,7], [6,8]]);
+    carrier.hit([6,4]);
+    carrier.hit([6,5]);
+    carrier.hit([6,6]);
+    carrier.hit([6,7]);
+    carrier.hit([6,8]);
+    expect(carrier.isSunk()).toBe(true);
 });
