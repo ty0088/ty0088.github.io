@@ -81,7 +81,16 @@ const DOM = (() => {
                     // coordsArr.push(coord);
                     const coordString = `${coord[0]},${coord[1]}`;
                     document.querySelector(`#${board} > [data-coord="${coordString}"]`).classList.add('bgShip');
+                    document.querySelector(`#${board} > [data-coord="${coordString}"]`).classList.remove('bgOverlay');
             });
+        });
+    };
+    //remove all ships from game board
+    const removeShips = (board) => {
+        const boardSpans = document.querySelectorAll(`#${board} > .bgShip`);
+        boardSpans.forEach(span => {
+            span.classList.remove('bgShip');
+            span.classList.add('bgWhite');
         });
     };
     //render hit
@@ -231,6 +240,7 @@ const DOM = (() => {
             whiteBox.classList.add('bgShip');
             shipIcon.appendChild(whiteBox);
         }
+        document.getElementById('inputBoard').classList.add('link');
     };
     //change ship direction
     const changeShipDir = (shipDirect, shipLength) => {
@@ -243,13 +253,13 @@ const DOM = (() => {
     };
     //show overlay of ship on inputBoard
     const shipOverlay = (event, shipDirect, shipLength) => {
-        //render placed ships and current mouse position ship, all other spans to white --------------
-        const boardSpans = document.querySelectorAll('#inputBoard > span');
+        //remove previous overlay
+        const boardSpans = document.querySelectorAll('#inputBoard > .bgOverlay');
         boardSpans.forEach(span => {
-            span.classList.remove('bgShip');
+            span.classList.remove('bgOverlay');
             span.classList.add('bgWhite');
         });
-        //-------------------------------------
+        //add current overlay
         const coord = clickCoord(event);
         let coordX = coord[0];
         let coordY = coord[1];
@@ -258,19 +268,20 @@ const DOM = (() => {
                 let nextCoordX = coordX + i;
                 const coordString = `${nextCoordX},${coordY}`;
                 const shipElem = document.querySelector(`#inputBoard > [data-coord="${coordString}"]`);
-                shipElem.classList.toggle('bgWhite');
-                shipElem.classList.add('bgShip');
+                shipElem.classList.remove('bgWhite');
+                shipElem.classList.add('bgOverlay');
             }
         } else {
             for (let i = 0; i < shipLength; i++) {
                 let nextCoordY = coordY + i;
                 const coordString = `${coordX},${nextCoordY}`;
                 const shipElem = document.querySelector(`#inputBoard > [data-coord="${coordString}"]`);
-                shipElem.classList.toggle('bgWhite');
-                shipElem.classList.add('bgShip');
+                shipElem.classList.remove('bgWhite');
+                shipElem.classList.add('bgOverlay');
             }
         }
     };
+    //render ship on input board
     //confirm ship placement
     const confirmShip = () => {
         document.getElementById('shipIcon').classList.remove('link');
@@ -300,6 +311,7 @@ const DOM = (() => {
         addLinkClass,
         removeLinkClass,
         showShips,
+        removeShips,
         boardHit,
         boardMiss,
         clickCoord,

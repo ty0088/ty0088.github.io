@@ -74,8 +74,8 @@ body {
 }
 
 .gameBoard.link > span:hover {
-    background-color: rgb(140, 140, 140);
-    transition: all 30ms ease-in;
+    background-color: rgb(180, 180, 180);
+    transition: all 300ms ease-in;
 }
 
 .gameBoard > span > span {
@@ -95,6 +95,10 @@ body {
 
 .bgShip {
     background-color: rgb(140, 140, 140);
+}
+
+.bgOverlay {
+    background-color: rgb(180, 180, 180);
 }
 
 #buttonContainer {

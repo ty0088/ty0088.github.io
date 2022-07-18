@@ -18,6 +18,7 @@ const gameModule =(() =>  {
     let currCoord = [];
     let currPlayObj = {};
     let currBoardObj = {};
+    const boardShips = [['Carrier', 5], ['Battle', 4], ['Cruiser', 3], ['Submarine', 3], ['Destroyer', 2]];
 
     //event handlers
     const changeShipClick = () => {
@@ -51,16 +52,16 @@ const gameModule =(() =>  {
         DOM.newEventList('inputForm', 'submit', getPlayer1);
     };
     //get player 1's name and type values from DOM, then get player 2's details
-    const getPlayer1 = (e) => {
+    const getPlayer1 = (event) => {
         DOM.removeEventList('inputForm', 'submit', getPlayer1);
-        [p1name, p1type] = DOM.getPlayerInputs(e);
+        [p1name, p1type] = DOM.getPlayerInputs(event);
         DOM.playerInputBox('Player 2');
         DOM.newEventList('inputForm', 'submit', getPlayer2);
     };
     //get player 2's name and type, create player objects and get ship locations
-    const getPlayer2 = (e) => {
+    const getPlayer2 = (event) => {
         DOM.removeEventList('inputForm', 'submit', getPlayer2);
-        [p2name, p2type] = DOM.getPlayerInputs(e);
+        [p2name, p2type] = DOM.getPlayerInputs(event);
         p1Obj = newPlayer(p1name, p1type);
         p2Obj = newPlayer(p2name, p2type);
         getP1Ships();
@@ -74,26 +75,41 @@ const gameModule =(() =>  {
             DOM.shipInputBox();
             showCurrShip();
         } else {
-            //get computer to place ships
+            getCompShips();
+            getP2Ships();
         }
-        //getShipInputs
-        //getP2Ships
     };
     //get player 2's ship locations
     const getP2Ships = () => {
         currPlayObj = p2Obj;
         currBoardObj = p2Board;
+        DOM.removeShips('inputBoard');
         if (p2Obj.type === 'human') {
+            DOM.shipInputBox();
             currShipType = 'Carrier';
             currShipLength = 5;
             showCurrShip();
         } else {
-            //get computer to place ships
+            getCompShips();
+            loadGame();
         }
 
     };
+    //get computer ships
+    const getCompShips = () => {
+        currBoardObj.ships.forEach(ship => {
+            currShipType = ship.type;
+            currShipLength = ship.length;
+            [currCoord, shipDirect] = currPlayObj.shipStartPos(10);
+            while (!currBoardObj.checkCoord(currCoord, currShipType, currShipLength, shipDirect)) {
+                [currCoord, shipDirect] = currPlayObj.shipStartPos(10);
+            }
+            currBoardObj.placeShip(currCoord, currShipType, currShipLength, shipDirect, 10);
+        });
+    };
     //load current input ship
     const showCurrShip = () => {
+        shipDirect = 'X';
         //show curr ship
         DOM.showInputShip(currShipType, currShipLength, currPlayObj.name);
         //add event listener for direction change
@@ -105,8 +121,10 @@ const gameModule =(() =>  {
     };
     //confirm ship placement and load next ship
     const nextShip = () => {
-        //place ship
+        //place ship on game board
         currBoardObj.placeShip(currCoord, currShipType, currShipLength, shipDirect, 10);
+        //render placed ship
+        DOM.showShips('inputBoard', currBoardObj);
         //remove event listeners
         DOM.removeEventList('confShip', 'click', nextShip)
         DOM.removeEventList('cancShip', 'click', showCurrShip)
@@ -122,6 +140,7 @@ const gameModule =(() =>  {
         })) {
             showCurrShip();
         } else {
+            document.getElementById('shipInputBox').remove();
             if (currPlayObj === p1Obj) {
                 getP2Ships();
             } else {
@@ -131,7 +150,6 @@ const gameModule =(() =>  {
     };
     //load game boards
     const loadGame = () =>  {
-        document.getElementById('shipInputBox').remove();
         //render game board and start button
         DOM.newBoard(p1Obj, p2Obj);
         DOM.addGameBtn('Start Game');
@@ -232,7 +250,6 @@ const gameModule =(() =>  {
         DOM.removeEventList('p2Board', 'click', p2Attack);
         DOM.removeLinkClass('p1Board');
         DOM.removeLinkClass('p2Board');
-        //render restart button
         DOM.addGameBtn('Restart');
         DOM.newEventList('gameButton', 'click', () => newGame(gridSize));
     };
