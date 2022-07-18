@@ -18,7 +18,6 @@ const gameModule =(() =>  {
     let currCoord = [];
     let currPlayObj = {};
     let currBoardObj = {};
-    const boardShips = [['Carrier', 5], ['Battle', 4], ['Cruiser', 3], ['Submarine', 3], ['Destroyer', 2]];
 
     //event handlers
     const changeShipClick = () => {
