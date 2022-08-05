@@ -22,22 +22,30 @@ class App extends Component {
           studyTitle: 'Engineering',
           results: 'Distinction'
         },
-        {
-          id: Date.now()+1,
-          schoolName: 'UCL',
-          eduType: 'MSc',
-          studyTitle: 'Science',
-          results: 'Merit'
-        },
       ],
+      edObj: {
+        id: Date.now(),
+        schoolName: '',
+        eduType: '',
+        studyTitle: '',
+        results: ''
+      },
       practical: [
         {
-          companyName: '',
-          position: '',
-          date: '',
-          resp: ''
-        }
+          id: Date.now(),
+          companyName: 'BAE',
+          position: 'Engineer',
+          date: '2011-2015',
+          resp: 'Engineering'
+        },
       ],
+      practObj: {
+        id: Date.now(),
+        companyName: '',
+        position: '',
+        date: '',
+        resp: ''
+      },
       editState: {
         edit: true,
         submit: false
@@ -48,7 +56,8 @@ class App extends Component {
     this.eduPractChange = this.eduPractChange.bind(this);
     this.submitClick = this.submitClick.bind(this);
     this.editClick = this.editClick.bind(this);
-    this.deleteObj = this.deleteObj.bind(this)
+    this.deleteObj = this.deleteObj.bind(this);
+    this.addObj = this.addObj.bind(this);
   }
 
   personChange(event) {
@@ -87,13 +96,23 @@ class App extends Component {
         edit: true,
         submit: false
       }
-    })
+    });
   }
 
   deleteObj(event) {
     const elemID = parseInt(event.target.getAttribute('data-id'));
-    this.setState({education: this.state.education.filter(obj => obj.id !== elemID)});
+    const compType = event.target.getAttribute('data-comp');
+    this.setState({[compType]: this.state[compType].filter(obj => obj.id !== elemID)});
   }
+
+  addObj(event) {
+    const compType = event.target.getAttribute('data-comp');
+    let obj = (compType === 'education' ? 'edObj' : 'practObj');
+    this.setState(prevState => ({
+      [compType]: [...prevState[compType], {...this.state[obj], id: Date.now()}]
+    }));
+  }
+
 
   render () {
     const { personal, education, practical, editState } = this.state;
@@ -102,9 +121,9 @@ class App extends Component {
       <div id="container">
         <h1>CV App</h1>
         <Personal persObj={personal} personChange={this.personChange} editState={editState} />
-        <Education eduObj={education} eduPractChange={this.eduPractChange} editState={editState} delClick={this.deleteObj}/>
-        <Practical practObj={practical} />
-        <div className="section1">
+        <Education eduObj={education} eduPractChange={this.eduPractChange} editState={editState} delClick={this.deleteObj} addClick={this.addObj} />
+        <Practical practObj={practical} eduPractChange={this.eduPractChange} editState={editState} delClick={this.deleteObj} addClick={this.addObj} />
+        <div className="section1 flexRow">
             <button id="editBtn" disabled={editState.edit} onClick={this.editClick}>Edit</button>
             <button id="submitBtn" disabled={editState.submit} onClick={this.submitClick}>Submit</button>
         </div>

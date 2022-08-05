@@ -28,3 +28,11 @@
 .section2 {
     margin-top: 10px;
 }
+
+button {
+    display:flex;
+    flex-direction: row;
+    width: 60px;
+    justify-content: center;
+    margin: 2px;
+}

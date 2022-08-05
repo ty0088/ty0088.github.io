@@ -3,11 +3,9 @@ import "../Style/style.css";
 
 class Education extends Component {
 
-    render() {
-        const { eduObj, eduPractChange, delClick, editState } = this.props;
-        let elem;
-        if (editState.edit) {
-            elem = 
+    editElem() {
+        const { eduObj, eduPractChange, delClick, addClick } = this.props;
+        return (
             <div className="flexColumn section1" id="education">
                 <h2>Education</h2>
                 {eduObj.map(obj => {
@@ -30,15 +28,19 @@ class Education extends Component {
                                 <input type="text" data-comp="education" data-input="results" data-id={obj.id} defaultValue={obj.results} onChange={eduPractChange}/>
                             </label>
                             <div >
-                                <button data-id={obj.id} onClick={delClick}>Delete</button>
+                                <button data-id={obj.id} onClick={delClick} data-comp="education">Delete</button>
                             </div>
                         </div>
                     );
                 })}
-                <button>Add</button>
+                <button onClick={addClick} data-comp="education">Add</button>
             </div> 
-        } else {
-            elem =
+        );
+    }
+
+    subElem() {
+        const { eduObj } = this.props;
+        return (
             <div className="flexColumn section1" id="education">
                 <h2>Education</h2>
                 {eduObj.map(obj => {
@@ -52,8 +54,16 @@ class Education extends Component {
                     );
                 })}
             </div>
-        }
+        );
+    }
 
+    render() {
+        let elem;
+        if (this.props.editState.edit) {
+            elem = this.editElem();
+        } else {
+            elem = this.subElem();
+        }
         return elem;
     }
 }

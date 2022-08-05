@@ -2,11 +2,70 @@ import React, { Component } from "react";
 import "../Style/style.css";
 
 class Practical extends Component {
- render() {
-    return (
-        <div></div>
-    );
- }
+
+    editElem() {
+        const { practObj, eduPractChange, delClick, addClick } = this.props;
+        return(
+            <div className="flexColumn section1" id="practical">
+                <h2>Practical</h2>
+                {practObj.map(obj => {
+                    return (
+                        <div className="flexColumn section2" key={obj.id}>
+                            <label>
+                                Company Name: 
+                                <input type="text" data-comp="practical" data-input="companyName" data-id={obj.id} defaultValue={obj.companyName} onChange={eduPractChange}/>
+                            </label>
+                            <label>
+                                Position Title: 
+                                <input type="text" data-comp="practical" data-input="position" data-id={obj.id} defaultValue={obj.position} onChange={eduPractChange}/>
+                            </label>
+                            <label>
+                                Dates Worked: 
+                                <input type="text" data-comp="practical" data-input="date" data-id={obj.id} defaultValue={obj.date} onChange={eduPractChange}/>
+                            </label>
+                            <label>
+                                Responsibilities: 
+                                <input type="text" data-comp="practical" data-input="resp" data-id={obj.id} defaultValue={obj.resp} onChange={eduPractChange}/>
+                            </label>
+                            <div >
+                                <button data-id={obj.id} onClick={delClick} data-comp="practical">Delete</button>
+                            </div>
+                        </div>
+                    );
+                })}
+                <button onClick={addClick} data-comp="practical">Add</button>
+            </div>
+        );
+    }
+
+    subElem() {
+        const { practObj } = this.props;
+        return(
+            <div className="flexColumn section1" id="practical">
+                <h2>Practical</h2>
+                {practObj.map(obj => {
+                    return (
+                        <div className="flexColumn section2" key={obj.id}>
+                            <h4>{obj.companyName}</h4>
+                            <span>Position Title: {obj.position}</span>
+                            <span>Dates Worked: {obj.date}</span>
+                            <span>Responsibilities: {obj.resp}</span>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+
+    render() {
+        let elem;
+        if (this.props.editState.edit) {
+            elem = this.editElem();
+        } else {
+            elem = this.subElem();
+        }
+        return elem;
+    }
 }
 
 export default Practical;

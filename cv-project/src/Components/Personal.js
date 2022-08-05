@@ -42,9 +42,8 @@ class Personal extends Component {
     }
 
     render() {
-        const { editState } = this.props;
         let elem;
-        if (editState.edit) {
+        if (this.props.editState.edit) {
             elem = this.editElem();
         } else {
             elem = this.subElem();
