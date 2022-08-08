@@ -28,12 +28,12 @@ class Education extends Component {
                                 <input type="text" data-comp="education" data-input="results" data-id={obj.id} defaultValue={obj.results} onChange={eduPractChange}/>
                             </label>
                             <div >
-                                <button data-id={obj.id} onClick={delClick} data-comp="education">Delete</button>
+                                <button className="noPrint" data-id={obj.id} onClick={delClick} data-comp="education">Delete</button>
                             </div>
                         </div>
                     );
                 })}
-                <button onClick={addClick} data-comp="education">Add</button>
+                <button className="noPrint" onClick={addClick} data-comp="education">Add</button>
             </div> 
         );
     }

@@ -25,15 +25,15 @@ class Practical extends Component {
                             </label>
                             <label>
                                 Responsibilities: 
-                                <input type="text" data-comp="practical" data-input="resp" data-id={obj.id} defaultValue={obj.resp} onChange={eduPractChange}/>
+                                <textarea rows="4" data-comp="practical" data-input="resp" data-id={obj.id} defaultValue={obj.resp} onChange={eduPractChange}/>
                             </label>
                             <div >
-                                <button data-id={obj.id} onClick={delClick} data-comp="practical">Delete</button>
+                                <button className="noPrint" data-id={obj.id} onClick={delClick} data-comp="practical">Delete</button>
                             </div>
                         </div>
                     );
                 })}
-                <button onClick={addClick} data-comp="practical">Add</button>
+                <button className="noPrint" onClick={addClick} data-comp="practical">Add</button>
             </div>
         );
     }
@@ -49,7 +49,7 @@ class Practical extends Component {
                             <h4>{obj.companyName}</h4>
                             <span>Position Title: {obj.position}</span>
                             <span>Dates Worked: {obj.date}</span>
-                            <span>Responsibilities: {obj.resp}</span>
+                            <span>Responsibilities: <br></br>{obj.resp}</span>
                         </div>
                     );
                 })}

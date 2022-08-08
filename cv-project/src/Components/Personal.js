@@ -14,7 +14,7 @@ class Personal extends Component {
                 </label>
                 <label>
                     Address: 
-                    <input type="text" data-input="address" defaultValue={persObj.address} onChange={personChange}/>
+                    <textarea rows="3" data-input="address" defaultValue={persObj.address} onChange={personChange}/>
                 </label>
                 <label>
                     Email: 

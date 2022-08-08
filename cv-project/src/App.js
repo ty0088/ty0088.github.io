@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Personal from "./Components/Personal";
-import Education from "./Components/Education";
-import Practical from "./Components/Practical";
+import Main from "./Components/mainComps";
 import "./Style/style.css";
 
 class App extends Component {
@@ -113,19 +111,18 @@ class App extends Component {
     }));
   }
 
-
   render () {
     const { personal, education, practical, editState } = this.state;
-
     return (
       <div id="container">
-        <h1>CV App</h1>
-        <Personal persObj={personal} personChange={this.personChange} editState={editState} />
-        <Education eduObj={education} eduPractChange={this.eduPractChange} editState={editState} delClick={this.deleteObj} addClick={this.addObj} />
-        <Practical practObj={practical} eduPractChange={this.eduPractChange} editState={editState} delClick={this.deleteObj} addClick={this.addObj} />
-        <div className="section1 flexRow">
-            <button id="editBtn" disabled={editState.edit} onClick={this.editClick}>Edit</button>
-            <button id="submitBtn" disabled={editState.submit} onClick={this.submitClick}>Submit</button>
+        <h1 className="noPrint">CV App</h1>
+        <h1>{personal.name}</h1>
+        <Main persObj={personal} eduObj={education} practObj={practical} editState={editState} personChange={this.personChange}
+          eduPractChange={this.eduPractChange} delClick={this.deleteObj} addClick={this.addObj}/>
+        <div className="section1 flexRow noPrint">
+            <button disabled={editState.submit} onClick={this.submitClick}>Submit</button>
+            <button disabled={editState.edit} onClick={this.editClick}>Edit</button>
+            <button disabled={editState.edit} onClick={window.print}>Print</button>
         </div>
       </div>
     );
