@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Readex Pro', sans-serif;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+#container {
+    margin: 10px;
+    border: 1px solid #000000;
+    padding: 10px;
+}
+
+.section1 {
+    margin-top: 20px;
+}
+
+.section2 {
+    margin-top: 5px;
+}
+
+label {
+    display: flex;
+    margin-bottom: 3px;
+}
+
+textarea {
+    padding: 3px;
+}
+
+button {
+    display:flex;
+    flex-direction: row;
+    width: 60px;
+    justify-content: center;
+    margin: 2px;
+}
+
+span {
+    white-space: pre-wrap;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+@media print {
+    .noPrint {
+        display: none;
+    }
+}
