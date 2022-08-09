@@ -1,0 +1,35 @@
+.container {
+    display: table;
+    justify-content: center;
+    margin: 25px auto 25px auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+#display {
+    height: 50px;
+    width: 500px;
+    font-size: 40px;
+    text-align: center;
+    align-items: center;
+    border: 1px solid black;
+    background-color: #c8cec7;
+}
+
+#button_grid {
+    display: grid;
+    margin-top: 10px;
+    grid-template-columns: repeat(5, 100px);
+    grid-template-rows: repeat(4, 50px);
+}
+
+button {
+    font-size: 25px;
+    margin: 3px;
+}
+
+#equals {
+    grid-column-start: 5;
+    grid-column-end: 6;
+    grid-row-start: 2;
+    grid-row-end: 6;
+}

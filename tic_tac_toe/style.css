@@ -1,0 +1,41 @@
+.gridContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+    grid-template: repeat(3, 200px) / repeat(3, 200px);
+    box-sizing: border-box;
+    background-color: black;
+    grid-gap: 2px;
+}
+
+.cell {
+    display: flex;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    font-size: 180px;
+    font-weight: 700;
+}
+
+.playerContainer {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#announce {
+    text-align: center;
+    font-size: 150px;
+    font-weight: 700;
+}
+
+#player {
+    font-size: 20px;
+    font-weight: 600;
+}
+
