@@ -35,3 +35,7 @@ https://ty0088.github.io/image_slider/
 https://ty0088.github.io/weather_app/
 
 https://ty0088.github.io/battleship/
+
+https://ty0088.github.io/cv_app/
+
+https://ty0088.github.io/cv_app_func/
