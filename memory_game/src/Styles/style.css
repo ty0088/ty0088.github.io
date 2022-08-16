@@ -5,26 +5,18 @@
     font-family: 'Orbitron', sans-serif;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 #container {
-    margin: 10px;
+    margin: 10px auto 10px auto;
     border: 1px solid black;
     height: 752px;
     width: 1002px;
     display: grid;
     grid-template-rows: 100px 1fr 50px;
-    grid-template-columns: minmax(600px, calc(100vw - 20px));
 }
 
 #header {
     display: grid;
-    grid-template-columns: 1fr minmax(150px, 200px);
-    height: 100%;
+    grid-template-columns: 1fr 200px;
     align-items: center;
     padding-left: 10px;
 }
@@ -74,4 +66,63 @@ img {
 .winLose {
     font-size: 100px;
     font-weight: 900;
+    text-align: center;
+}
+
+@media only screen and (max-width: 800px) {
+    #container {
+        margin: 10px auto 10px auto;
+        height: 100%;
+        width: 100vw;
+        grid-template-rows: 100px 1fr 50px;
+        grid-template-columns: 100vw;
+    }
+    
+    #header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    #scores {
+        font-size: 15px;
+    }
+    
+    #cards {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+    }
+
+    #footer {
+        justify-content: flex-start;
+    }
+}
+
+@media only screen and (max-height: 650px) {
+    #container {
+        margin: 10px auto 10px auto;
+        height: 100%;
+        width: 100vw;
+        grid-template-rows: 100px 1fr 50px;
+        grid-template-columns: 100vw;
+    }
+    
+    #header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    #scores {
+        font-size: 15px;
+    }
+    
+    #cards {
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+
+    #footer {
+        justify-content: flex-start;
+    }
 }
