@@ -6,8 +6,8 @@ const Header = (props) => {
 
     return (
         <div id="header">
-            <h1>Memory Games</h1>
-            <Scores scores={props.scores}/>
+            <h1>Memory Game</h1>
+            <Scores score={props.score} highScore={props.highScore} />
         </div>
     );
 };

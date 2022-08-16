@@ -5,8 +5,8 @@ const Scores = (props) => {
 
     return (
         <div id="scores">
-            <span>High Score: {props.scores.highScore}</span>
-            <span>Score: {props.scores.score}</span>
+            <span>High Score: {props.highScore}</span>
+            <span>Score: {props.score}</span>
         </div>
     );
 };
