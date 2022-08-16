@@ -31,7 +31,7 @@ const App = () => {
     return () => {
       document.removeEventListener('click', cardClick);
     };
-  }, [cards]);
+  }, [cards, count, score]);
 
   useEffect(() => {
     if (score > highScore) {
@@ -41,7 +41,7 @@ const App = () => {
     if (score === 20) {
      setGameStat({win: true, lose: false});
     }
-  }, [score])
+  }, [score, highScore])
 
   const clickStart = () => {
     setBtnState({start: true, restart: false});

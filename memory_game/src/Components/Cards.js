@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import '../Styles/style.css';
 import img1 from '../Images/1.jpg';
 import img2 from '../Images/2.jpg';
@@ -53,7 +53,7 @@ const Cards = (props) => {
                     let imgSrc = 'img' + num;
                     return (
                         <div key={num} className="card">
-                            <img src={imgIndex[imgSrc]} data-id={num}></img>
+                            <img src={imgIndex[imgSrc]} data-id={num} alt={`cat ${num}`}></img>
                         </div>
                     );
                 })}
