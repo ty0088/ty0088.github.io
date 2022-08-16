@@ -38,7 +38,7 @@ const App = () => {
       setHighScore(score);
     }
 
-    if (score === 2) {
+    if (score === 20) {
      setGameStat({win: true, lose: false});
     }
   }, [score])
