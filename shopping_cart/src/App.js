@@ -1,23 +1,28 @@
-import React from 'react';
+import React,  {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Nav from './Components/Nav';
+import Layout from './Components/Layout';
 import Home from './Components/Home';
 import Shop from './Components/Shop';
 import Cart from './Components/Cart';
 
 const App = () => {
+  const [currPage, setCurrPage] = useState('Home');
+
+  const currPageClick = (page) => {
+    setCurrPage(page);
+  };
+
   return (
-    <div>
-      <Nav />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="shop" element={<Shop />} />
-            <Route path="Cart" element={<Cart />} />
-          <Route />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick}/>}>
+          <Route index path="/shopping_cart/home"element={<Home />} />
+          <Route path="shop" element={<Shop />}>
+            <Route path="cart" element={<Cart />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
