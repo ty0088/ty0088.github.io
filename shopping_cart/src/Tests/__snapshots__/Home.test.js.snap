@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home component Snapshot 1`] = `
+<div>
+  <div
+    class="flex-column-centre"
+  >
+    <p>
+      Welcome to Cats'R'Us Store.
+    </p>
+    <p>
+      Cats'R'Us Store is the leading cat store for all kinds of cats.
+    </p>
+    <p>
+      C'mon, let's Purrrr!
+    </p>
+    <br />
+    <img
+      alt="cat sitting on a stool"
+      src="home.jpg"
+    />
+  </div>
+</div>
+`;

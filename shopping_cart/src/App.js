@@ -7,7 +7,7 @@ import Cart from './Components/Cart';
 import Contact from './Components/Contact';
 
 const App = () => {
-  const [currPage, setCurrPage] = useState('Home');
+  const [currPage, setCurrPage] = useState('- Home');
 
   const currPageClick = (page) => {
     setCurrPage(page);
