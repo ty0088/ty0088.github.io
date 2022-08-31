@@ -2,9 +2,39 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Familjen Grotesk', sans-serif;
 }
 
-a {
+#main-container {
+    display: grid;
+    grid-template-rows: 50px 1fr;
+    grid-template-columns: 2fr 1fr;
+    height: 100vh;
+    width: 100vw;
+    padding: 10px;
+}
+
+#header-container {
+    display: flex;
+    align-items: center;
+}
+
+#nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#nav-container > a {
     /* all: unset; */
     text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#content-container {
+    margin-top: 10px;
+    grid-column-start: 1;
+    grid-column-end: 3;
 }

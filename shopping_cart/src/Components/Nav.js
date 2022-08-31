@@ -4,9 +4,10 @@ import '../Style/style.css';
 
 const Nav = (props) => {
     return (
-        <nav>
-            <Link to="/shopping_cart/home" onClick={() => props.currPageClick('Home')}>Home</Link>{" "}
-            <Link to="/shopping_cart/shop" onClick={() => props.currPageClick('Shop')}>Shop</Link>
+        <nav id='nav-container'>
+            <Link to="/shopping_cart/" onClick={() => props.currPageClick('- Home')}>Home</Link>
+            <Link to="/shopping_cart/shop" onClick={() => props.currPageClick('- Shop')}>Shop</Link>
+            <Link to="/shopping_cart/contact" onClick={() => props.currPageClick('- Contact Us')}>Contact Us</Link>
         </nav>
     );
 };

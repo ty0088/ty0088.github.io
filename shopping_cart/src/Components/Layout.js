@@ -5,13 +5,13 @@ import '../Style/style.css';
 
 const Layout = (props) => {
     return (
-        <div>
-            <header>
-                <h1>My Store</h1>
-                <h2>{props.currPage}</h2>
+        <div id='main-container'>
+            <header id='header-container'>
+                <h1>Cats'R'Us Store&nbsp;</h1>
+                <h1>{props.currPage}</h1>
             </header>
             <Nav currPageClick={props.currPageClick}/>
-            <main>
+            <main id='content-container'>
                 <Outlet />
             </main>
         </div>
