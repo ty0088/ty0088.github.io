@@ -3,7 +3,7 @@
 exports[`Home component Snapshot 1`] = `
 <div>
   <div
-    class="flex-column-centre"
+    class="flex-column-center"
   >
     <p>
       Welcome to Cats'R'Us Store.

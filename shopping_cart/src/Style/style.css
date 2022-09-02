@@ -5,15 +5,21 @@
     font-family: 'Familjen Grotesk', sans-serif;
 }
 
-.flex-column-centre  {
+.flex-column-center  {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.flex-row-centre  {
+.flex-row-center  {
     display: flex;
     flex-direction: row;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -23,6 +29,7 @@
     grid-template-columns: 2fr 1fr;
     height: 100vh;
     width: 100vw;
+    min-width: 680px;
     padding: 10px;
 }
 
@@ -53,4 +60,30 @@
     margin-top: 10px;
     grid-column-start: 1;
     grid-column-end: 3;
+}
+
+#shop-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow-y: auto;
+}
+
+.shop-item {
+    margin: 10px;
+    padding: 10px;
+    height: 350px;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 3px;
+    justify-content: center;
+}
+
+.shop-item > img {
+    max-width: 280px;
+    max-height: 250px;
+}
+
+.shop-item > * {
+    margin-bottom: 5px;
 }

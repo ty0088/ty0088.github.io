@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
@@ -23,6 +23,6 @@ describe("Layout component", () => {
     it("Nav link click", () => {
         render(<Layout currPage={currPage} currPageClick={currPageClick}/>);
         userEvent.click(screen.getByRole("button"));
-        expect(currPageClick).toHaveBeenCalledTqimes(1);
+        expect(currPageClick).toHaveBeenCalledTimes(1);
     });
 });

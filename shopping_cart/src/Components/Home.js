@@ -4,7 +4,7 @@ import homeImg from '../Images/home.jpg'
 
 const Home = () => {
     return (
-        <div  className='flex-column-centre'>
+        <div  className='flex-column-center'>
             <p>Welcome to Cats'R'Us Store.</p>
             <p>Cats'R'Us Store is the leading cat store for all kinds of cats.</p>
             <p>C'mon, let's Purrrr!</p>

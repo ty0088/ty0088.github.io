@@ -1,0 +1,162 @@
+{
+    "1": {
+        "name": "Mittens",
+        "type": "American Wirehair",
+        "sex": "Male",
+        "price": "£600",
+        "age": "2 Months",
+        "likes": "Purring, eating, playing"
+    },
+    "2": {
+        "name": "Bob",
+        "type": "American Wirehair",
+        "sex": "Male",
+        "price": "£400",
+        "age": "2 Years",
+        "likes": "Belly rubs, chasing things, being outdoors"
+    },
+    "3": {
+        "name": "Dolly",
+        "type": "European Shorthair",
+        "sex": "Female",
+        "price": "£300",
+        "age": "6 Years",
+        "likes": "Zoomies, jumping, high spaces"
+    },
+    "4": {
+        "name": "Katniss",
+        "type": "European Shorthair",
+        "sex": "Female",
+        "price": "£600",
+        "age": "1 Month",
+        "likes": "boxes, blankets, head pats"
+    },
+    "5": {
+        "name": "Missy",
+        "type": "British Shorthair",
+        "sex": "female",
+        "price": "£1000",
+        "age": "3 Years",
+        "likes": "Grooming, relaxing, attention"
+    },
+    "6": {
+        "name": "Boulder",
+        "type": "European Shorthair",
+        "sex": "Male",
+        "price": "£500",
+        "age": "2 Months",
+        "likes": "Posing, back rubs, face rubs"
+    },
+    "7": {
+        "name": "Johnboy",
+        "type": "European Shorthair",
+        "sex": "Male",
+        "price": "£800",
+        "age": "1 Year",
+        "likes": "Chasing things, zoomies, being cheeky"
+    },
+    "8": {
+        "name": "Biscuit",
+        "type": "American Shorthair",
+        "sex": "Female",
+        "price": "£500",
+        "age": "3 Years",
+        "likes": "Perching, looking outside, belly rubs"
+    },
+    "9": {
+        "name": "John Wayne",
+        "type": "American Shorthair",
+        "sex": "Male",
+        "price": "£700",
+        "age": "2 Years",
+        "likes": "Catching things, talking, being filmed"
+    },
+    "10": {
+        "name": "Tabby",
+        "type": "European Shorthair",
+        "sex": "Male",
+        "price": "£200",
+        "age": "7 Years",
+        "likes": "Sitting on laps, back scratches, watching TV"
+    },
+    "11": {
+        "name": "Anna",
+        "type": "Russian Blue",
+        "sex": "Female",
+        "price": "£1000",
+        "age": "1 Year",
+        "likes": "Head rubs, eating, attention"
+    },
+    "12": {
+        "name": "Josie",
+        "type": "American Shorthair",
+        "sex": "Female",
+        "price": "£700",
+        "age": "2 Years",
+        "likes": "Being cosy, snuggling, cuddles"
+    },
+    "13": {
+        "name": "Simba",
+        "type": "Toyger",
+        "sex": "Male",
+        "price": "£2500",
+        "age": "1 Month",
+        "likes": "Hide and seek, belly rubs, playing"
+    },
+    "14": {
+        "name": "Milo",
+        "type": "European Shorthair",
+        "sex": "Male",
+        "price": "£900",
+        "age": "2 Months",
+        "likes": "Blankets, watching TV, chin rubs"
+    },
+    "15": {
+        "name": "Luna",
+        "type": "European Shorthair",
+        "sex": "Female",
+        "price": "£900",
+        "age": "1 Year",
+        "likes": "Walks, outdoors, back scratches"
+    },
+    "16": {
+        "name": "Ginger",
+        "type": "American Wirehair",
+        "sex": "Female",
+        "price": "£1000",
+        "age": "1 Year",
+        "likes": "Walks, outdoors, back scratches"
+    },
+    "17": {
+        "name": "Lumi",
+        "type": "Chartreux",
+        "sex": "Male",
+        "price": "£5000",
+        "age": "1 Year",
+        "likes": "Belly rubs, toys, lap sitting"
+    },
+    "18": {
+        "name": "Loki",
+        "type": "European Shorthair",
+        "sex": "Male",
+        "price": "£7000",
+        "age": "1 Year",
+        "likes": "Sleeping, cuddles, belly rubs"
+    },
+    "19": {
+        "name": "Chin Chin",
+        "type": "Burmilla",
+        "sex": "Female",
+        "price": "£3000",
+        "age": "5 Months",
+        "likes": "High spaces, jumping, zoomies"
+    },
+    "20": {
+        "name": "Rajah",
+        "type": "Bengal Tiger",
+        "sex": "Male",
+        "price": "£20,000",
+        "age": "4 Year",
+        "likes": "Long runs, large spaces, head scratches"
+    }
+}
