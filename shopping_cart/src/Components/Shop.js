@@ -1,9 +1,9 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
 import '../Style/style.css';
+import CartIcon from './CartICon';
 
 const Shop = (props) => {
-    const { shopItems } = props;
+    const { shopItems, cartQty, clickAddBtn } = props;
     const itemQty = Object.keys(shopItems).length;
     
     return (
@@ -18,7 +18,7 @@ const Shop = (props) => {
                             <img src={require(`../Images/${num}.jpg`)} alt='cat 1'></img>
                             <span>Name: {catName}</span>
                             <span>Price: {catPrice}</span>
-                            <button>Add to Cart</button>
+                            <button onClick={clickAddBtn}>Add to Cart</button>
                         </div>
                     );
                 })
@@ -27,8 +27,7 @@ const Shop = (props) => {
                 itemQty === 0 && 
                 <p>Sorry, we have no cats in stock! Please check back later</p>
             }
-            <Link to="/shopping_cart/shop/cart">Cart</Link>
-            <Outlet />
+            <CartIcon cartQty={cartQty}/>
         </div>
     );
 };

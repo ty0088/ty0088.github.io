@@ -3,6 +3,15 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Familjen Grotesk', sans-serif;
+    max-width: 100%;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 700,
+  'GRAD' 0,
+  'opsz' 48
 }
 
 .flex-column-center  {
@@ -86,4 +95,41 @@
 
 .shop-item > * {
     margin-bottom: 5px;
+}
+
+.cart-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+}
+
+.cart-icon:hover {
+    /* cursor: pointer; */
+    background-color: rgb(80, 80, 80);
+}
+
+.qty-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    right: 60px;
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+    background-color: rgb(170, 170, 170);
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
 }
