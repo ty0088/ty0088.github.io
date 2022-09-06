@@ -13,6 +13,7 @@ const App = () => {
   const [shopItems, setShopItems] = useState({});
   const [cartQty, setCartQty] = useState(0);
   const [cart, setCart] = useState([]);
+  let priceSortFlag = true;
 
   //change page header when navigating
   const currPageClick = (page) => {
@@ -43,26 +44,29 @@ const App = () => {
         }
       }));
     });
+    setCartQty(cart.reduce((prev, curr) => prev + curr['qty'], 0));
   }, [cart]);
 
   //add item to cart, update qty and cart state
   const addToCart = (e) =>  {
-    setCartQty(prevQty => prevQty + 1); //------update to get qty from cart state
     const itemNum = e.target.parentNode.getAttribute('data-id');
     const itemPrice = shopItems[itemNum]['price'];
     if (checkCartHasItem(cart, itemNum)) {
-      setCart(cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': obj['qty'] + 1, 'total price': obj['unit price']  * (obj['qty'] + 1) }) : obj)));
+      setCart(cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': obj['qty'] + 1, 'price': itemPrice  * (obj['qty'] + 1) }) : obj)));
     } else {
       setCart([
         ...cart,
         {
           'item num': itemNum,
           'qty': 1,
-          'unit price': itemPrice,
-          'total price': itemPrice
+          'price': itemPrice
         }
       ]);
     }
+  };
+
+  const priceSort = () => {
+    //change shopItems and items.json to array.
   };
 
   return (
@@ -70,7 +74,7 @@ const App = () => {
       <Routes>
         <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick}/>}>
           <Route index element={<Home />} />
-          <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart}/>}>
+          <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort}/>}>
             <Route path="cart" element={<Cart />} />
           </Route>
           <Route path="contact" element={<Contact />} />

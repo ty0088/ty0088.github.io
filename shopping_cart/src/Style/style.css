@@ -32,6 +32,15 @@
     align-items: center;
 }
 
+.link {
+    cursor: pointer;
+}
+
+.link:hover {
+    color: rgb(80, 80, 80);
+    font-weight: 700;
+}
+
 #main-container {
     display: grid;
     grid-template-rows: 50px 1fr;
@@ -63,12 +72,23 @@
 
 #nav-container > a:hover {
     font-weight: 700;
+    color: rgb(80, 80, 80);
 }
 
 #content-container {
     margin-top: 10px;
     grid-column-start: 1;
     grid-column-end: 3;
+}
+
+#shop-container {
+    display: grid;
+    grid-template-rows: 30px 1fr;
+    align-items: center;
+}
+
+#sort-bar {
+    margin-left: 10px;
 }
 
 #shop-grid {
@@ -86,6 +106,7 @@
     border: 1px solid black;
     border-radius: 3px;
     justify-content: center;
+    flex: 1 1 auto;
 }
 
 .shop-item > img {
@@ -114,7 +135,6 @@
 }
 
 .cart-icon:hover {
-    /* cursor: pointer; */
     background-color: rgb(80, 80, 80);
 }
 
