@@ -66,7 +66,20 @@ const App = () => {
   };
 
   const priceSort = () => {
-    //change shopItems and items.json to array.
+    let shopItemsArray = [];
+    let shopItemsObj = {};
+    if (priceSortFlag) {
+      shopItemsArray = Object.entries(shopItems).sort((a, b) => a[1]['price'] - b[1]['price']);
+    } else {
+      shopItemsArray = Object.entries(shopItems).sort((a, b) => b[1]['price'] - a[1]['price']);
+    }
+    priceSortFlag = !priceSortFlag;
+    console.log(shopItemsArray)
+    shopItemsArray.forEach(item => {
+      shopItemsObj[item[0]] = item[1];
+    });
+    console.log(shopItemsObj)
+    //change shopItems and Items.json to array
   };
 
   return (
