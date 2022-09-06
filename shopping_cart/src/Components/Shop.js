@@ -19,7 +19,12 @@ const Shop = (props) => {
                             <img src={require(`../Images/${num}.jpg`)} alt='cat 1'></img>
                             <span>Name: {catName}</span>
                             <span>Price: {currency}{catPrice}</span>
-                            <button onClick={clickAddBtn}>Add to Cart</button>
+                            {shopItems[num]['available'] &&
+                                <button onClick={clickAddBtn}>Add to Cart</button>
+                            }
+                            {!shopItems[num]['available'] &&
+                                <span>Sorry, {catName} is currently unavailable</span>
+                            }
                         </div>
                     );
                 })

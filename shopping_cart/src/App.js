@@ -6,18 +6,13 @@ import Shop from './Components/Shop';
 import Cart from './Components/Cart';
 import Contact from './Components/Contact';
 import items from './Items/items.json';
-import { checkCart } from "./Components/modules";
+import { checkCartHasItem } from "./Components/modules";
 
 const App = () => {
   const [currPage, setCurrPage] = useState('- Home');
   const [shopItems, setShopItems] = useState({});
   const [cartQty, setCartQty] = useState(0);
-  const [cart, setCart] = useState([
-    {
-      'item num': '1',
-      'qty': 1
-    }
-  ]);
+  const [cart, setCart] = useState([]);
 
   //change page header when navigating
   const currPageClick = (page) => {
@@ -29,17 +24,45 @@ const App = () => {
     setShopItems(items);
   }, []);
 
+  //update item availability when cart is updated
+  useEffect(() => {
+    cart.forEach(cartItem => {
+      const itemNum = cartItem['item num'];
+      setShopItems(prevState => ({
+        ...prevState,
+        [itemNum]: {
+          "name": prevState[itemNum]['name'],
+          "type": prevState[itemNum]["type"],
+          "sex": prevState[itemNum]["sex"],
+          "currency": prevState[itemNum]["currency"],
+          "price": prevState[itemNum]["price"],
+          "age": prevState[itemNum]["age"],
+          "likes": prevState[itemNum]["likes"],
+          "qty available": prevState[itemNum]["qty available"],
+          "available": (prevState[itemNum]["qty available"] - cartItem['qty'] > 0 ? true : false)
+        }
+      }));
+    });
+  }, [cart]);
+
   //add item to cart, update qty and cart state
   const addToCart = (e) =>  {
-    setCartQty(prevQty => prevQty + 1);
+    setCartQty(prevQty => prevQty + 1); //------update to get qty from cart state
     const itemNum = e.target.parentNode.getAttribute('data-id');
-    console.log(shopItems[itemNum]);
-    //add item number to cart
-    //if item number already exists, increase qty by 1
-    if (checkCart) {
-      setCart(prevState => cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': prevState[0]['qty'] + 1 }) : obj)));
+    const itemPrice = shopItems[itemNum]['price'];
+    if (checkCartHasItem(cart, itemNum)) {
+      setCart(cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': obj['qty'] + 1, 'total price': obj['unit price']  * (obj['qty'] + 1) }) : obj)));
+    } else {
+      setCart([
+        ...cart,
+        {
+          'item num': itemNum,
+          'qty': 1,
+          'unit price': itemPrice,
+          'total price': itemPrice
+        }
+      ]);
     }
-    console.log(cart)
   };
 
   return (

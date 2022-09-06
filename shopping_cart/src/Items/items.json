@@ -6,7 +6,9 @@
         "currency": "£",
         "price": 600,
         "age": "2 Months",
-        "likes": "Purring, eating, playing"
+        "likes": "Purring, eating, playing",
+        "qty available" : 1,
+        "available": true
     },
     "2": {
         "name": "Bob",
@@ -15,7 +17,9 @@
         "currency": "£",
         "price": 400,
         "age": "2 Years",
-        "likes": "Belly rubs, chasing things, being outdoors"
+        "likes": "Belly rubs, chasing things, being outdoors",
+        "qty available" : 1,
+        "available": true
     },
     "3": {
         "name": "Dolly",
@@ -24,7 +28,9 @@
         "currency": "£",
         "price": 300,
         "age": "6 Years",
-        "likes": "Zoomies, jumping, high spaces"
+        "likes": "Zoomies, jumping, high spaces",
+        "qty available" : 1,
+        "available": true
     },
     "4": {
         "name": "Katniss",
@@ -33,7 +39,9 @@
         "currency": "£",
         "price": 600,
         "age": "1 Month",
-        "likes": "boxes, blankets, head pats"
+        "likes": "boxes, blankets, head pats",
+        "qty available" : 1,
+        "available": true
     },
     "5": {
         "name": "Missy",
@@ -42,7 +50,9 @@
         "currency": "£",
         "price": 1000,
         "age": "3 Years",
-        "likes": "Grooming, relaxing, attention"
+        "likes": "Grooming, relaxing, attention",
+        "qty available" : 1,
+        "available": true
     },
     "6": {
         "name": "Boulder",
@@ -51,7 +61,9 @@
         "currency": "£",
         "price": 500,
         "age": "2 Months",
-        "likes": "Posing, back rubs, face rubs"
+        "likes": "Posing, back rubs, face rubs",
+        "qty available" : 1,
+        "available": true
     },
     "7": {
         "name": "Johnboy",
@@ -60,7 +72,9 @@
         "currency": "£",
         "price": 800,
         "age": "1 Year",
-        "likes": "Chasing things, zoomies, being cheeky"
+        "likes": "Chasing things, zoomies, being cheeky",
+        "qty available" : 1,
+        "available": true
     },
     "8": {
         "name": "Biscuit",
@@ -69,7 +83,9 @@
         "currency": "£",
         "price": 500,
         "age": "3 Years",
-        "likes": "Perching, looking outside, belly rubs"
+        "likes": "Perching, looking outside, belly rubs",
+        "qty available" : 1,
+        "available": true
     },
     "9": {
         "name": "John Wayne",
@@ -78,7 +94,9 @@
         "currency": "£",
         "price": 700,
         "age": "2 Years",
-        "likes": "Catching things, talking, being filmed"
+        "likes": "Catching things, talking, being filmed",
+        "qty available" : 1,
+        "available": true
     },
     "10": {
         "name": "Tabby",
@@ -87,7 +105,9 @@
         "currency": "£",
         "price": 200,
         "age": "7 Years",
-        "likes": "Sitting on laps, back scratches, watching TV"
+        "likes": "Sitting on laps, back scratches, watching TV",
+        "qty available" : 1,
+        "available": true
     },
     "11": {
         "name": "Anna",
@@ -96,7 +116,9 @@
         "currency": "£",
         "price": 1000,
         "age": "1 Year",
-        "likes": "Head rubs, eating, attention"
+        "likes": "Head rubs, eating, attention",
+        "qty available" : 1,
+        "available": true
     },
     "12": {
         "name": "Josie",
@@ -105,7 +127,9 @@
         "currency": "£",
         "price": 700,
         "age": "2 Years",
-        "likes": "Being cosy, snuggling, cuddles"
+        "likes": "Being cosy, snuggling, cuddles",
+        "qty available" : 1,
+        "available": true
     },
     "13": {
         "name": "Simba",
@@ -114,7 +138,9 @@
         "currency": "£",
         "price": 2500,
         "age": "1 Month",
-        "likes": "Hide and seek, belly rubs, playing"
+        "likes": "Hide and seek, belly rubs, playing",
+        "qty available" : 1,
+        "available": true
     },
     "14": {
         "name": "Milo",
@@ -123,7 +149,9 @@
         "currency": "£",
         "price": 900,
         "age": "2 Months",
-        "likes": "Blankets, watching TV, chin rubs"
+        "likes": "Blankets, watching TV, chin rubs",
+        "qty available" : 1,
+        "available": true
     },
     "15": {
         "name": "Luna",
@@ -132,7 +160,9 @@
         "currency": "£",
         "price": 900,
         "age": "1 Year",
-        "likes": "Walks, outdoors, back scratches"
+        "likes": "Walks, outdoors, back scratches",
+        "qty available" : 1,
+        "available": true
     },
     "16": {
         "name": "Ginger",
@@ -141,7 +171,9 @@
         "currency": "£",
         "price": 1000,
         "age": "1 Year",
-        "likes": "Walks, outdoors, back scratches"
+        "likes": "Walks, outdoors, back scratches",
+        "qty available" : 1,
+        "available": true
     },
     "17": {
         "name": "Lumi",
@@ -150,7 +182,9 @@
         "currency": "£",
         "price": 5000,
         "age": "1 Year",
-        "likes": "Belly rubs, toys, lap sitting"
+        "likes": "Belly rubs, toys, lap sitting",
+        "qty available" : 1,
+        "available": true
     },
     "18": {
         "name": "Loki",
@@ -159,7 +193,9 @@
         "currency": "£",
         "price": 7000,
         "age": "1 Year",
-        "likes": "Sleeping, cuddles, belly rubs"
+        "likes": "Sleeping, cuddles, belly rubs",
+        "qty available" : 1,
+        "available": true
     },
     "19": {
         "name": "Chin Chin",
@@ -168,7 +204,9 @@
         "currency": "£",
         "price": 3000,
         "age": "5 Months",
-        "likes": "High spaces, jumping, zoomies"
+        "likes": "High spaces, jumping, zoomies",
+        "qty available" : 1,
+        "available": true
     },
     "20": {
         "name": "Rajah",
@@ -177,6 +215,8 @@
         "currency": "£",
         "price": 20000,
         "age": "4 Year",
-        "likes": "Long runs, large spaces, head scratches"
+        "likes": "Long runs, large spaces, head scratches",
+        "qty available" : 1,
+        "available": true
     }
 }
