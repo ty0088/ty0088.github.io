@@ -9,22 +9,22 @@ const Shop = (props) => {
     return (
         <div id='shop-grid'>
             {itemQty > 0 &&
-                Object.entries(shopItems).map(([key, values], i) => {
+                Object.entries(shopItems).map(([key, values]) => {
                     const num = key;
                     const catName = values['name'];
                     const catPrice = values['price'];
+                    const currency = values['currency'];
                     return (
-                        <div key={i} data-id={num} className='shop-item flex-column-center'>
+                        <div key={num} data-id={num} className='shop-item flex-column-center'>
                             <img src={require(`../Images/${num}.jpg`)} alt='cat 1'></img>
                             <span>Name: {catName}</span>
-                            <span>Price: {catPrice}</span>
+                            <span>Price: {currency}{catPrice}</span>
                             <button onClick={clickAddBtn}>Add to Cart</button>
                         </div>
                     );
                 })
             }
-            {
-                itemQty === 0 && 
+            {itemQty === 0 && 
                 <p>Sorry, we have no cats in stock! Please check back later</p>
             }
             <CartIcon cartQty={cartQty}/>
