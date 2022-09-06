@@ -1,6 +1,5 @@
-[
-    {   
-        "item num": "1",
+{
+    "1": {
         "name": "Mittens",
         "type": "American Wirehair",
         "sex": "Male",
@@ -11,8 +10,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "2",
+    "2": {
         "name": "Bob",
         "type": "American Wirehair",
         "sex": "Male",
@@ -23,8 +21,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "3",
+    "3": {
         "name": "Dolly",
         "type": "European Shorthair",
         "sex": "Female",
@@ -35,8 +32,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "4",
+    "4": {
         "name": "Katniss",
         "type": "European Shorthair",
         "sex": "Female",
@@ -47,8 +43,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "5",
+    "5": {
         "name": "Missy",
         "type": "British Shorthair",
         "sex": "female",
@@ -59,8 +54,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "6",
+    "6": {
         "name": "Boulder",
         "type": "European Shorthair",
         "sex": "Male",
@@ -71,8 +65,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "7",
+    "7": {
         "name": "Johnboy",
         "type": "European Shorthair",
         "sex": "Male",
@@ -83,8 +76,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "8",
+    "8": {
         "name": "Biscuit",
         "type": "American Shorthair",
         "sex": "Female",
@@ -95,8 +87,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "9",
+    "9": {
         "name": "John Wayne",
         "type": "American Shorthair",
         "sex": "Male",
@@ -107,8 +98,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "10",
+    "10": {
         "name": "Tabby",
         "type": "European Shorthair",
         "sex": "Male",
@@ -119,8 +109,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "11",
+    "11": {
         "name": "Anna",
         "type": "Russian Blue",
         "sex": "Female",
@@ -131,8 +120,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "12",
+    "12": {
         "name": "Josie",
         "type": "American Shorthair",
         "sex": "Female",
@@ -143,8 +131,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "13",
+    "13": {
         "name": "Simba",
         "type": "Toyger",
         "sex": "Male",
@@ -155,8 +142,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "14",
+    "14": {
         "name": "Milo",
         "type": "European Shorthair",
         "sex": "Male",
@@ -167,8 +153,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "15",
+    "15": {
         "name": "Luna",
         "type": "European Shorthair",
         "sex": "Female",
@@ -179,8 +164,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "16",
+    "16": {
         "name": "Ginger",
         "type": "American Wirehair",
         "sex": "Female",
@@ -191,8 +175,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "17",
+    "17": {
         "name": "Lumi",
         "type": "Chartreux",
         "sex": "Male",
@@ -203,8 +186,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "18",
+    "18": {
         "name": "Loki",
         "type": "European Shorthair",
         "sex": "Male",
@@ -215,8 +197,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "19",
+    "19": {
         "name": "Chin Chin",
         "type": "Burmilla",
         "sex": "Female",
@@ -227,8 +208,7 @@
         "qty available" : 1,
         "available": true
     },
-    {
-        "item num": "20",
+    "20": {
         "name": "Rajah",
         "type": "Bengal Tiger",
         "sex": "Male",
@@ -239,4 +219,4 @@
         "qty available" : 1,
         "available": true
     }
-]
+}

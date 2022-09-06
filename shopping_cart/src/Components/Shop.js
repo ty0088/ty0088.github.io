@@ -3,31 +3,28 @@ import '../Style/style.css';
 import CartIcon from './CartICon';
 
 const Shop = (props) => {
-    const { shopItems, cartQty, clickAddBtn, clickPriceSort } = props;
+    const { shopItems, cartQty, clickAddBtn, clickPriceSort, clickNameSort } = props;
     const itemQty = Object.keys(shopItems).length;
     
     return (
         <div id='shop-container'>
             <div id='sort-bar'>Sort by:&nbsp;
-                <span className='link' onClick={clickPriceSort}>Price</span>
+                <span className='link' onClick={clickPriceSort}>Price</span>&nbsp;
+                <span className='link' onClick={clickNameSort}>Name</span>
             </div>
             <div id='shop-grid'>
                 {itemQty > 0 &&
-                    Object.entries(shopItems).map(([key, values]) => {
-                        const num = key;
-                        const catName = values['name'];
-                        const catPrice = values['price'];
-                        const currency = values['currency'];
+                    shopItems.map((item, i) => {
                         return (
-                            <div key={num} data-id={num} className='shop-item flex-column-center'>
-                                <img src={require(`../Images/${num}.jpg`)} alt='cat 1'></img>
-                                <span>Name: {catName}</span>
-                                <span>Price: {currency}{catPrice}</span>
-                                {shopItems[num]['available'] &&
+                            <div key={i} data-id={item['item num']} className='shop-item flex-column-center'>
+                                <img src={require(`../Images/${item['item num']}.jpg`)} alt='cat 1'></img>
+                                <span>Name: {item['name']}</span>
+                                <span>Price: {item['currency']}{item['price']}</span>
+                                {item['available'] &&
                                     <button onClick={clickAddBtn}>Add to Cart</button>
                                 }
-                                {!shopItems[num]['available'] &&
-                                    <span>Sorry, {catName} is currently unavailable</span>
+                                {!item['available'] &&
+                                    <span>Sorry, {item['name']} is currently unavailable</span>
                                 }
                             </div>
                         );

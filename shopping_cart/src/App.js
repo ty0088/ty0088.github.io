@@ -10,47 +10,30 @@ import { checkCartHasItem } from "./Components/modules";
 
 const App = () => {
   const [currPage, setCurrPage] = useState('- Home');
-  const [shopItems, setShopItems] = useState({});
+  const [shopItems, setShopItems] = useState([]);
   const [cartQty, setCartQty] = useState(0);
   const [cart, setCart] = useState([]);
-  let priceSortFlag = true;
+  const [priceSortFlag, setPriceSortFlag]  = useState(true);
+  const [nameSortFlag, setNameSortFlag]  = useState(true);
 
-  //change page header when navigating
   const currPageClick = (page) => {
     setCurrPage(page);
   };
 
-  //load in shop items on initial render
   useEffect(() => {
     setShopItems(items);
   }, []);
 
-  //update item availability when cart is updated
-  useEffect(() => {
-    cart.forEach(cartItem => {
-      const itemNum = cartItem['item num'];
-      setShopItems(prevState => ({
-        ...prevState,
-        [itemNum]: {
-          "name": prevState[itemNum]['name'],
-          "type": prevState[itemNum]["type"],
-          "sex": prevState[itemNum]["sex"],
-          "currency": prevState[itemNum]["currency"],
-          "price": prevState[itemNum]["price"],
-          "age": prevState[itemNum]["age"],
-          "likes": prevState[itemNum]["likes"],
-          "qty available": prevState[itemNum]["qty available"],
-          "available": (prevState[itemNum]["qty available"] - cartItem['qty'] > 0 ? true : false)
-        }
-      }));
+  useEffect(() => { 
+    cart.forEach(item => {
+      setShopItems(prevState => prevState.map(obj => (obj['item num'] === item['item num'] ? Object.assign(obj, {"available": (obj["qty available"] - item['qty'] > 0 ? true : false)}) : obj)));
     });
     setCartQty(cart.reduce((prev, curr) => prev + curr['qty'], 0));
   }, [cart]);
 
-  //add item to cart, update qty and cart state
   const addToCart = (e) =>  {
     const itemNum = e.target.parentNode.getAttribute('data-id');
-    const itemPrice = shopItems[itemNum]['price'];
+    const itemPrice = shopItems.find(item => item['item num'] === itemNum)['price'];
     if (checkCartHasItem(cart, itemNum)) {
       setCart(cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': obj['qty'] + 1, 'price': itemPrice  * (obj['qty'] + 1) }) : obj)));
     } else {
@@ -66,20 +49,42 @@ const App = () => {
   };
 
   const priceSort = () => {
-    let shopItemsArray = [];
-    let shopItemsObj = {};
+    let shopItemSortArr = [...shopItems];
     if (priceSortFlag) {
-      shopItemsArray = Object.entries(shopItems).sort((a, b) => a[1]['price'] - b[1]['price']);
+      shopItemSortArr.sort((a,b) => a['price'] - b['price']);
     } else {
-      shopItemsArray = Object.entries(shopItems).sort((a, b) => b[1]['price'] - a[1]['price']);
+      shopItemSortArr.sort((a,b) => b['price'] - a['price']);
     }
-    priceSortFlag = !priceSortFlag;
-    console.log(shopItemsArray)
-    shopItemsArray.forEach(item => {
-      shopItemsObj[item[0]] = item[1];
-    });
-    console.log(shopItemsObj)
-    //change shopItems and Items.json to array
+    setShopItems(shopItemSortArr);
+    setPriceSortFlag(!priceSortFlag);
+  };
+
+  const nameSort = () => {
+    let shopItemSortArr = [...shopItems];
+    if (nameSortFlag) {
+      console.log('1')
+      shopItemSortArr.sort((a,b) => {
+        if (a['name'] < b['name']) {
+          return -1;
+        }
+        if (a['name'] > b['name']) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      shopItemSortArr.sort((a,b) => {
+        if (a['name'] > b['name']) {
+          return -1;
+        }
+        if (a['name'] < b['name']) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    setShopItems(shopItemSortArr);
+    setNameSortFlag(!nameSortFlag);
   };
 
   return (
@@ -87,7 +92,7 @@ const App = () => {
       <Routes>
         <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick}/>}>
           <Route index element={<Home />} />
-          <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort}/>}>
+          <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort} clickNameSort={nameSort}/>}>
             <Route path="cart" element={<Cart />} />
           </Route>
           <Route path="contact" element={<Contact />} />
