@@ -1,11 +1,16 @@
 import React from 'react';
 import { Outlet } from "react-router-dom";
 import Nav from './Nav';
+import Cart from './Cart';
 import '../Style/style.css';
 
 const Layout = (props) => {
+    const { showCart, clickCloseCart, cartItems } = props;
     return (
         <div id='main-container'>
+            {showCart && 
+                <Cart clickCloseCart={clickCloseCart} cartItems={cartItems}/>
+            }
             <header id='header-container'>
                 <h1>Cats'R'Us Store&nbsp;</h1>
                 <h1>{props.currPage}</h1>

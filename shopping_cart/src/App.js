@@ -1,11 +1,11 @@
-import React,  {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from './Components/Layout';
 import Home from './Components/Home';
 import Shop from './Components/Shop';
-import Cart from './Components/Cart';
 import Contact from './Components/Contact';
 import items from './Items/items.json';
+import Cart from './Components/Cart';
 import { checkCartHasItem } from "./Components/modules";
 
 const App = () => {
@@ -15,6 +15,7 @@ const App = () => {
   const [cart, setCart] = useState([]);
   const [priceSortFlag, setPriceSortFlag]  = useState(true);
   const [nameSortFlag, setNameSortFlag]  = useState(true);
+  const [cartFlag, setCartFlag] = useState(false);
 
   const currPageClick = (page) => {
     setCurrPage(page);
@@ -57,6 +58,7 @@ const App = () => {
     }
     setShopItems(shopItemSortArr);
     setPriceSortFlag(!priceSortFlag);
+    setNameSortFlag(true);
   };
 
   const nameSort = () => {
@@ -85,16 +87,23 @@ const App = () => {
     }
     setShopItems(shopItemSortArr);
     setNameSortFlag(!nameSortFlag);
+    setPriceSortFlag(true);
+  };
+
+  const showCart = () => {
+    setCartFlag(true)
+  };
+
+  const closeCart = () => {
+    setCartFlag(false)
   };
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick}/>}>
+        <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick} showCart={cartFlag} clickCloseCart={closeCart}  cartItems={cart}/>}>
           <Route index element={<Home />} />
-          <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort} clickNameSort={nameSort}/>}>
-            <Route path="cart" element={<Cart />} />
-          </Route>
+          <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort} clickNameSort={nameSort} clickCart={showCart}/>} />
           <Route path="contact" element={<Contact />} />
         </Route>
       </Routes>
