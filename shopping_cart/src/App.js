@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from './Components/Layout';
 import Home from './Components/Home';
 import Shop from './Components/Shop';
@@ -16,7 +16,6 @@ const App = () => {
   const [priceSortFlag, setPriceSortFlag]  = useState(true);
   const [nameSortFlag, setNameSortFlag]  = useState(true);
   const [cartFlag, setCartFlag] = useState(false);
-  // const navigate = useNavigate();
 
   const currPageClick = (page) => {
     setCurrPage(page);
@@ -36,9 +35,9 @@ const App = () => {
   const addToCart = (e) =>  {
     const itemNum = e.target.parentNode.getAttribute('data-id');
     const itemPrice = shopItems.find(item => item['item num'] === itemNum)['price'];
-    if (cart.some((obj) => obj['item num'] === itemNum)) {
+    if (cart.some(obj => obj['item num'] === itemNum) && shopItems.find(item => item['item num'] === itemNum)['available']) {
       setCart(cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': obj['qty'] + 1, 'price': itemPrice  * (obj['qty'] + 1) }) : obj)));
-    } else {
+    } else if (shopItems.find(item => item['item num'] === itemNum)['available']) {
       setCart([
         ...cart,
         {
@@ -50,19 +49,17 @@ const App = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const clickItem = (e) => {
-  //     navigate(`/shopping_cart/${e.target.parentNode.getAttribute('data-id')}`);
-  //   };
-
-  //   const picElems = document.querySelectorAll('#shop-grid img');
-  //   picElems.forEach(elem => elem.addEventListener('click', clickItem));
-  //   picElems.forEach(elem => elem.classList.add('link'));
-
-  //   return () =>  {
-  //     picElems.forEach(elem => elem.removeEventListener('click', clickItem));
-  //   }
-  // });
+  const removeItem = (e) => {
+    const itemNum = e.target.parentNode.getAttribute('data-id');
+    const cartQty = cart.find(item => item['item num'] === itemNum)['qty'];
+    const itemPrice = shopItems.find(item => item['item num'] === itemNum)['price'];
+    if (cartQty - 1 === 0) {
+      setCart(cart.filter(item => item['item num'] !== itemNum));
+      setShopItems(prevState => prevState.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, {"available": true}) : obj)));
+    } else {
+      setCart(cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': obj['qty'] - 1, 'price': itemPrice  * (obj['qty'] - 1) }) : obj)));
+    }
+  }
 
   const priceSort = () => {
     let shopItemSortArr = [...shopItems];
@@ -112,7 +109,7 @@ const App = () => {
     setCartFlag(false)
   };
 
-  const deleteCartItem = (e) => {
+  const removeAllItem = (e) => {
     const itemNum = e.target.parentNode.getAttribute('data-id');
     setCart(cart.filter(item => item['item num'] !== itemNum));
     setShopItems(prevState => prevState.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, {"available": true}) : obj)));
@@ -121,7 +118,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick} showCart={cartFlag} clickCloseCart={closeCart}  cartItems={cart} shopItems={shopItems} clickDeleteItem={deleteCartItem}/>}>
+        <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick} showCart={cartFlag} clickCloseCart={closeCart}  cartItems={cart} shopItems={shopItems} clickDeleteItem={removeAllItem} clickAddBtn={addToCart} clickRemoveItem={removeItem}/>}>
           <Route index element={<Home />} />
           <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort} clickNameSort={nameSort} clickCart={showCart}/>} />
           <Route path="shop/:itemnum" element={<ItemDetail shopItems={shopItems}/>} />

@@ -5,7 +5,7 @@ import CartIcon from './CartICon';
 
 const Shop = (props) => {
     const { shopItems, cartQty, clickAddBtn, clickPriceSort, clickNameSort, clickCart } = props;
-    const itemQty = Object.keys(shopItems).length;
+    const itemQty = shopItems.length;
     const navigate = useNavigate();
 
     useEffect(() => {

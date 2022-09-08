@@ -8,7 +8,7 @@ const ItemDetail = (props) => {
     const item = shopItems.find(obj => obj['item num'] === itemnum);
     return (
         <div id="detail-container">
-            <span class="material-symbols-outlined link" onClick={() => navigate(-1)}>arrow_back</span>
+            <span className="material-symbols-outlined link" onClick={() => navigate(-1)}>arrow_back</span>
             {item === undefined && 
                 <span>Could not find item!</span>
             }

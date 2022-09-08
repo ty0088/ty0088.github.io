@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../Style/style.css';
 
 const Cart = (props) => {
-    const { clickCloseCart, cartItems, shopItems, clickDeleteItem } = props;
+    const { clickCloseCart, cartItems, shopItems, clickDeleteItem, clickAddBtn, clickRemoveItem } = props;
     const totalPrice = cartItems.reduce((prev, curr) => curr['price'] + prev, 0);
     const navigate = useNavigate();
     return (
@@ -32,7 +32,11 @@ const Cart = (props) => {
                                 <div key={item['item num']} data-id={item['item num']} className='item-row flex-row-center'>
                                     <span className='flex-column-center'>{item['item num']} - {itemName}</span>
                                     <span className='flex-column-center'><img src={require(`../Images/${item['item num']}.jpg`)} alt={`cat ${item['item num']}`} className='item-img'></img></span>
-                                    <span className='flex-column-center'>{item['qty']}</span>
+                                    <div className='flex-center' id='qty-div' data-id={item['item num']}>
+                                        <span className="material-symbols-outlined link" onClick={clickRemoveItem}>remove</span>
+                                        <span>{item['qty']}</span>
+                                        <span className="material-symbols-outlined link" onClick={clickAddBtn}>add</span>
+                                    </div>
                                     <span className='flex-column-center'>£{item['price']}</span>
                                     <span className="material-symbols-outlined link" onClick={clickDeleteItem}>delete</span>
                                 </div>

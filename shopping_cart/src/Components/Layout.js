@@ -5,11 +5,11 @@ import Cart from './Cart';
 import '../Style/style.css';
 
 const Layout = (props) => {
-    const { showCart, clickCloseCart, cartItems, shopItems, clickDeleteItem } = props;
+    const { showCart, clickCloseCart, cartItems, shopItems, clickDeleteItem, clickAddBtn, clickRemoveItem } = props;
     return (
         <div id='main-container'>
             {showCart && 
-                <Cart clickCloseCart={clickCloseCart} cartItems={cartItems} shopItems={shopItems} clickDeleteItem={clickDeleteItem}/>
+                <Cart clickCloseCart={clickCloseCart} cartItems={cartItems} shopItems={shopItems} clickDeleteItem={clickDeleteItem} clickAddBtn={clickAddBtn} clickRemoveItem={clickRemoveItem}/>
             }
             <header id='header-container'>
                 <h1>Cats'R'Us Store&nbsp;</h1>

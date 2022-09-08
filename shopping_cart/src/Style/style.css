@@ -232,3 +232,8 @@
     padding: 0 5px 2px 5px;
     font-size: 16px;
 }
+
+#qty-div > span.material-symbols-outlined {
+    font-size: 16px;
+    padding: 0 5px 0 5px;
+}
