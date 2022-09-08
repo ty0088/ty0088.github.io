@@ -5,7 +5,7 @@ import Cart from './Cart';
 import '../Style/style.css';
 
 const Layout = (props) => {
-    const { showCart, clickCloseCart, cartItems, shopItems, clickDeleteItem, clickCheckOut } = props;
+    const { showCart, clickCloseCart, cartItems, shopItems, clickDeleteItem } = props;
     return (
         <div id='main-container'>
             {showCart && 

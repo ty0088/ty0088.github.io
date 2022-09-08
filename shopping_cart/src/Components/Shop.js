@@ -1,10 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
 import '../Style/style.css';
 import CartIcon from './CartICon';
 
 const Shop = (props) => {
     const { shopItems, cartQty, clickAddBtn, clickPriceSort, clickNameSort, clickCart } = props;
     const itemQty = Object.keys(shopItems).length;
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const clickItem = (e) => {
+          navigate(`/shopping_cart/shop/${e.target.parentNode.getAttribute('data-id')}`);
+        };
+    
+        const picElems = document.querySelectorAll('#shop-grid img');
+        picElems.forEach(elem => elem.addEventListener('click', clickItem));
+        picElems.forEach(elem => elem.classList.add('link'));
+    
+        return () =>  {
+          picElems.forEach(elem => elem.removeEventListener('click', clickItem));
+        }
+    });
 
     return (
         <div id='shop-container'>

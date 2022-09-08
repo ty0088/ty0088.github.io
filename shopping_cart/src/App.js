@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Layout from './Components/Layout';
 import Home from './Components/Home';
 import Shop from './Components/Shop';
 import Contact from './Components/Contact';
 import items from './Items/items.json';
 import CheckOut from './Components/CheckOut';
+import ItemDetail from './Components/ItemDetail';
 
 const App = () => {
   const [currPage, setCurrPage] = useState('- Home');
@@ -15,6 +16,7 @@ const App = () => {
   const [priceSortFlag, setPriceSortFlag]  = useState(true);
   const [nameSortFlag, setNameSortFlag]  = useState(true);
   const [cartFlag, setCartFlag] = useState(false);
+  // const navigate = useNavigate();
 
   const currPageClick = (page) => {
     setCurrPage(page);
@@ -47,6 +49,20 @@ const App = () => {
       ]);
     }
   };
+
+  // useEffect(() => {
+  //   const clickItem = (e) => {
+  //     navigate(`/shopping_cart/${e.target.parentNode.getAttribute('data-id')}`);
+  //   };
+
+  //   const picElems = document.querySelectorAll('#shop-grid img');
+  //   picElems.forEach(elem => elem.addEventListener('click', clickItem));
+  //   picElems.forEach(elem => elem.classList.add('link'));
+
+  //   return () =>  {
+  //     picElems.forEach(elem => elem.removeEventListener('click', clickItem));
+  //   }
+  // });
 
   const priceSort = () => {
     let shopItemSortArr = [...shopItems];
@@ -108,6 +124,7 @@ const App = () => {
         <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick} showCart={cartFlag} clickCloseCart={closeCart}  cartItems={cart} shopItems={shopItems} clickDeleteItem={deleteCartItem}/>}>
           <Route index element={<Home />} />
           <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort} clickNameSort={nameSort} clickCart={showCart}/>} />
+          <Route path="shop/:itemnum" element={<ItemDetail shopItems={shopItems}/>} />
           <Route path="contact" element={<Contact />} />
           <Route path="checkout" element={<CheckOut />} />
         </Route>

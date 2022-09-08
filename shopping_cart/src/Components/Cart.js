@@ -46,7 +46,7 @@ const Cart = (props) => {
                         <div>
                             <button onClick={clickCloseCart}>Continue Shopping</button>
                             <button onClick={() => {
-                                navigate("/shopping_cart/checkout");
+                                navigate('/shopping_cart/checkout');
                                 clickCloseCart();
                             }}>Check Out</button>
                         </div>
