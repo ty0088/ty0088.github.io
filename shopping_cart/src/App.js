@@ -5,8 +5,7 @@ import Home from './Components/Home';
 import Shop from './Components/Shop';
 import Contact from './Components/Contact';
 import items from './Items/items.json';
-import Cart from './Components/Cart';
-import { checkCartHasItem } from "./Components/modules";
+import CheckOut from './Components/CheckOut';
 
 const App = () => {
   const [currPage, setCurrPage] = useState('- Home');
@@ -35,7 +34,7 @@ const App = () => {
   const addToCart = (e) =>  {
     const itemNum = e.target.parentNode.getAttribute('data-id');
     const itemPrice = shopItems.find(item => item['item num'] === itemNum)['price'];
-    if (checkCartHasItem(cart, itemNum)) {
+    if (cart.some((obj) => obj['item num'] === itemNum)) {
       setCart(cart.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, { 'qty': obj['qty'] + 1, 'price': itemPrice  * (obj['qty'] + 1) }) : obj)));
     } else {
       setCart([
@@ -64,7 +63,6 @@ const App = () => {
   const nameSort = () => {
     let shopItemSortArr = [...shopItems];
     if (nameSortFlag) {
-      console.log('1')
       shopItemSortArr.sort((a,b) => {
         if (a['name'] < b['name']) {
           return -1;
@@ -98,13 +96,20 @@ const App = () => {
     setCartFlag(false)
   };
 
+  const deleteCartItem = (e) => {
+    const itemNum = e.target.parentNode.getAttribute('data-id');
+    setCart(cart.filter(item => item['item num'] !== itemNum));
+    setShopItems(prevState => prevState.map(obj => (obj['item num'] === itemNum ? Object.assign(obj, {"available": true}) : obj)));
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick} showCart={cartFlag} clickCloseCart={closeCart}  cartItems={cart}/>}>
+        <Route path="/shopping_cart" element={<Layout currPage={currPage} currPageClick={currPageClick} showCart={cartFlag} clickCloseCart={closeCart}  cartItems={cart} shopItems={shopItems} clickDeleteItem={deleteCartItem}/>}>
           <Route index element={<Home />} />
           <Route path="shop" element={<Shop shopItems={shopItems} cartQty={cartQty} clickAddBtn={addToCart} clickPriceSort={priceSort} clickNameSort={nameSort} clickCart={showCart}/>} />
           <Route path="contact" element={<Contact />} />
+          <Route path="checkout" element={<CheckOut />} />
         </Route>
       </Routes>
     </BrowserRouter>

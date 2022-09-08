@@ -5,11 +5,11 @@ import Cart from './Cart';
 import '../Style/style.css';
 
 const Layout = (props) => {
-    const { showCart, clickCloseCart, cartItems } = props;
+    const { showCart, clickCloseCart, cartItems, shopItems, clickDeleteItem, clickCheckOut } = props;
     return (
         <div id='main-container'>
             {showCart && 
-                <Cart clickCloseCart={clickCloseCart} cartItems={cartItems}/>
+                <Cart clickCloseCart={clickCloseCart} cartItems={cartItems} shopItems={shopItems} clickDeleteItem={clickDeleteItem}/>
             }
             <header id='header-container'>
                 <h1>Cats'R'Us Store&nbsp;</h1>
