@@ -26,7 +26,7 @@ const list = (function () {
                 console.log('no db todo list data');
                 todoList = [];
             }
-            if (todoList === null) {
+            if (projectList === null) {
                 console.log('no db proj list data');
                 projectList = [];
             }
