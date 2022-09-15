@@ -1,0 +1,321 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', monospace;
+    color: black;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+#main-container {
+    height: 100vh;
+    max-width: 770px;
+    display: grid;
+    grid-template: 100vh / 200px 570px;
+    overflow-x: auto;
+}
+
+.left-container {
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    grid-template: 100px minmax(400px, 1fr) 25px / 1fr;
+    background-color: #717572;
+    z-index: 1;
+}
+
+#cat-header,.logo {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.todo-nav {
+    padding-bottom: 15px;
+}
+
+.nav-link {
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.nav.material-icons {
+    font-size: 30px;
+}
+
+.nav-title {
+    padding-left: 5px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.project-list > .header {
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+
+.project-link > .material-icons {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.project-link {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-bottom: 5px;
+    height: 30px;
+}
+
+.project-title {
+    padding-left: 5px;
+    font-size: 16px;
+    display: inline-block;
+    width: 115px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.add-new {
+    width: 100%;
+    display: grid;
+    grid-template: 30px / 30px minmax(260px, 6fr) minmax(100px, 2fr) minmax(100px, 2fr) 60px;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.add-new.project {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 30px;
+    margin: 5px 0 5px 0;
+}
+
+.add-new > .material-icons {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.add-title {
+    padding-left: 5px;
+    font-size: 16px;
+}
+
+#proj-add-form {
+    margin-top: 5px;
+    padding: 5px 10px 5px 10px;
+    width: 300px;
+    background-color: rgb(168, 168, 168);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px rgb(200 200 200);
+}
+
+#warning {
+    font-size: 12px;
+    color: rgb(200, 0, 0);
+}
+
+.submit-buttons {
+    display: flex;
+    justify-content: center;
+    padding-top: 5px;
+    gap: 30px;
+}
+
+#proj-add-form label {
+    font-size: 12px;
+}
+
+#proj-add-form input {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.right-container {
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    overflow-y: auto;
+}
+
+.sort {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+
+.sort > .material-icons {
+    font-size: 20px;
+}
+
+#todo-add-form {
+    width: 550px;
+    padding: 10px 10px 10px 10px;
+    margin: 5px 0 5px 0;
+    background-color: rgb(168, 168, 168);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px rgb(200 200 200);
+}
+
+#todo-add-form > form {
+    display: flex;
+    flex-direction: column;
+}
+
+#todo-add-form label {
+    font-size: 15px;
+
+}
+
+#todo-add-form input {
+    width: 100%;
+    border-radius: 10px;
+}
+
+#todo-add-form #todo-note {
+    max-width: 530px;
+    border-radius: 10px;
+    border-style: inset;
+    border-width: 2px;
+}
+
+#todo-add-form select {
+    width: 100%;
+    border-radius: 10px;
+    border-style: inset;
+    border-width: 2px;
+}
+
+#todo-list {
+    height: auto;
+    overflow-y: auto;
+}   
+
+.todo {
+    width: 100%;
+    display: grid;
+    grid-template: 30px / 30px minmax(260px, 6fr) minmax(100px, 2fr) minmax(100px, 2fr) 30px 30px;
+    align-items: center;
+}
+
+.detail {
+    padding: 0 0 4px 30px;
+    display: flex;
+}
+
+.detail-border {
+    background-color: rgb(168, 168, 168);
+    box-shadow: 3px 3px 5px rgb(200 200 200);
+    border-radius: 5px;
+    padding: 5px 0 5px 0;
+}
+
+.High {
+    border: 1px solid red;
+    border-radius: 5px;
+}
+
+.Medium {
+    border: 1px solid #ffc400;
+    border-radius: 5px;
+}
+
+.Low {
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+}
+
+#name-edit, #priority-edit, #date-edit {
+    margin-right: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#proj-edit, #note-edit {
+    margin-right: 10px;
+    flex: auto;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#proj-edit-form {
+    position: absolute;
+    padding: 5px;
+    width: 250px;
+    border-radius: 10px;
+    background-color: rgb(168, 168, 168);
+    box-shadow: 3px 3px 5px rgb(200 200 200);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+#proj-edit-form > input {
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#proj-del-form {
+    position: absolute;
+    padding: 5px;
+    width: 270px;
+    left: 205px;
+    border-radius: 10px;
+    background-color: rgb(168, 168, 168);
+    box-shadow: 3px 3px 5px rgb(200 200 200);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+#proj-del-form > span:nth-child(1), #proj-del-form > span:nth-child(2) {
+    margin: 2px;
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 3px;
+    background-color: rgb(200, 200, 200);
+}
+
+#todo-del-form {
+    position: absolute;
+    padding: 5px;
+    width: 150px;
+    border-radius: 10px;
+    background-color: rgb(200, 200, 200);
+    box-shadow: 3px 3px 5px rgb(220 220 220);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+#sign-in-text {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}

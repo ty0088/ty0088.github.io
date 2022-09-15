@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="main-container">
+        <div class="left-container">
+            <div class="logo">Todo</div>
+            <div class="nav-bar">
+                <div class="todo-nav">
+                    <div class="nav-link">
+                        <span class="nav material-icons link" data-type="all">assignment</span>
+                        <span class="nav-title link" data-type="all">All</span>
+                    </div>
+                    <div class="nav-link">
+                        <span class="nav material-icons link" data-type="today">today</span>
+                        <span class="nav-title link" data-type="today">Today</span>
+                    </div>
+                    <div class="nav-link">
+                        <span class="nav material-icons link" data-type="week">date_range</span>
+                        <span class="nav-title link" data-type="week">Week</span>
+                    </div>
+                    <div class="nav-link">
+                        <span class="nav material-icons link" data-type="comp">assignment_turned_in</span>
+                        <span class="nav-title link" data-type="comp">Completed</span>
+                    </div>
+                </div>
+                <div id="project-content">
+                    
+                </div>
+                <div class="add-new project">
+                    <span class="material-icons link" data-type="add-proj">add</span>
+                    <span class="add-title link" data-type="add-proj">Add Project</span>
+                </div>
+                <div id="proj-form-container">
+
+                </div>
+            </div>
+            <span id="sign-in-text">
+                <span class="material-icons">account_circle</span>
+                <span id="sign-in"  class="link" data-type="sign-in">Sign-in with Google</span>&nbsp;
+                <span id="user-name" hidden></span>&nbsp;
+                <span id="sign-out"  class="link" data-type="sign-out" hidden>Sign Out</span>
+            </span>
+        </div>
+
+        <div class="right-container">
+            <div id="cat-header"></div>
+            <div class="add-new">
+                <span class="material-icons link" data-type="add-todo">add</span>
+                <span class="add-title link" data-type="add-todo">Add todo</span>
+                <div class="sort">
+                    Priority
+                    <span class="material-icons link" data-type="sort-priority">sort</span>
+                </div>
+                <div class="sort">
+                    Due Date
+                    <span class="material-icons link" data-type="sort-date">sort</span>
+                </div>
+            </div>
+            <div id="todo-form-container">
+                
+            </div>
+            <div id="todo-content">
+                
+            </div>            
+        </div>
+    </div>
+
+    <script src="./controllerLogic.bundle.js"></script>    
+    <script src="./fireBaseLogic.bundle.js"></script>
+    <script src="./contentLogic.bundle.js"></script>
+    <script src="./listLogic.bundle.js"></script>
+    <script src="./filterLogic.bundle.js"></script>
+</body>
+</html>
