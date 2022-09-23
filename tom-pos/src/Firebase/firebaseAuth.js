@@ -45,6 +45,10 @@ const signUp = () => {
     });
 };
 
+const isUserSignedIn = () => {
+    return !!getAuth().currentUser;
+}
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         // User is signed in, see docs for a list of available properties
@@ -57,4 +61,9 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-export { signUpEmail, signIn, signUp };
+export {
+    signUpEmail,
+    signIn,
+    signUp,
+    isUserSignedIn
+};
