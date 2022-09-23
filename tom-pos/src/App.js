@@ -11,6 +11,7 @@ const App = () => {
   return (
     <div id='main-container'>
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="/tom-pos" element={<Login />} />
           <Route path="/tom-pos/signup" element={<SignUp />} />
           <Route path="/tom-pos/pos" element={<POS />} />
@@ -19,5 +20,7 @@ const App = () => {
     </div>
   );
 }
+
+//protect user routes
 
 export default App;

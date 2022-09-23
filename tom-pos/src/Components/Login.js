@@ -1,7 +1,14 @@
 import '../Styles/Login.css'
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { signIn } from '../Util/firebaseAuth';
 
 const Login = () => {
+    const logIn = () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        signIn(email, password);
+    }
+
     return (
         <div id='login-container'>
             <h1 id='logo'>TOM POS</h1>
@@ -15,9 +22,9 @@ const Login = () => {
                     <label htmlFor='password'>Password: </label>
                     <input type='password' id='password'/>
                 </div>
-                <button type='button'>Sign In</button>
+                <button type='button' onClick={logIn}>Sign In</button>
                 <div id='login-links-container'>
-                    <Link className='login-links' to="/tom-pos/signup">Sign Up</Link>
+                    <Link className='login-links' to='/tom-pos/signup'>Sign Up</Link>
                 </div>
             </div>
         </div>
