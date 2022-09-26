@@ -2,10 +2,10 @@ import '../Styles/SignUp.css'
 import { Link } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
+import { addUserData } from '../Util/firebaseDB';
+import { signOutAcc } from "../Util/firebaseAuth";
 
 const SignUp = () => {
-    
-
     const auth = getAuth();
 
     const submitForm = (e) => {
@@ -23,67 +23,78 @@ const SignUp = () => {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user.uid + ' has signed up');
-                //add user data to firestore-----------------
+                //add user data to firestore
+                addUserData(firstName, lastName, compName, email, phoneNo);
             })
             .catch((error) => {
                 console.log(`${error.code}: ${error.message}`);
-                document.getElementById('sign-up-error').innerText =  `${error.code}: ${error.message}`;
+                document.getElementById('sign-up-error').innerText = `${error.code}`;
             });
         }
     };
 
-    return (
-        <div id='sign-up-container'>
-            <h1 id='logo'>TOM POS</h1>
-            <form id='sign-up-form' >
-                <div className='input-row'>
-                    <div className='input-box'>
-                        <label htmlFor='first-name'>First Name</label>
-                        <input type='text' id='first-name' name='first-name' required />   
+    if (!getAuth().currentUser) {
+        return (
+            <div id='sign-up-container'>
+                <h1 id='logo'>TOM POS</h1>
+                <form id='sign-up-form' >
+                    <div className='input-row'>
+                        <div className='input-box'>
+                            <label htmlFor='first-name'>First Name</label>
+                            <input type='text' id='first-name' name='first-name' required />   
+                        </div>
+                        <div className='input-box'>
+                            <label htmlFor='last-name'>Last Name</label>
+                            <input type='text' id='last-name' name='last-name' required />   
+                        </div>
+                        <div className='input-box'>
+                            <label htmlFor='comp'>Company Name</label>
+                            <input type='text' id='comp-name' name='comp-name' required />   
+                        </div>
                     </div>
-                    <div className='input-box'>
-                        <label htmlFor='last-name'>Last Name</label>
-                        <input type='text' id='last-name' name='last-name' required />   
+                    <div className='input-row'>
+                        <div className='input-box'>
+                            <label htmlFor='email'>Email</label>
+                            <input type='email' id='email' name='email' required onKeyUp={emailCheck} />   
+                        </div>
+                        <div className='input-box'>
+                            <label htmlFor='email-con'>Confirm Email</label>
+                            <input type='email' id='email-con' name='email-confirm' required onKeyUp={emailCheck} />   
+                            <span id='email-error-message' className='error-message'></span>  
+                        </div>
+                        <div className='input-box'>
+                            <label htmlFor='phone'>Phone Number</label>
+                            <input type='tel' id='phone-num' name='phone-num' pattern='\+?[0-9]+' minLength='10' required />   
+                        </div>
                     </div>
-                    <div className='input-box'>
-                        <label htmlFor='comp'>Company Name</label>
-                        <input type='text' id='comp-name' name='comp-name' required />   
+                    <div className='input-row'>
+                        <div className='input-box'>
+                            <label htmlFor='password'>Password</label>
+                            <input type='password' id='password' name='password' minLength='6' required onKeyUp={passCheck} />
+                            <span id='pass-error-message' className='error-message'></span>   
+                        </div>
+                        <div className='input-box'>
+                            <label htmlFor='pass-con'>Confirm Password</label>
+                            <input type='password' id='pass-con' name='pass-confirm' required onKeyUp={passCheck} />
+                        </div>
                     </div>
-                </div>
-                <div className='input-row'>
-                    <div className='input-box'>
-                        <label htmlFor='email'>Email</label>
-                        <input type='email' id='email' name='email' required onKeyUp={emailCheck} />   
+                    <span id='sign-up-error'></span>
+                    <div className='input-row'>
+                        <button className='sign-up-btn' type='submit' form='sign-up-form' onClick={submitForm}>Sign Up</button>
+                        <Link to='/tom-pos' className='link-elem'><button className='sign-up-btn' type='button'>Cancel</button></Link>
                     </div>
-                    <div className='input-box'>
-                        <label htmlFor='email-con'>Confirm Email</label>
-                        <input type='email' id='email-con' name='email-confirm' required onKeyUp={emailCheck} />   
-                        <span id='email-error-message' className='error-message'></span>  
-                    </div>
-                    <div className='input-box'>
-                        <label htmlFor='phone'>Phone Number</label>
-                        <input type='tel' id='phone-num' name='phone-num' pattern='\+?[0-9]+' minLength='10' required />   
-                    </div>
-                </div>
-                <div className='input-row'>
-                    <div className='input-box'>
-                        <label htmlFor='password'>Password</label>
-                        <input type='password' id='password' name='password' minLength='6' required onKeyUp={passCheck} />
-                        <span id='pass-error-message' className='error-message'></span>   
-                    </div>
-                    <div className='input-box'>
-                        <label htmlFor='pass-con'>Confirm Password</label>
-                        <input type='password' id='pass-con' name='pass-confirm' required onKeyUp={passCheck} />
-                    </div>
-                </div>
-                <div className='input-row'>
-                    <button className='sign-up-btn' type='submit' form='sign-up-form' onClick={submitForm}>Sign Up</button>
-                    <Link to='/tom-pos' className='link-elem'><button className='sign-up-btn' type='button'>Cancel</button></Link>
-                </div>
-                <span id='sign-up-error'></span>
-            </form>
-        </div>
-    );
+                </form>
+            </div>
+        );
+    } else {
+        return (
+            <div id='sign-up-container'>
+                <h1 id='logo'>TOM POS</h1>
+                <span>You are currently signed in, please log out to register a new account</span>
+                <button type='button' onClick={signOutAcc}>Sign Out</button>
+            </div>
+        );
+    }
 };
 
 export default SignUp;

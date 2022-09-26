@@ -15,6 +15,7 @@ const App = () => {
   const auth = getAuth();
   
   //redirect user to approriate page based on user auth status and set user state on intial render
+  //need listener to be able to work independently --------------
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
