@@ -1,3 +1,4 @@
+import '../Styles/Account.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth } from "firebase/auth";
@@ -8,7 +9,7 @@ const Account = () => {
     //if user logged in, render Menu, otherwise redirect to login page
     if (!!getAuth().currentUser) {
         return (
-            <div>
+            <div id='account-container'>
                 Account page
                 <Link to='/tom-pos/menu'>Menu</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
@@ -16,7 +17,7 @@ const Account = () => {
         );
     } else {
         return (
-            <div>
+            <div id='account-container'>
                 <span>You are signed out, please <Link to='/tom-pos'>sign back in</Link></span>
             </div>
         )
