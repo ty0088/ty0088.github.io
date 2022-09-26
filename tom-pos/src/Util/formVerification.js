@@ -1,5 +1,3 @@
-import { signUpEmail } from "./firebaseAuth";
-
 const emailCheck = () => {
     if (document.getElementById('email').value !==
         document.getElementById('email-con').value && document.getElementById('email-con').value !== '') {
@@ -30,7 +28,7 @@ const passCheck = () => {
     }
 };
 
-const submitForm = (e) => {
+const validateForm = (e) => {
     e.preventDefault();
     const form = document.getElementById('sign-up-form');
     document.getElementById('pass-con').setCustomValidity('');
@@ -39,22 +37,17 @@ const submitForm = (e) => {
     document.getElementById('email-con').value && document.getElementById('email-con').value !== '')  {
         document.getElementById('email-con').setCustomValidity('Emails do not match');
         document.getElementById('email-con').reportValidity();
+        return false;
     } else if (document.getElementById('password').value !==
     document.getElementById('pass-con').value && document.getElementById('pass-con').value !== '') {
         document.getElementById('pass-con').setCustomValidity('Passwords do not match');
         document.getElementById('pass-con').reportValidity();
+        return false;
     } else if (form.reportValidity()) {
-        //submit to firebase
-        console.log('valid')
-        const firstName = document.getElementById('first-name').value;
-        const lastName = document.getElementById('last-name').value;
-        const compName = document.getElementById('comp-name').value;
-        const email = document.getElementById('email').value;
-        const phoneNo = document.getElementById('phone-num').value;
-        const password = document.getElementById('password').value;
-        signUpEmail(email, password);
+        console.log('form is valid')
+        return true;
     }
 }
 
 
-export { emailCheck, passCheck, submitForm };
+export { emailCheck, passCheck, validateForm };

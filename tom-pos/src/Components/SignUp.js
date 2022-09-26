@@ -1,8 +1,36 @@
 import '../Styles/SignUp.css'
 import { Link } from 'react-router-dom';
-import { emailCheck, passCheck, submitForm } from '../Util/formVerification';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
 
 const SignUp = () => {
+    
+
+    const auth = getAuth();
+
+    const submitForm = (e) => {
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const compName = document.getElementById('comp-name').value;
+        const email = document.getElementById('email').value;
+        const phoneNo = document.getElementById('phone-num').value;
+        const password = document.getElementById('password').value;
+        
+        //validate inputs then submit to firebase
+        if (validateForm(e)) {
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log(user.uid + ' has signed up');
+                //add user data to firestore-----------------
+            })
+            .catch((error) => {
+                console.log(`${error.code}: ${error.message}`);
+                document.getElementById('sign-up-error').innerText =  `${error.code}: ${error.message}`;
+            });
+        }
+    };
 
     return (
         <div id='sign-up-container'>
@@ -52,6 +80,7 @@ const SignUp = () => {
                     <button className='sign-up-btn' type='submit' form='sign-up-form' onClick={submitForm}>Sign Up</button>
                     <Link to='/tom-pos' className='link-elem'><button className='sign-up-btn' type='button'>Cancel</button></Link>
                 </div>
+                <span id='sign-up-error'></span>
             </form>
         </div>
     );
