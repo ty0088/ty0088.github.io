@@ -1,6 +1,44 @@
-#menu-container {
+#nav-menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 450px 50px;
+}
+
+#link-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    column-gap: 100px;
+}
+
+.menu-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    height: 200px;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.menu-link:visited {
+    color: black;
+}
+
+.menu-link:hover {
+    font-weight: 900;
+    border: 2px solid black;
+}
+
+#btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btn-container > button {
+    height: 25px;
+    width: 80px;
 }

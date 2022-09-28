@@ -1,6 +1,45 @@
 #pos-container {
+    display: grid;
+    grid-template-columns: 600px 400px;
+    grid-template-rows: 35px 465px;
+}
+
+#pos-nav {
+    border: 1px solid black;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+}
+
+#menu-container {
+    border: 1px solid black;
+}
+
+#order-head {
+    border: 1px solid black;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10px;
+}
+
+#order-tab {
+    border: 1px solid black;
+    display: grid;
+    grid-template-rows: 1fr 125px;
+    grid-template-columns: 1fr;
+}
+
+.pos-nav-link {
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.pos-nav-link:visited {
+    color: black;
+}
+
+.pos-nav-link:hover {
+    font-weight: 900;
 }

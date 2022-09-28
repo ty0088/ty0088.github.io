@@ -2,7 +2,7 @@ import '../Styles/SignUp.css'
 import { Link } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
-import { addUserData } from '../Util/firebaseDB';
+import { addUser } from '../Util/firebaseDB';
 import { signOutAcc } from "../Util/firebaseAuth";
 
 const SignUp = () => {
@@ -24,7 +24,7 @@ const SignUp = () => {
                 const user = userCredential.user;
                 console.log(user.uid + ' has signed up');
                 //add user data to firestore
-                addUserData(firstName, lastName, compName, email, phoneNo);
+                addUser(firstName, lastName, compName, email, phoneNo);
             })
             .catch((error) => {
                 console.log(`${error.code}: ${error.message}`);
