@@ -13,6 +13,61 @@
 
 #menu-container {
     border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+#menu-nav-bar {
+    display: flex;
+    align-items: center;
+}
+
+.menu-nav-link {
+    margin-left: 5px;
+    font-size: 1.5em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.menu-nav-link:hover {
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.menu-nav-link > .material-symbols-outlined {
+    font-size: 1.5em
+}
+
+#menu-go-back {
+    font-size: 50px;
+}
+
+#menu-go-back:hover {
+    cursor: pointer;
+}
+
+.btns-container {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    position: static;
+}
+
+.menu-btn {
+    height: 150px;
+    width: 150px;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.item-btn {
+    height: 100px;
+    width: 100px;
+    font-size: 1em;
+    font-weight: 600;
 }
 
 #order-head {

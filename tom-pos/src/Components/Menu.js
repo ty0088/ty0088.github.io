@@ -11,7 +11,7 @@ const Menu = () => {
             <div id="nav-menu">
                 <div id='link-container'>
                     <Link to='/tom-pos/pos' className='menu-link'>POS</Link>
-                    <Link to='/tom-pos/account' className='menu-link'>Account</Link>
+                    <Link to='/tom-pos/backend' className='menu-link'>Account</Link>
                 </div>
                 <div id='btn-container'>
                     <button type='button' onClick={signOutAcc}>Sign Out</button>

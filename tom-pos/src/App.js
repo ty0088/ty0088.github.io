@@ -5,17 +5,18 @@ import './Styles/style.css';
 import Login from './Components/Login';
 import Menu from './Components/Menu';
 import POS from './Components/POS';
-import Account from './Components/Account';
+import BackEnd from './Components/BackEnd';
 import SignUp from './Components/SignUp';
 
 const App = () => {
+  // eslint-disable-next-line
   const [userState, setUserState] = useState(false);
 
   const navigate = useNavigate();
   const auth = getAuth();
   
   //redirect user to approriate page based on user auth status and set user state on intial render
-  //need listener to be able to work independently --------------
+  //need listener to be able to work independently of render i.e. in case user is logged out--------------
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -34,6 +35,7 @@ const App = () => {
     return () => {
       unsub();
     };
+  // eslint-disable-next-line
   }, [])
 
 
@@ -45,7 +47,7 @@ const App = () => {
           <Route path="/tom-pos/menu" element={<Menu />} />
           <Route path="/tom-pos/signup" element={<SignUp />} />
           <Route path="/tom-pos/pos" element={<POS />} />
-          <Route path="/tom-pos/account" element={<Account />} />
+          <Route path="/tom-pos/backend" element={<BackEnd />} />
         </Routes>
     </div>
   );

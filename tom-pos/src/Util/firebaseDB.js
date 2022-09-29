@@ -1,8 +1,10 @@
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import fireApp from "./firebaseApp";
+import { v4 as uuidv4 } from 'uuid';
 
 const db = getFirestore(fireApp);
+// eslint-disable-next-line
 const itemObj = {
     itemID: 0,
     "sub-menu": "",
@@ -33,4 +35,46 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     }
 };
 
-export { addUser };
+const addItem = async (subMenu, name, description, options, mods, qty, price, taxBand, cost, custReceipt, kitchReceipt) => {
+    const user = getAuth().currentUser;
+    const itemID = uuidv4();
+    const itemObj = {
+        "itemID": itemID,
+        "sub-menu": subMenu,
+        "item-name": name,
+        "description": description,
+        "options": options,
+        "mods": mods,
+        "qty": qty,
+        "price": price,
+        "tax-band": taxBand,
+        "cost": cost,
+        "print-kitchen": kitchReceipt,
+        "print-customer": custReceipt
+    };
+    try {
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const getDBDoc = async (docRef) => {
+    const user = getAuth().currentUser;
+    const errorMessage = { code : 404, message : `${docRef} document NOT found` };
+    try {
+        const docSnap = await getDoc(doc(db, user.uid, docRef))
+        if (docSnap.exists()) {
+            console.log(`${docRef} found`);
+            return docSnap;
+        } else {
+            console.log(`${docRef} NOT found`);
+            throw errorMessage;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+export { addUser, getDBDoc };
