@@ -66,12 +66,29 @@ const POS = () => {
 
     const linkPath = (e) => {
         const parentMenu = e.target.textContent;
-        console.log(parentMenu);
+        let currLevel = 0;
+        let menuKeys = [];
+        if (parentMenu === 'Menu') {
+            menuKeys = Object.keys(menuData[0]).sort();
+        } else {
+            const clickLevel = Object.keys(menuData).find(level => Object.keys(menuData[level]).find(menu => menu === parentMenu));
+            currLevel = parseInt(clickLevel) + 1;
+            menuKeys = Object.keys(menuData[currLevel]).filter(key => menuData[currLevel][key] === parentMenu).sort();
+        }
+        setCurrLevel(currLevel);
+        setMenuKeys(menuKeys);
+        setParentKey(parentMenu);
+        const menuPathCopy = menuPath.slice(0, currLevel);
+        setMenuPath(menuPathCopy);
+        renderSubMenu(parentMenu);
     };
 
     const MenuNav = () => {
         return (
             <div id='menu-nav-bar'>
+                <span className='menu-nav-link' onClick={linkPath}> 
+                    Menu
+                </span>
                 {menuPath.map((path, i) => {
                     return (
                         <span key={i} className='menu-nav-link' onClick={linkPath}> 
@@ -111,7 +128,7 @@ const POS = () => {
         return (
             <div id='pos-container'>
                 <div id='pos-nav'>
-                    <Link to='/tom-pos/menu' className='pos-nav-link'>Menu</Link>
+                    <Link to='/tom-pos/menu' className='pos-nav-link'>Home</Link>
                     <Link onClick={signOutAcc} className='pos-nav-link'>Sign Out</Link>
                 </div>
                 <div id='order-head'>
