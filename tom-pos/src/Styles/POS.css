@@ -52,14 +52,14 @@
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-around;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: static;
 }
 
 .menu-btn {
-    height: 150px;
-    width: 150px;
+    height: 135px;
+    width: 135px;
     font-size: 1.5em;
     font-weight: 600;
     margin: 5px;

@@ -5,6 +5,7 @@ import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
 // eslint-disable-next-line
 import { getDBDoc, addItem } from '../Util/firebaseDB';
+import { click } from '@testing-library/user-event/dist/click';
 
 const POS = () => {
     const [menuFlag, setMenuFlag] = useState(false);
@@ -41,51 +42,42 @@ const POS = () => {
     // eslint-disable-next-line
     }, [])
 
-    //set sub menu of a parent menu and any items belonging to parent menu
-    //if no further sub menus, set only items belonging to sub menu
-    const setSubMenu = (parentMenu) => {
-        const maxLevel = Object.keys(menuData).length;
-        const nextLevel = currLevel + 1;
-        //if next level exists, set next sub menu and any items, otherwise set just items
-        if (nextLevel < maxLevel) {
-            const menuKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
-            if (menuKeys.length > 0) {
-                setMenuFlag(true);
-                setCurrLevel(nextLevel);
-                setMenuKeys(menuKeys);
-                setParentKey(parentMenu);
-            }
-        } 
-        setMenuPath([...menuPath, parentMenu]);
-        //if sub menu is end of branch setMenuFlag to false
-        isMenuEnd(currLevel, parentMenu) ? setMenuFlag(false) : setMenuFlag(true);
-        setItems(parentMenu, itemData);
-    };
-
-    //set sub menu of nav link clicked
-    const linkPath = (e) => {
+    //set sub menu to menu/nav link clicked
+    const setSubMenu = (e) => {
         let parentMenu = e.target.textContent;
+        console.log(parentMenu);
+        let clickLevel = 0;
         let nextLevel = 0;
         let nextKeys = [];
+        //if root menu selected, set root menu, otherwise find next menu
         if (parentMenu === 'Menu') {
             nextKeys = Object.keys(menuData[0]).sort();
-        } else {
-            const clickLevel = Object.keys(menuData).find(level => Object.keys(menuData[level]).find(menu => menu === parentMenu));
-            const maxLevel = Object.keys(menuData).length;
-            nextLevel = parseInt(clickLevel) + 1;
-            if (nextLevel < maxLevel) {
-                nextKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
-            }
-        }
-        if (!isMenuEnd(nextLevel - 1, parentMenu)) {
-            const menuPathCopy = menuPath.slice(0, nextLevel);
-            setParentKey(parentMenu);
+            setMenuFlag(true);
             setCurrLevel(nextLevel);
             setMenuKeys(nextKeys);
-            setMenuPath(menuPathCopy);
+            setParentKey(parentMenu);
+        } else {
+            clickLevel = parseInt(Object.keys(menuData).find(level => Object.keys(menuData[level]).find(menu => menu === parentMenu)));
+            nextLevel = clickLevel + 1;
+            //if not an end menu, set the next menu
+            //otherwise do not set and display next menu
+            if (!isMenuEnd(clickLevel, parentMenu)) {
+                nextKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
+                setMenuFlag(true);
+                setCurrLevel(nextLevel);
+                setMenuKeys(nextKeys);
+                setParentKey(parentMenu);
+            } else {
+                setMenuFlag(false);
+            }
         }
-        //if sub menu is end of branch setMenuFlag to false
-        isMenuEnd((nextLevel - 1), parentMenu) ? setMenuFlag(false) : setMenuFlag(true);
+        //set nav links
+        if (nextLevel > currLevel && menuPath.length <= clickLevel) {
+            setMenuPath([...menuPath, parentMenu]);
+        } else {
+            setMenuPath(menuPath.slice(0, nextLevel));
+        }
+        //set any items belonging to menu
         setItems(parentMenu, itemData);
     };
 
@@ -137,16 +129,16 @@ const POS = () => {
     const MenuNav = () => {
         return (
             <div id='menu-nav-bar'>
-                <span className='menu-nav-elem link' onClick={linkPath}> 
+                <span className='menu-nav-elem link' onClick={setSubMenu}> 
                     Menu
                 </span>
                 {menuPath.map((path, i) => {
                     return (
-                        <span key={i} className='menu-nav-elem'> 
+                        <span key={i} data-id={i} className='menu-nav-elem'> 
                             <span className='material-symbols-outlined'>arrow_right</span>
-                            <span className='link' onClick={linkPath}>{path}</span>
+                            <span className='link' onClick={setSubMenu}>{path}</span>
                         </span>
-                    );  
+                    );
                 })}
             </div>
         );
@@ -158,7 +150,7 @@ const POS = () => {
             <div className='btns-container'>
                 {menuKeyArr.map((menuKey, i) => {
                     return (
-                        <button className='menu-btn' type='button' key={i} onClick={() => setSubMenu(menuKey)}>{menuKey}</button>
+                        <button className='menu-btn' type='button' key={i} onClick={setSubMenu}>{menuKey}</button>
                     );
                 })}
             </div>
