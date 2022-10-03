@@ -137,14 +137,14 @@ const POS = () => {
     const MenuNav = () => {
         return (
             <div id='menu-nav-bar'>
-                <span className='menu-nav-link' onClick={linkPath}> 
+                <span className='menu-nav-elem link' onClick={linkPath}> 
                     Menu
                 </span>
                 {menuPath.map((path, i) => {
                     return (
-                        <span key={i} className='menu-nav-link'> 
+                        <span key={i} className='menu-nav-elem'> 
                             <span className='material-symbols-outlined'>arrow_right</span>
-                            <span onClick={linkPath}>{path}</span>
+                            <span className='link' onClick={linkPath}>{path}</span>
                         </span>
                     );  
                 })}

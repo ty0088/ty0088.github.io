@@ -1,3 +1,8 @@
+.link:hover {
+    cursor: pointer;
+    font-weight: 800;
+}
+
 #pos-container {
     display: grid;
     grid-template-columns: 600px 400px;
@@ -23,7 +28,7 @@
     align-items: center;
 }
 
-.menu-nav-link {
+.menu-nav-elem {
     margin-left: 5px;
     font-size: 1.5em;
     font-weight: 600;
@@ -31,12 +36,7 @@
     align-items: center;
 }
 
-.menu-nav-link:hover {
-    cursor: pointer;
-    font-weight: 800;
-}
-
-.menu-nav-link > .material-symbols-outlined {
+.menu-nav-elem > .material-symbols-outlined {
     font-size: 1.5em
 }
 
