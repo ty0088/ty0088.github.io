@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import './Styles/style.css';
 import Login from './Components/Login';
 import Menu from './Components/Menu';
@@ -42,12 +42,12 @@ const App = () => {
   return (
     <div id='main-container'>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/tom-pos" element={<Login />} />
-          <Route path="/tom-pos/menu" element={<Menu />} />
-          <Route path="/tom-pos/signup" element={<SignUp />} />
-          <Route path="/tom-pos/pos" element={<POS />} />
-          <Route path="/tom-pos/backend" element={<BackEnd />} />
+          <Route path='/' element={<Login />} />
+          <Route path='/tom-pos' element={<Login />} />
+          <Route path='/tom-pos/menu' element={<Menu />} />
+          <Route path='/tom-pos/signup' element={<SignUp />} />
+          <Route path='/tom-pos/pos' element={<POS />} />
+          <Route path='/tom-pos/backend' element={<BackEnd />} />
         </Routes>
     </div>
   );

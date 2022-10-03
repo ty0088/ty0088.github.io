@@ -1,13 +1,14 @@
 import '../Styles/SignUp.css'
 import { Link } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
 import { addUser } from '../Util/firebaseDB';
-import { signOutAcc } from "../Util/firebaseAuth";
+import { signOutAcc } from '../Util/firebaseAuth';
 
 const SignUp = () => {
     const auth = getAuth();
 
+    //submit form, validate inputs then create firebase user
     const submitForm = (e) => {
         const firstName = document.getElementById('first-name').value;
         const lastName = document.getElementById('last-name').value;
@@ -33,6 +34,7 @@ const SignUp = () => {
         }
     };
 
+    //if user is not currently signed in, display sign up form otherwise ask user to sign out to create a new user
     if (!getAuth().currentUser) {
         return (
             <div id='sign-up-container'>
@@ -90,7 +92,7 @@ const SignUp = () => {
         return (
             <div id='sign-up-container'>
                 <h1 id='logo'>TOM POS</h1>
-                <span>You are currently signed in, please log out to register a new account</span>
+                <span>You are currently signed in, please log out to register a new account or go <Link to='/tom-pos/backend'>Home</Link></span>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
         );

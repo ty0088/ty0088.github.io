@@ -1,88 +1,135 @@
 import '../Styles/POS.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc } from '../Util/firebaseDB';
+import { getDBDoc, addItem } from '../Util/firebaseDB';
 
 const POS = () => {
     const [menuFlag, setMenuFlag] = useState(false);
     const [itemFlag, setItemFlag] = useState(false);
-    const [menuData, setMenuData] = useState(null);
+    const [menuData, setMenuData] = useState({});
     const [menuKeys, setMenuKeys] = useState(null);
-    const [parentKey, setParentKey] = useState(null);
+    const [itemData, setItemData] = useState(null);
+    const [menuItems, setMenuItems] = useState(null);
+    const [parentKey, setParentKey] = useState('Menu');
     const [currLevel, setCurrLevel] = useState(0);
     const [menuPath, setMenuPath] = useState([]);
 
-    //on initial render get sub-menu keys and render initial menu buttons
+    //on initial render get sub-menu keys and set initial menu buttons and any initial items
     useEffect(() => {
-        const renderInitMenu = async () => {
+        const setInitMenu = async () => {
+            //get sub menu data from firestore
             const menuSnap = await getDBDoc('sub-menus');
-            const initMenuData = menuSnap.data();
-            setMenuData(initMenuData);
-            const initMenuKeys = Object.keys(initMenuData[0]).sort();
+            const menuData = menuSnap.data();
+            console.log(menuData)
+            setMenuData(menuData);
+            const initMenuKeys = Object.keys(menuData[0]).sort();
+            //get item data from firestore
+            const itemSnap = await getDBDoc('items');
+            const tempItemData = itemSnap.data();
+            setItemData(tempItemData);
             if (initMenuKeys.length > 0 ) {
                 setMenuKeys(initMenuKeys);
                 setMenuFlag(true);
             } else {
                 setMenuFlag(false);
-                setItemFlag(false);
-                // if no sub menus, just render items -----------------
-                //if no sub menus or items, display message -----------
             }
+            setItems(parentKey, tempItemData);
         }
-        renderInitMenu();
+        setInitMenu();
     }, [])
 
-    const renderSubMenu = (menuParent) => {
+    //set sub menu of a parent menu and any items belonging to parent menu
+    //if no further sub menus, set only items belonging to sub menu
+    const setSubMenu = (parentMenu) => {
         const maxLevel = Object.keys(menuData).length;
         const nextLevel = currLevel + 1;
+        //if next level exists, set next sub menu and any items, otherwise set just items
         if (nextLevel < maxLevel) {
-            const menuKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === menuParent).sort();
+            const menuKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
             if (menuKeys.length > 0) {
-                setCurrLevel(currLevel + 1);
+                setMenuFlag(true);
+                setCurrLevel(nextLevel);
                 setMenuKeys(menuKeys);
-                setParentKey(menuParent);
-                setMenuPath([...menuPath, menuParent]);
-            } else if (menuKeys.length === 0 && menuFlag){
-                //render items
-    
+                setParentKey(parentMenu);
+                setMenuPath([...menuPath, parentMenu])
             }
-        }
+        } 
+        //if sub menu is end of branch setMenuFlag to false
+        (isMenuEnd(currLevel, parentMenu)) ? setMenuFlag(false) : setMenuFlag(true);
+        setItems(parentMenu, itemData);
     };
 
-    const menuBack = () => {
-        const prevLevel = currLevel - 1;
-        if (prevLevel >= 0) {
-            const prevParent = menuData[prevLevel][parentKey];
-            const menuKeys = Object.keys(menuData[prevLevel]).filter(key => menuData[prevLevel][key] === prevParent).sort();
-            setCurrLevel(currLevel - 1);
-            setMenuKeys(menuKeys);
-            setParentKey(prevParent);
-            const menuPathCopy = menuPath.slice(0, prevLevel);
-            setMenuPath(menuPathCopy);
-        }
-    };
-
+    //set sub menu of nav link clicked
     const linkPath = (e) => {
-        const parentMenu = e.target.textContent;
-        let currLevel = 0;
+        let parentMenu = e.target.textContent;
+        let nextLevel = 0;
         let menuKeys = [];
         if (parentMenu === 'Menu') {
             menuKeys = Object.keys(menuData[0]).sort();
         } else {
             const clickLevel = Object.keys(menuData).find(level => Object.keys(menuData[level]).find(menu => menu === parentMenu));
-            currLevel = parseInt(clickLevel) + 1;
-            menuKeys = Object.keys(menuData[currLevel]).filter(key => menuData[currLevel][key] === parentMenu).sort();
+            nextLevel = parseInt(clickLevel) + 1;
+            menuKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
         }
-        setCurrLevel(currLevel);
-        setMenuKeys(menuKeys);
+        const menuPathCopy = menuPath.slice(0, nextLevel);
         setParentKey(parentMenu);
-        const menuPathCopy = menuPath.slice(0, currLevel);
+        setCurrLevel(nextLevel);
+        setMenuKeys(menuKeys);
         setMenuPath(menuPathCopy);
-        renderSubMenu(parentMenu);
+        //if sub menu is end of branch setMenuFlag to false
+        (isMenuEnd((nextLevel - 1), parentMenu)) ? setMenuFlag(false) : setMenuFlag(true);
+        setItems(parentMenu, itemData);
     };
 
+    //set sub menu one level back
+    const menuBack = () => {
+        console.log(currLevel, parentKey, isMenuEnd(currLevel, parentKey));
+        if (isMenuEnd(currLevel, parentKey) && !menuFlag) {
+            setMenuFlag(true);
+            setItems(parentKey, itemData)
+        } else {
+            const prevLevel = currLevel - 1;
+            if (prevLevel >= 0) {
+                const parentMenu = menuData[prevLevel][parentKey];
+                const menuKeys = Object.keys(menuData[prevLevel]).filter(key => menuData[prevLevel][key] === parentMenu).sort();
+                const menuPathCopy = menuPath.slice(0, prevLevel);
+                setCurrLevel(prevLevel);
+                setMenuKeys(menuKeys);
+                setParentKey(parentMenu);
+                setMenuPath(menuPathCopy);
+                //if sub menu is end of branch setMenuFlag to false
+                console.log(isMenuEnd(prevLevel + 1, parentMenu));
+                // (isMenuEnd(prevLevel + 1, parentMenu)) ? setMenuFlag(false) : setMenuFlag(true);
+                setItems(parentMenu, itemData)
+            }
+        }
+    };
+
+    //find any items belonging to sub menu and set items
+    const setItems = (menuKey, data) => {
+        const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'][1] === menuKey);
+        const menuItemArr = menuItemIDs.map(ID => [ID, itemData[ID]['item-name']]);
+        if (menuItemIDs.length > 0) {
+            setMenuItems(menuItemArr);
+            setItemFlag(true);
+        } else {
+            setItemFlag(false);
+        }
+    };
+
+    const isMenuEnd = (currLevel, currMenu) => {
+        const nextLevel = currLevel + 1;
+        if (!!menuData[nextLevel]) {
+            const nextMenuValues = Object.values(menuData[nextLevel]);
+            return (nextMenuValues.includes(currMenu)) ? false : true;
+        } else {
+            return true;
+        }
+    };
+    
+    //Menu nav bar component
     const MenuNav = () => {
         return (
             <div id='menu-nav-bar'>
@@ -91,9 +138,9 @@ const POS = () => {
                 </span>
                 {menuPath.map((path, i) => {
                     return (
-                        <span key={i} className='menu-nav-link' onClick={linkPath}> 
-                            <span className="material-symbols-outlined">arrow_right</span>
-                            <span>{path}</span>
+                        <span key={i} className='menu-nav-link'> 
+                            <span className='material-symbols-outlined'>arrow_right</span>
+                            <span onClick={linkPath}>{path}</span>
                         </span>
                     );  
                 })}
@@ -101,24 +148,28 @@ const POS = () => {
         );
     };
 
+    //Menu button component
     const MenuBtns = ({menuKeyArr}) => {
         return (
             <div className='btns-container'>
-                {menuFlag && 
-                    menuKeyArr.map((menuKey, i) => {
-                        return (
-                            <button className='menu-btn' type='button' key={i} onClick={() => renderSubMenu(menuKey)}>{menuKey}</button>
-                        );
-                    })
-                }
+                {menuKeyArr.map((menuKey, i) => {
+                    return (
+                        <button className='menu-btn' type='button' key={i} onClick={() => setSubMenu(menuKey)}>{menuKey}</button>
+                    );
+                })}
             </div>
         );
     };
 
+    //Item button component
     const ItemBtns = () => {
         return (
             <div className='btns-container'>
-
+                {menuItems.map((itemArr, i) => {
+                    return (
+                        <button className='item-btn' type='button' key={i} data-id={itemArr[0]} onClick={() => console.log(itemArr[1])}>{itemArr[1]}</button>
+                    );
+                })}
             </div>
         );
     };
@@ -136,17 +187,17 @@ const POS = () => {
                 </div>
                 <div id='menu-container'>
                     <div id='menu-nav-bar'>
-                        <span id='menu-go-back' className="material-symbols-outlined" onClick={menuBack}>arrow_back</span>
+                        <span id='menu-go-back' className='material-symbols-outlined' onClick={menuBack}>arrow_back</span>
                         <MenuNav />
                     </div>
                     {menuFlag && 
                         <MenuBtns menuKeyArr={menuKeys}/>
                     }
-                    {!menuFlag &&
-                        <span>You have no menus set up, please go to the <Link to='/tom-pos/backend'>back end</Link> and set some up</span>
-                    }
                     {itemFlag &&
                         <ItemBtns />
+                    }
+                    {(!menuFlag && !itemFlag) &&
+                        <span>You have no menus or items, please go to the <Link to='/tom-pos/backend'>back end</Link> and add some</span>
                     }
                 </div>
                 <div id='order-tab'>
@@ -166,5 +217,17 @@ const POS = () => {
         )
     }
 };
+
+// addItem([2, 'Beef'], 'Cheese Burger', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([2, 'Chicken'], 'Chicken Burger', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([2, 'Veg'], 'Veggie Burger', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([1, 'Mains'], 'Main Item', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([1, 'Sides'], 'Rosmary Fries', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([0, 'Food'], 'Food Item', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([0, 'Drinks'], 'Drink Item', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([1, 'Beers'], 'Lager', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([1, 'Soft'], 'Coke', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([1, 'Spirits'], 'Rum', '', {}, {}, 1, 10, 's', 0, true, true);
+// addItem([1, 'Wine'], 'House Red', '', {}, {}, 1, 10, 's', 0, true, true);
 
 export default POS;

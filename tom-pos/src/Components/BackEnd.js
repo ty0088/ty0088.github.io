@@ -1,8 +1,9 @@
 import '../Styles/BackEnd.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
+import { addItem } from '../Util/firebaseDB';
 
 
 const BackEnd = () => {

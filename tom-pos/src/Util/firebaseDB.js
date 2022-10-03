@@ -1,6 +1,6 @@
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import fireApp from "./firebaseApp";
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import fireApp from './firebaseApp';
 import { v4 as uuidv4 } from 'uuid';
 
 const db = getFirestore(fireApp);
@@ -53,7 +53,7 @@ const addItem = async (subMenu, name, description, options, mods, qty, price, ta
         "print-customer": custReceipt
     };
     try {
-
+        await updateDoc(doc(db, user.uid, "items"), {[itemID]:itemObj});
     } catch (error) {
         console.log(error);
     }
@@ -77,4 +77,4 @@ const getDBDoc = async (docRef) => {
 };
 
 
-export { addUser, getDBDoc };
+export { addUser, getDBDoc, addItem };

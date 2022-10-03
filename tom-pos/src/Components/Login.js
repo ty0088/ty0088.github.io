@@ -1,11 +1,12 @@
 import '../Styles/Login.css'
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
     const auth = getAuth();
 
+    //log into firebase by email/password
     const emailLogIn = (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
