@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
+// eslint-disable-next-line
 import { getDBDoc, addItem } from '../Util/firebaseDB';
 
 const POS = () => {
@@ -37,6 +38,7 @@ const POS = () => {
             setItems(parentKey, tempItemData);
         }
         setInitMenu();
+    // eslint-disable-next-line
     }, [])
 
     //set sub menu of a parent menu and any items belonging to parent menu
@@ -52,13 +54,11 @@ const POS = () => {
                 setCurrLevel(nextLevel);
                 setMenuKeys(menuKeys);
                 setParentKey(parentMenu);
-                setMenuPath([...menuPath, parentMenu])
-            } else {
-                setMenuPath([...menuPath, parentMenu])
             }
         } 
+        setMenuPath([...menuPath, parentMenu]);
         //if sub menu is end of branch setMenuFlag to false
-        (isMenuEnd(currLevel, parentMenu)) ? setMenuFlag(false) : setMenuFlag(true);
+        isMenuEnd(currLevel, parentMenu) ? setMenuFlag(false) : setMenuFlag(true);
         setItems(parentMenu, itemData);
     };
 
@@ -80,13 +80,15 @@ const POS = () => {
         setMenuKeys(menuKeys);
         setMenuPath(menuPathCopy);
         //if sub menu is end of branch setMenuFlag to false
-        (isMenuEnd((nextLevel - 1), parentMenu)) ? setMenuFlag(false) : setMenuFlag(true);
+        isMenuEnd((nextLevel - 1), parentMenu) ? setMenuFlag(false) : setMenuFlag(true);
         setItems(parentMenu, itemData);
     };
 
     //set sub menu one level back
     const menuBack = () => {
+        let menuPathCopy = [];
         if (isMenuEnd(currLevel, parentKey) && !menuFlag) {
+            menuPathCopy = menuPath.slice(0, currLevel);
             setMenuFlag(true);
             setItems(parentKey, itemData)
         } else {
@@ -94,14 +96,14 @@ const POS = () => {
             if (prevLevel >= 0) {
                 const parentMenu = menuData[prevLevel][parentKey];
                 const menuKeys = Object.keys(menuData[prevLevel]).filter(key => menuData[prevLevel][key] === parentMenu).sort();
-                const menuPathCopy = menuPath.slice(0, prevLevel);
+                menuPathCopy = menuPath.slice(0, prevLevel);
                 setCurrLevel(prevLevel);
                 setMenuKeys(menuKeys);
                 setParentKey(parentMenu);
-                setMenuPath(menuPathCopy);
-                setItems(parentMenu, itemData)
+                setItems(parentMenu, itemData);
             }
         }
+        setMenuPath(menuPathCopy);
     };
 
     //find any items belonging to sub menu and set items
