@@ -66,19 +66,24 @@ const POS = () => {
     const linkPath = (e) => {
         let parentMenu = e.target.textContent;
         let nextLevel = 0;
-        let menuKeys = [];
+        let nextKeys = [];
         if (parentMenu === 'Menu') {
-            menuKeys = Object.keys(menuData[0]).sort();
+            nextKeys = Object.keys(menuData[0]).sort();
         } else {
             const clickLevel = Object.keys(menuData).find(level => Object.keys(menuData[level]).find(menu => menu === parentMenu));
+            const maxLevel = Object.keys(menuData).length;
             nextLevel = parseInt(clickLevel) + 1;
-            menuKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
+            if (nextLevel < maxLevel) {
+                nextKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
+            }
         }
-        const menuPathCopy = menuPath.slice(0, nextLevel);
-        setParentKey(parentMenu);
-        setCurrLevel(nextLevel);
-        setMenuKeys(menuKeys);
-        setMenuPath(menuPathCopy);
+        if (!isMenuEnd(nextLevel - 1, parentMenu)) {
+            const menuPathCopy = menuPath.slice(0, nextLevel);
+            setParentKey(parentMenu);
+            setCurrLevel(nextLevel);
+            setMenuKeys(nextKeys);
+            setMenuPath(menuPathCopy);
+        }
         //if sub menu is end of branch setMenuFlag to false
         isMenuEnd((nextLevel - 1), parentMenu) ? setMenuFlag(false) : setMenuFlag(true);
         setItems(parentMenu, itemData);
