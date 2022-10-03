@@ -22,7 +22,6 @@ const POS = () => {
             //get sub menu data from firestore
             const menuSnap = await getDBDoc('sub-menus');
             const menuData = menuSnap.data();
-            console.log(menuData)
             setMenuData(menuData);
             const initMenuKeys = Object.keys(menuData[0]).sort();
             //get item data from firestore
@@ -53,6 +52,8 @@ const POS = () => {
                 setCurrLevel(nextLevel);
                 setMenuKeys(menuKeys);
                 setParentKey(parentMenu);
+                setMenuPath([...menuPath, parentMenu])
+            } else {
                 setMenuPath([...menuPath, parentMenu])
             }
         } 
@@ -85,7 +86,6 @@ const POS = () => {
 
     //set sub menu one level back
     const menuBack = () => {
-        console.log(currLevel, parentKey, isMenuEnd(currLevel, parentKey));
         if (isMenuEnd(currLevel, parentKey) && !menuFlag) {
             setMenuFlag(true);
             setItems(parentKey, itemData)
@@ -99,9 +99,6 @@ const POS = () => {
                 setMenuKeys(menuKeys);
                 setParentKey(parentMenu);
                 setMenuPath(menuPathCopy);
-                //if sub menu is end of branch setMenuFlag to false
-                console.log(isMenuEnd(prevLevel + 1, parentMenu));
-                // (isMenuEnd(prevLevel + 1, parentMenu)) ? setMenuFlag(false) : setMenuFlag(true);
                 setItems(parentMenu, itemData)
             }
         }
