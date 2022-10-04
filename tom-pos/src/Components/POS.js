@@ -39,13 +39,13 @@ const POS = () => {
             setItems(parentKey, tempItemData);
         }
         setInitMenu();
+        // addItem([0,'Food'], 'Test Item', 'description', 'options', 'mods', 'qty', 'price', 'taxBand', 'cost', 'custReceipt', 'kitchReceipt')
     // eslint-disable-next-line
     }, [])
 
     //set sub menu to menu/nav link clicked
     const setSubMenu = (e) => {
         let parentMenu = e.target.textContent;
-        console.log(parentMenu);
         let clickLevel = 0;
         let nextLevel = 0;
         let nextKeys = [];
@@ -71,7 +71,7 @@ const POS = () => {
                 setMenuFlag(false);
             }
         }
-        //set nav links
+        //set menu nav links
         if (nextLevel > currLevel && menuPath.length <= clickLevel) {
             setMenuPath([...menuPath, parentMenu]);
         } else {
@@ -106,7 +106,8 @@ const POS = () => {
     //find any items belonging to sub menu and set items
     const setItems = (menuKey, data) => {
         const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'][1] === menuKey);
-        const menuItemArr = menuItemIDs.map(ID => [ID, itemData[ID]['item-name']]);
+        let menuItemArr = menuItemIDs.map(ID => [ID, itemData[ID]['item-name']]);
+        menuItemArr.sort();
         if (menuItemIDs.length > 0) {
             setMenuItems(menuItemArr);
             setItemFlag(true);
