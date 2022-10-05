@@ -1,0 +1,16 @@
+#sub-menu-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 450px 50px;
+}
+
+#sub-menu-form {
+    margin: 10px 10px 0 10px;
+    overflow-y: auto;
+}
+
+.menu-form-row {
+    margin-bottom: 5px;
+    display: flex;
+    
+}

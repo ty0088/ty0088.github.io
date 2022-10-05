@@ -7,6 +7,7 @@ import Menu from './Components/Menu';
 import POS from './Components/POS';
 import BackEnd from './Components/BackEnd';
 import SignUp from './Components/SignUp';
+import SubMenu from './Components/SubMenu';
 
 const App = () => {
   // eslint-disable-next-line
@@ -48,6 +49,7 @@ const App = () => {
           <Route path='/tom-pos/signup' element={<SignUp />} />
           <Route path='/tom-pos/pos' element={<POS />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />
+          <Route path='/tom-pos/submenu' element={<SubMenu />} />
         </Routes>
     </div>
   );

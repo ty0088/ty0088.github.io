@@ -9,11 +9,11 @@ const Menu = () => {
     if (!!getAuth().currentUser) {
         return (
             <div id='nav-menu'>
-                <div id='link-container'>
+                <div className='link-container'>
                     <Link to='/tom-pos/pos' className='menu-link'>POS</Link>
-                    <Link to='/tom-pos/backend' className='menu-link'>Account</Link>
+                    <Link to='/tom-pos/backend' className='menu-link'>Back End</Link>
                 </div>
-                <div id='btn-container'>
+                <div className='nav-footer'>
                     <button type='button' onClick={signOutAcc}>Sign Out</button>
                 </div>
             </div>

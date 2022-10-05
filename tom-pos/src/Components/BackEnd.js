@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { addItem } from '../Util/firebaseDB';
 
 //Do not allow user to create a sub menu called 'Menu' as this will clash with root menu
 
@@ -12,9 +11,17 @@ const BackEnd = () => {
     if (!!getAuth().currentUser) {
         return (
             <div id='BackEnd-container'>
-                Back End page
-                <Link to='/tom-pos/menu'>Menu</Link>
-                <button type='button' onClick={signOutAcc}>Sign Out</button>
+                <div className='link-container'>
+                    <Link to='/tom-pos/backend' className='backend-link'>Account Settings</Link>
+                    <Link to='/tom-pos/backend' className='backend-link'>Financial Reports</Link>
+                    <Link to='/tom-pos/submenu' className='backend-link'>Sub Menu Management</Link>
+                    <Link to='/tom-pos/backend' className='backend-link'>Item Management</Link>
+                    <Link to='/tom-pos/backend' className='backend-link'>VAT Settings</Link>
+                </div>
+                <div className='nav-footer'>
+                    <Link to='/tom-pos/menu' className='foot-link'>Home</Link>
+                    <button type='button' onClick={signOutAcc}>Sign Out</button>
+                </div>
             </div>
         );
     } else {

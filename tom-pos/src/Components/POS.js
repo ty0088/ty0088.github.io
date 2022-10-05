@@ -5,7 +5,6 @@ import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
 // eslint-disable-next-line
 import { getDBDoc, addItem } from '../Util/firebaseDB';
-import { click } from '@testing-library/user-event/dist/click';
 
 const POS = () => {
     const [menuFlag, setMenuFlag] = useState(false);
@@ -194,7 +193,7 @@ const POS = () => {
                         <ItemBtns />
                     }
                     {(!menuFlag && !itemFlag) &&
-                        <span>You have no menus or items, please go to the <Link to='/tom-pos/backend'>back end</Link> and add some</span>
+                        <span>You have no items, please go to the <Link to='/tom-pos/backend'>back end</Link> and add some</span>
                     }
                 </div>
                 <div id='order-tab'>
