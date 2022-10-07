@@ -8,7 +8,8 @@ import SubMenuPath from './SubMenuPath';
 const SubMenu = () => {
     const [menuFlag, setMenuFlag] = useState(true);
     const [menuPaths, setMenuPaths] = useState([]);
-    const [menuKeys, setMenuKeys] = useState(null);
+    const [newPath, setNewPath] = useState({});
+    const [menuKeys, setMenuKeys] = useState([]);
     
     //get sub menu and render menu paths on intial render
     useEffect(() => {
@@ -22,6 +23,15 @@ const SubMenu = () => {
         getSubMenu();
         // eslint-disable-next-line
     }, []);
+
+    //update sub menu db when new path is submitted
+    useEffect(() => {
+        if (Object.keys(newPath).length > 0) {
+            console.log(newPath)
+            //update MenuPaths------------
+            //Update menu db---------------
+        }
+    }, [newPath]);
 
     //return all menu keys
     const getMenuKeys = (tempData) => {
@@ -69,13 +79,13 @@ const SubMenu = () => {
         }
     };
 
+
+
     const SubMenuForm = () => {
         return (
             <div id='sub-menu-form'>
                 <h1>Sub Menu Management</h1>
-                {
-                    menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuKeys={menuKeys}/>)
-                }
+                {menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuKeys={menuKeys} setNewPath={setNewPath}/>)}
                 <button type='button'>Add new Sub Menu</button>
             </div>
         );
