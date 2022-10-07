@@ -3,24 +3,32 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc } from '../Util/firebaseDB';
+import SubMenuPath from './SubMenuPath';
 
 const SubMenu = () => {
-    // const [menuData, setMenuData] = useState(null); //------ required?
     const [menuFlag, setMenuFlag] = useState(true);
     const [menuPaths, setMenuPaths] = useState([]);
+    const [menuKeys, setMenuKeys] = useState(null);
     
     //get sub menu and render menu paths on intial render
     useEffect(() => {
         const getSubMenu = async () => {
             const menuSnap = await getDBDoc('sub-menus');
             const tempData = menuSnap.data();
-            // setMenuData(tempData); //------ required?
+            setMenuKeys(getMenuKeys(tempData));
             setMenuPaths(getMenuPaths(tempData));
             Object.keys(tempData).length > 0 ? setMenuFlag(true) : setMenuFlag(false);
         };
         getSubMenu();
         // eslint-disable-next-line
     }, []);
+
+    //return all menu keys
+    const getMenuKeys = (tempData) => {
+        let keyArr = [];
+        Object.keys(tempData).forEach(level => Object.keys(tempData[level]).forEach(key => keyArr.push(key)));
+        return keyArr;
+    };  
 
     //return all possible menu path combinations
     const getMenuPaths = (tempData) => {
@@ -46,9 +54,11 @@ const SubMenu = () => {
                 }
             }
         }
-        return menuArr;
+        console.log(menuArr)
+        return menuArr.sort();
     };
 
+    //determine if the current menu has no further child menus
     const isMenuEnd = (currLevel, currKey, tempData) => {
         const nextLevel = currLevel + 1;
         if (!!tempData[nextLevel]) {
@@ -64,20 +74,7 @@ const SubMenu = () => {
             <div id='sub-menu-form'>
                 <h1>Sub Menu Management</h1>
                 {
-                    menuPaths.map((path, i) => {
-                        return (
-                            <div className='menu-form-row' key={i}>
-                                <div>{i + 1}. Menu &gt; &nbsp;</div>
-                                {
-                                    path.map((subMenu, i) => {
-                                        return (
-                                            <div key={i}>{subMenu} &gt; &nbsp;</div>
-                                        );
-                                    })
-                                }
-                            </div>
-                        );
-                    })
+                    menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuKeys={menuKeys}/>)
                 }
                 <button type='button'>Add new Sub Menu</button>
             </div>

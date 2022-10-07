@@ -15,7 +15,7 @@ const POS = () => {
     const [menuItems, setMenuItems] = useState(null);
     const [parentKey, setParentKey] = useState('Menu');
     const [currLevel, setCurrLevel] = useState(0);
-    const [menuPath, setMenuPath] = useState([]);
+    const [navPath, setNavPath] = useState([]);
 
     //on initial render get sub-menu keys and set initial menu buttons and any initial items
     useEffect(() => {
@@ -71,10 +71,10 @@ const POS = () => {
             }
         }
         //set menu nav links
-        if (nextLevel > currLevel && menuPath.length <= clickLevel) {
-            setMenuPath([...menuPath, parentMenu]);
+        if (nextLevel > currLevel && navPath.length <= clickLevel) {
+            setNavPath([...navPath, parentMenu]);
         } else {
-            setMenuPath(menuPath.slice(0, nextLevel));
+            setNavPath(navPath.slice(0, nextLevel));
         }
         //set any items belonging to menu
         setItems(parentMenu, itemData);
@@ -84,7 +84,7 @@ const POS = () => {
     const menuBack = () => {
         let menuPathCopy = [];
         if (isMenuEnd(currLevel, parentKey) && !menuFlag) {
-            menuPathCopy = menuPath.slice(0, currLevel);
+            menuPathCopy = navPath.slice(0, currLevel);
             setMenuFlag(true);
             setItems(parentKey, itemData)
         } else {
@@ -92,14 +92,14 @@ const POS = () => {
             if (prevLevel >= 0) {
                 const parentMenu = menuData[prevLevel][parentKey];
                 const menuKeys = Object.keys(menuData[prevLevel]).filter(key => menuData[prevLevel][key] === parentMenu).sort();
-                menuPathCopy = menuPath.slice(0, prevLevel);
+                menuPathCopy = navPath.slice(0, prevLevel);
                 setCurrLevel(prevLevel);
                 setMenuKeys(menuKeys);
                 setParentKey(parentMenu);
                 setItems(parentMenu, itemData);
             }
         }
-        setMenuPath(menuPathCopy);
+        setNavPath(menuPathCopy);
     };
 
     //find any items belonging to sub menu and set items
@@ -132,7 +132,7 @@ const POS = () => {
                 <span className='menu-nav-elem link' onClick={setSubMenu}> 
                     Menu
                 </span>
-                {menuPath.map((path, i) => {
+                {navPath.map((path, i) => {
                     return (
                         <span key={i} data-id={i} className='menu-nav-elem'> 
                             <span className='material-symbols-outlined'>arrow_right</span>
