@@ -9,14 +9,14 @@ const SubMenu = () => {
     const [menuFlag, setMenuFlag] = useState(true);
     const [menuPaths, setMenuPaths] = useState([]);
     const [newPath, setNewPath] = useState({});
-    const [menuKeys, setMenuKeys] = useState([]);
+    const [menuData, setMenuData] = useState({});
     
     //get sub menu and render menu paths on intial render
     useEffect(() => {
         const getSubMenu = async () => {
             const menuSnap = await getDBDoc('sub-menus');
             const tempData = menuSnap.data();
-            setMenuKeys(getMenuKeys(tempData));
+            setMenuData(tempData);
             setMenuPaths(getMenuPaths(tempData));
             Object.keys(tempData).length > 0 ? setMenuFlag(true) : setMenuFlag(false);
         };
@@ -28,17 +28,13 @@ const SubMenu = () => {
     useEffect(() => {
         if (Object.keys(newPath).length > 0) {
             console.log(newPath)
+            //check newPath against changes with menuPaths ----------
+            //if path change is remove menu, remove menu and all subsequent menus ----------
+            //if path change is change of menu, change menu and remove all subsequent menus ----------
             //update MenuPaths------------
             //Update menu db---------------
         }
     }, [newPath]);
-
-    //return all menu keys
-    const getMenuKeys = (tempData) => {
-        let keyArr = [];
-        Object.keys(tempData).forEach(level => Object.keys(tempData[level]).forEach(key => keyArr.push(key)));
-        return keyArr;
-    };  
 
     //return all possible menu path combinations
     const getMenuPaths = (tempData) => {
@@ -64,7 +60,6 @@ const SubMenu = () => {
                 }
             }
         }
-        console.log(menuArr)
         return menuArr.sort();
     };
 
@@ -85,7 +80,7 @@ const SubMenu = () => {
         return (
             <div id='sub-menu-form'>
                 <h1>Sub Menu Management</h1>
-                {menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuKeys={menuKeys} setNewPath={setNewPath}/>)}
+                {menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuData={menuData} setNewPath={setNewPath}/>)}
                 <button type='button'>Add new Sub Menu</button>
             </div>
         );

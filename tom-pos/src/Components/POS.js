@@ -10,9 +10,9 @@ const POS = () => {
     const [menuFlag, setMenuFlag] = useState(false);
     const [itemFlag, setItemFlag] = useState(false);
     const [menuData, setMenuData] = useState({});
-    const [menuKeys, setMenuKeys] = useState(null);
-    const [itemData, setItemData] = useState(null);
-    const [menuItems, setMenuItems] = useState(null);
+    const [menuKeys, setMenuKeys] = useState([]);
+    const [itemData, setItemData] = useState({});
+    const [menuItems, setMenuItems] = useState([]);
     const [parentKey, setParentKey] = useState('Menu');
     const [currLevel, setCurrLevel] = useState(0);
     const [navPath, setNavPath] = useState([]);
