@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc } from '../Util/firebaseDB';
 import SubMenuPath from './SubMenuPath';
+import isArrayEqual from '../Util/arrayEqual';
 
 const SubMenu = () => {
     const [menuFlag, setMenuFlag] = useState(true);
@@ -26,13 +27,20 @@ const SubMenu = () => {
 
     //update sub menu db when new path is submitted
     useEffect(() => {
-        if (Object.keys(newPath).length > 0) {
-            console.log(newPath)
-            //check newPath against changes with menuPaths ----------
-            //if path change is remove menu, remove menu and all subsequent menus ----------
-            //if path change is change of menu, change menu and remove all subsequent menus ----------
-            //update MenuPaths------------
-            //Update menu db---------------
+        const path = newPath[parseInt(Object.keys(newPath)[0])];
+        console.log(path);
+        if (path.length > 0) {
+            //check if new path already exists
+            //Food > Mains is considered unique to Food > Mains > Beef when it is not unique as it is inclusive -------------
+            if (!menuPaths.some(paths => isArrayEqual(paths, path))) {
+                //update MenuPaths------------
+                //Update menu db---------------
+                console.log('add');
+            } else {
+                console.log('dont add');
+            }
+        } else {
+            console.log('delete menu ' + parseInt(Object.keys(newPath)[0]));
         }
     }, [newPath]);
 
@@ -81,7 +89,7 @@ const SubMenu = () => {
             <div id='sub-menu-form'>
                 <h1>Sub Menu Management</h1>
                 {menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuData={menuData} setNewPath={setNewPath}/>)}
-                <button type='button'>Add new Sub Menu</button>
+                <button type='button'>Add new Sub Menu Path</button>
             </div>
         );
     };
