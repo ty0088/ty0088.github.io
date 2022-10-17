@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc } from '../Util/firebaseDB';
 import SubMenuPath from './SubMenuPath';
-import isArrayEqual from '../Util/arrayEqual';
+import menuPathExists from '../Util/menuPathExists';
 
 const SubMenu = () => {
     const [menuFlag, setMenuFlag] = useState(true);
     const [menuPaths, setMenuPaths] = useState([]);
-    const [newPath, setNewPath] = useState({});
+    // const [newPath, setNewPath] = useState({});
     const [menuData, setMenuData] = useState({});
     
     //get sub menu and render menu paths on intial render
@@ -24,25 +24,6 @@ const SubMenu = () => {
         getSubMenu();
         // eslint-disable-next-line
     }, []);
-
-    //update sub menu db when new path is submitted
-    useEffect(() => {
-        const path = newPath[parseInt(Object.keys(newPath)[0])];
-        console.log(path);
-        if (path.length > 0) {
-            //check if new path already exists
-            //Food > Mains is considered unique to Food > Mains > Beef when it is not unique as it is inclusive -------------
-            if (!menuPaths.some(paths => isArrayEqual(paths, path))) {
-                //update MenuPaths------------
-                //Update menu db---------------
-                console.log('add');
-            } else {
-                console.log('dont add');
-            }
-        } else {
-            console.log('delete menu ' + parseInt(Object.keys(newPath)[0]));
-        }
-    }, [newPath]);
 
     //return all possible menu path combinations
     const getMenuPaths = (tempData) => {
@@ -81,14 +62,25 @@ const SubMenu = () => {
             return true;
         }
     };
+    
+    const updatePath = (pathObj) => {
+        console.log('Update Path');
+        //update MenuPaths-------------
+        //Update menu db---------------
+    };
 
-
+    const deletePath = (pathNum) => {
+        console.log('Delete Path ' + pathNum);
+        //update MenuPaths-------------
+        //Update menu db---------------
+    };
 
     const SubMenuForm = () => {
         return (
             <div id='sub-menu-form'>
                 <h1>Sub Menu Management</h1>
-                {menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuData={menuData} setNewPath={setNewPath}/>)}
+                {menuPaths.map((path, i) => <SubMenuPath key={i} i={i} path={path} menuData={menuData} menuPaths={menuPaths}
+                    updatePath={updatePath} deletePath={deletePath} />)}
                 <button type='button'>Add new Sub Menu Path</button>
             </div>
         );

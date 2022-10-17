@@ -1,7 +1,8 @@
 import '../Styles/SubMenu.css';
 import React, { useState, useRef } from 'react';
+import menuPathExists from '../Util/menuPathExists';
 
-const SubMenuPath = ({i, path, menuData, setNewPath}) => {
+const SubMenuPath = ({i, path, menuData, menuPaths, updatePath, deletePath}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [btnText, setBtnText] = useState('Edit');
     const [localPath, setLocalPath] = useState({[i]: path});
@@ -9,7 +10,7 @@ const SubMenuPath = ({i, path, menuData, setNewPath}) => {
 
     const editToggle = () => {
         if (editFlag) {
-            setNewPath(localPath);
+            submitPath(localPath);
             setBtnText('Edit');
             setEditFlag(false);
         } else {
@@ -56,6 +57,24 @@ const SubMenuPath = ({i, path, menuData, setNewPath}) => {
             return (nextMenuValues.includes(currKey)) ? false : true;
         } else {
             return true;
+        }
+    };
+
+    //check if submitted path already exists, or if it should be added or deleted
+    const submitPath = (pathObj) => {
+        const pathArr = pathObj[parseInt(Object.keys(pathObj)[0])];
+        console.log(pathArr);
+        if (pathArr.length > 0) {
+            //check if new path already exists
+            if (!menuPaths.some(paths => menuPathExists(paths, pathArr))) {
+                updatePath(pathObj);
+            } else {
+                console.log('Menu path already exists');
+                alert('Menu path already exists');
+                setLocalPath({[i]: path});
+            }
+        } else {
+            deletePath(parseInt(Object.keys(pathObj)[0]));
         }
     };
 
