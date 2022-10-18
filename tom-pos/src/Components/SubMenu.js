@@ -9,7 +9,6 @@ import menuPathExists from '../Util/menuPathExists';
 const SubMenu = () => {
     const [menuFlag, setMenuFlag] = useState(true);
     const [menuPaths, setMenuPaths] = useState([]);
-    // const [newPath, setNewPath] = useState({});
     const [menuData, setMenuData] = useState({});
     
     //get sub menu and render menu paths on intial render
@@ -66,6 +65,10 @@ const SubMenu = () => {
     const updatePath = (pathObj) => {
         console.log('Update Path');
         //update MenuPaths-------------
+        const pathIndex = parseInt(Object.keys(pathObj)[0])
+        const newPath = menuPaths.splice(pathIndex, 1, pathObj[pathIndex])
+        console.log(newPath);
+        //setMenuPaths() ----------------
         //Update menu db---------------
     };
 
