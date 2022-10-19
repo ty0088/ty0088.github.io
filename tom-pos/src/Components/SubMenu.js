@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc } from '../Util/firebaseDB';
 import SubMenuPath from './SubMenuPath';
-import menuPathExists from '../Util/menuPathExists';
 
 const SubMenu = () => {
     const [menuFlag, setMenuFlag] = useState(true);
