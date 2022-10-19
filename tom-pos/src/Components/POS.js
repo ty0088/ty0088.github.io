@@ -38,7 +38,7 @@ const POS = () => {
             setItems(parentKey, tempItemData);
         }
         setInitMenu();
-        // addItem([0,'Food'], 'Test Item', 'description', 'options', 'mods', 'qty', 'price', 'taxBand', 'cost', 'custReceipt', 'kitchReceipt')
+        //-------------- addItem([0,'Food'], 'Test Item', 'description', 'options', 'mods', 'qty', 'price', 'taxBand', 'cost', 'custReceipt', 'kitchReceipt')
     // eslint-disable-next-line
     }, [])
 
