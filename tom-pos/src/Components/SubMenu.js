@@ -24,16 +24,35 @@ const SubMenu = () => {
 
     const clickNewMenu = (e) => {
         const menuLevel = e.target.parentNode.getAttribute('data-level');
-        const newData = {...menuData, [menuLevel]: {...menuData[menuLevel], '--Add Menu--': ''}};
-        setTempData(newData);
+        const addMenu = {...menuData, [menuLevel]: {...menuData[menuLevel], '--Add Menu--': ''}};
+        setTempData(addMenu);
     };
 
     const cancelEdit = () => {
         setTempData({...menuData});
     };
 
-    const submitEdit = (menu, parent, level) => {
-        console.log(`menu: ${menu}, parent: ${parent}, level: ${level}`);
+    const submitChange = (newMenu, newParent, level, prevMenu, prevParent) => {
+        //if top level, set parent to "Menu" for db use
+        newParent = newParent === 'N/A' ? 'Menu' : newParent;
+        //Add new menu/parent data or edit parent value
+        let editData = {...tempData, [level]: {...tempData[level], [newMenu]: newParent}};
+        //if new menu data, delete previous data
+        if (newMenu !== prevMenu) {
+            delete editData[level][prevMenu];
+        } 
+        //find children belonging to prev menu and change prev parent to new parent
+        if (newMenu !== prevMenu && prevMenu !== '--Add Menu--') {
+            const nextLevel = level + 1;
+            //filter the next menus affected by change of parent menu
+            const changeMenus = Object.keys(editData[nextLevel]).filter(menu => editData[nextLevel][menu] === prevMenu);
+            changeMenus.forEach(menu => editData[nextLevel][menu] = newMenu);
+        }
+        console.log(editData);
+        //refresh menuData -------------
+        //submit to firebase db ------------
+        setTempData(editData);
+        setMenuData(editData);
     };
  
     return (
@@ -55,7 +74,7 @@ const SubMenu = () => {
                                         {
                                             Object.keys(tempData[level]).sort().map((menu, i) => 
                                                 <LevelRow key={i} level={level} menuData={tempData} id={`l${level}i${i}`} menu={menu}
-                                                cancelEdit={cancelEdit} submitEdit={submitEdit}/>)
+                                                cancelEdit={cancelEdit} submitChange={submitChange}/>)
                                         }
                                         <button type='button' className='menuBtn' onClick={clickNewMenu}>Add New Menu</button>
                                     </div>

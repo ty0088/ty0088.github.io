@@ -1,8 +1,7 @@
 import '../Styles/SubMenu.css';
 import React, { useState, useEffect } from 'react';
-import menuInputCheck from '../Util/menuInputCheck';
 
-const LevelRow = ({level, menuData, id, menu, cancelEdit, submitEdit}) => {
+const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [parent, setParent] = useState('');
 
@@ -12,7 +11,7 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitEdit}) => {
         let initParent = menuData[level][menu];
         initParent = initParent === 'Menu' ? 'N/A' : initParent;
         setParent(initParent);
-    }, []);
+    }, [menuData]);
 
     useEffect(() => {
         if (menu === '--Add Menu--') {
@@ -21,6 +20,22 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitEdit}) => {
         }
     }, [menu])
 
+    const checkEdit = (newMenu, newParent, menu, parent) => {
+        //valid if menu input or parent input is new
+        //invalid if both menu and parent are the same as before or menu input is on restricted list or if new menu added with existing menu name
+        const restrictedArr = ['--Add Menu--', 'Menu', 'N/A'];
+        let menuArr = [];
+        Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
+        console.log(`newMenu: ${newMenu}, newParent: ${newParent}, menu: ${menu}, parent: ${parent}`); //-------------
+        if (menu === '--Add Menu--' && menuArr.includes(newMenu)) {
+            return false;
+        } else if ((newMenu !== menu || newParent !== parent) && !restrictedArr.includes(newMenu)) {
+                return true;
+        } else {
+            return false;
+        }
+    };
+
     const editClick = () => {
         if (editFlag) {
             setEditFlag(false);
@@ -28,9 +43,9 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitEdit}) => {
             const newMenu = document.getElementById(`menu-input-${id}`).value;
             const newParent = document.getElementById(`menu-droplist-${id}`).value;
             //check inputs for validity
-            if (menuInputCheck(newMenu, menuData)) {
-                //submit menu and parent -----
-                submitEdit(newMenu, newParent, level);
+            if (checkEdit(newMenu, newParent, menu, parent)) {
+                //if valid submit changes
+                submitChange(newMenu, newParent, level, menu, parent);
             } else {
                 //display error message----
                 console.log('Menu name not valid, changes cancelled');
