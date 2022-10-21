@@ -22,6 +22,7 @@ const SubMenu = () => {
         getSubMenu();
     }, []);
 
+
     const clickNewMenu = (e) => {
         const menuLevel = e.target.parentNode.getAttribute('data-level');
         const addMenu = {...menuData, [menuLevel]: {...menuData[menuLevel], '--Add Menu--': ''}};
@@ -32,7 +33,7 @@ const SubMenu = () => {
         setTempData({...menuData});
     };
 
-    const submitChange = (newMenu, newParent, level, prevMenu, prevParent) => {
+    const submitChange = (newMenu, newParent, level, prevMenu) => {
         //if top level, set parent to "Menu" for db use
         newParent = newParent === 'N/A' ? 'Menu' : newParent;
         //Add new menu/parent data or edit parent value
@@ -48,12 +49,26 @@ const SubMenu = () => {
             const changeMenus = Object.keys(editData[nextLevel]).filter(menu => editData[nextLevel][menu] === prevMenu);
             changeMenus.forEach(menu => editData[nextLevel][menu] = newMenu);
         }
-        console.log(editData);
-        //refresh menuData -------------
-        //submit to firebase db ------------
         setTempData(editData);
         setMenuData(editData);
+        //submit to firebase db ------------
     };
+
+    //delete sub menu and all subsequently connected sub menus
+    const deleteMenu = (menu, level) => {
+        console.log(menu, level);
+        let deleteData = {...tempData};
+        delete deleteData[level][menu];
+        //call back to find all menus associated --------------
+        setTempData(deleteData);
+        setMenuData(deleteData);
+    };
+
+    const relatedMenus = (menu, level) => {
+        //call back until no more subsequent menus found then return array
+        //add menus found to array
+        Object.keys(tempData[level + 1]).includes(menu)
+    }
  
     return (
         <div id='menu-page-container'>
@@ -74,7 +89,7 @@ const SubMenu = () => {
                                         {
                                             Object.keys(tempData[level]).sort().map((menu, i) => 
                                                 <LevelRow key={i} level={level} menuData={tempData} id={`l${level}i${i}`} menu={menu}
-                                                cancelEdit={cancelEdit} submitChange={submitChange}/>)
+                                                cancelEdit={cancelEdit} submitChange={submitChange} deleteMenu={deleteMenu} />)
                                         }
                                         <button type='button' className='menuBtn' onClick={clickNewMenu}>Add New Menu</button>
                                     </div>

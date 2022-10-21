@@ -1,8 +1,10 @@
 import '../Styles/SubMenu.css';
 import React, { useState, useEffect } from 'react';
+import MessageDelete from './MessageDelete';
 
-const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange}) => {
+const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMenu}) => {
     const [editFlag, setEditFlag] = useState(false);
+    const [messageFlag, setMessageFlag] = useState(false)
     const [parent, setParent] = useState('');
 
     useEffect(() => {
@@ -64,9 +66,18 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange}) => {
     };
 
     const deleteClick = () => {
-        console.log('delete ' + id);
-        //ask for confirmation as this will delete all child menus -------
-        //delete sub menu and all subsequently connected sub menus -------
+        //ask for delete confirmation
+        setMessageFlag(true);
+    }
+
+    const cancelDelete= () => {
+        setMessageFlag(false);
+    }
+
+    const confirmDelete = () => {
+        deleteMenu(menu, level);
+        setMessageFlag(false);
+        setEditFlag(false);
     }
 
     //Drop list of possible parent menus
@@ -96,19 +107,24 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange}) => {
                 <div>{parent}</div>
                 <div>
                     <button type='button' className='menuBtn' onClick={editClick}>Edit</button>
-                    <button type='button' className='menuBtn' onClick={deleteClick}>Delete</button>
+                    {messageFlag &&
+                        <MessageDelete menu={menu} cancelDelete={cancelDelete} confirmDelete={confirmDelete}/>
+                    }
                 </div>
             </div>
         );
     } else {
         return (
-            <div className='row-container' data-id={id} data-index={level}>
+            <div className='row-container' data-id={id}>
                 <input type="text" id={`menu-input-${id}`} defaultValue={menu}></input>
                 <DropList />
                 <div>
                     <button type='button' className='menuBtn' onClick={editClick}>Submit</button>
                     <button type='button' className='menuBtn' onClick={cancelClick}>Cancel</button>
                     <button type='button' className='menuBtn' onClick={deleteClick}>Delete</button>
+                    {messageFlag &&
+                        <MessageDelete menu={menu} cancelDelete={cancelDelete} confirmDelete={confirmDelete}/>
+                    }
                 </div>
             </div>
         );
