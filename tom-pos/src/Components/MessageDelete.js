@@ -9,7 +9,7 @@ const MessageDelete = ({menu, cancelDelete, confirmDelete}) => {
                     <span className='bold'>{menu}</span>
                 <span>from the database?</span>
                 <span className='ex-message'>
-                    Deleting this will delete any children of this menu and make any associated items menu-less
+                    This will delete any descendants of this menu and make any associated items menu-less
                 </span>
                 <div id='conf-btns'>
                     <button type='button' onClick={cancelDelete}>Cancel</button>

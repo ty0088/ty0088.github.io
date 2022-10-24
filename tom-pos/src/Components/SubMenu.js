@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc } from '../Util/firebaseDB';
 import LevelRow from './LevelRow';
-import { arrayRemove } from 'firebase/firestore';
-import { connectAuthEmulator } from 'firebase/auth';
 
 const SubMenu = () => {
     const [menuData, setMenuData] = useState({});
@@ -19,7 +17,7 @@ const SubMenu = () => {
             const dbData = menuSnap.data();
             setMenuData(dbData);
             setTempData(dbData);
-            setLevels(Object.keys(dbData).map(string => parseInt(string)))
+            setLevels(Object.keys(dbData).map(string => parseInt(string)));
         };
         getSubMenu();
     }, []);
@@ -66,7 +64,7 @@ const SubMenu = () => {
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
         setMenuData(deleteData);
-        setLevels(Object.keys(deleteData).map(string => parseInt(string)))
+        setLevels(Object.keys(deleteData).map(string => parseInt(string)));
         //upload to firebase db --------
         console.log(deleteData);
     };
@@ -83,6 +81,15 @@ const SubMenu = () => {
             return array;   
         }    
     }
+
+    const addNewLevel = () => {
+        const nextLevel = Object.keys(tempData).length;
+        let addData = {...tempData, [nextLevel]: {}};
+        console.log(addData);
+        setTempData(addData);
+        setMenuData(addData);
+        setLevels(Object.keys(addData).map(string => parseInt(string)));
+    };
  
     return (
         <div id='menu-page-container'>
@@ -100,10 +107,13 @@ const SubMenu = () => {
                                 <div key={level} className='menu-level'>
                                     <div className='level-text'>{level + 1}</div>
                                     <div className='level-container' data-level={level}>
-                                        {
+                                        {Object.keys(tempData[level]).length > 0 &&
                                             Object.keys(tempData[level]).sort().map((menu, i) => 
                                                 <LevelRow key={i} level={level} menuData={tempData} id={`l${level}i${i}`} menu={menu}
                                                 cancelEdit={cancelEdit} submitChange={submitChange} deleteMenu={deleteMenu} />)
+                                        }
+                                        {Object.keys(tempData[level]).length === 0 &&
+                                            <span>Add a new menu to this level</span>
                                         }
                                         <button type='button' className='menuBtn' onClick={clickNewMenu}>Add New Menu</button>
                                     </div>
@@ -111,8 +121,20 @@ const SubMenu = () => {
                             );
                         })
                     }
+                    {levels.length === 0 &&
+                        <div className='level-container'>
+                            <span>Add at least level 1 to add menus</span>
+                            <span>Each level can have multiple menus added</span>
+                            <span>Level 1 is the root level of your menus</span>
+                            <span>Each menu has a parent menu from the previous level</span>
+                            <span>Type the menu name and choose the parent menu from the dropdown list</span>
+                            <span>Please do not use the following words for menu names</span>
+                            <span>These are reserved for the system:</span>
+                            <span>'--Add Menu--', 'Menu', 'N/A'</span>
+                        </div>
+                    }
                 </div>
-                <button type='button' className='menuBtn'>Add New Level</button>
+                <button type='button' className='menuBtn' onClick={addNewLevel}>Add New Level</button>
             </div>
             <div className='nav-footer'>
                 <Link to='/tom-pos/menu' className='foot-link'>Home</Link>

@@ -28,7 +28,6 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
         const restrictedArr = ['--Add Menu--', 'Menu', 'N/A'];
         let menuArr = [];
         Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
-        console.log(`newMenu: ${newMenu}, newParent: ${newParent}, menu: ${menu}, parent: ${parent}`); //-------------
         if (menu === '--Add Menu--' && menuArr.includes(newMenu)) {
             return false;
         } else if ((newMenu !== menu || newParent !== parent) && !restrictedArr.includes(newMenu)) {
@@ -117,7 +116,7 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
     } else {
         return (
             <div className='row-container' data-id={id}>
-                <input type="text" id={`menu-input-${id}`} defaultValue={menu}></input>
+                <input type="text" id={`menu-input-${id}`} defaultValue={menu} autoFocus></input>
                 <DropList />
                 <div>
                     <button type='button' className='menuBtn' onClick={editClick}>Submit</button>
