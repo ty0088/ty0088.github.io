@@ -2,7 +2,7 @@ import '../Styles/SubMenu.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc } from '../Util/firebaseDB';
+import { addSubMenuDB, getDBDoc } from '../Util/firebaseDB';
 import LevelRow from './LevelRow';
 
 const SubMenu = () => {
@@ -46,17 +46,18 @@ const SubMenu = () => {
         if (newMenu !== prevMenu && prevMenu !== '--Add Menu--') {
             const nextLevel = level + 1;
             //filter the next menus affected by change of parent menu
-            const changeMenus = Object.keys(editData[nextLevel]).filter(menu => editData[nextLevel][menu] === prevMenu);
-            changeMenus.forEach(menu => editData[nextLevel][menu] = newMenu);
+            if (editData[nextLevel]) {
+                const changeMenus = Object.keys(editData[nextLevel]).filter(menu => editData[nextLevel][menu] === prevMenu);
+                changeMenus.forEach(menu => editData[nextLevel][menu] = newMenu);
+            }
         }
         setTempData(editData);
         setMenuData(editData);
-        //submit to firebase db ------------
+        addSubMenuDB(editData);
     };
 
     //delete sub menu and all subsequently related sub menus
     const deleteMenu = (menu, level) => {
-        console.log(menu, level);
         let deleteData = {...tempData};
         //delete all related sub menus
         relatedMenus(menu, level).forEach(([menu, level]) => delete deleteData[level][menu]);
@@ -65,8 +66,7 @@ const SubMenu = () => {
         setTempData(deleteData);
         setMenuData(deleteData);
         setLevels(Object.keys(deleteData).map(string => parseInt(string)));
-        //upload to firebase db --------
-        console.log(deleteData);
+        addSubMenuDB(deleteData);
     };
 
     //find all related subsequent menus
@@ -85,7 +85,6 @@ const SubMenu = () => {
     const addNewLevel = () => {
         const nextLevel = Object.keys(tempData).length;
         let addData = {...tempData, [nextLevel]: {}};
-        console.log(addData);
         setTempData(addData);
         setMenuData(addData);
         setLevels(Object.keys(addData).map(string => parseInt(string)));

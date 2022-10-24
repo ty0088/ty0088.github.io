@@ -13,6 +13,7 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
         let initParent = menuData[level][menu];
         initParent = initParent === 'Menu' ? 'N/A' : initParent;
         setParent(initParent);
+        // eslint-disable-next-line
     }, [menuData]);
 
     useEffect(() => {
@@ -20,6 +21,7 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
             setEditFlag(true);
             document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = true);
         }
+        // eslint-disable-next-line
     }, [menu])
 
     const checkEdit = (newMenu, newParent, menu, parent) => {

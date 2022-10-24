@@ -59,6 +59,15 @@ const addItem = async (subMenu, name, description, options, mods, qty, price, ta
     }
 };
 
+const addSubMenuDB = async (menuObj) => {
+    const user = getAuth().currentUser;
+    try {
+        await setDoc(doc(db, user.uid, "sub-menus"), menuObj);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const getDBDoc = async (docRef) => {
     const user = getAuth().currentUser;
     const errorMessage = { code : 404, message : `${docRef} document NOT found` };
@@ -77,4 +86,4 @@ const getDBDoc = async (docRef) => {
 };
 
 
-export { addUser, getDBDoc, addItem };
+export { addUser, addSubMenuDB, getDBDoc, addItem };
