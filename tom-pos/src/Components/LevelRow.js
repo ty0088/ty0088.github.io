@@ -78,6 +78,7 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
         deleteMenu(menu, level);
         setMessageFlag(false);
         setEditFlag(false);
+        document.querySelectorAll(`.menuBtn`).forEach(elem => elem.disabled = false);
     }
 
     //Drop list of possible parent menus

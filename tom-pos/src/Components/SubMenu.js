@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc } from '../Util/firebaseDB';
 import LevelRow from './LevelRow';
+import { arrayRemove } from 'firebase/firestore';
+import { connectAuthEmulator } from 'firebase/auth';
 
 const SubMenu = () => {
     const [menuData, setMenuData] = useState({});
@@ -54,20 +56,32 @@ const SubMenu = () => {
         //submit to firebase db ------------
     };
 
-    //delete sub menu and all subsequently connected sub menus
+    //delete sub menu and all subsequently related sub menus
     const deleteMenu = (menu, level) => {
         console.log(menu, level);
         let deleteData = {...tempData};
-        delete deleteData[level][menu];
-        //call back to find all menus associated --------------
+        //delete all related sub menus
+        relatedMenus(menu, level).forEach(([menu, level]) => delete deleteData[level][menu]);
+        //remove any empty levels in data obj
+        Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
         setMenuData(deleteData);
+        setLevels(Object.keys(deleteData).map(string => parseInt(string)))
+        //upload to firebase db --------
+        console.log(deleteData);
     };
 
+    //find all related subsequent menus
     const relatedMenus = (menu, level) => {
-        //call back until no more subsequent menus found then return array
-        //add menus found to array
-        Object.keys(tempData[level + 1]).includes(menu)
+        const nextLevel = level + 1;
+        if (!tempData[nextLevel] || !Object.values(tempData[nextLevel]).includes(menu)) {
+            return [[menu, level]];
+        } else {  
+            let array = [[menu, level]];
+            let currKeys = Object.keys(tempData[nextLevel]).filter(key => tempData[nextLevel][key] === menu);
+            currKeys.forEach(key => array.push(...relatedMenus(key, nextLevel)));
+            return array;   
+        }    
     }
  
     return (
