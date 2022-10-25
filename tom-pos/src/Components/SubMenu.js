@@ -83,7 +83,7 @@ const SubMenu = () => {
             currKeys.forEach(key => array.push(...relatedMenus(key, nextLevel)));
             return array;   
         }    
-    }
+    };
 
     const addNewLevel = () => {
         const nextLevel = Object.keys(tempData).length;
