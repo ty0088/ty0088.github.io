@@ -25,7 +25,7 @@ const SubMenu = () => {
 
     const clickNewMenu = (e) => {
         const menuLevel = e.target.parentNode.getAttribute('data-level');
-        const addMenu = {...menuData, [menuLevel]: {...menuData[menuLevel], '--Add Menu--': ''}};
+        const addMenu = {...tempData, [menuLevel]: {...tempData[menuLevel], '--Add Menu--': ''}};
         setTempData(addMenu);
     };
 
@@ -51,8 +51,11 @@ const SubMenu = () => {
                 changeMenus.forEach(menu => editData[nextLevel][menu] = newMenu);
             }
         }
+        //remove any empty levels and update data
+        Object.keys(editData).forEach(level => { if (Object.keys(editData[level]).length === 0) delete editData[level] });
         setTempData(editData);
         setMenuData(editData);
+        setLevels(Object.keys(editData).map(string => parseInt(string)));
         addSubMenuDB(editData);
     };
 
@@ -61,7 +64,7 @@ const SubMenu = () => {
         let deleteData = {...tempData};
         //delete all related sub menus
         relatedMenus(menu, level).forEach(([menu, level]) => delete deleteData[level][menu]);
-        //remove any empty levels in data obj
+        //remove any empty levels and update data
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
         setMenuData(deleteData);
