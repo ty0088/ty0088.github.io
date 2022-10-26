@@ -44,7 +44,7 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
             setEditFlag(false);
             document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = false);
             const newMenu = document.getElementById(`menu-input-${id}`).value;
-            const newParent = document.getElementById(`menu-droplist-${id}`).value;
+            const newParent = document.getElementById(`menu-list-${id}`).value;
             //check inputs for validity
             if (checkEdit(newMenu, newParent, menu, parent)) {
                 //if valid submit changes
@@ -83,18 +83,18 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
     }
 
     //Drop list of possible parent menus
-    const DropList = () => {
+    const MenuList = () => {
         if (level > 0) {
             const prevLevel = level - 1;
             const filterKeys = Object.keys(menuData[prevLevel]).sort();
             return (
-                <select key={id} id={`menu-droplist-${id}`} defaultValue={parent} >
+                <select id={`menu-list-${id}`} defaultValue={parent} >
                     {filterKeys.map((key, i) => <option key={i} value={key}>{key}</option>)}
                 </select>
             );
         } else {
             return (
-                <select key={id} id={`menu-droplist-${id}`} defaultValue='N/A' >
+                <select key={id} id={`menu-list-${id}`} defaultValue='N/A' >
                     <option>N/A</option>
                 </select>
             );
@@ -119,11 +119,11 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
         return (
             <div className='row-container' data-id={id}>
                 <input type="text" id={`menu-input-${id}`} defaultValue={menu} autoFocus></input>
-                <DropList />
+                <MenuList />
                 <div>
                     <button type='button' className='menuBtn' onClick={editClick}>Submit</button>
-                    <button type='button' className='menuBtn' onClick={cancelClick}>Cancel</button>
                     <button type='button' className='menuBtn' onClick={deleteClick}>Delete</button>
+                    <button type='button' className='menuBtn' onClick={cancelClick}>Cancel</button>
                     {messageFlag &&
                         <MessageDelete menu={menu} cancelDelete={cancelDelete} confirmDelete={confirmDelete}/>
                     }

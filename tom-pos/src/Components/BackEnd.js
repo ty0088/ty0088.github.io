@@ -15,7 +15,7 @@ const BackEnd = () => {
                     <Link to='/tom-pos/backend' className='backend-link'>Account Settings</Link>
                     <Link to='/tom-pos/backend' className='backend-link'>Financial Reports</Link>
                     <Link to='/tom-pos/submenu' className='backend-link'>Sub Menu Management</Link>
-                    <Link to='/tom-pos/backend' className='backend-link'>Item Management</Link>
+                    <Link to='/tom-pos/items' className='backend-link'>Item Management</Link>
                     <Link to='/tom-pos/backend' className='backend-link'>VAT Settings</Link>
                 </div>
                 <div className='nav-footer'>

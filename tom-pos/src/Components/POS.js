@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
-// eslint-disable-next-line
-import { getDBDoc, addItem } from '../Util/firebaseDB';
+import { getDBDoc } from '../Util/firebaseDB';
 
 const POS = () => {
     const [menuFlag, setMenuFlag] = useState(false);
@@ -38,7 +37,6 @@ const POS = () => {
             setItems(parentKey, tempItemData);
         }
         setInitMenu();
-        //-------------- addItem([0,'Food'], 'Test Item', 'description', 'options', 'mods', 'qty', 'price', 'taxBand', 'cost', 'custReceipt', 'kitchReceipt')
     // eslint-disable-next-line
     }, [])
 
@@ -104,7 +102,7 @@ const POS = () => {
 
     //find any items belonging to sub menu and set items
     const setItems = (menuKey, data) => {
-        const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'][1] === menuKey);
+        const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'] === menuKey);
         let menuItemArr = menuItemIDs.map(ID => [ID, itemData[ID]['item-name']]);
         menuItemArr.sort();
         if (menuItemIDs.length > 0) {
@@ -213,17 +211,5 @@ const POS = () => {
         )
     }
 };
-
-// addItem([2, 'Beef'], 'Cheese Burger', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([2, 'Chicken'], 'Chicken Burger', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([2, 'Veg'], 'Veggie Burger', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([1, 'Mains'], 'Main Item', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([1, 'Sides'], 'Rosmary Fries', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([0, 'Food'], 'Food Item', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([0, 'Drinks'], 'Drink Item', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([1, 'Beers'], 'Lager', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([1, 'Soft'], 'Coke', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([1, 'Spirits'], 'Rum', '', {}, {}, 1, 10, 's', 0, true, true);
-// addItem([1, 'Wine'], 'House Red', '', {}, {}, 1, 10, 's', 0, true, true);
 
 export default POS;

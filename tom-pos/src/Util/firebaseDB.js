@@ -1,4 +1,4 @@
-import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import fireApp from './firebaseApp';
 import { v4 as uuidv4 } from 'uuid';
@@ -59,6 +59,15 @@ const addItem = async (subMenu, name, description, options, mods, qty, price, ta
     }
 };
 
+const updateItemDB = async (itemData) => {
+    const user = getAuth().currentUser;
+    try {
+        await updateDoc(doc(db, user.uid, "items"), itemData);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const addSubMenuDB = async (menuObj) => {
     const user = getAuth().currentUser;
     try {
@@ -85,5 +94,4 @@ const getDBDoc = async (docRef) => {
     }
 };
 
-
-export { addUser, addSubMenuDB, getDBDoc, addItem };
+export { addUser, addSubMenuDB, getDBDoc, addItem, updateItemDB };
