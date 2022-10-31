@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDBDoc } from '../Util/firebaseDB';
 
-const MenuList = ({dfMenu, itemID}) => {
+const MenuList = ({dfMenu, itemID, handleChange}) => {
     const [menuData, setMenuData] = useState({});
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const MenuList = ({dfMenu, itemID}) => {
         let menuArr = [];
         Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
         return (
-            <select key={itemID} id={`menu-list-${itemID}`} defaultValue={dfMenu}>
+            <select key={itemID} id={`menu-list-${itemID}`} defaultValue={dfMenu} onChange={handleChange}>
                 {menuArr.map((menu, i) => <option key={i} value={menu}>{menu}</option>)}
             </select>
         );
