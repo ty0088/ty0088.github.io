@@ -88,14 +88,14 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
             const prevLevel = level - 1;
             const filterKeys = Object.keys(menuData[prevLevel]).sort();
             return (
-                <select id={`menu-list-${id}`} defaultValue={parent} >
-                    {filterKeys.map((key, i) => <option key={i} value={key}>{key}</option>)}
+                <select key={id} id={`menu-list-${id}`} defaultValue={parent} >
+                    {filterKeys.map((fkey, i) => <option key={i} value={fkey}>{fkey}</option>)}
                 </select>
             );
         } else {
             return (
-                <select key={id} id={`menu-list-${id}`} defaultValue='N/A' >
-                    <option>N/A</option>
+                <select id={`menu-list-${id}`}>
+                    <option value={'N/A'}>N/A</option>
                 </select>
             );
         }

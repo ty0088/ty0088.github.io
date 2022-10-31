@@ -1,5 +1,7 @@
 import '../Styles/ItemManage.css';
 import React, { useState, useEffect } from 'react';
+import MenuList from './MenuList';
+import TaxList from './TaxList';
 
 const ItemRow = ({itemObj, index}) => {
     const [editFlag, setEditFlag] = useState(false);
@@ -10,6 +12,7 @@ const ItemRow = ({itemObj, index}) => {
             setEditFlag(false);
         } else {
             setEditFlag(true);
+            //disable all other buttons ---------------
         }
     }
 
@@ -39,7 +42,13 @@ const ItemRow = ({itemObj, index}) => {
         return (
             <div className='item-row'>
                 <span>{index + 1}.</span>
-                <input type="text" id={`item-${item.itemID}`} defaultValue={item['item-name']} autoFocus></input>
+                <input type="text" id={`item-name-${item.itemID}`} defaultValue={item['item-name']} autoFocus></input>
+                <MenuList dfMenu={item['sub-menu']} itemID={item.itemID} />
+                <input type="text" id={`item-desc-${item.itemID}`} defaultValue={item['description']}></input>
+                <input type="text" id={`item-price-${item.itemID}`} defaultValue={item['price']}></input>
+                <TaxList itemID={item.itemID} taxBand={item['tax-band']} />
+                <input type="text" id={`item-cost-${item.itemID}`} defaultValue={item['cost']}></input>
+                <input type="text" id={`item-qty-${item.itemID}`} defaultValue={item['qty']}></input>
                 <div>
                     <button type='button' onClick={editClick}>Submit</button>
                     <button type='button' >Delete</button>
@@ -48,7 +57,6 @@ const ItemRow = ({itemObj, index}) => {
             </div>
         );
     }
-
 };
 
 export default ItemRow;

@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { getDBDoc } from '../Util/firebaseDB';
 
-const MenuList = ({level, menu, id}) => {
+const MenuList = ({dfMenu, itemID}) => {
     const [menuData, setMenuData] = useState({});
 
     useEffect(() => {
-        
+        const getMenuDB = async () => {
+            const menuSnap = await getDBDoc('sub-menus');
+            const dbData = menuSnap.data();
+            setMenuData(dbData);
+        };
+        getMenuDB();
     }, [])
-    
-    if (level > 0) {
-        const prevLevel = level - 1;
-        const filterKeys = Object.keys(menuData[prevLevel]).sort();
+     
+    if (Object.keys(menuData).length > 0) {
+        let menuArr = [];
+        Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
         return (
-            <select id={`menu-list-${id}`} defaultValue={menu} >
-                {filterKeys.map((key, i) => <option key={i} value={key}>{key}</option>)}
+            <select key={itemID} id={`menu-list-${itemID}`} defaultValue={dfMenu}>
+                {menuArr.map((menu, i) => <option key={i} value={menu}>{menu}</option>)}
             </select>
         );
     } else {
         return (
-            <select id={`menu-list-${id}`} defaultValue='N/A' >
-                <option>N/A</option>
+            <select id={`menu-list-${itemID}`}>
+                <option value={'N/A'}>N/A</option>
             </select>
         );
     }
