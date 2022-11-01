@@ -17,13 +17,13 @@ const MenuList = ({dfMenu, itemID, handleChange}) => {
         let menuArr = [];
         Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
         return (
-            <select key={itemID} id={`menu-list-${itemID}`} defaultValue={dfMenu} onChange={handleChange}>
+            <select key={itemID} data-input={'sub-menu'} defaultValue={dfMenu} onChange={handleChange}>
                 {menuArr.map((menu, i) => <option key={i} value={menu}>{menu}</option>)}
             </select>
         );
     } else {
         return (
-            <select id={`menu-list-${itemID}`}>
+            <select data-input={'sub-menu'}>
                 <option value={'N/A'}>N/A</option>
             </select>
         );

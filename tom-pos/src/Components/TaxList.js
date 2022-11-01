@@ -15,7 +15,7 @@ const TaxList = ({itemID, taxBand, handleChange}) => {
 
     if (Object.keys(taxData).length > 0) {
         return (
-            <select key={itemID} id={`tax-list-${itemID}`} defaultValue={taxBand} onChange={handleChange}>
+            <select key={itemID} data-input={'tax-band'} defaultValue={taxBand} onChange={handleChange}>
                 {Object.keys(taxData).sort().map((band, i) => <option key={i} value={band}>{band}</option>)}
             </select>
         );

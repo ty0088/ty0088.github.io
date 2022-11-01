@@ -3,6 +3,12 @@ import React, { useState, useEffect } from 'react';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
 
+//1. Options/Mods - Add button, delete button
+//2. Delete button - confirmation before delete from db
+//3. handleChange updates temp item obj on each change
+//4. Submit button - check before submission to db
+//5. currency to have decimals
+
 const ItemRow = ({itemObj, index}) => {
     const itemTemplate = {
         "sub-menu": "",
@@ -19,32 +25,67 @@ const ItemRow = ({itemObj, index}) => {
     };
 
     const [editFlag, setEditFlag] = useState(false);
-    const [item, setItem] = useState({...itemObj});
-    const [tempItem, setTempItem] = useState({...itemTemplate});
+    const [item, setItem] = useState(itemObj);
+    const [tempItem, setTempItem] = useState(itemObj);
 
     const editClick = () => {
         if (editFlag) {
+            //submit edit
             setEditFlag(false);
             document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
+            //check submission --------------------
+            if (true) {
+                //if submission is valid, setItem to tempItem and write to db
+                setItem(tempItem);
+            }
+            //if not valid, reset tempItem -----------
         } else {
+            //edit item
             setEditFlag(true);
             document.querySelectorAll(`#item-form button:not([data-id="${item['itemID']}"] button)`).forEach(elem => elem.disabled = true);
+            //set tempItem with item ---------
+            setTempItem(item);
         }
     }
 
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
+        //reset tempItem
+        setTempItem(item);
     }
 
     const handleChange = (e) => {
-        console.log(e.target.getAttribute('id'));
-        if (e.target.getAttribute('type') === 'checkbox') {
-            console.log(e.target.checked);
-        } else {
-            console.log(e.target.value);
-        }
+        //get input and value of change event
+        const [input, value] = getInputValue(e);
+        //input validation -----------
+        //update tempItem obj with changes ready for submission
+        const tempChange = {...tempItem, [input]: value};
+        setTempItem(tempChange);
     };
+
+    //return correct input value depending on which input is changed
+    const getInputValue = (e) => {
+        let input = e.target.getAttribute('data-input')
+        const inputType = e.target.getAttribute('type');
+        let value = null;
+        if (inputType === 'checkbox') {
+            value = e.target.checked;
+        } else if (/mods/.test(input)) {
+            const changeIndex = parseInt(input.substring(5, input.length));
+            value = [...tempItem['mods']];
+            value.splice(changeIndex, 1, e.target.value);
+            input = 'mods';
+        } else if (/options/.test(input)) {
+            const changeIndex = parseInt(input.substring(8, input.length));
+            value = [...tempItem['options']];
+            value.splice(changeIndex, 1, e.target.value);
+            input = 'options';
+        } else {
+            value = e.target.value;
+        }
+        return [input, value];
+    }
 
     const YesNoSpan = ({bool}) => {
         if (bool) {
@@ -80,19 +121,19 @@ const ItemRow = ({itemObj, index}) => {
         return (
             <div className='item-row' data-id={item['itemID']}>
                 <span>{index + 1}.</span>
-                <input type="text" id={`item-name-${item.itemID}`} defaultValue={item['item-name']} autoFocus onChange={handleChange}></input>
+                <input type="text" data-input={'item-name'} defaultValue={item['item-name']} autoFocus onChange={handleChange}></input>
                 <MenuList dfMenu={item['sub-menu']} itemID={item.itemID} handleChange={handleChange}/>
-                <input type="text" id={`item-desc-${item.itemID}`} defaultValue={item['description']} onChange={handleChange}></input>
-                <input type="text" id={`item-price-${item.itemID}`} defaultValue={item['price']} onChange={handleChange}></input>
+                <input type="text" data-input={'description'} defaultValue={item['description']} onChange={handleChange}></input>
+                <input type="text" data-input={'price'} defaultValue={item['price']} onChange={handleChange}></input>
                 <TaxList itemID={item.itemID} taxBand={item['tax-band']} handleChange={handleChange}/>
-                <input type="text" id={`item-cost-${item.itemID}`} defaultValue={item['cost']} onChange={handleChange}></input>
-                <input type="text" id={`item-qty-${item.itemID}`} defaultValue={item['qty']} onChange={handleChange}></input>
+                <input type="text" data-input={'cost'} defaultValue={item['cost']} onChange={handleChange}></input>
+                <input type="text" data-input={'qty'} defaultValue={item['qty']} onChange={handleChange}></input>
                 <div className='mod-list'>
                     {
                         item['options'].map((option, i) => {
                             return (
                                 <div className='mod-row' key={i}>
-                                    <input type="text" id={`item-options-${item.itemID}-${i}`} defaultValue={option} onChange={handleChange}/>
+                                    <input type="text" data-input={`options-${i}`} defaultValue={option} onChange={handleChange}/>
                                     <button type='delete'>Delete</button>
                                 </div>
                             );  
@@ -105,7 +146,7 @@ const ItemRow = ({itemObj, index}) => {
                         item['mods'].map((mod, i) => {
                             return (
                                 <div className='mod-row' key={i}>
-                                    <input type="text" id={`item-mods-${item.itemID}-${i}`} defaultValue={mod} onChange={handleChange}/>
+                                    <input type="text" data-input={`mods-${i}`} defaultValue={mod} onChange={handleChange}/>
                                     <button type='delete'>Delete</button>
                                 </div>
                             );  
@@ -114,10 +155,10 @@ const ItemRow = ({itemObj, index}) => {
                     <button type='button'>Add Option</button>
                 </div>
                 <div className='check-box'>
-                    <input type={'checkbox'} id={`item-customer-${item.itemID}`} defaultChecked={item['print-customer']} onChange={handleChange}/>
+                    <input type={'checkbox'} data-input={`print-customer`} defaultChecked={item['print-customer']} onChange={handleChange}/>
                 </div>
                 <div className='check-box'>
-                    <input type={'checkbox'} id={`item-kitchen-${item.itemID}`} defaultChecked={item['print-kitchen']} onChange={handleChange}/>
+                    <input type={'checkbox'} data-input={`print-kitchen`} defaultChecked={item['print-kitchen']} onChange={handleChange}/>
                 </div>
                 <div>
                     <button type='button' onClick={editClick}>Submit</button>
