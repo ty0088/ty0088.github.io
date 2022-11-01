@@ -50,8 +50,8 @@ const ItemManage = () => {
                     <span>Tax Band</span>
                     <span>Cost</span>
                     <span>Qty</span>
-                    <span>Options</span>
                     <span>Mods</span>
+                    <span>Options</span>
                     <span>Print Customer</span>
                     <span>Print Kitchen</span>
                 </div>
