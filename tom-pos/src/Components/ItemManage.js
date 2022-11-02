@@ -6,7 +6,8 @@ import { getDBDoc, addItem } from '../Util/firebaseDB';
 import ItemRow from './ItemRow';
 
 const ItemManage = () => {
-    const [itemData, setItemData] = useState({})
+    const [itemData, setItemData] = useState({});
+    const [sortedItems, setSortedItems] = useState([]);
 
     //load in item data from firebase db
     useEffect(() => {
@@ -14,6 +15,7 @@ const ItemManage = () => {
             const itemSnap = await getDBDoc('items');
             const dbData = itemSnap.data();
             setItemData(dbData);
+            setSortedItems(sortItemsBy(dbData, 'sub-menu'));
         };
         getItems();
     }, []);
@@ -37,6 +39,13 @@ const ItemManage = () => {
         return itemIDs;
     }
 
+    const deleteItem = (itemID) => {
+        let deleteData = {...itemData};
+        delete deleteData[itemID];
+        // setSortedItems(sortItemsBy(deleteData, 'sub-menu'));
+        setItemData(deleteData);
+    };
+
     return (
         <div id='item-container'>
             <div id='item-form'>
@@ -56,8 +65,9 @@ const ItemManage = () => {
                     <span>Print Kitchen</span>
                 </div>
                 {Object.keys(itemData).length > 0 &&
-                    sortItemsBy(itemData, 'sub-menu').map((itemID, i) => <ItemRow key={i} index={i} itemObj={itemData[itemID]} />)
+                    sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={itemData[itemID]} deleteItem={deleteItem} />)
                 }
+                <button type='button'>Add Item</button>
             </div>
             <div className='nav-footer'>
                 <Link to='/tom-pos/menu' className='foot-link'>Home</Link>

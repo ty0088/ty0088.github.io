@@ -3,26 +3,29 @@ import React, { useState, useEffect } from 'react';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
 
-//1. Options/Mods - Add button
 //2. Delete button - confirmation before delete from db
-//3. handleChange updates temp item obj on each change
-//4. Submit button - check before submission to db
+//4. Submit button - check before submission to db / input validation
 //5. currency to have decimals
 
-const ItemRow = ({itemObj, index}) => {
+const ItemRow = ({itemObj, index, deleteItem}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [item, setItem] = useState(itemObj);
     const [tempItem, setTempItem] = useState(itemObj);
 
+    // useEffect(() => {
+    //     console.log(`${itemObj['item-name']}, ${index}`);
+    // })
+
     const editClick = () => {
         if (editFlag) {
             //submit edit
-            setEditFlag(false);
-            document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
-            //check submission --------------------
+            //input validation -----------
             if (true) {
-                //if submission is valid, setItem to tempItem and write to db
+                //if submission is valid, setItem to tempItem and write to db ----------
+                //call delete item from ItemManage component ------
                 setItem(tempItem);
+                setEditFlag(false);
+                document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
             }
             //if not valid, reset tempItem -----------
         } else {
@@ -44,7 +47,7 @@ const ItemRow = ({itemObj, index}) => {
     const handleChange = (e) => {
         //get input and value of change event
         const [input, value] = getInputValue(e);
-        //input validation -----------
+        //input validation ----------- 
         //update tempItem obj with changes ready for submission
         const tempChange = {...tempItem, [input]: value};
         setTempItem(tempChange);
@@ -73,9 +76,9 @@ const ItemRow = ({itemObj, index}) => {
         return [input, value];
     };
 
-    //deletes a given mod or option input
+    //delete a mod or option
     const modOpDelete = (e) => {
-        let input = e.target.getAttribute('data-input');
+        const input = e.target.getAttribute('data-input');
         let changeIndex = 0;
         let type = '';
         if (/mods/.test(input)) {
@@ -90,6 +93,29 @@ const ItemRow = ({itemObj, index}) => {
         setTempItem({...tempItem, [type]: arr});
     };
 
+    //add a new mod or option
+    const modOpAdd = (e) => {
+        let input = e.target.getAttribute('data-input');
+        if (input === 'mods') {
+            console.log('add mod');
+        } else if (input === 'options') {
+            console.log('add options');
+        }
+        const tempArr = [...tempItem[input], ''];
+        console.log(tempArr);
+        setTempItem({...tempItem, [input]: tempArr});
+    };
+
+    const deleteClick = (e) => {
+        const itemID = e.target.closest('[data-id]').getAttribute('data-id');
+        //comfirm delete
+        //set edit off
+        setEditFlag(false);
+        document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
+        //call delete item from ItemManage component ------
+        deleteItem(itemID);
+    };
+
     const YesNoSpan = ({bool}) => {
         if (bool) {
             return <span>Yes</span>;
@@ -100,7 +126,7 @@ const ItemRow = ({itemObj, index}) => {
 
     if (!editFlag) {
         return (
-            <div className='item-row'>
+            <div className='item-row' data-id={tempItem['itemID']}>
                 <span>{index + 1}.</span>
                 <span>{tempItem['item-name']}</span>
                 <span>{tempItem['sub-menu']}</span>
@@ -110,7 +136,7 @@ const ItemRow = ({itemObj, index}) => {
                 <span>{tempItem['cost']}</span>
                 <span>{tempItem['qty']}</span>
                 <div className='mod-list'>
-                    {tempItem['mods'].map((mod, i) => <span key={i}>{mod}</span>)}
+                    {tempItem['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}
                 </div>
                 <div className='mod-list'>
                     {tempItem['options'].map((mod, i) => <span key={i}>- {mod}</span>)}
@@ -124,13 +150,13 @@ const ItemRow = ({itemObj, index}) => {
         return (
             <div className='item-row' data-id={tempItem['itemID']}>
                 <span>{index + 1}.</span>
-                <input type="text" data-input={'item-name'} defaultValue={tempItem['item-name']} autoFocus onChange={handleChange}></input>
+                <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
                 <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>
-                <input type="text" data-input={'description'} defaultValue={tempItem['description']} onChange={handleChange}></input>
-                <input type="text" data-input={'price'} defaultValue={tempItem['price']} onChange={handleChange}></input>
+                <input type="text" data-input={'description'} value={tempItem['description']} onChange={handleChange}></input>
+                <input type="text" data-input={'price'} value={tempItem['price']} onChange={handleChange}></input>
                 <TaxList itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
-                <input type="text" data-input={'cost'} defaultValue={tempItem['cost']} onChange={handleChange}></input>
-                <input type="text" data-input={'qty'} defaultValue={tempItem['qty']} onChange={handleChange}></input>
+                <input type="text" data-input={'cost'} value={tempItem['cost']} onChange={handleChange}></input>
+                <input type="text" data-input={'qty'} value={tempItem['qty']} onChange={handleChange}></input>
                 <div className='mod-list'>
                     {
                         tempItem['mods'].map((mod, i) => {
@@ -142,7 +168,7 @@ const ItemRow = ({itemObj, index}) => {
                             );  
                         })
                     }
-                    <button type='button'>Add Option</button>
+                    <button type='button' data-input={`mods`} onClick={modOpAdd}>Add Option</button>
                 </div>
                 <div className='mod-list'>
                     {
@@ -155,7 +181,7 @@ const ItemRow = ({itemObj, index}) => {
                             );  
                         })
                     }
-                    <button type='button'>Add Option</button>
+                    <button type='button' data-input={`options`} onClick={modOpAdd}>Add Option</button>
                 </div>
                 <div className='check-box'>
                     <input type={'checkbox'} data-input={`print-customer`} defaultChecked={tempItem['print-customer']} onChange={handleChange}/>
@@ -165,7 +191,7 @@ const ItemRow = ({itemObj, index}) => {
                 </div>
                 <div>
                     <button type='button' onClick={editClick}>Submit</button>
-                    <button type='button' >Delete</button>
+                    <button type='button' onClick={deleteClick}>Delete</button>
                     <button type='button' onClick={cancelClick}>Cancel</button>
                 </div>
             </div>
