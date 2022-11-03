@@ -1,15 +1,15 @@
-import '../Styles/SubMenu.css';
+import '../Styles/MessageDelete.css';
 import React from 'react';
 
-const MessageDelete = ({menu, cancelDelete, confirmDelete}) => {
+const MessageDelete = ({name, cancelDelete, confirmDelete, message}) => {
     return (
         <div id='message-container'>
             <div id='pop-up'>
                 <span>Are you sure you want to delete</span>
-                    <span className='bold'>{menu}</span>
+                    <span className='bold'>{name}</span>
                 <span>from the database?</span>
                 <span className='ex-message'>
-                    This will delete any descendants of this menu and make any associated items menu-less
+                    {message}
                 </span>
                 <div id='conf-btns'>
                     <button type='button' onClick={cancelDelete}>Cancel</button>

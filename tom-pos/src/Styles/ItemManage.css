@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 450px 50px;
+    position: relative;
 }
 
 #item-form {

@@ -2,13 +2,16 @@ import '../Styles/ItemManage.css';
 import React, { useState, useEffect } from 'react';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
+import MessageDelete from './MessageDelete';
 
 //2. Delete button - confirmation before delete from db
 //4. Submit button - check before submission to db / input validation
 //5. currency to have decimals
+//sub menu delete needs to be deleted from item
 
 const ItemRow = ({itemObj, index, deleteItem}) => {
     const [editFlag, setEditFlag] = useState(false);
+    const [messageFlag, setMessageFlag] = useState(false);
     const [item, setItem] = useState(itemObj);
     const [tempItem, setTempItem] = useState(itemObj);
 
@@ -108,9 +111,19 @@ const ItemRow = ({itemObj, index, deleteItem}) => {
         setTempItem({...tempItem, [input]: tempArr});
     };
 
+    //call to delete item
     const deleteClick = (e) => {
+        //ask for delete confirmation
+        setMessageFlag(true);
+    };
+
+    const cancelDelete = () => {
+        setMessageFlag(false);
+    };
+
+    const confirmDelete = (e) => {
         const itemID = e.target.closest('[data-id]').getAttribute('data-id');
-        //comfirm delete -----------
+        console.log(itemID);
         //set edit off
         setEditFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
@@ -151,6 +164,10 @@ const ItemRow = ({itemObj, index, deleteItem}) => {
     } else {
         return (
             <div className='item-row' data-id={tempItem['itemID']}>
+                    {messageFlag &&
+                        <MessageDelete name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                            message={'This will permanently delete the item from the database'}/>
+                    }
                 <span>{index + 1}.</span>
                 <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
                 <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>

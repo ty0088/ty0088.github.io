@@ -61,49 +61,5 @@
     width: 100px;
 }
 
-#message-container {
-    height: 500px;
-    width: 1000px;
-    background-color: rgba(0,0,0,0.4);
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-#pop-up {
-    height: 300px;
-    width: 400px;
-    padding: 20px;
-    border: 2px solid Black;
-    border-radius: 5px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-size: 1.5em;
-}
-
-.bold {
-    font-weight: 900;
-}
-
-.ex-message {
-    font-size: 0.75em;
-    margin: 10px 0 10px 0;
-}
-
-#conf-btns > button {
-    margin: 20px;
-    font-size: 20px;
-    font-weight: 700;
-    width: 100px;
-    height: 50px;
-}
-
 
 

@@ -109,9 +109,6 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
                 <div>{parent}</div>
                 <div>
                     <button type='button' className='menuBtn' onClick={editClick}>Edit</button>
-                    {messageFlag &&
-                        <MessageDelete menu={menu} cancelDelete={cancelDelete} confirmDelete={confirmDelete}/>
-                    }
                 </div>
             </div>
         );
@@ -125,7 +122,8 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
                     <button type='button' className='menuBtn' onClick={deleteClick}>Delete</button>
                     <button type='button' className='menuBtn' onClick={cancelClick}>Cancel</button>
                     {messageFlag &&
-                        <MessageDelete menu={menu} cancelDelete={cancelDelete} confirmDelete={confirmDelete}/>
+                        <MessageDelete name={menu} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                            message={'This will delete any descendants of this menu and make any associated items menu-less'}/>
                     }
                 </div>
             </div>
