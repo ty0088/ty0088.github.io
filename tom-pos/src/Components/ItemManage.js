@@ -9,7 +9,7 @@ const ItemManage = () => {
     const [itemData, setItemData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
 
-    //load in item data from firebase db
+    //load in item data from firebase db -
     useEffect(() => {
         const getItems = async () => {
             const itemSnap = await getDBDoc('items');
@@ -42,7 +42,7 @@ const ItemManage = () => {
     const deleteItem = (itemID) => {
         let deleteData = {...itemData};
         delete deleteData[itemID];
-        // setSortedItems(sortItemsBy(deleteData, 'sub-menu'));
+        setSortedItems(sortItemsBy(deleteData, 'sub-menu'));
         setItemData(deleteData);
     };
 

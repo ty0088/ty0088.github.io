@@ -12,9 +12,11 @@ const ItemRow = ({itemObj, index, deleteItem}) => {
     const [item, setItem] = useState(itemObj);
     const [tempItem, setTempItem] = useState(itemObj);
 
-    // useEffect(() => {
-    //     console.log(`${itemObj['item-name']}, ${index}`);
-    // })
+    //keep item and tempItem updated with prop itemObj on each render
+    useEffect(() => {
+        setTempItem(itemObj);
+        setItem(itemObj);
+    }, [itemObj])
 
     const editClick = () => {
         if (editFlag) {
@@ -108,11 +110,11 @@ const ItemRow = ({itemObj, index, deleteItem}) => {
 
     const deleteClick = (e) => {
         const itemID = e.target.closest('[data-id]').getAttribute('data-id');
-        //comfirm delete
+        //comfirm delete -----------
         //set edit off
         setEditFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
-        //call delete item from ItemManage component ------
+        //call delete item from ItemManage component
         deleteItem(itemID);
     };
 
