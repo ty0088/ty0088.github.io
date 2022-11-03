@@ -59,10 +59,10 @@ const addItem = async (subMenu, name, description, options, mods, qty, price, ta
     }
 };
 
-const updateItemDB = async (itemData) => {
+const setItemDB = async (itemData) => {
     const user = getAuth().currentUser;
     try {
-        await updateDoc(doc(db, user.uid, "items"), itemData);
+        await setDoc(doc(db, user.uid, "items"), itemData);
     } catch (error) {
         console.log(error);
     }
@@ -94,4 +94,4 @@ const getDBDoc = async (docRef) => {
     }
 };
 
-export { addUser, addSubMenuDB, getDBDoc, addItem, updateItemDB };
+export { addUser, addSubMenuDB, getDBDoc, addItem, setItemDB };

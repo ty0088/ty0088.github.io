@@ -2,48 +2,91 @@ import '../Styles/ItemManage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc, addItem } from '../Util/firebaseDB';
+import { getDBDoc, setItemDB, addItem } from '../Util/firebaseDB';
+import { v4 as uuidv4 } from 'uuid';
 import ItemRow from './ItemRow';
 
 const ItemManage = () => {
     const [itemData, setItemData] = useState({});
+    const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
+    const itemTemplate = {
+        itemID: 0,
+        "sub-menu": "",
+        "item-name": "",
+        description: "",
+        options: [],
+        mods: [],
+        qty: 0,
+        price: 0,
+        "tax-band": "",
+        cost: 0,
+        "print-kitchen": false,
+        "print-customer": true
+    };
 
-    //load in item data from firebase db -
+    //load in item data from firebase db
     useEffect(() => {
-        const getItems = async () => {
-            const itemSnap = await getDBDoc('items');
-            const dbData = itemSnap.data();
-            setItemData(dbData);
-            setSortedItems(sortItemsBy(dbData, 'sub-menu'));
-        };
-        getItems();
+        initData();
     }, []);
+
+    const initData = async () => {
+        const itemSnap = await getDBDoc('items');
+        const dbData = itemSnap.data();
+        setData(dbData);
+    };
+
+    const setData = (data) => {
+        setItemData(data);
+        setTempData(data);
+        setSortedItems(sortItemsBy(data, 'sub-menu'));
+    }
 
     const sortItemsBy = (data, key) => {
         const itemIDs = Object.keys(data);
-        itemIDs.sort((a, b) => {
-            let nameA = data[a][key];
-            let nameB = data[b][key]
-            if (typeof data[a][key] === 'string') {
-                nameA = data[a][key].toUpperCase();
-                nameB = data[b][key].toUpperCase();
-            }
-            if (nameA < nameB) {
-                return -1;
-            } else if (nameA > nameB) {
-                return 1;
-            }
-            return 0;
-        });
+        if (itemIDs.length > 1 ) {
+            itemIDs.sort((a, b) => {
+                let nameA = data[a][key];
+                let nameB = data[b][key]
+                if (typeof data[a][key] === 'string' && data[a][key] !== '') {
+                    nameA = data[a][key].toUpperCase();
+                    nameB = data[b][key].toUpperCase();
+                }
+                if (nameA < nameB) {
+                    return -1;
+                } else if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
         return itemIDs;
     }
 
     const deleteItem = (itemID) => {
-        let deleteData = {...itemData};
+        let deleteData = {...tempData};
         delete deleteData[itemID];
-        setSortedItems(sortItemsBy(deleteData, 'sub-menu'));
-        setItemData(deleteData);
+        setData(deleteData);
+        setItemDB(deleteData);
+    };
+
+    const addItemClick = () => {
+        const itemID = uuidv4();
+        const addData = {...tempData, [itemID]: {...itemTemplate, itemID: itemID}};
+        console.log(addData);
+        setTempData(addData);
+        setSortedItems(sortItemsBy(addData, 'sub-menu'));
+    };
+
+    const cancelAdd = () => {
+        setData({...itemData});
+    };
+
+    const changeItem = (item) => {
+        const itemID = item.itemID;
+        const changeData = {...tempData, [itemID]: item};
+        setData(changeData);
+        setItemDB(changeData);
     };
 
     return (
@@ -65,9 +108,10 @@ const ItemManage = () => {
                     <span>Print Kitchen</span>
                 </div>
                 {Object.keys(itemData).length > 0 &&
-                    sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={itemData[itemID]} deleteItem={deleteItem} />)
+                    sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
+                        changeItem={changeItem} cancelAdd={cancelAdd}/>)
                 }
-                <button type='button'>Add Item</button>
+                <button type='button' onClick={addItemClick}>Add Item</button>
             </div>
             <div className='nav-footer'>
                 <Link to='/tom-pos/menu' className='foot-link'>Home</Link>
@@ -78,7 +122,7 @@ const ItemManage = () => {
     );
 };
 
-// addItem('Food', 'Test Item', 'description', '[options]', '[mods]', '1', '10', 'taxBand', '5', 'custReceipt', 'kitchReceipt')
+// addItem('', 'Test Item', 'description', ['options'], ['mods'], 1, 10, 'S', 5, true, false)
 
 
 export default ItemManage;

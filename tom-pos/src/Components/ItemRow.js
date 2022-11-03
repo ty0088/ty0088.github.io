@@ -9,16 +9,20 @@ import MessageDelete from './MessageDelete';
 //5. currency to have decimals
 //sub menu delete needs to be deleted from item
 
-const ItemRow = ({itemObj, index, deleteItem}) => {
+const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
     const [item, setItem] = useState(itemObj);
     const [tempItem, setTempItem] = useState(itemObj);
-
+    console.log(itemObj);
     //keep item and tempItem updated with prop itemObj on each render
     useEffect(() => {
         setTempItem(itemObj);
         setItem(itemObj);
+        if (itemObj['item-name'] === '') {
+            setEditFlag(true);
+            document.querySelectorAll(`#item-form button:not([data-id="${item['itemID']}"] button)`).forEach(elem => elem.disabled = true);
+        }
     }, [itemObj])
 
     const editClick = () => {
@@ -28,11 +32,12 @@ const ItemRow = ({itemObj, index, deleteItem}) => {
             if (true) {
                 //if submission is valid, setItem to tempItem and write to db ----------
                 //call delete item from ItemManage component ------
-                setItem(tempItem);
                 setEditFlag(false);
                 document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
+                setItem(tempItem);
+                changeItem(tempItem);
             }
-            //if not valid, reset tempItem -----------
+            //if not valid, warn user
         } else {
             //edit item
             setEditFlag(true);
@@ -47,6 +52,7 @@ const ItemRow = ({itemObj, index, deleteItem}) => {
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
         //reset tempItem
         setTempItem(item);
+        cancelAdd();
     }
 
     const handleChange = (e) => {
@@ -123,11 +129,8 @@ const ItemRow = ({itemObj, index, deleteItem}) => {
 
     const confirmDelete = (e) => {
         const itemID = e.target.closest('[data-id]').getAttribute('data-id');
-        console.log(itemID);
-        //set edit off
         setEditFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
-        //call delete item from ItemManage component
         deleteItem(itemID);
     };
 
