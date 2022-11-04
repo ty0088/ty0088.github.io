@@ -157,6 +157,7 @@ const POS = () => {
 
     //Item button component
     const ItemBtns = () => {
+        console.log(menuItems);
         return (
             <div className='btns-container'>
                 {menuItems.map((itemArr, i) => {

@@ -10,19 +10,20 @@ const ItemManage = () => {
     const [itemData, setItemData] = useState({});
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
+    const [itemNames, setItemNames] = useState([]);
     const itemTemplate = {
         itemID: 0,
-        "sub-menu": "",
-        "item-name": "",
-        description: "",
+        'sub-menu': '',
+        'item-name': '',
+        description: '',
         options: [],
         mods: [],
-        qty: 0,
+        qty: 'N/A',
         price: 0,
-        "tax-band": "",
+        'tax-band': '',
         cost: 0,
-        "print-kitchen": false,
-        "print-customer": true
+        'print-kitchen': false,
+        'print-customer': true
     };
 
     //load in item data from firebase db
@@ -30,12 +31,24 @@ const ItemManage = () => {
         initData();
     }, []);
 
+    //update item names for restricted names list
+    useEffect(() => {
+        const getItemNames = (data) => {
+            let nameArr = [];
+            Object.keys(data).forEach(id => nameArr.push(data[id]['item-name']));
+            setItemNames(nameArr)
+        };
+        getItemNames(itemData);
+    }, [itemData]);
+
+    //set initial data from db
     const initData = async () => {
         const itemSnap = await getDBDoc('items');
         const dbData = itemSnap.data();
         setData(dbData);
     };
 
+    //set working states with new data
     const setData = (data) => {
         setItemData(data);
         setTempData(data);
@@ -107,9 +120,9 @@ const ItemManage = () => {
                     <span>Print Customer</span>
                     <span>Print Kitchen</span>
                 </div>
-                {Object.keys(itemData).length > 0 &&
+                {Object.keys(tempData).length > 0 &&
                     sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
-                        changeItem={changeItem} cancelAdd={cancelAdd}/>)
+                        changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames}/>)
                 }
                 <button type='button' onClick={addItemClick}>Add Item</button>
             </div>
