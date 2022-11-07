@@ -1,13 +1,13 @@
 import '../Styles/ItemManage.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createElement } from 'react';
 import isNumber from 'is-number';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
-//5. currency to have decimals
 //sub menu delete needs to be deleted from item
 //input error messages
+//sort by different headers or search bar
 
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames}) => {
     const [editFlag, setEditFlag] = useState(false);
@@ -28,15 +28,17 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         if (editFlag) {
             //submit edit
             //input validation
-            if (checkInputs(tempItem)) {
+            const [result, input] = checkInputs(tempItem);
+            if (result) {
                 //reset flags and buttons and set changed item and update db
                 setEditFlag(false);
                 document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
                 setItem(tempItem);
                 changeItem(tempItem);
             } else {
-                //message to user --------------------
-                console.log('inputs not valid');
+                //error message
+                handleError(input);
+                console.log(`${input} not valid`);
             }
         } else {
             //edit item
@@ -57,49 +59,76 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     //input validation
     const checkInputs = (item) => {
         const inputs = Object.keys(item);
+        let lastInput = 'none';
         const result = inputs.every(input => {
             switch (input)  {
                 case 'item-name':
                     //item-name: required, no repeats
-                    return item['item-name'] === '' || isNameRepeat(item['item-name'].trim()) ? false : true;
+                    lastInput = 'item-name';
+                    return item['item-name'].trim() === '' || isNameRepeat(item['item-name'].trim()) ? false : true;
                 case 'sub-menu':
                     //sub-menu: required
+                    lastInput = 'sub-menu';
                     return item['sub-menu'] === '' ? false : true;
                 case 'description':
                     //description: none
+                    lastInput = 'description';
                     return true;
                 case 'itemID':
                     //itemID: required, 36 length
+                    lastInput = 'itemID'
                     return item['itemID'].length === 36 ? true : false;
                 case 'price': 
-                    //price: must be integer, 0 required
+                    //price: must be number, 0 required
+                    lastInput = 'price';
                     return isNumber(item['price']) ? true : false;
                 case 'tax-band':
                     //tax-band: none
+                    lastInput = 'tax-band';
                     return true;
                 case 'cost': 
-                    //cost: must be integer, 0 required
+                    //cost: must be number, 0 required
+                    lastInput = 'cost';
                     return isNumber(item['cost']) ? true : false;
                 case 'qty':
-                    //qty: must be integer or 'N/A'
+                    //qty: must be number or 'N/A'
+                    lastInput = 'qty';
                     return isNumber(item['qty']) || item['qty'] === 'N/A' ? true : false;
                 case 'mods':
                     //mods: must be array. array can be empty
+                    lastInput = 'mods'
                     return Array.isArray(item['mods']) ? true : false;
                 case 'options':
                     //options: must be array. array can be empty
+                    lastInput = 'options';
                     return Array.isArray(item['options']) ? true : false;
                 case 'print-customer':
                     //print: must be bool
+                    lastInput = 'print-customer';
                     return typeof item['print-customer'] === 'boolean' ? true : false;
                 case 'print-kitchen':
                     //print: must be bool
+                    lastInput = 'print-kitchen';
                     return typeof item['print-kitchen'] === 'boolean' ? true : false;
                 default:
                     return true;
             }
         });
-        return result;
+        return [result, lastInput];
+    };
+
+    const handleError = (input) => {
+        const errInput = document.querySelector(`[data-input="${input}"]`);
+        const itemID = errInput.closest('[data-id]').getAttribute('data-id');
+        const leftPos = errInput.offsetLeft;
+        console.log(leftPos);
+        errInput.focus();
+        errInput.classList.add('input-error');
+        let errElem = document.createElement('div');
+        errElem.style.left = `${leftPos}.px`;
+        errElem.classList.add('error-message');
+        errElem.innerText = `${input} field is invalid`;
+        document.querySelector(`.row-container > [data-id="${itemID}"]`).appendChild(errElem);
     };
 
     const isNameRepeat = (newName) => {
@@ -115,6 +144,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     const handleChange = (e) => {
         //get input and value of change event
         let [input, value] = getInputValue(e);
+        //parse number inputs
         value = isNumber(value) ? parseFloat(value) : value;
         //update tempItem obj with changes ready for submission
         const tempChange = {...tempItem, [input]: value};
@@ -224,55 +254,57 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         );
     } else {
         return (
-            <div className='item-row' data-id={tempItem['itemID']}>
-                    {messageFlag &&
-                        <MessageDelete name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                            message={'This will permanently delete the item from the database'}/>
-                    }
-                <span>{index + 1}.</span>
-                <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
-                <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>
-                <input type="text" data-input={'description'} value={tempItem['description']} onChange={handleChange}></input>
-                <input type="number" data-input={'price'} value={tempItem['price']} onChange={handleChange}></input>
-                <TaxList itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
-                <input type="number" data-input={'cost'} value={tempItem['cost']} onChange={handleChange}></input>
-                <input type="text" data-input={'qty'} value={tempItem['qty']} onChange={handleChange}></input>
-                <div className='mod-list'>
-                    {
-                        tempItem['mods'].map((mod, i) => {
-                            return (
-                                <div className='mod-row' key={i}>
-                                    <input type="text" data-input={`mods-${i}`} value={mod} onChange={handleChange}/>
-                                    <button type='button' data-input={`mods-${i}`} onClick={modOpDelete}>Delete</button>
-                                </div>
-                            );  
-                        })
-                    }
-                    <button type='button' data-input={`mods`} onClick={modOpAdd}>Add Option</button>
-                </div>
-                <div className='mod-list'>
-                    {
-                        tempItem['options'].map((option, i) => {
-                            return (
-                                <div className='mod-row' key={i}>
-                                    <input type="text" data-input={`options-${i}`} value={option} onChange={handleChange}/>
-                                    <button type='button' data-input={`options-${i}`} onClick={modOpDelete}>Delete</button>
-                                </div>
-                            );  
-                        })
-                    }
-                    <button type='button' data-input={`options`} onClick={modOpAdd}>Add Option</button>
-                </div>
-                <div className='check-box'>
-                    <input type={'checkbox'} data-input={`print-customer`} defaultChecked={tempItem['print-customer']} onChange={handleChange}/>
-                </div>
-                <div className='check-box'>
-                    <input type={'checkbox'} data-input={`print-kitchen`} defaultChecked={tempItem['print-kitchen']} onChange={handleChange}/>
-                </div>
-                <div>
-                    <button type='button' onClick={editClick}>Submit</button>
-                    <button type='button' onClick={deleteClick}>Delete</button>
-                    <button type='button' onClick={cancelClick}>Cancel</button>
+            <div className='row-container'>
+                <div className='item-row' data-id={tempItem['itemID']}>
+                        {messageFlag &&
+                            <MessageDelete name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                                message={'This will permanently delete the item from the database'}/>
+                        }
+                    <span>{index + 1}.</span>
+                    <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
+                    <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>
+                    <input type="text" data-input={'description'} value={tempItem['description']} onChange={handleChange}></input>
+                    <input type="number" data-input={'price'} value={tempItem['price']} onChange={handleChange}></input>
+                    <TaxList itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
+                    <input type="number" data-input={'cost'} value={tempItem['cost']} onChange={handleChange}></input>
+                    <input type="text" data-input={'qty'} value={tempItem['qty']} onChange={handleChange}></input>
+                    <div className='mod-list'>
+                        {
+                            tempItem['mods'].map((mod, i) => {
+                                return (
+                                    <div className='mod-row' key={i}>
+                                        <input type="text" data-input={`mods-${i}`} value={mod} onChange={handleChange}/>
+                                        <button type='button' data-input={`mods-${i}`} onClick={modOpDelete}>Delete</button>
+                                    </div>
+                                );  
+                            })
+                        }
+                        <button type='button' data-input={`mods`} onClick={modOpAdd}>Add Option</button>
+                    </div>
+                    <div className='mod-list'>
+                        {
+                            tempItem['options'].map((option, i) => {
+                                return (
+                                    <div className='mod-row' key={i}>
+                                        <input type="text" data-input={`options-${i}`} value={option} onChange={handleChange}/>
+                                        <button type='button' data-input={`options-${i}`} onClick={modOpDelete}>Delete</button>
+                                    </div>
+                                );  
+                            })
+                        }
+                        <button type='button' data-input={`options`} onClick={modOpAdd}>Add Option</button>
+                    </div>
+                    <div className='check-box'>
+                        <input type={'checkbox'} data-input={`print-customer`} defaultChecked={tempItem['print-customer']} onChange={handleChange}/>
+                    </div>
+                    <div className='check-box'>
+                        <input type={'checkbox'} data-input={`print-kitchen`} defaultChecked={tempItem['print-kitchen']} onChange={handleChange}/>
+                    </div>
+                    <div>
+                        <button type='button' onClick={editClick}>Submit</button>
+                        <button type='button' onClick={deleteClick}>Delete</button>
+                        <button type='button' onClick={cancelClick}>Cancel</button>
+                    </div>
                 </div>
             </div>
         );
