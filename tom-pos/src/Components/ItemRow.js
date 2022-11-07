@@ -114,7 +114,8 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
 
     const handleChange = (e) => {
         //get input and value of change event
-        const [input, value] = getInputValue(e);
+        let [input, value] = getInputValue(e);
+        value = isNumber(value) ? parseFloat(value) : value;
         //update tempItem obj with changes ready for submission
         const tempChange = {...tempItem, [input]: value};
         setTempItem(tempChange);
@@ -197,15 +198,18 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     }
 
     if (!editFlag) {
+        const price = parseFloat(tempItem['price']).toFixed(2);
+        const cost = parseFloat(tempItem['cost']).toFixed(2);
+
         return (
             <div className='item-row' data-id={tempItem['itemID']}>
                 <span>{index + 1}.</span>
                 <span>{tempItem['item-name']}</span>
                 <span>{tempItem['sub-menu']}</span>
                 <span>{tempItem['description']}</span>
-                <span>{tempItem['price']}</span>
+                <span>{price}</span>
                 <span>{tempItem['tax-band']}</span>
-                <span>{tempItem['cost']}</span>
+                <span>{cost}</span>
                 <span>{tempItem['qty']}</span>
                 <div className='mod-list'>
                     {tempItem['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}
@@ -229,9 +233,9 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
                 <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>
                 <input type="text" data-input={'description'} value={tempItem['description']} onChange={handleChange}></input>
-                <input type="text" data-input={'price'} value={tempItem['price']} onChange={handleChange}></input>
+                <input type="number" data-input={'price'} value={tempItem['price']} onChange={handleChange}></input>
                 <TaxList itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
-                <input type="text" data-input={'cost'} value={tempItem['cost']} onChange={handleChange}></input>
+                <input type="number" data-input={'cost'} value={tempItem['cost']} onChange={handleChange}></input>
                 <input type="text" data-input={'qty'} value={tempItem['qty']} onChange={handleChange}></input>
                 <div className='mod-list'>
                     {
