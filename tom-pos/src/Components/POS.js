@@ -34,7 +34,13 @@ const POS = () => {
             } else {
                 setMenuFlag(false);
             }
-            setItems(parentKey, tempItemData);
+            let menu = parentKey;
+            console.log(menu);
+            if (parentKey === 'Menu' ) {
+                setItemFlag(true);
+                menu = '';
+            }
+            setItems(menu, tempItemData);
         }
         setInitMenu();
     // eslint-disable-next-line
@@ -75,7 +81,13 @@ const POS = () => {
             setNavPath(navPath.slice(0, nextLevel));
         }
         //set any items belonging to menu
-        setItems(parentMenu, itemData);
+        //any items with no sub menu shall be displayed at root menu
+        let menu = parentMenu;
+        if (parentMenu === 'Menu' ) {
+            setItemFlag(true);
+            menu = '';
+        }
+        setItems(menu, itemData);
     };
 
     //set sub menu one level back
@@ -102,9 +114,11 @@ const POS = () => {
 
     //find any items belonging to sub menu and set items
     const setItems = (menuKey, data) => {
+        console.log(menuKey);
         const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'] === menuKey);
-        let menuItemArr = menuItemIDs.map(ID => [ID, itemData[ID]['item-name']]);
+        let menuItemArr = menuItemIDs.map(ID => [ID, data[ID]['item-name']]);
         menuItemArr.sort();
+        console.log(menuItemArr);
         if (menuItemIDs.length > 0) {
             setMenuItems(menuItemArr);
             setItemFlag(true);
@@ -157,7 +171,6 @@ const POS = () => {
 
     //Item button component
     const ItemBtns = () => {
-        console.log(menuItems);
         return (
             <div className='btns-container'>
                 {menuItems.map((itemArr, i) => {

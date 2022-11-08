@@ -5,6 +5,8 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import { addSubMenuDB, getDBDoc } from '../Util/firebaseDB';
 import LevelRow from './LevelRow';
 
+//input error messages -----------------
+
 const SubMenu = () => {
     const [menuData, setMenuData] = useState({});
     const [tempData, setTempData] = useState({});

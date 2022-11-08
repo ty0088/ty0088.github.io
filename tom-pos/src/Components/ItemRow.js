@@ -1,12 +1,11 @@
 import '../Styles/ItemManage.css';
-import React, { useState, useEffect, createElement } from 'react';
+import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
-//sub menu delete needs to be deleted from item
-//sort by different headers or search bar
+//no empty mods/options
 
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames}) => {
     const [editFlag, setEditFlag] = useState(false);
@@ -21,6 +20,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         }
         setTempItem(itemObj);
         setItem(itemObj);
+    // eslint-disable-next-line
     }, [itemObj]);
 
     const editClick = () => {
@@ -67,10 +67,9 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                     errMessage = 'Item name is required and cannot already exist';
                     return item['item-name'].toString().trim() === '' || isNameRepeat(item['item-name'].toString().trim()) ? false : true;
                 case 'sub-menu':
-                    //sub-menu: required
+                    //sub-menu: none
                     lastInput = 'sub-menu';
-                    errMessage = 'Sub-menu is required';
-                    return item['sub-menu'] === '' ? false : true;
+                    return true;
                 case 'description':
                     //description: none
                     lastInput = 'description';
@@ -132,19 +131,16 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         errElem.style.width = `${errInput.parentElement.clientWidth - leftPos}.px`;
         errElem.classList.add('error-message');
         errElem.innerText = `${input} field is invalid. ${message}`;
-        document.querySelector(`.row-container > [data-id="${itemID}"]`).appendChild(errElem);
+        document.querySelector(`.item-row-container > [data-id="${itemID}"]`).appendChild(errElem);
     };
 
     const isNameRepeat = (newName) => {
         const upperName = newName.toUpperCase();
         let nameList = itemNames.map(name => name.toUpperCase());
         const index = nameList.indexOf(upperName);
-        console.log(upperName);
-        console.log(index);
         if (index > -1 && item['item-name'].toUpperCase() === upperName) {
             nameList.splice(index, 1);
         }
-        console.log(nameList);
         return nameList.includes(upperName) ? true : false;
     };
 
@@ -203,16 +199,11 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     //add a new mod or option
     const modOpAdd = (e) => {
         let input = e.target.getAttribute('data-input');
-        if (input === 'mods') { //---------------
-            console.log('add mod');
-        } else if (input === 'options') {
-            console.log('add options');
-        } //---------------
         const tempArr = [...tempItem[input], ''];
         setTempItem({...tempItem, [input]: tempArr});
     };
 
-    const deleteClick = (e) => {
+    const deleteClick = () => {
         setMessageFlag(true);
     };
 
@@ -263,7 +254,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         );
     } else {
         return (
-            <div className='row-container'>
+            <div className='item-row-container'>
                 <div className='item-row' data-id={tempItem['itemID']}>
                     {messageFlag &&
                         <MessageDelete name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}

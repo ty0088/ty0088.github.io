@@ -1,4 +1,4 @@
-import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import fireApp from './firebaseApp';
 import { v4 as uuidv4 } from 'uuid';

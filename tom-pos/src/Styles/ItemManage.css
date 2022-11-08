@@ -25,7 +25,7 @@
     font-weight: 700;
 }
 
-.row-container {
+.item-row-container {
     display: flex;
     flex-direction: column;
 }

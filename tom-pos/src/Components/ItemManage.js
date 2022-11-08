@@ -6,6 +6,9 @@ import { getDBDoc, setItemDB, addItem } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from './ItemRow';
 
+//1. sort by sub menu then by item name -----------------------
+//2. sort by different headers or search bar ------------------
+
 const ItemManage = () => {
     const [itemData, setItemData] = useState({});
     const [tempData, setTempData] = useState({});
