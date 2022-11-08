@@ -2,6 +2,7 @@ import '../Styles/ItemManage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
+// eslint-disable-next-line
 import { getDBDoc, setItemDB, addItem } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from './ItemRow';
@@ -32,6 +33,7 @@ const ItemManage = () => {
     //load in item data from firebase db
     useEffect(() => {
         initData();
+    // eslint-disable-next-line
     }, []);
 
     //update item names for restricted names list

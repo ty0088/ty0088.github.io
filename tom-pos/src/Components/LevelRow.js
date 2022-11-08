@@ -43,7 +43,7 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
         if (editFlag) {
             setEditFlag(false);
             document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = false);
-            const newMenu = document.getElementById(`menu-input-${id}`).value;
+            const newMenu = document.getElementById(`menu-input-${id}`).value.trim();
             const newParent = document.getElementById(`menu-list-${id}`).value;
             //check inputs for validity
             if (checkEdit(newMenu, newParent, menu, parent)) {

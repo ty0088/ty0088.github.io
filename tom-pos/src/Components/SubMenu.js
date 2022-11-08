@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { addSubMenuDB, getDBDoc } from '../Util/firebaseDB';
 import LevelRow from './LevelRow';
+import removeItemMenu from '../Util/removeItemMenu';
 
 //input error messages -----------------
 
@@ -23,7 +24,6 @@ const SubMenu = () => {
         };
         getSubMenu();
     }, []);
-
 
     const clickNewMenu = (e) => {
         const menuLevel = e.target.parentNode.getAttribute('data-level');
@@ -65,7 +65,12 @@ const SubMenu = () => {
     const deleteMenu = (menu, level) => {
         let deleteData = {...tempData};
         //delete all related sub menus
-        relatedMenus(menu, level).forEach(([menu, level]) => delete deleteData[level][menu]);
+        const menus = relatedMenus(menu, level);
+        menus.forEach(([menu, level]) => {
+            delete deleteData[level][menu];
+        });
+        //Remove related menus from items
+        removeItemMenu(menus);
         //remove any empty levels and update data
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
