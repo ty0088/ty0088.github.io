@@ -21,7 +21,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         }
         setTempItem(itemObj);
         setItem(itemObj);
-    }, [itemObj])
+    }, [itemObj]);
 
     const editClick = () => {
         if (editFlag) {
@@ -135,21 +135,26 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         document.querySelector(`.row-container > [data-id="${itemID}"]`).appendChild(errElem);
     };
 
-    const isNameRepeat = (newName) => { //doesnt work ------------------
-        const index = itemNames.indexOf(newName);
-        let nameList = itemNames.map(name => name);
-        //remove own name from list, allows the non-changed name to be submitted
-        if (index > -1) {
+    const isNameRepeat = (newName) => {
+        const upperName = newName.toUpperCase();
+        let nameList = itemNames.map(name => name.toUpperCase());
+        const index = nameList.indexOf(upperName);
+        console.log(upperName);
+        console.log(index);
+        if (index > -1 && item['item-name'].toUpperCase() === upperName) {
             nameList.splice(index, 1);
         }
-        return nameList.includes(newName) ? true : false;
+        console.log(nameList);
+        return nameList.includes(upperName) ? true : false;
     };
 
     const handleChange = (e) => {
         //get input and value of change event
         let [input, value] = getInputValue(e);
-        //parse number inputs
-        value = isNumber(value) ? parseFloat(value) : value;
+        //parse price and cost number inputs
+        if (input === 'price' || input === 'cost') {
+            value = parseFloat(value);
+        }
         //update tempItem obj with changes ready for submission
         const tempChange = {...tempItem, [input]: value};
         setTempItem(tempChange);
