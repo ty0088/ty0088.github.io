@@ -6,7 +6,6 @@ import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
 //sub menu delete needs to be deleted from item
-//input error messages
 //sort by different headers or search bar
 
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames}) => {
@@ -28,7 +27,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         if (editFlag) {
             //submit edit
             //input validation
-            const [result, input] = checkInputs(tempItem);
+            const [result, input, errMessage] = checkInputs(tempItem);
             if (result) {
                 //reset flags and buttons and set changed item and update db
                 setEditFlag(false);
@@ -37,8 +36,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 changeItem(tempItem);
             } else {
                 //error message
-                handleError(input);
-                console.log(`${input} not valid`);
+                handleError(input, errMessage);
             }
         } else {
             //edit item
@@ -71,18 +69,16 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 case 'sub-menu':
                     //sub-menu: required
                     lastInput = 'sub-menu';
+                    errMessage = 'Sub-menu is required';
                     return item['sub-menu'] === '' ? false : true;
                 case 'description':
                     //description: none
                     lastInput = 'description';
                     return true;
-                case 'itemID':
-                    //itemID: required, 36 length
-                    lastInput = 'itemID'
-                    return item['itemID'].length === 36 ? true : false;
                 case 'price': 
                     //price: must be number, 0 required
                     lastInput = 'price';
+                    errMessage = 'Price is required or 0 value used';
                     return isNumber(item['price']) ? true : false;
                 case 'tax-band':
                     //tax-band: none
@@ -91,10 +87,12 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 case 'cost': 
                     //cost: must be number, 0 required
                     lastInput = 'cost';
+                    errMessage = 'Cost is required or 0 value used';
                     return isNumber(item['cost']) ? true : false;
                 case 'qty':
                     //qty: must be number or 'N/A'
                     lastInput = 'qty';
+                    errMessage = 'Must be a number or "N/A"';
                     return isNumber(item['qty']) || item['qty'] === 'N/A' ? true : false;
                 case 'mods':
                     //mods: must be array. array can be empty
@@ -116,10 +114,10 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                     return true;
             }
         });
-        return [result, lastInput];
+        return [result, lastInput, errMessage];
     };
 
-    const handleError = (input) => {
+    const handleError = (input, message) => {
         //clear any previous error messages
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
@@ -133,18 +131,18 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         errElem.style.left = `${leftPos}.px`;
         errElem.style.width = `${errInput.parentElement.clientWidth - leftPos}.px`;
         errElem.classList.add('error-message');
-        errElem.innerText = `${input} field is invalid`;
+        errElem.innerText = `${input} field is invalid. ${message}`;
         document.querySelector(`.row-container > [data-id="${itemID}"]`).appendChild(errElem);
     };
 
     const isNameRepeat = (newName) => { //doesnt work ------------------
         const index = itemNames.indexOf(newName);
-        let nameList = itemNames.map(name => name.toLowerCase());
+        let nameList = itemNames.map(name => name);
         //remove own name from list, allows the non-changed name to be submitted
         if (index > -1) {
             nameList.splice(index, 1);
         }
-        return nameList.includes(newName.toLowerCase()) ? true : false;
+        return nameList.includes(newName) ? true : false;
     };
 
     const handleChange = (e) => {
