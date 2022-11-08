@@ -94,13 +94,15 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                     errMessage = 'Must be a number or "N/A"';
                     return isNumber(item['qty']) || item['qty'] === 'N/A' ? true : false;
                 case 'mods':
-                    //mods: must be array. array can be empty
+                    //mods: must be array. array can be empty, but no '' values
                     lastInput = 'mods'
-                    return Array.isArray(item['mods']) ? true : false;
+                    errMessage = 'Input must not be empty, delete mod field if not using';
+                    return Array.isArray(item['mods']) && !item['mods'].includes('') ? true : false;
                 case 'options':
-                    //options: must be array. array can be empty
+                    //options: must be array. array can be empty, but no '' values
                     lastInput = 'options';
-                    return Array.isArray(item['options']) ? true : false;
+                    errMessage = 'Input must not be empty, delete option field if not using';
+                    return Array.isArray(item['options']) && !item['options'].includes('') ? true : false;
                 case 'print-customer':
                     //print: must be bool
                     lastInput = 'print-customer';
@@ -217,6 +219,11 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         setMessageFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
         deleteItem(itemID);
+    };
+
+    //checks if array contains any blank '' values
+    const isArrayBlank = (array) => {
+        return array.inc
     };
 
     const YesNoSpan = ({bool}) => {

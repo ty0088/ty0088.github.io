@@ -69,7 +69,7 @@
 }
 
 .error-message {
-    min-width: 200px;
+    min-width: 300px;
     font-size: 1em;
     font-weight: 700;
     color: red;
