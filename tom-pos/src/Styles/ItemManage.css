@@ -28,7 +28,6 @@
 .row-container {
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
 .item-row {
@@ -70,9 +69,11 @@
 }
 
 .error-message {
+    min-width: 200px;
     font-size: 1em;
     font-weight: 700;
     color: red;
-    width: 150px;
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
 }

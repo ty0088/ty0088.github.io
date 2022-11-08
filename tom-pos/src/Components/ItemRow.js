@@ -59,13 +59,15 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     //input validation
     const checkInputs = (item) => {
         const inputs = Object.keys(item);
-        let lastInput = 'none';
+        let lastInput = '';
+        let errMessage = '';
         const result = inputs.every(input => {
             switch (input)  {
                 case 'item-name':
                     //item-name: required, no repeats
                     lastInput = 'item-name';
-                    return item['item-name'].trim() === '' || isNameRepeat(item['item-name'].trim()) ? false : true;
+                    errMessage = 'Item name is required and cannot already exist';
+                    return item['item-name'].toString().trim() === '' || isNameRepeat(item['item-name'].toString().trim()) ? false : true;
                 case 'sub-menu':
                     //sub-menu: required
                     lastInput = 'sub-menu';
@@ -118,27 +120,31 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     };
 
     const handleError = (input) => {
+        //clear any previous error messages
+        document.querySelectorAll('.error-message').forEach(elem => elem.remove());
+        document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
+        //highlight error input and display error message underneath
         const errInput = document.querySelector(`[data-input="${input}"]`);
         const itemID = errInput.closest('[data-id]').getAttribute('data-id');
         const leftPos = errInput.offsetLeft;
-        console.log(leftPos);
         errInput.focus();
         errInput.classList.add('input-error');
         let errElem = document.createElement('div');
         errElem.style.left = `${leftPos}.px`;
+        errElem.style.width = `${errInput.parentElement.clientWidth - leftPos}.px`;
         errElem.classList.add('error-message');
         errElem.innerText = `${input} field is invalid`;
         document.querySelector(`.row-container > [data-id="${itemID}"]`).appendChild(errElem);
     };
 
-    const isNameRepeat = (newName) => {
+    const isNameRepeat = (newName) => { //doesnt work ------------------
         const index = itemNames.indexOf(newName);
-        let nameList = [...itemNames];
-        //remove own name from list, allow the non-changed name to be submitted
+        let nameList = itemNames.map(name => name.toLowerCase());
+        //remove own name from list, allows the non-changed name to be submitted
         if (index > -1) {
             nameList.splice(index, 1);
         }
-        return nameList.includes(newName) ? true : false;
+        return nameList.includes(newName.toLowerCase()) ? true : false;
     };
 
     const handleChange = (e) => {
@@ -256,10 +262,10 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         return (
             <div className='row-container'>
                 <div className='item-row' data-id={tempItem['itemID']}>
-                        {messageFlag &&
-                            <MessageDelete name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                                message={'This will permanently delete the item from the database'}/>
-                        }
+                    {messageFlag &&
+                        <MessageDelete name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                            message={'This will permanently delete the item from the database'}/>
+                    }
                     <span>{index + 1}.</span>
                     <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
                     <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>
