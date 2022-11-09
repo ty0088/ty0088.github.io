@@ -5,8 +5,6 @@ import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
-//no empty mods/options
-
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
@@ -64,7 +62,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 case 'item-name':
                     //item-name: required, no repeats
                     lastInput = 'item-name';
-                    errMessage = 'Item name is required and cannot already exist';
+                    errMessage = 'Item name should non-blank and cannot already exist';
                     return item['item-name'].toString().trim() === '' || isNameRepeat(item['item-name'].toString().trim()) ? false : true;
                 case 'sub-menu':
                     //sub-menu: none
@@ -138,7 +136,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
 
     const isNameRepeat = (newName) => {
         const upperName = newName.toUpperCase();
-        let nameList = itemNames.map(name => name.toUpperCase());
+        const nameList = itemNames.map(name => name.toUpperCase());
         const index = nameList.indexOf(upperName);
         if (index > -1 && item['item-name'].toUpperCase() === upperName) {
             nameList.splice(index, 1);
@@ -219,11 +217,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         setMessageFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
         deleteItem(itemID);
-    };
-
-    //checks if array contains any blank '' values
-    const isArrayBlank = (array) => {
-        return array.inc
     };
 
     const YesNoSpan = ({bool}) => {
