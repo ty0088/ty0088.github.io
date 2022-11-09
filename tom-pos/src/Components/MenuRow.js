@@ -2,9 +2,7 @@ import '../Styles/SubMenu.css';
 import React, { useState, useEffect } from 'react';
 import MessageDelete from './MessageDelete';
 
-//name edits update item ---------
-
-const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMenu}) => {
+const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMenu}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false)
     const [parent, setParent] = useState('');
@@ -155,4 +153,4 @@ const LevelRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMe
 
 }
 
-export default LevelRow;
+export default MenuRow;

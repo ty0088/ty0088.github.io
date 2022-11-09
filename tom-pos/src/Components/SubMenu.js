@@ -3,10 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { addSubMenuDB, getDBDoc } from '../Util/firebaseDB';
-import LevelRow from './LevelRow';
-import removeItemMenu from '../Util/removeItemMenu';
-
-//input error messages -----------------
+import MenuRow from './MenuRow';
+import updateItemMenu from '../Util/updateItemMenu';
 
 const SubMenu = () => {
     const [menuData, setMenuData] = useState({});
@@ -53,8 +51,11 @@ const SubMenu = () => {
                 changeMenus.forEach(menu => editData[nextLevel][menu] = newMenu);
             }
         }
-        //remove any empty levels and update data
+        //remove any empty levels
         Object.keys(editData).forEach(level => { if (Object.keys(editData[level]).length === 0) delete editData[level] });
+        //update Item sub menu property
+        updateItemMenu([[prevMenu]], newMenu);
+        //update data
         setTempData(editData);
         setMenuData(editData);
         setLevels(Object.keys(editData).map(string => parseInt(string)));
@@ -70,7 +71,7 @@ const SubMenu = () => {
             delete deleteData[level][menu];
         });
         //Remove related menus from items
-        removeItemMenu(menus);
+        updateItemMenu(menus, '');
         //remove any empty levels and update data
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
@@ -118,7 +119,7 @@ const SubMenu = () => {
                                     <div className='level-container' data-level={level}>
                                         {Object.keys(tempData[level]).length > 0 &&
                                             Object.keys(tempData[level]).sort().map((menu, i) => 
-                                                <LevelRow key={i} level={level} menuData={tempData} id={`l${level}i${i}`} menu={menu}
+                                                <MenuRow key={i} level={level} menuData={tempData} id={`l${level}i${i}`} menu={menu}
                                                 cancelEdit={cancelEdit} submitChange={submitChange} deleteMenu={deleteMenu} />)
                                         }
                                         {Object.keys(tempData[level]).length === 0 &&
