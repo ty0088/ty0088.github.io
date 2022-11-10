@@ -42,7 +42,6 @@ const ItemManage = () => {
 
     useEffect(() => {
         setSort(tempData);
-        // setSortedItems(sortItemsBy(tempData, sortBy, dir)); ------------------------
     // eslint-disable-next-line
     }, [sortBy, dir, filterMenu]);
 
@@ -68,7 +67,6 @@ const ItemManage = () => {
         setItemData(data);
         setTempData(data);
         setSort(data);
-        // setSortedItems(sortItemsBy(data, sortBy, dir));------------------------------
     };
 
     const sortItemsBy = (data, key, dir) => {
@@ -110,6 +108,11 @@ const ItemManage = () => {
         setSortedItems(filterIDs);
     }
 
+    //toggles sorting between asc/dsc
+    const toggleDir = () => {
+        setDir(!dir);
+    };
+
     const deleteItem = (itemID) => {
         let deleteData = {...tempData};
         delete deleteData[itemID];
@@ -123,7 +126,6 @@ const ItemManage = () => {
         console.log(addData);
         setTempData(addData);
         setSort(addData);
-        // setSortedItems(sortItemsBy(addData, sortBy, dir));----------------------------
     };
 
     const cancelAdd = () => {
@@ -135,11 +137,6 @@ const ItemManage = () => {
         const changeData = {...tempData, [itemID]: item};
         setData(changeData);
         setItemDB(changeData);
-    };
-
-    //toggles sorting between asc/dsc
-    const toggleDir = () => {
-        setDir(!dir);
     };
 
     return (
@@ -165,7 +162,7 @@ const ItemManage = () => {
                 </div>
                 {Object.keys(tempData).length > 0 &&
                     sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
-                        changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames}/>)
+                        changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} />)
                 }
                 <button type='button' onClick={addItemClick}>Add Item</button>
             </div>
