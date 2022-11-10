@@ -18,6 +18,7 @@ const ItemManage = () => {
     const [itemNames, setItemNames] = useState([]);
     const [sortBy, setSortBy] = useState('sub-menu');
     const [dir, setDir] = useState(true);
+    const [filterMenu, setFilterMenu] = useState('');
     const itemTemplate = {
         itemID: 0,
         'sub-menu': '',
@@ -40,9 +41,10 @@ const ItemManage = () => {
     }, []);
 
     useEffect(() => {
-        setSortedItems(sortItemsBy(tempData, sortBy, dir));
+        setSort(tempData);
+        // setSortedItems(sortItemsBy(tempData, sortBy, dir)); ------------------------
     // eslint-disable-next-line
-    }, [sortBy, dir]);
+    }, [sortBy, dir, filterMenu]);
 
     //update item names for restricted names list
     useEffect(() => {
@@ -65,7 +67,8 @@ const ItemManage = () => {
     const setData = (data) => {
         setItemData(data);
         setTempData(data);
-        setSortedItems(sortItemsBy(data, sortBy, dir));
+        setSort(data);
+        // setSortedItems(sortItemsBy(data, sortBy, dir));------------------------------
     };
 
     const sortItemsBy = (data, key, dir) => {
@@ -100,6 +103,13 @@ const ItemManage = () => {
         return itemIDs;
     };
 
+    //sort data and filter for render order
+    const setSort = (data) => {
+        const sortedIDs = sortItemsBy(data, sortBy, dir);
+        const filterIDs = filterMenu !== '' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : sortedIDs;
+        setSortedItems(filterIDs);
+    }
+
     const deleteItem = (itemID) => {
         let deleteData = {...tempData};
         delete deleteData[itemID];
@@ -112,7 +122,8 @@ const ItemManage = () => {
         const addData = {...tempData, [itemID]: {...itemTemplate, itemID: itemID}};
         console.log(addData);
         setTempData(addData);
-        setSortedItems(sortItemsBy(addData, sortBy, dir));
+        setSort(addData);
+        // setSortedItems(sortItemsBy(addData, sortBy, dir));----------------------------
     };
 
     const cancelAdd = () => {
@@ -126,8 +137,8 @@ const ItemManage = () => {
         setItemDB(changeData);
     };
 
+    //toggles sorting between asc/dsc
     const toggleDir = () => {
-        console.log('!');
         setDir(!dir);
     };
 
@@ -136,7 +147,7 @@ const ItemManage = () => {
             <div id='item-form'>
                 <div id='item-top-bar'>
                     <h1>Item Management</h1>
-                    <SearchBar sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir}/>
+                    <SearchBar sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} setFilterMenu={setFilterMenu}/>
                 </div>
                 <div id='item-header'>
                     <span>#</span>
