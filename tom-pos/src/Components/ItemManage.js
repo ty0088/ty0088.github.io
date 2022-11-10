@@ -6,6 +6,7 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setItemDB, addItem } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from './ItemRow';
+import SearchBar from './SearchBar';
 
 //1. sort by sub menu then by item name -----------------------
 //2. sort by different headers or search bar ------------------
@@ -15,6 +16,8 @@ const ItemManage = () => {
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
     const [itemNames, setItemNames] = useState([]);
+    const [sortBy, setSortBy] = useState('sub-menu');
+    const [dir, setDir] = useState(true);
     const itemTemplate = {
         itemID: 0,
         'sub-menu': '',
@@ -22,7 +25,7 @@ const ItemManage = () => {
         description: '',
         options: [],
         mods: [],
-        qty: 'N/A',
+        qty: '',
         price: 0,
         'tax-band': '',
         cost: 0,
@@ -35,6 +38,11 @@ const ItemManage = () => {
         initData();
     // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        setSortedItems(sortItemsBy(tempData, sortBy, dir));
+    // eslint-disable-next-line
+    }, [sortBy, dir]);
 
     //update item names for restricted names list
     useEffect(() => {
@@ -57,29 +65,40 @@ const ItemManage = () => {
     const setData = (data) => {
         setItemData(data);
         setTempData(data);
-        setSortedItems(sortItemsBy(data, 'sub-menu'));
-    }
+        setSortedItems(sortItemsBy(data, sortBy, dir));
+    };
 
-    const sortItemsBy = (data, key) => {
+    const sortItemsBy = (data, key, dir) => {
         const itemIDs = Object.keys(data);
         if (itemIDs.length > 1 ) {
-            itemIDs.sort((a, b) => {
-                let nameA = data[a][key];
-                let nameB = data[b][key]
-                if (typeof data[a][key] === 'string' && data[a][key] !== '') {
-                    nameA = data[a][key].toUpperCase();
-                    nameB = data[b][key].toUpperCase();
+            itemIDs.sort((idA, idB) => {
+                let itemA = data[idA][key];
+                let itemB = data[idB][key];
+
+                if (typeof data[idA][key] === 'string' && data[idA][key] !== '') {
+                    itemA = data[idA][key].toUpperCase();
                 }
-                if (nameA < nameB) {
-                    return -1;
-                } else if (nameA > nameB) {
-                    return 1;
+                if (typeof data[idB][key] === 'string' && data[idB][key] !== '') {
+                    itemB = data[idB][key].toUpperCase();
+                }
+                if (dir === true) {
+                    if (itemA < itemB) {
+                        return -1;
+                    } else if (itemA > itemB) {
+                        return 1;
+                    }
+                } else {
+                    if (itemA > itemB) {
+                        return -1;
+                    } else if (itemA < itemB) {
+                        return 1;
+                    }
                 }
                 return 0;
             });
         }
         return itemIDs;
-    }
+    };
 
     const deleteItem = (itemID) => {
         let deleteData = {...tempData};
@@ -93,7 +112,7 @@ const ItemManage = () => {
         const addData = {...tempData, [itemID]: {...itemTemplate, itemID: itemID}};
         console.log(addData);
         setTempData(addData);
-        setSortedItems(sortItemsBy(addData, 'sub-menu'));
+        setSortedItems(sortItemsBy(addData, sortBy, dir));
     };
 
     const cancelAdd = () => {
@@ -107,10 +126,18 @@ const ItemManage = () => {
         setItemDB(changeData);
     };
 
+    const toggleDir = () => {
+        console.log('!');
+        setDir(!dir);
+    };
+
     return (
         <div id='item-container'>
             <div id='item-form'>
-                <h1>Item Management</h1>
+                <div id='item-top-bar'>
+                    <h1>Item Management</h1>
+                    <SearchBar sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir}/>
+                </div>
                 <div id='item-header'>
                     <span>#</span>
                     <span>Name</span>

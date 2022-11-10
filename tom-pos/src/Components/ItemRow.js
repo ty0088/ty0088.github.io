@@ -87,10 +87,10 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                     errMessage = 'Cost is required or 0 value used';
                     return isNumber(item['cost']) ? true : false;
                 case 'qty':
-                    //qty: must be number or 'N/A'
+                    //qty: can be blank or have a number'
                     lastInput = 'qty';
-                    errMessage = 'Must be a number or "N/A"';
-                    return isNumber(item['qty']) || item['qty'] === 'N/A' ? true : false;
+                    errMessage = 'Must be a number or left blank';
+                    return isNumber(item['qty']) || item['qty'] === '' ? true : false;
                 case 'mods':
                     //mods: must be array. array can be empty, but no '' values
                     lastInput = 'mods'

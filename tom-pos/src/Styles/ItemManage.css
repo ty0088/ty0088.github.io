@@ -22,6 +22,7 @@
 }
 
 #item-header > span {
+    /* font-size: 14px; */
     font-weight: 700;
 }
 
@@ -76,4 +77,26 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
+}
+
+#item-top-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#search-bar {    
+    display: flex;
+    align-items: center;
+    margin: 5px 0 5px 0;
+}
+
+.bar-func {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.bar-func > span:hover {
+    cursor: pointer;
 }
