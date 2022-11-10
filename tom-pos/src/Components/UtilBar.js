@@ -2,7 +2,7 @@ import '../Styles/ItemManage.css';
 import React, { useState, useEffect } from 'react';
 import MenuList from './MenuList';
 
-const SearchBar = ({sortBy, setSortBy, toggleDir, setFilterMenu}) => {
+const UtilBar = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addItemClick, setSearchName}) => {
 
     const changeSortBy = (e) => {
         const sortVal = e.target.value;
@@ -14,11 +14,26 @@ const SearchBar = ({sortBy, setSortBy, toggleDir, setFilterMenu}) => {
         setFilterMenu(filterMenu);
     };
 
+    const searchByName = (e) => {
+        const str = e.target.value.trim();
+        setSearchName(str);
+    };
+
+    const resetFilters = () => {
+        setSortBy('item-name');
+        setFilterMenu('');
+        setSearchName('');
+        document.getElementById('sort-by').value = 'item-name';
+        document.getElementById('search-name').value = '';
+    };
+
     return (
-        <div id='search-bar'>
+        <div id='util-bar'>
+            <button type='button' onClick={addItemClick}>Add Item</button>
+            <button type='button' onClick={resetFilters}>Reset Filters</button>
             <div className='bar-func'>
                 Sort by&nbsp;
-                <select value={sortBy} onChange={changeSortBy}>
+                <select id={'sort-by'} value={sortBy} onChange={changeSortBy}>
                     <option value={'item-name'}>Item Name</option>
                     <option value={'sub-menu'}>Sub Menu</option>
                     <option value={'price'}>Price</option>
@@ -29,14 +44,15 @@ const SearchBar = ({sortBy, setSortBy, toggleDir, setFilterMenu}) => {
                 <span class="material-symbols-outlined" onClick={toggleDir}>unfold_more</span>
             </div>
             <div className='bar-func'>
-                Filter by Sub menu&nbsp;
-                <MenuList dfMenu={''} itemID={''} handleChange={changeFilterBy} />
+                Filter by Sub menu &nbsp;
+                <MenuList dfMenu={filterMenu} itemID={''} handleChange={changeFilterBy} />
             </div>
             <div className='bar-func'>
-                Search by item name
+                Search by item name &nbsp;
+                <input type="text" id={'search-name'} onChange={searchByName}></input>
             </div>
         </div>
     );
 };
 
-export default SearchBar;
+export default UtilBar;

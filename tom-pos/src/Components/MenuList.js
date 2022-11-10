@@ -18,7 +18,7 @@ const MenuList = ({dfMenu, itemID, handleChange}) => {
         Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
         menuArr.sort();
         return (
-            <select key={itemID} data-input={'sub-menu'} defaultValue={dfMenu} onChange={handleChange}>
+            <select key={itemID} data-input={'sub-menu'} value={dfMenu} onChange={handleChange}>
                 <option value={''}></option>
                 {menuArr.map((menu, i) => <option key={i} value={menu}>{menu}</option>)}
             </select>

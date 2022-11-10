@@ -85,7 +85,7 @@
     align-items: flex-start;
 }
 
-#search-bar {    
+#util-bar {    
     display: flex;
     align-items: center;
     margin: 5px 0 5px 0;
@@ -93,10 +93,13 @@
     font-weight: 600;
 }
 
+#util-bar > * {
+    margin-right: 10px;
+}
+
 .bar-func {
     display: flex;
     align-items: center;
-    margin-right: 10px;
 }
 
 .bar-func > span:hover {

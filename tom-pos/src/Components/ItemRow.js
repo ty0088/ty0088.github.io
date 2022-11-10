@@ -16,7 +16,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         if (itemObj['item-name'] === '') {
             setEditFlag(true);
             document.querySelectorAll(`#item-form button:not([data-id="${item['itemID']}"] button)`).forEach(elem => elem.disabled = true);
-            document.querySelectorAll(`select`).forEach(elem => elem.disabled = true);
+            document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
         }
         setTempItem(itemObj);
         setItem(itemObj);
@@ -32,7 +32,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 //reset flags and buttons and set changed item and update db
                 setEditFlag(false);
                 document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
-                document.querySelectorAll(`select`).forEach(elem => elem.disabled = false);
+                document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
                 setItem(tempItem);
                 changeItem(tempItem);
             } else {
@@ -43,7 +43,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
             //edit item
             setEditFlag(true);
             document.querySelectorAll(`#item-form button:not([data-id="${item['itemID']}"] button)`).forEach(elem => elem.disabled = true);
-            document.querySelectorAll(`select`).forEach(elem => elem.disabled = true);
+            document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
             setTempItem(item);
         }
     }
@@ -51,7 +51,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
-        document.querySelectorAll(`select`).forEach(elem => elem.disabled = false);
+        document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
         //reset tempItem
         setTempItem(item);
         cancelAdd();
@@ -221,7 +221,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         setEditFlag(false);
         setMessageFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
-        document.querySelectorAll(`select`).forEach(elem => elem.disabled = false);
+        document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
         deleteItem(itemID);
     };
 

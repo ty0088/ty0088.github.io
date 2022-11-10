@@ -6,19 +6,19 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setItemDB, addItem } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from './ItemRow';
-import SearchBar from './SearchBar';
+import UtilBar from './UtilBar';
 
 //1. sort by sub menu then by item name -----------------------
-//2. sort by different headers or search bar ------------------
 
 const ItemManage = () => {
     const [itemData, setItemData] = useState({});
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
     const [itemNames, setItemNames] = useState([]);
-    const [sortBy, setSortBy] = useState('sub-menu');
+    const [sortBy, setSortBy] = useState('item-name');
     const [dir, setDir] = useState(true);
     const [filterMenu, setFilterMenu] = useState('');
+    const [searchName, setSearchName] = useState('');
     const itemTemplate = {
         itemID: 0,
         'sub-menu': '',
@@ -43,7 +43,7 @@ const ItemManage = () => {
     useEffect(() => {
         setSort(tempData);
     // eslint-disable-next-line
-    }, [sortBy, dir, filterMenu]);
+    }, [sortBy, dir, filterMenu, searchName]);
 
     //update item names for restricted names list
     useEffect(() => {
@@ -101,12 +101,13 @@ const ItemManage = () => {
         return itemIDs;
     };
 
-    //sort data and filter for render order
+    //sort data and filter for render
     const setSort = (data) => {
         const sortedIDs = sortItemsBy(data, sortBy, dir);
-        const filterIDs = filterMenu !== '' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : sortedIDs;
-        setSortedItems(filterIDs);
-    }
+        const filterIDs = filterMenu !== '' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
+        const searchIDs = searchName !== '' ? filterIDs.filter(itemID => data[itemID]['item-name'].toUpperCase().startsWith(searchName.toUpperCase())) : [...filterIDs];
+        setSortedItems(searchIDs);
+    };
 
     //toggles sorting between asc/dsc
     const toggleDir = () => {
@@ -123,7 +124,6 @@ const ItemManage = () => {
     const addItemClick = () => {
         const itemID = uuidv4();
         const addData = {...tempData, [itemID]: {...itemTemplate, itemID: itemID}};
-        console.log(addData);
         setTempData(addData);
         setSort(addData);
     };
@@ -144,7 +144,8 @@ const ItemManage = () => {
             <div id='item-form'>
                 <div id='item-top-bar'>
                     <h1>Item Management</h1>
-                    <SearchBar sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} setFilterMenu={setFilterMenu}/>
+                    <UtilBar sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
+                        addItemClick={addItemClick} setSearchName={setSearchName}/>
                 </div>
                 <div id='item-header'>
                     <span>#</span>
@@ -164,7 +165,6 @@ const ItemManage = () => {
                     sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
                         changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} />)
                 }
-                <button type='button' onClick={addItemClick}>Add Item</button>
             </div>
             <div className='nav-footer'>
                 <Link to='/tom-pos/menu' className='foot-link'>Home</Link>
@@ -175,6 +175,8 @@ const ItemManage = () => {
     );
 };
 
+
+//----------------------------------------------------------------------
 // addItem('', 'Test Item', 'description', ['options'], ['mods'], 1, 10, 'S', 5, true, false)
 
 
