@@ -123,9 +123,11 @@ const ItemManage = () => {
 
     const addItemClick = () => {
         const itemID = uuidv4();
-        const addData = {...tempData, [itemID]: {...itemTemplate, itemID: itemID}};
+        const addData = {...tempData, [itemID]: {...itemTemplate, 'sub-menu': filterMenu, itemID: itemID}};
         setTempData(addData);
         setSort(addData);
+        setSearchName('');
+        document.getElementById('search-name').value = '';
     };
 
     const cancelAdd = () => {
@@ -149,6 +151,7 @@ const ItemManage = () => {
                 </div>
                 <div id='item-header'>
                     <span>#</span>
+                    <span></span>
                     <span>Name</span>
                     <span>Sub Menu</span>
                     <span>Description</span>

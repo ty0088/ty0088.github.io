@@ -17,12 +17,11 @@
 #item-header {
     padding: 3px 0 3px 0;
     display: grid;
-    grid-template-columns: 40px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px 140px;
+    grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px;
     grid-template-rows: 1fr;
 }
 
 #item-header > span {
-    /* font-size: 14px; */
     font-weight: 700;
 }
 
@@ -34,9 +33,20 @@
 .item-row {
     padding: 3px 0 3px 0;
     display: grid;
-    grid-template-columns: 40px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px 140px;
+    grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px;
     grid-template-rows: 1fr;
     border-top: 1px solid gray;
+}
+
+#edit-btn-con {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-btn {
+    height: 20px;
+    width: 50px;
+    margin: 5px 0 5px 0;
 }
 
 .mod-list {
@@ -88,9 +98,12 @@
 #util-bar {    
     display: flex;
     align-items: center;
-    margin: 5px 0 5px 0;
+    margin: 5px 0px 5px 0;
     font-size: 0.8em;
     font-weight: 600;
+    padding: 0 0 5px 0;
+    border-bottom: 1px solid gray;
+    width: 1240px;
 }
 
 #util-bar > * {

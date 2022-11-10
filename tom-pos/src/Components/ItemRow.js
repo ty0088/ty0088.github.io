@@ -240,6 +240,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         return (
             <div className='item-row' data-id={tempItem['itemID']}>
                 <span>{index + 1}.</span>
+                <button className='edit-btn' type='button' onClick={editClick}>Edit</button>
                 <span>{tempItem['item-name']}</span>
                 <span>{tempItem['sub-menu']}</span>
                 <span>{tempItem['description']}</span>
@@ -255,7 +256,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 </div>
                 <YesNoSpan bool={tempItem['print-customer']} />
                 <YesNoSpan bool={tempItem['print-kitchen']} />
-                <button type='button' onClick={editClick}>Edit</button>
             </div>
         );
     } else {
@@ -267,6 +267,11 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                             message={'This will permanently delete the item from the database'}/>
                     }
                     <span>{index + 1}.</span>
+                    <div id='edit-btn-con'>
+                        <button className='edit-btn' type='button' onClick={editClick}>Submit</button>
+                        <button className='edit-btn' type='button' onClick={deleteClick}>Delete</button>
+                        <button className='edit-btn' type='button' onClick={cancelClick}>Cancel</button>
+                    </div>
                     <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
                     <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>
                     <input type="text" data-input={'description'} value={tempItem['description']} onChange={handleChange}></input>
@@ -305,11 +310,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                     </div>
                     <div className='check-box'>
                         <input type={'checkbox'} data-input={`print-kitchen`} defaultChecked={tempItem['print-kitchen']} onChange={handleChange}/>
-                    </div>
-                    <div>
-                        <button type='button' onClick={editClick}>Submit</button>
-                        <button type='button' onClick={deleteClick}>Delete</button>
-                        <button type='button' onClick={cancelClick}>Cancel</button>
                     </div>
                 </div>
             </div>
