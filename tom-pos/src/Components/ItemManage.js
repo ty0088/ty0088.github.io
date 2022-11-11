@@ -191,9 +191,4 @@ const ItemManage = () => {
     );
 };
 
-
-//----------------------------------------------------------------------
-// addItem('', 'Test Item', 'description', ['options'], ['mods'], 1, 10, 'S', 5, true, false)
-
-
 export default ItemManage;

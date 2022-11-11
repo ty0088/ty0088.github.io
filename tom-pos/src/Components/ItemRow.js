@@ -58,6 +58,9 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     }
 
     const handleChange = (e) => {
+        //clear any previous error messages
+        document.querySelectorAll('.error-message').forEach(elem => elem.remove());
+        document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
         //get input and value of change event
         let [input, value] = getInputValue(e);
         //parse price and cost number inputs
@@ -98,56 +101,50 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         let lastInput = '';
         let errMessage = '';
         const result = inputs.every(input => {
+            lastInput = input;
             switch (input)  {
                 case 'item-name':
                     //item-name: required, no repeats
-                    lastInput = 'item-name';
                     errMessage = 'Item name should non-blank and cannot already exist';
                     return item['item-name'].toString().trim() === '' || isNameRepeat(item['item-name'].toString().trim()) ? false : true;
                 case 'sub-menu':
                     //sub-menu: none
-                    lastInput = 'sub-menu';
                     return true;
                 case 'description':
                     //description: none
-                    lastInput = 'description';
                     return true;
                 case 'price': 
                     //price: must be number, 0 required
-                    lastInput = 'price';
                     errMessage = 'Price is required or 0 value used';
                     return isNumber(item['price']) ? true : false;
                 case 'tax-band':
                     //tax-band: none
-                    lastInput = 'tax-band';
                     return true;
                 case 'cost': 
                     //cost: must be number, 0 required
-                    lastInput = 'cost';
                     errMessage = 'Cost is required or 0 value used';
                     return isNumber(item['cost']) ? true : false;
                 case 'qty':
                     //qty: can be blank or have a number'
-                    lastInput = 'qty';
                     errMessage = 'Must be a number or left blank';
                     return isNumber(item['qty']) || item['qty'] === '' ? true : false;
                 case 'mods':
                     //mods: must be array. array can be empty, but no '' values
-                    lastInput = 'mods'
+                    const modIndex = item['mods'].indexOf('');
+                    lastInput = `mods-${modIndex}`;
                     errMessage = 'Input must not be empty, delete mod field if not using';
                     return Array.isArray(item['mods']) && !item['mods'].includes('') ? true : false;
                 case 'options':
                     //options: must be array. array can be empty, but no '' values
-                    lastInput = 'options';
+                    const opIndex = item['options'].indexOf('');
+                    lastInput = `options-${opIndex}`;
                     errMessage = 'Input must not be empty, delete option field if not using';
                     return Array.isArray(item['options']) && !item['options'].includes('') ? true : false;
                 case 'print-customer':
                     //print: must be bool
-                    lastInput = 'print-customer';
                     return typeof item['print-customer'] === 'boolean' ? true : false;
                 case 'print-kitchen':
                     //print: must be bool
-                    lastInput = 'print-kitchen';
                     return typeof item['print-kitchen'] === 'boolean' ? true : false;
                 default:
                     return true;
@@ -161,6 +158,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
         //highlight error input and display error message underneath
+        console.log(input)
         const errInput = document.querySelector(`[data-input="${input}"]`);
         const itemID = errInput.closest('[data-id]').getAttribute('data-id');
         const leftPos = errInput.offsetLeft;
@@ -199,6 +197,8 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         const arr = [...tempItem[type]];
         arr.splice(changeIndex, 1);
         setTempItem({...tempItem, [type]: arr});
+        document.querySelectorAll('.error-message').forEach(elem => elem.remove());
+        document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
     };
 
     //add a new mod or option
