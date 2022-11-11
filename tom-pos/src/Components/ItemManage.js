@@ -8,8 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 import ItemRow from './ItemRow';
 import UtilBar from './UtilBar';
 
-//1. sort by sub menu then by item name -----------------------
-
 const ItemManage = () => {
     const [itemData, setItemData] = useState({});
     const [tempData, setTempData] = useState({});
@@ -71,8 +69,7 @@ const ItemManage = () => {
 
     //if name and sub menu = '' then 
     const sortItemsBy = (data, key, dir) => {
-        //get IDs from data item Object or directly with ID array --------------------------
-        const itemIDs = typeof data === 'object' && !Array.isArray(data) ? Object.keys(data) : [...data];
+        const itemIDs = Object.keys(data);
         if (itemIDs.length > 1 ) {
             itemIDs.sort((idA, idB) => {
                 let itemA = data[idA][key];
@@ -121,7 +118,6 @@ const ItemManage = () => {
         const sortedIDs = sortItemsBy(data, sortBy, dir);
         const filterIDs = filterMenu !== 'ALL' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
         const searchIDs = searchName !== '' ? filterIDs.filter(itemID => data[itemID]['item-name'].toUpperCase().startsWith(searchName.toUpperCase())) : [...filterIDs];
-        //secondary sort by item-name -----------------
         setSortedItems(searchIDs);
     };
 
