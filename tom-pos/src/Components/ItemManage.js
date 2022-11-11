@@ -71,11 +71,17 @@ const ItemManage = () => {
 
     //if name and sub menu = '' then 
     const sortItemsBy = (data, key, dir) => {
-        const itemIDs = Object.keys(data);
+        //get IDs from data item Object or directly with ID array --------------------------
+        const itemIDs = typeof data === 'object' && !Array.isArray(data) ? Object.keys(data) : [...data];
         if (itemIDs.length > 1 ) {
             itemIDs.sort((idA, idB) => {
                 let itemA = data[idA][key];
                 let itemB = data[idB][key];
+
+                //sort new blank values first
+                if (data[idA]['item-name'] === '') {
+                    return -1;
+                }
 
                 //make values not case sensitive
                 if (typeof data[idA][key] === 'string' && data[idA][key] !== '') {
@@ -85,23 +91,24 @@ const ItemManage = () => {
                     itemB = data[idB][key].toUpperCase();
                 }
 
-                //sort new blank values first
-                if (data[idA]['item-name'] === '') {
-                    return -1;
+                //if not sorting by name and name A and name B are equal then sort by name
+                if (key !== 'item-name' && itemA === itemB) {
+                    const nameA = data[idA]['item-name'];
+                    const nameB = data[idB]['item-name'];
+                    //sort depending on asc/dsc
+                    if (nameA < nameB) {
+                        return -1;
+                    } else if (nameA > nameB) {
+                        return 1;
+                    }
+                    return 0;
                 }
 
-                if (dir === true) {
-                    if (itemA < itemB) {
-                        return -1;
-                    } else if (itemA > itemB) {
-                        return 1;
-                    }
-                } else {
-                    if (itemA > itemB) {
-                        return -1;
-                    } else if (itemA < itemB) {
-                        return 1;
-                    }
+                //sort depending on asc/dsc
+                if (itemA < itemB) {
+                    return dir === true ? -1 : 1;
+                } else if (itemA > itemB) {
+                    return dir === true ? 1 : -1;
                 }
                 return 0;
             });
@@ -114,6 +121,7 @@ const ItemManage = () => {
         const sortedIDs = sortItemsBy(data, sortBy, dir);
         const filterIDs = filterMenu !== 'ALL' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
         const searchIDs = searchName !== '' ? filterIDs.filter(itemID => data[itemID]['item-name'].toUpperCase().startsWith(searchName.toUpperCase())) : [...filterIDs];
+        //secondary sort by item-name -----------------
         setSortedItems(searchIDs);
     };
 
