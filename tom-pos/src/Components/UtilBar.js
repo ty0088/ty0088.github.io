@@ -21,7 +21,7 @@ const UtilBar = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addIt
 
     const resetFilters = () => {
         setSortBy('item-name');
-        setFilterMenu('');
+        setFilterMenu('ALL');
         setSearchName('');
         document.getElementById('sort-by').value = 'item-name';
         document.getElementById('search-name').value = '';

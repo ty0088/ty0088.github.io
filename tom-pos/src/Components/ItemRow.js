@@ -57,6 +57,41 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         cancelAdd();
     }
 
+    const handleChange = (e) => {
+        //get input and value of change event
+        let [input, value] = getInputValue(e);
+        //parse price and cost number inputs
+        if (input === 'price' || input === 'cost') {
+            value = parseFloat(value);
+        }
+        //update tempItem obj with changes ready for submission
+        const tempChange = {...tempItem, [input]: value};
+        setTempItem(tempChange);
+    };
+
+    //return correct input value depending on which input is changed
+    const getInputValue = (e) => {
+        let input = e.target.getAttribute('data-input')
+        const inputType = e.target.getAttribute('type');
+        let value = null;
+        if (inputType === 'checkbox') {
+            value = e.target.checked;
+        } else if (/mods/.test(input)) {
+            const changeIndex = parseInt(input.substring(5, input.length));
+            value = [...tempItem['mods']];
+            value.splice(changeIndex, 1, e.target.value);
+            input = 'mods';
+        } else if (/options/.test(input)) {
+            const changeIndex = parseInt(input.substring(8, input.length));
+            value = [...tempItem['options']];
+            value.splice(changeIndex, 1, e.target.value);
+            input = 'options';
+        } else {
+            value = e.target.value;
+        }
+        return [input, value];
+    };
+
     //input validation
     const checkInputs = (item) => {
         const inputs = Object.keys(item);
@@ -147,41 +182,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
             nameList.splice(index, 1);
         }
         return nameList.includes(upperName) ? true : false;
-    };
-
-    const handleChange = (e) => {
-        //get input and value of change event
-        let [input, value] = getInputValue(e);
-        //parse price and cost number inputs
-        if (input === 'price' || input === 'cost') {
-            value = parseFloat(value);
-        }
-        //update tempItem obj with changes ready for submission
-        const tempChange = {...tempItem, [input]: value};
-        setTempItem(tempChange);
-    };
-
-    //return correct input value depending on which input is changed
-    const getInputValue = (e) => {
-        let input = e.target.getAttribute('data-input')
-        const inputType = e.target.getAttribute('type');
-        let value = null;
-        if (inputType === 'checkbox') {
-            value = e.target.checked;
-        } else if (/mods/.test(input)) {
-            const changeIndex = parseInt(input.substring(5, input.length));
-            value = [...tempItem['mods']];
-            value.splice(changeIndex, 1, e.target.value);
-            input = 'mods';
-        } else if (/options/.test(input)) {
-            const changeIndex = parseInt(input.substring(8, input.length));
-            value = [...tempItem['options']];
-            value.splice(changeIndex, 1, e.target.value);
-            input = 'options';
-        } else {
-            value = e.target.value;
-        }
-        return [input, value];
     };
 
     //delete a mod or option

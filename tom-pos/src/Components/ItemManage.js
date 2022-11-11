@@ -69,6 +69,7 @@ const ItemManage = () => {
         setSort(data);
     };
 
+    //if name and sub menu = '' then 
     const sortItemsBy = (data, key, dir) => {
         const itemIDs = Object.keys(data);
         if (itemIDs.length > 1 ) {
@@ -76,12 +77,19 @@ const ItemManage = () => {
                 let itemA = data[idA][key];
                 let itemB = data[idB][key];
 
+                //make values not case sensitive
                 if (typeof data[idA][key] === 'string' && data[idA][key] !== '') {
                     itemA = data[idA][key].toUpperCase();
                 }
                 if (typeof data[idB][key] === 'string' && data[idB][key] !== '') {
                     itemB = data[idB][key].toUpperCase();
                 }
+
+                //sort new blank values first
+                if (data[idA]['item-name'] === '') {
+                    return -1;
+                }
+
                 if (dir === true) {
                     if (itemA < itemB) {
                         return -1;
@@ -123,11 +131,12 @@ const ItemManage = () => {
 
     const addItemClick = () => {
         const itemID = uuidv4();
-        const addData = {...tempData, [itemID]: {...itemTemplate, 'sub-menu': filterMenu, itemID: itemID}};
-        setTempData(addData);
-        setSort(addData);
+        const menu = filterMenu === 'ALL' ? '' : filterMenu;
+        const addData = {...tempData, [itemID]: {...itemTemplate, 'sub-menu': menu, itemID: itemID}};
         setSearchName('');
         document.getElementById('search-name').value = '';
+        setTempData(addData);
+        setSort(addData);
     };
 
     const cancelAdd = () => {
