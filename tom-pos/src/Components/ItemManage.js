@@ -17,7 +17,7 @@ const ItemManage = () => {
     const [itemNames, setItemNames] = useState([]);
     const [sortBy, setSortBy] = useState('item-name');
     const [dir, setDir] = useState(true);
-    const [filterMenu, setFilterMenu] = useState('');
+    const [filterMenu, setFilterMenu] = useState('ALL');
     const [searchName, setSearchName] = useState('');
     const itemTemplate = {
         itemID: 0,
@@ -104,7 +104,7 @@ const ItemManage = () => {
     //sort data and filter for render
     const setSort = (data) => {
         const sortedIDs = sortItemsBy(data, sortBy, dir);
-        const filterIDs = filterMenu !== '' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
+        const filterIDs = filterMenu !== 'ALL' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
         const searchIDs = searchName !== '' ? filterIDs.filter(itemID => data[itemID]['item-name'].toUpperCase().startsWith(searchName.toUpperCase())) : [...filterIDs];
         setSortedItems(searchIDs);
     };

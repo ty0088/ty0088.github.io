@@ -273,7 +273,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                         <button className='edit-btn' type='button' onClick={cancelClick}>Cancel</button>
                     </div>
                     <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
-                    <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange}/>
+                    <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange} allOption={false} />
                     <input type="text" data-input={'description'} value={tempItem['description']} onChange={handleChange}></input>
                     <input type="number" data-input={'price'} value={tempItem['price']} onChange={handleChange}></input>
                     <TaxList itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>

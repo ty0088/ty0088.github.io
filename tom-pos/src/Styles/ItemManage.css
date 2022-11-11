@@ -1,12 +1,12 @@
 #item-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 450px 50px;
+    grid-template-rows: 470px 30px;
     position: relative;
 }
 
 #item-form {
-    margin: 10px;
+    margin: 10px 10px 0px 10px;
     overflow-y: auto;
     overflow-x: auto;
     display: flex;

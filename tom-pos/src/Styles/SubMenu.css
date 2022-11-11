@@ -1,12 +1,12 @@
 #menu-page-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 450px 50px;
+    grid-template-rows: 470px 30px;
     position: relative;
 }
 
 #sub-menu-form {
-    margin: 10px;
+    margin: 10px 10px 0px 10px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;

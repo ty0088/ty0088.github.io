@@ -1,5 +1,5 @@
 import '../Styles/ItemManage.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MenuList from './MenuList';
 
 const UtilBar = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addItemClick, setSearchName}) => {
@@ -41,11 +41,11 @@ const UtilBar = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addIt
                     <option value={'cost'}>Cost</option>
                     <option value={'qty'}>Qty</option>
                 </select>
-                <span class="material-symbols-outlined" onClick={toggleDir}>unfold_more</span>
+                <span className="material-symbols-outlined" onClick={toggleDir}>unfold_more</span>
             </div>
             <div className='bar-func'>
                 Filter by Sub menu &nbsp;
-                <MenuList dfMenu={filterMenu} itemID={''} handleChange={changeFilterBy} />
+                <MenuList dfMenu={filterMenu} itemID={''} handleChange={changeFilterBy} allOption={true}/>
             </div>
             <div className='bar-func'>
                 Search by item name &nbsp;

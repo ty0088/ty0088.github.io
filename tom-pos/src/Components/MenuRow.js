@@ -50,7 +50,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         //invalid if both menu and parent are the same as before or menu input is on restricted list or if new menu added with existing menu name
         const upperNewMenu = newMenu.toUpperCase();
         const upperMenu = menu.toUpperCase();
-        const restrictedArr = ['--ADD MENU--', 'MENU', 'N/A', ''];
+        const restrictedArr = ['--ADD MENU--', 'MENU', 'N/A', 'ALL', ''];
         let menuArr = [];
         Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menuVal => menuArr.push(menuVal.toUpperCase())));
         if (upperMenu === '--ADD MENU--' && menuArr.includes(upperNewMenu)) {
@@ -93,7 +93,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         errInput.classList.add('input-error');
         let errElem = document.createElement('div');
         errElem.classList.add('error-message');
-        errElem.innerText = 'Menu name must be new, not already exist, be blank or be one of the reserved names: "--Add Menu--", "Menu" or "N/A"';
+        errElem.innerText = 'Menu name must be new, not already exist, be blank or be one of the reserved names: "--Add Menu--", "Menu" "All" or "N/A"';
         document.querySelector(`[data-id="${id}"]`).after(errElem);
     };
 
