@@ -105,8 +105,10 @@ const POS = () => {
         //any items with no sub menu shall be displayed at root menu
         const menu = menuKey === 'Menu' ? '' : menuKey;
         const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'] === menu);
-        let menuItemArr = menuItemIDs.map(ID => [ID, data[ID]['item-name']]);
+        let menuItemArr = menuItemIDs.map(ID => [data[ID]['item-name'], ID]);
+        console.log(menuItemArr);
         menuItemArr.sort();
+        console.log(menuItemArr);
         if (menuItemIDs.length > 0) {
             setMenuItems(menuItemArr);
             setItemFlag(true);
@@ -163,7 +165,7 @@ const POS = () => {
             <div className='btns-container'>
                 {menuItems.map((itemArr, i) => {
                     return (
-                        <button className='item-btn' type='button' key={i} data-id={itemArr[0]} onClick={() => console.log(itemArr[1])}>{itemArr[1]}</button>
+                        <button className='item-btn' type='button' key={i} data-id={itemArr[1]} onClick={() => console.log(itemArr[0])}>{itemArr[0]}</button>
                     );
                 })}
             </div>
