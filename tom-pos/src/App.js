@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import './Styles/style.css';
-import Login from './Components/Login';
-import Menu from './Components/Menu';
-import POS from './Components/POS';
-import BackEnd from './Components/BackEnd';
-import SignUp from './Components/SignUp';
-import SubMenu from './Components/SubMenu';
-import ItemManage from './Components/ItemManage';
+import Login from './Pages/LoginPage';
+import Menu from './Pages/MenuPage';
+import POS from './Pages/POSPage';
+import BackEnd from './Pages/BackEndPage';
+import SignUp from './Pages/SignUpPage';
+import SubMenu from './Pages/SubMenuPage';
+import ItemManage from './Pages/ItemManagePage';
 
 const App = () => {
   // eslint-disable-next-line

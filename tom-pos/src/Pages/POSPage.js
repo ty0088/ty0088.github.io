@@ -106,9 +106,7 @@ const POS = () => {
         const menu = menuKey === 'Menu' ? '' : menuKey;
         const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'] === menu);
         let menuItemArr = menuItemIDs.map(ID => [data[ID]['item-name'], ID]);
-        console.log(menuItemArr);
         menuItemArr.sort();
-        console.log(menuItemArr);
         if (menuItemIDs.length > 0) {
             setMenuItems(menuItemArr);
             setItemFlag(true);
@@ -117,6 +115,7 @@ const POS = () => {
         }
     };
 
+    //determines if the menu is end of branch
     const isMenuEnd = (currLevel, currMenu) => {
         const nextLevel = currLevel + 1;
         if (!!menuData[nextLevel]) {

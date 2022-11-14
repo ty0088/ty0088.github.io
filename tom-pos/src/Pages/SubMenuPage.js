@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { addSubMenuDB, getDBDoc } from '../Util/firebaseDB';
-import MenuRow from './MenuRow';
+import MenuRow from '../Components/MenuRow';
 import updateItemMenu from '../Util/updateItemMenu';
 
 const SubMenu = () => {

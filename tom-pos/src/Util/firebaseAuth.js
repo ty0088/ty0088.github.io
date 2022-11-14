@@ -22,6 +22,7 @@ const isUserSignedIn = () => {
     return !!getAuth().currentUser;
 }
 
+// moved sign up function to SignUp.js ----------------------------
 // const signUpEmail = (email, password) => {
 //     createUserWithEmailAndPassword(auth, email, password)
 //     .then((userCredential) => {
@@ -36,6 +37,7 @@ const isUserSignedIn = () => {
 //     });
 // };
 
+// moved login function to Login.js ----------------------------
 // const signIn = (email, password) => {
 //     signInWithEmailAndPassword(auth, email, password)
 //     .then((userCredential) => {
@@ -49,6 +51,7 @@ const isUserSignedIn = () => {
 //     });
 // };
 
+// auth listener moved to App.js -------------------------------
 // onAuthStateChanged(auth, (user) => {
 //     if (user) {
 //         // User is signed in, see docs for a list of available properties

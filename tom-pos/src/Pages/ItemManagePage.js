@@ -5,8 +5,8 @@ import { signOutAcc } from '../Util/firebaseAuth';
 // eslint-disable-next-line
 import { getDBDoc, setItemDB, addItem } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
-import ItemRow from './ItemRow';
-import UtilBar from './UtilBar';
+import ItemRow from '../Components/ItemRow';
+import UtilBar from '../Components/UtilBar';
 
 const ItemManage = () => {
     const [itemData, setItemData] = useState({});

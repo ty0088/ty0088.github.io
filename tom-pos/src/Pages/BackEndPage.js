@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
 
-//Do not allow user to create a sub menu called 'Menu' as this will clash with root menu
-
 const BackEnd = () => {
     //if user logged in, render Menu, otherwise redirect to login page
     if (!!getAuth().currentUser) {
