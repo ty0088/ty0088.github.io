@@ -3,3 +3,37 @@
     grid-template-columns: 1fr;
     grid-template-rows: 470px 30px;
 }
+
+#tax-form {
+    margin: 10px 10px 0px 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#tax-form-headers {
+    display: grid;
+    grid-template-columns: 150px 150px 660px;
+    grid-template-rows: 25px;
+    margin: 10px 0 5px 0;
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.tax-row {
+    display: grid;
+    grid-template-columns: 150px 150px 660px;
+    grid-template-rows: 1fr;
+    margin-bottom: 5px;
+}
+
+#tax-form-headers > span, .tax-row > span {
+    display: flex;
+    justify-content: center;
+}
+
+.tax-row button {
+    margin-right: 10px;
+    width: 60px;
+}

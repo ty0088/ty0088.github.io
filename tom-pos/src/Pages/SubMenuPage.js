@@ -110,7 +110,7 @@ const SubMenu = () => {
                     <span>Sub Menu Name</span>
                     <span>Sub Menu Parent</span>
                 </div>
-                <div id='menu-component'>
+                <div id='menu-content'>
                     {levels.length > 0 &&
                         levels.map(level => {
                             return (

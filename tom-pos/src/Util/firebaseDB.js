@@ -28,8 +28,8 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
         await setDoc(doc(db, user.uid, "sub-menus"), {});
         await setDoc(doc(db, user.uid, "items"), {});
         await setDoc(doc(db, user.uid, "orders"), {});
-        await setDoc(doc(db, user.uid, "Tax Bands"), {});
-        await setDoc(doc(db, user.uid, "Financial"), {});
+        await setDoc(doc(db, user.uid, "tax-bands"), {});
+        await setDoc(doc(db, user.uid, "financial"), {});
     } catch (error) {
         console.log(error);
     }

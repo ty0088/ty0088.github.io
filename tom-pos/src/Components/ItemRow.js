@@ -15,7 +15,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     useEffect(() => {
         if (itemObj['item-name'] === '') {
             setEditFlag(true);
-            document.querySelectorAll(`#item-form button:not([data-id="${item['itemID']}"] button)`).forEach(elem => elem.disabled = true);
+            document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true);
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
         }
         setTempItem(itemObj);
@@ -42,7 +42,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         } else {
             //edit item
             setEditFlag(true);
-            document.querySelectorAll(`#item-form button:not([data-id="${item['itemID']}"] button)`).forEach(elem => elem.disabled = true);
+            document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true);
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
             setTempItem(item);
         }
@@ -159,7 +159,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
         //highlight error input and display error message underneath
         console.log(input)
-        const errInput = document.querySelector(`[data-input="${input}"]`);
+        const errInput = document.querySelector(`[data-input='${input}']`);
         const itemID = errInput.closest('[data-id]').getAttribute('data-id');
         const leftPos = errInput.offsetLeft;
         errInput.focus();
@@ -169,7 +169,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         errElem.style.width = `${errInput.parentElement.clientWidth - leftPos}.px`;
         errElem.classList.add('error-message');
         errElem.innerText = `${input} field is invalid. ${message}`;
-        document.querySelector(`.item-row-container > [data-id="${itemID}"]`).appendChild(errElem);
+        document.querySelector(`.item-row-container > [data-id='${itemID}']`).appendChild(errElem);
     };
 
     const isNameRepeat = (newName) => {
@@ -272,19 +272,19 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                         <button className='edit-btn' type='button' onClick={deleteClick}>Delete</button>
                         <button className='edit-btn' type='button' onClick={cancelClick}>Cancel</button>
                     </div>
-                    <input type="text" data-input={'item-name'} value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
+                    <input type='text' data-input='item-name' value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
                     <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange} allOption={false} />
-                    <input type="text" data-input={'description'} value={tempItem['description']} onChange={handleChange}></input>
-                    <input type="number" data-input={'price'} value={tempItem['price']} onChange={handleChange}></input>
+                    <input type='text' data-input='description' value={tempItem['description']} onChange={handleChange}></input>
+                    <input type='number' data-input='price' value={tempItem['price']} onChange={handleChange}></input>
                     <TaxList itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
-                    <input type="number" data-input={'cost'} value={tempItem['cost']} onChange={handleChange}></input>
-                    <input type="text" data-input={'qty'} value={tempItem['qty']} onChange={handleChange}></input>
+                    <input type='number' data-input='cost' value={tempItem['cost']} onChange={handleChange}></input>
+                    <input type='text' data-input='qty' value={tempItem['qty']} onChange={handleChange}></input>
                     <div className='mod-list'>
                         {
                             tempItem['mods'].map((mod, i) => {
                                 return (
                                     <div className='mod-row' key={i}>
-                                        <input type="text" data-input={`mods-${i}`} value={mod} onChange={handleChange}/>
+                                        <input type='text' data-input={`mods-${i}`} value={mod} onChange={handleChange}/>
                                         <button type='button' data-input={`mods-${i}`} onClick={modOpDelete}>Delete</button>
                                     </div>
                                 );  
@@ -297,7 +297,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                             tempItem['options'].map((option, i) => {
                                 return (
                                     <div className='mod-row' key={i}>
-                                        <input type="text" data-input={`options-${i}`} value={option} onChange={handleChange}/>
+                                        <input type='text' data-input={`options-${i}`} value={option} onChange={handleChange}/>
                                         <button type='button' data-input={`options-${i}`} onClick={modOpDelete}>Delete</button>
                                     </div>
                                 );  
