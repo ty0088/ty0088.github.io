@@ -181,6 +181,9 @@ const ItemManage = () => {
                     sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
                         changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} />)
                 }
+                {Object.keys(tempData).length === 0 &&
+                    <div>You have no items, please add one using the 'Add Item' button above</div>
+                }
             </div>
             <div className='nav-footer'>
                 <Link to='/tom-pos/menu' className='foot-link'>Home</Link>

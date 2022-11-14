@@ -27,7 +27,6 @@ const TaxList = ({itemID, taxBand, handleChange}) => {
             </select>
         );
     }
-
 };
 
 export default TaxList;
