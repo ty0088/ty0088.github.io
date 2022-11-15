@@ -1,10 +1,19 @@
 import '../Styles/TaxPage.css';
 import React, { useState, useEffect } from 'react';
+import isNumber from 'is-number';
+import MessageDelete from './MessageDelete';
 
-const TaxRow = ({data, label}) => {
+const TaxRow = ({data, label, updateTax, deleteTax}) => {
     const [editFlag, setEditFlag] = useState(false);
-    const [tempData, setTempData] = useState({...data})
-    const [tempLabel, setTempLabel] = useState(label);
+    const [messageFlag, setMessageFlag] = useState(false);
+    const [tempData, setTempData] = useState({})
+    const [tempLabel, setTempLabel] = useState('');
+
+    //keeps tempData 
+    useEffect(() => {
+        setTempData({...data});
+        setTempLabel(label);
+    }, [data])
 
     const editClick = () => {
         if (!editFlag) {
@@ -12,17 +21,20 @@ const TaxRow = ({data, label}) => {
             setEditFlag(true);
             document.querySelectorAll(`#tax-form button:not([data-label='${label}'] button)`).forEach(elem => elem.disabled = true);
         } else {
-            //submit
-            setEditFlag(false);
-            document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
-            //validate input ------------
-            //call to submit change -----------
+            //validate inputs and submit if valid
+            if (checkInputs()) {
+                setEditFlag(false);
+                document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
+                updateTax(tempData);
+            } else {
+                console.log('Inputs not valid');
+            }
         }
     };
 
     const handleChange = (e) => {
         const input = e.target.getAttribute('data-input');
-        const val = e.target.value.trim();
+        const val = e.target.value;
         if (input === 'label') {
             const rate = tempData[tempLabel];
             delete tempData[tempLabel];
@@ -33,12 +45,48 @@ const TaxRow = ({data, label}) => {
         }
     };
 
+    const checkInputs = () => {
+        const currlabels = Object.keys(data).map(label => label.toUpperCase());
+        const newLabel = tempLabel.trim().toUpperCase();
+        const prevRate = data[tempLabel];
+        const newRate = tempData[tempLabel];
+        console.log(currlabels);
+        console.log(newLabel);
+        console.log(newRate);
+        //label: no blanks or repeats
+        if (newLabel === '' || (currlabels.includes(newLabel) && newRate === prevRate)) {
+            //call error ----------
+            return false;
+        }
+        //rate: required and must be a number
+        if (!isNumber(newRate)) {
+            //call error ----------
+            return false;
+        }
+        return true;
+    };
+
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
         setTempLabel(label);
-        console.log(data);
         setTempData({...data});
+    };
+
+    const deleteClick = () => {
+        setMessageFlag(true);
+    };
+
+    const confirmDelete = () => {
+        //call delete data
+        document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
+        setEditFlag(false);
+        setMessageFlag(false);
+        deleteTax(label);
+    };
+
+    const cancelDelete = () => {
+        setMessageFlag(false);
     };
 
     if (!editFlag) {
@@ -51,12 +99,16 @@ const TaxRow = ({data, label}) => {
         );
     } else {
         return (
-            <div className='tax-row'>
+            <div className='tax-row' data-label={tempLabel}>
+                {messageFlag &&
+                    <MessageDelete name={tempLabel} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                        message={'This will permanently delete the tax rate from the database'}/>
+                }
                 <input type='text' data-input='label' value={tempLabel} onChange={handleChange} autoFocus />
                 <input type='number' data-input='rate' value={tempData[tempLabel]} onChange={handleChange} />
                 <div>
                     <button type='button' onClick={editClick}>Submit</button>
-                    <button type='button'>Delete</button>
+                    <button type='button' onClick={deleteClick}>Delete</button>
                     <button type='button' onClick={cancelClick}>Cancel</button>
                 </div>
             </div>

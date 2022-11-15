@@ -4,7 +4,7 @@ import fireApp from './firebaseApp';
 import { v4 as uuidv4 } from 'uuid';
 
 const db = getFirestore(fireApp);
-// eslint-disable-next-line
+
 const itemObj = {
     itemID: 0,
     "sub-menu": "",
@@ -59,19 +59,10 @@ const addItem = async (subMenu, name, description, options, mods, qty, price, ta
     }
 };
 
-const setItemDB = async (itemData) => {
+const setDB = async (obj, dbDoc) => {
     const user = getAuth().currentUser;
     try {
-        await setDoc(doc(db, user.uid, "items"), itemData);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const addSubMenuDB = async (menuObj) => {
-    const user = getAuth().currentUser;
-    try {
-        await setDoc(doc(db, user.uid, "sub-menus"), menuObj);
+        await setDoc(doc(db, user.uid, dbDoc), obj);
     } catch (error) {
         console.log(error);
     }
@@ -94,4 +85,4 @@ const getDBDoc = async (docRef) => {
     }
 };
 
-export { addUser, addSubMenuDB, getDBDoc, addItem, setItemDB };
+export { addUser, getDBDoc, addItem, setDB };

@@ -18,8 +18,8 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
             document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true);
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
         }
-        setTempItem(itemObj);
-        setItem(itemObj);
+        setTempItem({...itemObj});
+        setItem({...itemObj});
     // eslint-disable-next-line
     }, [itemObj]);
 

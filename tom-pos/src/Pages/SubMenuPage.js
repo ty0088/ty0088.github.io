@@ -2,7 +2,7 @@ import '../Styles/SubMenu.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { addSubMenuDB, getDBDoc } from '../Util/firebaseDB';
+import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MenuRow from '../Components/MenuRow';
 import updateItemMenu from '../Util/updateItemMenu';
 
@@ -59,7 +59,7 @@ const SubMenu = () => {
         setTempData(editData);
         setMenuData(editData);
         setLevels(Object.keys(editData).map(string => parseInt(string)));
-        addSubMenuDB(editData);
+        setDB(editData, 'sub-menus');
     };
 
     //delete sub menu and all subsequently related sub menus
@@ -77,7 +77,7 @@ const SubMenu = () => {
         setTempData(deleteData);
         setMenuData(deleteData);
         setLevels(Object.keys(deleteData).map(string => parseInt(string)));
-        addSubMenuDB(deleteData);
+        setDB(deleteData, 'sub-menus');
     };
 
     //find all related subsequent menus

@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 470px 30px;
+    position: relative;
 }
 
 #tax-form {
@@ -36,4 +37,8 @@
 .tax-row button {
     margin-right: 10px;
     width: 60px;
+}
+
+#tax-content > button {
+    margin-left: 35px;
 }

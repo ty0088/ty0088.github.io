@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 // eslint-disable-next-line
-import { getDBDoc, setItemDB, addItem } from '../Util/firebaseDB';
+import { getDBDoc, setDB, addItem } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import UtilBar from '../Components/UtilBar';
@@ -130,7 +130,7 @@ const ItemManage = () => {
         let deleteData = {...tempData};
         delete deleteData[itemID];
         setData(deleteData);
-        setItemDB(deleteData);
+        setDB(deleteData, 'items');
     };
 
     const addItemClick = () => {
@@ -151,7 +151,7 @@ const ItemManage = () => {
         const itemID = item.itemID;
         const changeData = {...tempData, [itemID]: item};
         setData(changeData);
-        setItemDB(changeData);
+        setDB(changeData, 'items');
     };
 
     return (
