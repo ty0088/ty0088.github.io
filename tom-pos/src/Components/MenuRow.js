@@ -18,7 +18,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
 
     //if new menu being added, set edit to true
     useEffect(() => {
-        if (menu === '--Add Menu--') {
+        if (menu === '') {
             setEditFlag(true);
             document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = true);
         }
@@ -30,7 +30,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
             const newMenu = document.getElementById(`menu-input-${id}`).value.trim();
             const newParent = document.getElementById(`menu-list-${id}`).value;
             //check inputs for validity
-            if (checkEdit(newMenu, newParent, menu, parent)) {
+            if (checkEdit(newMenu, menu)) {
                 setEditFlag(false);
                 document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = false);
                 //if valid submit changes
@@ -46,21 +46,16 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         }
     };
 
-    const checkEdit = (newMenu, newParent, menu, parent) => {
-        //valid if menu input or parent input is new
-        //invalid if both menu and parent are the same as before or menu input is on restricted list or if new menu added with existing menu name
+    const checkEdit = (newMenu, menu) => {
+        //Valid if menu doesn't already exist, blank or a system reserved string
         const upperNewMenu = newMenu.toUpperCase();
         const upperMenu = menu.toUpperCase();
-        const restrictedArr = ['--ADD MENU--', 'MENU', 'N/A', 'ALL', ''];
-        let menuArr = [];
-        Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menuVal => menuArr.push(menuVal.toUpperCase())));
-        if (upperMenu === '--ADD MENU--' && menuArr.includes(upperNewMenu)) {
+        let restrictedArr = ['MENU', 'N/A', 'ALL', ''];
+        Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menuVal => restrictedArr.push(menuVal.toUpperCase())));
+        if (upperNewMenu === '' || (restrictedArr.includes(upperNewMenu) && upperNewMenu !== upperMenu)) {
             return false;
-        } else if ((upperNewMenu !== upperMenu || newParent !== parent) && !restrictedArr.includes(upperNewMenu)) {
-            return true;
-        } else {
-            return false;
-        }
+        } 
+        return true;
     };
 
     const cancelClick = () => {
@@ -94,7 +89,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         errInput.classList.add('input-error');
         let errElem = document.createElement('div');
         errElem.classList.add('error-message');
-        errElem.innerText = 'Menu name must be new, not already exist, be blank or be one of the reserved names: "--Add Menu--", "Menu" "All" or "N/A"';
+        errElem.innerText = 'Menu name must not be blank, already exist or be one of the reserved names: "Menu" "All" or "N/A"';
         document.querySelector(`[data-id="${id}"]`).after(errElem);
     };
 

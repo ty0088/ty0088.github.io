@@ -25,7 +25,7 @@ const SubMenu = () => {
 
     const clickNewMenu = (e) => {
         const menuLevel = e.target.parentNode.getAttribute('data-level');
-        const addMenu = {...tempData, [menuLevel]: {...tempData[menuLevel], '--Add Menu--': ''}};
+        const addMenu = {...tempData, [menuLevel]: {...tempData[menuLevel], '': ''}};
         setTempData(addMenu);
     };
 
