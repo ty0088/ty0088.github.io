@@ -21,7 +21,7 @@ const TaxManage = () => {
     }, []);
 
     //set states and firebase db
-    const updateTax = (taxObj) => {
+    const updateTaxDB = (taxObj) => {
         setTaxData({...taxObj});
         setTempData({...taxObj});
         setDB({...taxObj}, 'tax-bands');
@@ -35,6 +35,16 @@ const TaxManage = () => {
         setDB(deleteData, 'tax-bands');
     };
 
+    //add new tax rate ---------
+    const addTaxClick = () => {
+        const addData = {...tempData, '': 0};
+        setTempData(addData);
+    };
+
+    const cancelAdd = () => {
+        setTempData({...taxData});
+    };
+
     return (
         <div id='tax-page-container'>
             <div id='tax-form'>
@@ -45,10 +55,10 @@ const TaxManage = () => {
                 </div>
                 <div id='tax-content'>
                     {Object.keys(tempData).length > 0 &&
-                        Object.keys(tempData).sort().map((label, i) => <TaxRow key={i} 
-                            data={tempData} label={label} updateTax={updateTax} deleteTax={deleteTax}/>)
+                        Object.keys(tempData).sort().map((label, i) => <TaxRow key={i} data={tempData} 
+                            label={label} updateTaxDB={updateTaxDB} deleteTax={deleteTax} cancelAdd={cancelAdd} />)
                     }
-                    <button type='button'>Add Tax Rate</button>
+                    <button type='button' onClick={addTaxClick}>Add Tax Rate</button>
                 </div>
             </div>
             <div className='nav-footer'>

@@ -3,17 +3,22 @@ import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import MessageDelete from './MessageDelete';
 
-const TaxRow = ({data, label, updateTax, deleteTax}) => {
+const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
-    const [tempData, setTempData] = useState({})
+    const [tempData, setTempData] = useState({});
     const [tempLabel, setTempLabel] = useState('');
 
-    //keeps tempData 
+    //keeps tempData updated if any change in incoming data
     useEffect(() => {
+        //if new tax rate, set edit on
+        if (label === '') {
+            setEditFlag(true);
+            document.querySelectorAll(`#tax-form button:not([data-label='${label}'] button)`).forEach(elem => elem.disabled = true);
+        }
         setTempData({...data});
         setTempLabel(label);
-    }, [data])
+    }, [data]);
 
     const editClick = () => {
         if (!editFlag) {
@@ -25,7 +30,7 @@ const TaxRow = ({data, label, updateTax, deleteTax}) => {
             if (checkInputs()) {
                 setEditFlag(false);
                 document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
-                updateTax(tempData);
+                updateTaxDB(tempData);
             } else {
                 console.log('Inputs not valid');
             }
@@ -71,6 +76,7 @@ const TaxRow = ({data, label, updateTax, deleteTax}) => {
         document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
         setTempLabel(label);
         setTempData({...data});
+        cancelAdd();
     };
 
     const deleteClick = () => {
