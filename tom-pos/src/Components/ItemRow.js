@@ -58,11 +58,11 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     }
 
     const handleChange = (e) => {
+        //get input and value of change event
+        let [input, value] = getInputValue(e);
         //clear any previous error messages
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
-        //get input and value of change event
-        let [input, value] = getInputValue(e);
         //parse price and cost number inputs
         if (input === 'price' || input === 'cost') {
             value = parseFloat(value);
