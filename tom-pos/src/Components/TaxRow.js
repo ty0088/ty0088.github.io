@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import MessageDelete from './MessageDelete';
 
-const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
+const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, updateItemVal}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
 
@@ -32,9 +32,13 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
                 const tempData = {...data, [newLabel]: newRate};
                 //if new input is an edit of existing, delete previous key/value
                 if (newLabel !== label) {
-                    delete tempData[label]
+                    delete tempData[label];
                 }
-                //update DB
+                //update items if editing existing and update DB
+                if (label !== '') {
+                    //update items of tax rate isn't newly added
+                    updateItemVal([[label]], newLabel, 'tax-band');
+                }
                 updateTaxDB(tempData);
                 clearError();
             }

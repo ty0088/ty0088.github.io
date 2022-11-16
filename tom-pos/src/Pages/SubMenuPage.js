@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MenuRow from '../Components/MenuRow';
-import updateItemMenu from '../Util/updateItemMenu';
+import updateItemVal from '../Util/updateItemVal';
 
 const SubMenu = () => {
     const [menuData, setMenuData] = useState({});
@@ -54,7 +54,7 @@ const SubMenu = () => {
         //remove any empty levels
         Object.keys(editData).forEach(level => { if (Object.keys(editData[level]).length === 0) delete editData[level] });
         //update Item sub menu property
-        updateItemMenu([[prevMenu]], newMenu);
+        updateItemVal([[prevMenu]], newMenu, 'sub-menu');
         //update data
         setTempData(editData);
         setMenuData(editData);
@@ -71,7 +71,7 @@ const SubMenu = () => {
             delete deleteData[level][menu];
         });
         //Remove related menus from items
-        updateItemMenu(menus, '');
+        updateItemVal(menus, '', 'sub-menu');
         //remove any empty levels and update data
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);

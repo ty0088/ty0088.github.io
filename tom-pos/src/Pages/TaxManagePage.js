@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setDB } from '../Util/firebaseDB';
 import TaxRow from '../Components/TaxRow';
+import updateItemVal from '../Util/updateItemVal';
 
 const TaxManage = () => {
     const [taxData, setTaxData] = useState({});
@@ -33,6 +34,7 @@ const TaxManage = () => {
         setTaxData(deleteData);
         setTempData(deleteData);
         setDB(deleteData, 'tax-bands');
+        updateItemVal([[label]], '', 'tax-band');
     };
 
     //add new tax rate ---------
@@ -56,7 +58,8 @@ const TaxManage = () => {
                 <div id='tax-content'>
                     {Object.keys(tempData).length > 0 &&
                         Object.keys(tempData).sort().map((label, i) => <TaxRow key={i} data={tempData} 
-                            label={label} updateTaxDB={updateTaxDB} deleteTax={deleteTax} cancelAdd={cancelAdd} />)
+                            label={label} updateTaxDB={updateTaxDB} deleteTax={deleteTax} cancelAdd={cancelAdd}
+                            updateItemVal={updateItemVal} />)
                     }
                     <button type='button' onClick={addTaxClick}>Add Tax Rate</button>
                 </div>
