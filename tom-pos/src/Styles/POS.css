@@ -79,14 +79,14 @@
     font-size: 1em;
     font-weight: 600;
     margin: 5px 8px 5px 8px;
-    background-color: rgb(127, 255, 176);
+    background-color: rgb(144, 255, 186);
     border: 1px solid black;
     border-radius: 5px;
 }
 
 .item-btn:hover {
     border: 2px solid black;
-    background-color: aquamarine;
+    background-color: rgb(105, 187, 137);
 }
 
 #order-head {

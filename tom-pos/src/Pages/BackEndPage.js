@@ -10,11 +10,11 @@ const BackEnd = () => {
         return (
             <div id='BackEnd-container'>
                 <div className='link-container'>
-                    <Link to='/tom-pos/backend' className='backend-link'>Account Settings</Link>
-                    <Link to='/tom-pos/backend' className='backend-link'>Financial Reports</Link>
                     <Link to='/tom-pos/submenu' className='backend-link'>Sub Menu Management</Link>
                     <Link to='/tom-pos/items' className='backend-link'>Item Management</Link>
                     <Link to='/tom-pos/tax' className='backend-link'>VAT Management</Link>
+                    <Link to='/tom-pos/backend' className='backend-link'>Account Settings</Link>
+                    <Link to='/tom-pos/backend' className='backend-link'>Financial Reports</Link>
                 </div>
                 <div className='nav-footer'>
                     <Link to='/tom-pos/menu' className='foot-link'>Home</Link>
