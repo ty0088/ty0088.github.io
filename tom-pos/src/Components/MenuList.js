@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDBDoc } from '../Util/firebaseDB';
 
-const MenuList = ({dfMenu, itemID, handleChange, allOption}) => {
+const MenuList = ({dfMenu, handleChange, allOption}) => {
     const [menuData, setMenuData] = useState({});
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const MenuList = ({dfMenu, itemID, handleChange, allOption}) => {
         Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
         menuArr.sort();
         return (
-            <select key={itemID} data-input={'sub-menu'} value={dfMenu} onChange={handleChange}>
+            <select data-input={'sub-menu'} value={dfMenu} onChange={handleChange}>
                 {allOption &&
                     <option value={'ALL'}>ALL</option> 
                 }

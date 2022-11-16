@@ -16,6 +16,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         // eslint-disable-next-line
     }, [menuData]);
 
+    //if new menu being added, set edit to true
     useEffect(() => {
         if (menu === '--Add Menu--') {
             setEditFlag(true);

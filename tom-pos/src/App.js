@@ -9,7 +9,7 @@ import BackEnd from './Pages/BackEndPage';
 import SignUp from './Pages/SignUpPage';
 import SubMenu from './Pages/SubMenuPage';
 import ItemManage from './Pages/ItemManagePage';
-import TaxManage from './Pages/TaxManage';
+import TaxManage from './Pages/TaxManagePage';
 
 const App = () => {
   // eslint-disable-next-line

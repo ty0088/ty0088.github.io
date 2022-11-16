@@ -6,8 +6,9 @@ import MessageDelete from './MessageDelete';
 const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
-    const [tempData, setTempData] = useState({});
-    const [tempLabel, setTempLabel] = useState('');
+    const [rate, setRate] = useState(0);
+    // const [tempData, setTempData] = useState({}); ---------------
+    // const [tempLabel, setTempLabel] = useState(''); --------------
 
     //keeps tempData updated if any change in incoming data
     useEffect(() => {
@@ -16,7 +17,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
             setEditFlag(true);
             document.querySelectorAll(`#tax-form button:not([data-label='${label}'] button)`).forEach(elem => elem.disabled = true);
         }
-        
+        setRate(data[label]);
         // setTempData({...data}); -------
         // setTempLabel(label); --------
     }, [data]);
@@ -27,15 +28,21 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
             setEditFlag(true);
             document.querySelectorAll(`#tax-form button:not([data-label='${label}'] button)`).forEach(elem => elem.disabled = true);
         } else {
-            //validate inputs and submit if valid
-            //get inputs -----
-            //inputs into checkInputs ----------
-            if (checkInputs()) {
+            //get and validate inputs
+            const newLabel = document.querySelector(`[data-input="label"]`).value.trim();
+            const newRate = parseFloat(document.querySelector(`[data-input="rate"]`).value);
+            if (checkInputs(newLabel, newRate)) {
                 setEditFlag(false);
                 document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
-                //update tempData------
-                //submit to update DB
+                //create new data obj for submission with new inputs
+                const tempData = {...data, [newLabel]: newRate};
+                //if new input is an edit of existing, delete previous key/value
+                if (newLabel !== label) {
+                    delete tempData[label]
+                }
+                //update DB
                 updateTaxDB(tempData);
+                //clear errors? -----------
             } else {
                 console.log('Inputs not valid');
             }
@@ -61,14 +68,12 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
     // };
 
     //validates both inputs
-    //internal inputs --------------
-    const checkInputs = () => {
-        const currlabels = Object.keys(data).map(label => label.toUpperCase());
-        const newLabel = tempLabel.trim().toUpperCase();
+    const checkInputs = (newLabel, newRate) => {
+        const currULabels = Object.keys(data).map(dataLabel => dataLabel.toUpperCase());
+        const newULabel = newLabel.toUpperCase();
         // const prevRate = data[tempLabel]; ----------------
-        const newRate = tempData[tempLabel];
         //label: no blanks or repeats if new label, self edits allowed
-        if (newLabel === '' || (currlabels.includes(newLabel) && label !== tempLabel )) { // && label !== tempLabel not the same label means its a newly inputted and not self editing
+        if (newLabel === '' || (currULabels.includes(newULabel) && label.toUpperCase() !== newULabel )) { // && label !== tempLabel not the same label means its a newly inputted and not self editing
             //call error ----------
             inputError('label');
             return false;
@@ -93,8 +98,8 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
-        setTempLabel(label);
-        setTempData({...data});
+        // setTempLabel(label); ---------
+        // setTempData({...data}); ---------
         cancelAdd();
     };
 
@@ -115,21 +120,21 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
 
     if (!editFlag) {
         return (
-            <div className='tax-row' data-label={tempLabel}>
-                <span>{tempLabel}</span>
-                <span>{tempData[tempLabel]}</span>
+            <div className='tax-row' data-label={label}>
+                <span>{label}</span>
+                <span>{rate}</span>
                 <button type='button' onClick={editClick}>Edit</button>
             </div>
         );
     } else {
         return (
-            <div className='tax-row' data-label={tempLabel}>
+            <div className='tax-row' data-label={label}>
                 {messageFlag &&
-                    <MessageDelete name={tempLabel} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                    <MessageDelete name={label} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
                         message={'This will permanently delete the tax rate from the database'}/>
                 }
-                <input type='text' data-input='label' value={tempLabel} autoFocus />
-                <input type='number' data-input='rate' value={tempData[tempLabel]}/>
+                <input type='text' data-input='label' defaultValue={label} autoFocus />
+                <input type='number' data-input='rate' defaultValue={rate}/>
                 <div>
                     <button type='button' onClick={editClick}>Submit</button>
                     <button type='button' onClick={deleteClick}>Delete</button>

@@ -45,7 +45,7 @@ const UtilBar = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addIt
             </div>
             <div className='bar-func'>
                 Filter by Sub menu &nbsp;
-                <MenuList dfMenu={filterMenu} itemID={''} handleChange={changeFilterBy} allOption={true}/>
+                <MenuList dfMenu={filterMenu} handleChange={changeFilterBy} allOption={true}/>
             </div>
             <div className='bar-func'>
                 Search by item name &nbsp;
