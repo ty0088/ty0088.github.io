@@ -36,9 +36,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
                 }
                 //update DB
                 updateTaxDB(tempData);
-                //clear errors? -----------
-            } else {
-                console.log('Inputs not valid');
+                clearError();
             }
         }
     };
@@ -61,17 +59,26 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
     };
 
     const inputError = (input) => {
-        document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
+        clearError();
         const errInput = document.querySelector(`[data-input='${input}']`);
         errInput.focus();
         errInput.classList.add('input-error');
-        //error message ---------
+        let errElem = document.createElement('div');
+        errElem.classList.add('error-message');
+        errElem.innerText = 'Tax label must be non-blank or already exist, rate must be non-blank and a number';
+        errInput.closest('.tax-row').after(errElem);
+    };
+
+    const clearError = () => {
+        document.querySelectorAll('.error-message').forEach(elem => elem.remove());
+        document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
     };
 
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
         cancelAdd();
+        clearError();
     };
 
     const deleteClick = () => {
@@ -83,6 +90,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd}) => {
         setEditFlag(false);
         setMessageFlag(false);
         deleteTax(label);
+        clearError();
     };
 
     const cancelDelete = () => {
