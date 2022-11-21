@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import './Styles/style.css';
 import Login from './Pages/LoginPage';
-import Menu from './Pages/MenuPage';
+import Home from './Pages/homePage';
 import POS from './Pages/POSPage';
 import BackEnd from './Pages/BackEndPage';
 import SignUp from './Pages/SignUpPage';
@@ -26,7 +26,7 @@ const App = () => {
           // User is signed in
           console.log(`${user.uid} is logged in`);
           setUserState(true);
-          navigate('/tom-pos/menu');
+          navigate('/tom-pos/home');
       } else {
           // User is signed out
           console.log('user is signed out');
@@ -47,7 +47,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/tom-pos' element={<Login />} />
-          <Route path='/tom-pos/menu' element={<Menu />} />
+          <Route path='/tom-pos/home' element={<Home />} />
           <Route path='/tom-pos/signup' element={<SignUp />} />
           <Route path='/tom-pos/pos' element={<POS />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />

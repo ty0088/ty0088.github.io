@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc } from '../Util/firebaseDB';
+import OrderTab from '../Components/OrderTab';
 
 const POS = () => {
     const [menuFlag, setMenuFlag] = useState(false);
@@ -176,7 +177,7 @@ const POS = () => {
         return (
             <div id='pos-container'>
                 <div id='pos-nav'>
-                    <Link to='/tom-pos/menu' className='pos-nav-link'>Home</Link>
+                    <Link to='/tom-pos/home' className='pos-nav-link'>Home</Link>
                     <Link onClick={signOutAcc} className='pos-nav-link'>Sign Out</Link>
                 </div>
                 <div id='order-head'>
@@ -197,13 +198,7 @@ const POS = () => {
                         <span>You have no items, please go to the <Link to='/tom-pos/backend'>back end</Link> and add some</span>
                     }
                 </div>
-                <div id='order-tab'>
-                    <div id='order-list-cont'></div>
-                    <div id='order-sub-cont'>
-                        <div id='sub-price-cont'></div>
-                        <div id='sub-btn-cont'></div>
-                    </div>
-                </div>
+                <OrderTab />
             </div>
         );
     } else {

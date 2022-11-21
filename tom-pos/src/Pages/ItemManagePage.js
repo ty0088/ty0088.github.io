@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import UtilBar from '../Components/UtilBar';
 
+//headers to be fixed and rows to have own container to be scrollable ----------------
+
 const ItemManage = () => {
     const [itemData, setItemData] = useState({});
     const [tempData, setTempData] = useState({});
@@ -18,16 +20,16 @@ const ItemManage = () => {
     const [filterMenu, setFilterMenu] = useState('ALL');
     const [searchName, setSearchName] = useState('');
     const itemTemplate = {
-        itemID: 0,
+        'itemID': 0,
         'sub-menu': '',
         'item-name': '',
-        description: '',
-        options: [],
-        mods: [],
-        qty: '',
-        price: 0,
+        'description': '',
+        'options': [],
+        'mods': [],
+        'qty': '',
+        'price': 0,
         'tax-band': '',
-        cost: 0,
+        'cost': 0,
         'print-kitchen': false,
         'print-customer': true
     };

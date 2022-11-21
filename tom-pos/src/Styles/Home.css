@@ -1,4 +1,4 @@
-#nav-menu {
+#nav-home {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 460px 40px;
@@ -12,24 +12,24 @@
     flex-wrap: wrap;
 }
 
-.menu-link {
+.home-link {
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    height: 200px;
-    width: 300px;
+    height: 150px;
+    width: 150px;
     border: 1px solid black;
     border-radius: 5px;
     margin: 10px;
     color: black;
 }
 
-.menu-link:visited {
+.home-link:visited {
     color: black;
 }
 
-.menu-link:hover {
+.home-link:hover {
     font-weight: 900;
     border: 2px solid black;
 }

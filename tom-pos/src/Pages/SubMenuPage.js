@@ -6,6 +6,8 @@ import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
 
+//headers to be fixed and rows to have own container to be scrollable ----------------
+
 const SubMenu = () => {
     const [menuData, setMenuData] = useState({});
     const [tempData, setTempData] = useState({});
@@ -147,7 +149,7 @@ const SubMenu = () => {
                 <button type='button' className='menuBtn' onClick={addNewLevel}>Add New Level</button>
             </div>
             <div className='nav-footer'>
-                <Link to='/tom-pos/menu' className='foot-link'>Home</Link>
+                <Link to='/tom-pos/home' className='foot-link'>Home</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>

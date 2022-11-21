@@ -6,6 +6,8 @@ import { getDBDoc, setDB } from '../Util/firebaseDB';
 import TaxRow from '../Components/TaxRow';
 import updateItemVal from '../Util/updateItemVal';
 
+//headers to be fixed and rows to have own container to be scrollable ----------------
+
 const TaxManage = () => {
     const [taxData, setTaxData] = useState({});
     const [tempData, setTempData] = useState({});
@@ -37,7 +39,6 @@ const TaxManage = () => {
         updateItemVal([[label]], '', 'tax-band');
     };
 
-    //add new tax rate ---------
     const addTaxClick = () => {
         const addData = {...tempData, '': 0};
         setTempData(addData);
@@ -65,7 +66,7 @@ const TaxManage = () => {
                 </div>
             </div>
             <div className='nav-footer'>
-                <Link to='/tom-pos/menu' className='foot-link'>Home</Link>
+                <Link to='/tom-pos/home' className='foot-link'>Home</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>

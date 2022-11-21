@@ -48,7 +48,7 @@ const Login = () => {
             <div id='login-container'>
                 <h1 id='logo'>TOM POS</h1>
                 <h4>Web Based Point of Sale System</h4>
-                <span>You are already logged in, proceed to the <Link to='/tom-pos/menu'>Menu</Link></span>
+                <span>You are already logged in, proceed to the <Link to='/tom-pos/home'>Home</Link> page</span>
             </div>
         );
     }
