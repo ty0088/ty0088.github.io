@@ -74,17 +74,24 @@ const Home = ({currOrder, setCurrOrder}) => {
     //gets the next order number in format A0000
     const getNextOrderNo = () => {
         let lastOrderNo = '';
+        //if empty db then start at order no A0001
+        //else find the last used order no
         if (orderNos === undefined) {
             lastOrderNo = 'A0000';
         } else {
             lastOrderNo = orderNos[orderNos.length - 1];
         }
-        console.log(orderNos);
-        console.log(lastOrderNo);
-        const lastInts = parseInt(lastOrderNo.slice(1));
+        let lastInts = parseInt(lastOrderNo.slice(1));
+        let lastChar = lastOrderNo.slice(0, 1);
+        //if last number is reached, then restart numbering with next lead characted, A9999 -> B0001
+        if (lastInts === 9999) {
+            lastInts = 0;
+            lastChar = String.fromCharCode(lastChar.charCodeAt(0) + 1);
+        }
         const nextInt = lastInts + 1;
         const strZero = nextInt.toString().length === 1 ? '000' : nextInt.toString().length === 2 ? '00' : nextInt.toString().length === 3 ? '0' : '';
-        return `A${strZero}${nextInt}`;
+        console.log(`${lastChar}${strZero}${nextInt}`);
+        return `${lastChar}${strZero}${nextInt}`;
     }
 
     //OPEN Orders
