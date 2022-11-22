@@ -23,6 +23,7 @@
     border-radius: 5px;
     margin: 10px;
     color: black;
+    text-align: center;
 }
 
 .home-link:visited {
@@ -32,6 +33,17 @@
 .home-link:hover {
     font-weight: 900;
     border: 2px solid black;
+    cursor: pointer;
+}
+
+.home-link.disabled {
+    border: 1px solid rgb(199, 199, 199);
+    color: rgb(199, 199, 199);
+}
+
+.home-link.disabled:hover {
+    cursor: default;
+    font-weight: 500;
 }
 
 .nav-footer {

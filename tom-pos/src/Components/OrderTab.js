@@ -1,8 +1,7 @@
-import '../Styles/POS.css';
+import '../Styles/Order.css';
 import React, { useState, useEffect } from 'react';
 
-const OrderTab = () => {
-
+const OrderTab = ({orderNo}) => {
     return (
         <div id='order-tab'>
             <div id='order-list-cont'></div>
