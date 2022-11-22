@@ -24,11 +24,15 @@ const Home = ({currOrder, setCurrOrder}) => {
                 'mods': [],
                 'options': []
             }
-        ]
+        ],
+        'sub-price': 0,
+        'tip-price': 0,
+        'add-price': 0,
+        'total-price': 0
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);
     const [ordersData, setOrdersData] = useState({});
-    const [orderNos, setOrderNos] = useState([]);
+    const [orderNos, setOrderNos] = useState();
     const navigate = useNavigate();
 
     //initialise data from db
@@ -67,8 +71,16 @@ const Home = ({currOrder, setCurrOrder}) => {
         navigate(`/tom-pos/pos/${nextOrderNo}`);
     };
 
+    //gets the next order number in format A0000
     const getNextOrderNo = () => {
-        const lastOrderNo = orderNos[orderNos.length - 1];
+        let lastOrderNo = '';
+        if (orderNos === undefined) {
+            lastOrderNo = 'A0000';
+        } else {
+            lastOrderNo = orderNos[orderNos.length - 1];
+        }
+        console.log(orderNos);
+        console.log(lastOrderNo);
         const lastInts = parseInt(lastOrderNo.slice(1));
         const nextInt = lastInts + 1;
         const strZero = nextInt.toString().length === 1 ? '000' : nextInt.toString().length === 2 ? '00' : nextInt.toString().length === 3 ? '0' : '';
