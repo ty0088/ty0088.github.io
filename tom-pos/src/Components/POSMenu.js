@@ -20,14 +20,12 @@ const POSMenu = () => {
             //get sub menu data from firestore
             const menuSnap = await getDBDoc('sub-menus');
             const menuData = menuSnap.data();
-            console.log(Object.keys(menuData));
             setMenuData(menuData);
             //initialise root sub menus if any
             let initMenuKeys = [];
             if (Object.keys(menuData).length > 0) {
                 initMenuKeys = Object.keys(menuData[0]).sort();
             }
-            console.log(initMenuKeys);
             //get item data from firestore
             const itemSnap = await getDBDoc('items');
             const tempItemData = itemSnap.data();

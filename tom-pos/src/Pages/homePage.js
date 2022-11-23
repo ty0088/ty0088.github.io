@@ -8,9 +8,10 @@ import { getDBDoc, setDB } from '../Util/firebaseDB';
 
 const Home = ({currOrder, setCurrOrder}) => {
     const orderObj = {
-        'order-no': '', //format A0000
+        'order-no': '',
+        'order-name': '',
         'date-created': serverTimestamp(),
-        'date-closed': serverTimestamp(),
+        'date-closed': '',
         'status': 'OPEN',
         'items': [
             {
@@ -90,7 +91,6 @@ const Home = ({currOrder, setCurrOrder}) => {
         }
         const nextInt = lastInts + 1;
         const strZero = nextInt.toString().length === 1 ? '000' : nextInt.toString().length === 2 ? '00' : nextInt.toString().length === 3 ? '0' : '';
-        console.log(`${lastChar}${strZero}${nextInt}`);
         return `${lastChar}${strZero}${nextInt}`;
     }
     

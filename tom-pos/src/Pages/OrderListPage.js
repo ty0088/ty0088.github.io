@@ -107,10 +107,12 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
                     <span>Date-Time Created</span>
                     <span>Date-Time Closed</span>
                     <span>Order No.</span>
+                    <span>Order Name</span>
                     <span>Total Price</span>
                 </div>
                 <div id='order-list'>
-                    {orderNos.map(orderNo => {
+                    {orderNos.length > 0 &&
+                        orderNos.map(orderNo => {
                         const orderCreated = orderData[orderNo]['date-created'] === '' ? '-' : orderData[orderNo]['date-created'].toDate().toLocaleString();
                         const orderClosed = orderData[orderNo]['date-closed'] === '' ? '-' : orderData[orderNo]['date-closed'].toDate().toLocaleString();
                         return (
@@ -118,14 +120,18 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
                                 <span>{orderCreated}</span>
                                 <span>{orderClosed}</span>
                                 <span>{orderData[orderNo]['order-no']}</span>
+                                <span>{orderData[orderNo]['order-name']}</span>
                                 <span>{new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(orderData[orderNo]['total-price'])}</span>
                                 <div>
                                     <button type='button' onClick={openClick}>Open</button>
                                     <button type='button' onClick={deleteClick}>Delete</button>
                                 </div>
                             </div>
-                        );
-                    })}
+                        )})
+                    }
+                    {orderNos.length === 0 &&
+                        <span>No {status} orders were found</span>
+                    }
                 </div>
             </div>
             <div className='nav-footer'>
