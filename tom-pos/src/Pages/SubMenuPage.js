@@ -6,8 +6,6 @@ import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
 
-//headers to be fixed and rows to have own container to be scrollable ----------------
-
 const SubMenu = () => {
     const [menuData, setMenuData] = useState({});
     const [tempData, setTempData] = useState({});
@@ -35,6 +33,7 @@ const SubMenu = () => {
         setTempData({...menuData});
     };
 
+    //whenever a new sub menu is added and submitted (new menu === ''), all items with no sub menu ('') will be re written with new sub menu ---------
     const submitChange = (newMenu, newParent, level, prevMenu) => {
         //if top level, set parent to "Menu" for db use
         newParent = newParent === 'N/A' ? 'Menu' : newParent;

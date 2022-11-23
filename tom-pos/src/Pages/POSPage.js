@@ -8,30 +8,20 @@ import OrderTab from '../Components/OrderTab';
 
 const POS = () => {
     const { orderNo } = useParams();
-    // console.log(orderNo);
-    
-    //if user logged in, render POS, otherwise redirect to login page
-    if (!!getAuth().currentUser) {
-        return (
-            <div id='pos-container'>
-                <div id='pos-nav'>
-                    <Link to='/tom-pos/home' className='pos-nav-link'>Home</Link>
-                    <Link onClick={signOutAcc} className='pos-nav-link'>Sign Out</Link>
-                </div>
-                <div id='order-head'>
-                    Order {orderNo}
-                </div>
-                <POSMenu />
-                <OrderTab orderNo={orderNo} />
+    return (
+        <div id='pos-container'>
+            <div id='pos-nav'>
+                <Link to='/tom-pos/home' className='pos-nav-link'>Home</Link>
+                <Link to='/tom-pos/open-orders' className='pos-nav-link'>OPEN Orders</Link>
+                <Link onClick={signOutAcc} className='pos-nav-link'>Sign Out</Link>
             </div>
-        );
-    } else {
-        return (
-            <div id='pos-container'>
-                <span>You are signed out, please <Link to='/tom-pos'>sign back in</Link></span>
+            <div id='order-head'>
+                Order {orderNo}
             </div>
-        )
-    }
+            <POSMenu />
+            <OrderTab orderNo={orderNo} />
+        </div>
+    );
 };
 
 export default POS;

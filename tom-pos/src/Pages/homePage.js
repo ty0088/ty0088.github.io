@@ -76,7 +76,7 @@ const Home = ({currOrder, setCurrOrder}) => {
         let lastOrderNo = '';
         //if empty db then start at order no A0001
         //else find the last used order no
-        if (orderNos === undefined) {
+        if (orderNos.length === 0 || orderNos === undefined) {
             lastOrderNo = 'A0000';
         } else {
             lastOrderNo = orderNos[orderNos.length - 1];
@@ -94,8 +94,7 @@ const Home = ({currOrder, setCurrOrder}) => {
         return `${lastChar}${strZero}${nextInt}`;
     }
     
-    if (!!getAuth().currentUser) {
-        return (
+    return (
             <div id='nav-home'>
                 <div className='link-container'>
                     {currOrdFlag &&
@@ -107,7 +106,6 @@ const Home = ({currOrder, setCurrOrder}) => {
                     <span className='home-link' onClick={newOrderClick}>NEW Order</span>
                     <Link to='/tom-pos/open-orders' className='home-link'>OPEN Orders</Link>
                     <Link to='/tom-pos/closed-orders' className='home-link'>CLOSED Orders</Link>
-                    {/* <Link to='/tom-pos/backend' className='home-link'>Back End</Link> */}
                 </div>
                 <div className='nav-footer'>
                     <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
@@ -115,13 +113,6 @@ const Home = ({currOrder, setCurrOrder}) => {
                 </div>
             </div>
         );
-    } else {
-        return (
-            <div id='nav-home'>
-                <span>You are signed out, please <Link to='/tom-pos'>sign back in</Link></span>
-            </div>
-        );
-    }
 };
 
 export default Home;

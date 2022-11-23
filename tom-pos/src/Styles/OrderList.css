@@ -34,5 +34,6 @@
 }
 
 .order-list-row button {
-    margin-right: 10px;
+    margin-right: 20px;
+    width: 75px;
 }

@@ -18,40 +18,29 @@ const Login = () => {
         });
     }
 
-    //display log in page if user is not logged in otherwise let user know they are logged in already
-    if (!getAuth().currentUser) {
-        return (
-            <div id='login-container'>
-                <h1 id='logo'>TOM POS</h1>
-                <h4>Web Based Point of Sale System</h4>
-                <div id='login-input-container'>
-                    <form>
-                        <div className='login-input'>
-                            <label htmlFor='email'>Email: </label>
-                            <input type='text' id='email'/>
-                        </div>
-                        <div className='login-input'>
-                            <label htmlFor='password'>Password: </label>
-                            <input type='password' id='password'/>
-                        </div>
-                        <span id='login-error'></span>
-                        <button type='submit' onClick={emailLogIn}>Sign In</button>
-                    </form>
-                    <div id='login-links-container'>
-                        <Link className='login-links' to='/tom-pos/signup'>Sign Up</Link>
+    return (
+        <div id='login-container'>
+            <h1 id='logo'>TOM POS</h1>
+            <h4>Web Based Point of Sale System</h4>
+            <div id='login-input-container'>
+                <form>
+                    <div className='login-input'>
+                        <label htmlFor='email'>Email: </label>
+                        <input type='text' id='email'/>
                     </div>
+                    <div className='login-input'>
+                        <label htmlFor='password'>Password: </label>
+                        <input type='password' id='password'/>
+                    </div>
+                    <span id='login-error'></span>
+                    <button type='submit' onClick={emailLogIn}>Sign In</button>
+                </form>
+                <div id='login-links-container'>
+                    <Link className='login-links' to='/tom-pos/signup'>Sign Up</Link>
                 </div>
             </div>
-        );
-    } else {
-        return (
-            <div id='login-container'>
-                <h1 id='logo'>TOM POS</h1>
-                <h4>Web Based Point of Sale System</h4>
-                <span>You are already logged in, proceed to the <Link to='/tom-pos/home'>Home</Link> page</span>
-            </div>
-        );
-    }
+        </div>
+    );
 };
 
 export default Login;

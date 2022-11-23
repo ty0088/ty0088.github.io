@@ -14,11 +14,10 @@ import OrderList from './Pages/OrderListPage';
 
 const App = () => {
   const [currOrder, setCurrOrder] = useState();
-
   const navigate = useNavigate();
   const auth = getAuth();
   
-  //redirect user to approriate page based on user auth status
+  //redirect user to approriate page based on user auth status on each load of webpage
   //need listener to be able to work independently of render i.e. in case user is logged out--------------
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -50,8 +49,8 @@ const App = () => {
           <Route path='/tom-pos/pos' element={<POS />}>
             <Route path=':orderNo' element={<POS />} />
           </Route>
-          <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} />} />
-          <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} />} />
+          <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
+          <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />
           <Route path='/tom-pos/submenu' element={<SubMenu />} />
           <Route path='/tom-pos/items' element={<ItemManage />} />
@@ -60,7 +59,5 @@ const App = () => {
     </div>
   );
 }
-
-//protect user routes
 
 export default App;

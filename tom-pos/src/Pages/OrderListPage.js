@@ -1,18 +1,24 @@
 import '../Styles/OrderList.css';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setDB } from '../Util/firebaseDB';
+import MessageDelete from '../Components/MessageDelete';
 //----------------------------------------------
-//- open button takes you to POS order page
 //- delete button prompts confirmation pop up, then deletes
 //- sort/filter bar 
+//  sortBy: date-created, date-closed, order-no, total-price
+//  filterBy: date-created or date-closed
+//----------------------------------------------
 
-const OrderList = ({status}) => {
+const OrderList = ({status, currOrder, setCurrOrder}) => {
+    const [messageFlag, setMessageFlag] = useState(false);
     const [orderData, setOrdersData] = useState({});
     const [orderNos, setOrderNos] = useState([]);
+    const [delOrder, setDelOrder] = useState('');
     const [sortBy, setSortBy] = useState(status === 'OPEN' ? 'date-created' : 'date-closed');
     const [dir, setDir] = useState(true);
+    const navigate = useNavigate();
 
     //initialise data from db
     useEffect(() => {
@@ -50,12 +56,51 @@ const OrderList = ({status}) => {
     //filter an array of order numbers by -
     const filterOrderNoBy = (dataObj, orderArr, filterBy, filterVal) => {
         const dataArr = [...orderArr];
-        const filterArr = dataArr.filter(orderNo => dataObj[orderNo]['status'] === filterVal);
+        const filterArr = dataArr.filter(orderNo => dataObj[orderNo][filterBy] === filterVal);
         return filterArr;
+    };
+
+    //open order in POS
+    const openClick = (e) => {
+        const orderNo = e.target.closest('[data-no]').getAttribute('data-no');
+        setCurrOrder(orderNo);
+        navigate(`/tom-pos/pos/${orderNo}`);
+    }
+
+    //prompt delete confirmation
+    const deleteClick = (e) => {
+        const orderNo = e.target.closest('[data-no]').getAttribute('data-no');
+        setMessageFlag(true);
+        setDelOrder(orderNo);
+    }
+
+    const confirmDelete = () => {
+        setMessageFlag(false);
+        //delete item from data and db
+        let deleteData = {...orderData};
+        delete deleteData[delOrder];
+        setOrdersData(deleteData);
+        setDB(deleteData, 'orders');
+        //update order nos for re render of list
+        const filterData = filterOrderNoBy(deleteData, Object.keys(deleteData), 'status', status);
+        const sortedData = sortOrderNoBy(deleteData, filterData, sortBy, dir);
+        setOrderNos(sortedData);
+        //if delete order is current order, reset current order
+        if (currOrder === delOrder) {
+            setCurrOrder();
+        }
+    };
+
+    const cancelDelete = () => {
+        setMessageFlag(false);
     };
 
     return (
         <div id='order-list-container'>
+            {messageFlag &&
+                <MessageDelete name={delOrder} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                    message={'This will permanently delete the order from the database'}/>
+            }
             <div id='order-list-form'>
                 <h1>{status} Orders</h1>
                 <div id='order-list-header'>
@@ -75,8 +120,8 @@ const OrderList = ({status}) => {
                                 <span>{orderData[orderNo]['order-no']}</span>
                                 <span>{new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(orderData[orderNo]['total-price'])}</span>
                                 <div>
-                                    <button type='button'>Open</button>
-                                    <button type='button'>Delete</button>
+                                    <button type='button' onClick={openClick}>Open</button>
+                                    <button type='button' onClick={deleteClick}>Delete</button>
                                 </div>
                             </div>
                         );
