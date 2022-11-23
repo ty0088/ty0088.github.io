@@ -54,8 +54,10 @@ const SubMenu = () => {
         }
         //remove any empty levels
         Object.keys(editData).forEach(level => { if (Object.keys(editData[level]).length === 0) delete editData[level] });
-        //update Item sub menu property
-        updateItemVal([[prevMenu]], newMenu, 'sub-menu');
+        //update Item sub menu property exept for blank values
+        if (prevMenu !== '') {
+            updateItemVal([[prevMenu]], newMenu, 'sub-menu'); //--------------------
+        }
         //update data
         setTempData(editData);
         setMenuData(editData);
