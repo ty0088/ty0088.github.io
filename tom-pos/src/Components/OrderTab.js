@@ -1,4 +1,4 @@
-import '../Styles/Order.css';
+import '../Styles/OrderTab.css';
 import React, { useState, useEffect } from 'react';
 
 const OrderTab = ({orderNo}) => {

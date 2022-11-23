@@ -10,8 +10,8 @@ const Home = ({currOrder, setCurrOrder}) => {
     const orderObj = {
         'order-no': '', //format A0000
         'date-created': serverTimestamp(),
-        'date-closed': '',
-        'status': 'open', //open/closed
+        'date-closed': serverTimestamp(),
+        'status': 'OPEN',
         'items': [
             {
                 'id': '',
@@ -93,10 +93,7 @@ const Home = ({currOrder, setCurrOrder}) => {
         console.log(`${lastChar}${strZero}${nextInt}`);
         return `${lastChar}${strZero}${nextInt}`;
     }
-
-    //OPEN Orders
-    //CLOSED Orders
-    //Back End
+    
     if (!!getAuth().currentUser) {
         return (
             <div id='nav-home'>
@@ -108,8 +105,8 @@ const Home = ({currOrder, setCurrOrder}) => {
                         <span className='home-link disabled'>NO CURRENT Order</span>
                     }
                     <span className='home-link' onClick={newOrderClick}>NEW Order</span>
-                    <Link to='/tom-pos/home' className='home-link'>OPEN Orders</Link>
-                    <Link to='/tom-pos/home' className='home-link'>CLOSED Orders</Link>
+                    <Link to='/tom-pos/open-orders' className='home-link'>OPEN Orders</Link>
+                    <Link to='/tom-pos/closed-orders' className='home-link'>CLOSED Orders</Link>
                     <Link to='/tom-pos/backend' className='home-link'>Back End</Link>
                 </div>
                 <div className='nav-footer'>

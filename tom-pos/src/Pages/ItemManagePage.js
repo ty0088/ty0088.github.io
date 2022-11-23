@@ -6,7 +6,7 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setDB, addItem } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
-import UtilBar from '../Components/UtilBar';
+import UtilBar from '../Components/MenuFilterSort';
 
 //headers to be fixed and rows to have own container to be scrollable ----------------
 
@@ -179,16 +179,18 @@ const ItemManage = () => {
                     <span>Print Customer</span>
                     <span>Print Kitchen</span>
                 </div>
-                {Object.keys(tempData).length > 0 &&
-                    sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
-                        changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} />)
-                }
-                {Object.keys(tempData).length === 0 &&
-                    <div>You have no items, please add one using the 'Add Item' button above</div>
-                }
+                <div id='item-list'>
+                    {Object.keys(tempData).length > 0 &&
+                        sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
+                            changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} />)
+                    }
+                    {Object.keys(tempData).length === 0 &&
+                        <div>You have no items, please add one using the 'Add Item' button above</div>
+                    }
+                </div>
             </div>
             <div className='nav-footer'>
-                <Link to='/tom-pos/menu' className='foot-link'>Home</Link>
+                <Link to='/tom-pos/home' className='foot-link'>Home</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>

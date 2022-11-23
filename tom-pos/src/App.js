@@ -10,6 +10,7 @@ import SignUp from './Pages/SignUpPage';
 import SubMenu from './Pages/SubMenuPage';
 import ItemManage from './Pages/ItemManagePage';
 import TaxManage from './Pages/TaxManagePage';
+import OrderList from './Pages/OrderListPage';
 
 const App = () => {
   const [currOrder, setCurrOrder] = useState();
@@ -30,6 +31,7 @@ const App = () => {
           console.log('user is signed out');
           navigate('/tom-pos');
       }
+      setCurrOrder();
     });
 
     return () => {
@@ -48,6 +50,8 @@ const App = () => {
           <Route path='/tom-pos/pos' element={<POS />}>
             <Route path=':orderNo' element={<POS />} />
           </Route>
+          <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} />} />
+          <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />
           <Route path='/tom-pos/submenu' element={<SubMenu />} />
           <Route path='/tom-pos/items' element={<ItemManage />} />

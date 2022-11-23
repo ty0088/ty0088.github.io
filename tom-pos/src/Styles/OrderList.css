@@ -1,0 +1,38 @@
+#order-list-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 470px 30px;
+    position: relative;
+}
+
+#order-list-form {
+    margin: 10px 10px 0px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-x: auto;
+}
+
+#order-list-header {
+    padding: 3px 0 3px 0;
+    display: grid;
+    grid-template-columns: 200px 200px 100px 100px 1fr;
+    grid-template-rows: 1fr;
+    font-weight: 700;
+}
+
+#order-list {
+    height: 320px;
+    overflow-y: auto;
+}
+
+.order-list-row {
+    margin: 2px 0px 2px 0px;
+    display: grid;
+    grid-template-columns: 200px 200px 100px 100px 1fr;
+    grid-template-rows: 1fr;
+}
+
+.order-list-row button {
+    margin-right: 10px;
+}
