@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setDB } from '../Util/firebaseDB';
+//----------------------------------------------
+//- open button takes you to POS order page
+//- delete button prompts confirmation pop up, then deletes
+//- sort/filter bar 
 
 const OrderList = ({status}) => {
     const [orderData, setOrdersData] = useState({});

@@ -107,9 +107,10 @@ const Home = ({currOrder, setCurrOrder}) => {
                     <span className='home-link' onClick={newOrderClick}>NEW Order</span>
                     <Link to='/tom-pos/open-orders' className='home-link'>OPEN Orders</Link>
                     <Link to='/tom-pos/closed-orders' className='home-link'>CLOSED Orders</Link>
-                    <Link to='/tom-pos/backend' className='home-link'>Back End</Link>
+                    {/* <Link to='/tom-pos/backend' className='home-link'>Back End</Link> */}
                 </div>
                 <div className='nav-footer'>
+                    <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                     <button type='button' onClick={signOutAcc}>Sign Out</button>
                 </div>
             </div>
