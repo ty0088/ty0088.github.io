@@ -2,8 +2,9 @@ import '../Styles/TaxPage.css';
 import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import MessageDelete from './MessageDelete';
+import updateItemVal from '../Util/updateItemVal';
 
-const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, updateItemVal}) => {
+const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setDataDB, itemsData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
 
@@ -37,7 +38,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, updateItemVal})
                 //update items if editing existing and update DB
                 if (label !== '') {
                     //update items of tax rate isn't newly added
-                    updateItemVal([[label]], newLabel, 'tax-band');
+                    updateItemVal([[label]], newLabel, 'tax-band', setDataDB, itemsData);
                 }
                 updateTaxDB(tempData);
                 clearError();

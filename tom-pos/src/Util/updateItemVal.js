@@ -1,13 +1,10 @@
-import { getDBDoc, setDB } from './firebaseDB';
-
-const updateItemVal = async (vals, newVal, prop) => {
-    const itemSnap = await getDBDoc('items');
-    const itemData = itemSnap.data();
+//updates item(s) property value
+const updateItemVal = (vals, newVal, prop, setDataDB, itemData) => {
     vals.forEach(val => {
         const matchIDs = Object.keys(itemData).filter(itemID => itemData[itemID][prop] === val[0]);
         matchIDs.forEach(itemID => itemData[itemID][prop] = newVal);
     });
-    setDB(itemData, 'items');
+    setDataDB(itemData, 'items');
 };
 
 export default updateItemVal;

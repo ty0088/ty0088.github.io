@@ -8,8 +8,8 @@ import updateItemVal from '../Util/updateItemVal';
 
 //headers to be fixed and rows to have own container to be scrollable ----------------
 
-const TaxManage = () => {
-    const [taxData, setTaxData] = useState({});
+const TaxManage = ({ itemsData, setDataDB}) => {
+    const [taxData, setTaxData] = useState({}); //----------------
     const [tempData, setTempData] = useState({});
 
     //get initial data from APP ----------------------------------------
@@ -37,7 +37,7 @@ const TaxManage = () => {
         setTaxData(deleteData);//setting state and data from APP-------------
         setTempData(deleteData);
         setDB(deleteData, 'tax-bands');//setting state and data from APP-------------
-        updateItemVal([[label]], '', 'tax-band');
+        updateItemVal([[label]], '', 'tax-band', setDataDB, itemsData);
     };
 
     const addTaxClick = () => {
@@ -61,7 +61,7 @@ const TaxManage = () => {
                     {Object.keys(tempData).length > 0 &&
                         Object.keys(tempData).sort().map((label, i) => <TaxRow key={i} data={tempData} 
                             label={label} updateTaxDB={updateTaxDB} deleteTax={deleteTax} cancelAdd={cancelAdd}
-                            updateItemVal={updateItemVal} />)
+                            setDataDB={setDataDB} itemsData={itemsData} />)
                     }
                     <button type='button' onClick={addTaxClick}>Add Tax Rate</button>
                 </div>
