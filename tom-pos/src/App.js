@@ -24,7 +24,7 @@ const App = () => {
       if (user) {
           // User is signed in
           console.log(`${user.uid} is logged in`);
-          navigate('/tom-pos/order');
+          navigate('/tom-pos/orders');
       } else {
           // User is signed out
           console.log('user is signed out');
@@ -39,7 +39,12 @@ const App = () => {
   // eslint-disable-next-line
   }, [])
 
-
+  // /orders
+  //        /open-orders
+  //        /closed-orders
+  //        /pos
+  //            /:orderNo
+  
   return (
     <div id='main-container'>
         <Routes>

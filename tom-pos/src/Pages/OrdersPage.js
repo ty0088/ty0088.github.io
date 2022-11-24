@@ -1,4 +1,4 @@
-import '../Styles/Home.css';
+import '../Styles/Orders.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { serverTimestamp } from "firebase/firestore";
@@ -92,26 +92,34 @@ const Orders = ({currOrder, setCurrOrder}) => {
         const strZero = nextInt.toString().length === 1 ? '000' : nextInt.toString().length === 2 ? '00' : nextInt.toString().length === 3 ? '0' : '';
         return `${lastChar}${strZero}${nextInt}`;
     }
+
+    //--------------------------------------
+    //make order-link-container its own component
+    //make orderListPage into a component
+    //initially render link container, onclick the content changes i.e. to orderList component
+    //this way, the orderObj state is shared between components
+    //--------------------------------------
+
     
     return (
-            <div id='nav-home'>
-                <div className='link-container'>
-                    {currOrdFlag &&
-                        <span className='home-link' onClick={currOrderClick}>CURRENT Order {currOrder}</span>
-                    }
-                    {!currOrdFlag &&
-                        <span className='home-link disabled'>NO CURRENT Order</span>
-                    }
-                    <span className='home-link' onClick={newOrderClick}>NEW Order</span>
-                    <Link to='/tom-pos/open-orders' className='home-link'>OPEN Orders</Link>
-                    <Link to='/tom-pos/closed-orders' className='home-link'>CLOSED Orders</Link>
-                </div>
-                <div className='nav-footer'>
-                    <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
-                    <button type='button' onClick={signOutAcc}>Sign Out</button>
-                </div>
+        <div id='order-container'>
+            <div className='order-link-container'>
+                {currOrdFlag &&
+                    <span className='order-link' onClick={currOrderClick}>CURRENT Order {currOrder}</span>
+                }
+                {!currOrdFlag &&
+                    <span className='order-link disabled'>NO CURRENT Order</span>
+                }
+                <span className='order-link' onClick={newOrderClick}>NEW Order</span>
+                <Link to='/tom-pos/open-orders' className='order-link'>OPEN Orders</Link>
+                <Link to='/tom-pos/closed-orders' className='order-link'>CLOSED Orders</Link>
             </div>
-        );
+            <div className='nav-footer'>
+                <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
+                <button type='button' onClick={signOutAcc}>Sign Out</button>
+            </div>
+        </div>
+    );
 };
 
 export default Orders;

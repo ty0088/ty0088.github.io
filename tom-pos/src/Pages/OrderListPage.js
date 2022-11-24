@@ -64,14 +64,14 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
         const orderNo = e.target.closest('[data-no]').getAttribute('data-no');
         setCurrOrder(orderNo);
         navigate(`/tom-pos/pos/${orderNo}`);
-    }
+    };
 
     //prompt delete confirmation
     const deleteClick = (e) => {
         const orderNo = e.target.closest('[data-no]').getAttribute('data-no');
         setMessageFlag(true);
         setDelOrder(orderNo);
-    }
+    };
 
     const confirmDelete = () => {
         setMessageFlag(false);

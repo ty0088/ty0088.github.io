@@ -1,10 +1,10 @@
-#nav-home {
+#order-container {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 460px 40px;
 }
 
-.link-container {
+.order-link-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -12,7 +12,7 @@
     flex-wrap: wrap;
 }
 
-.home-link {
+.order-link {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,22 +27,22 @@
     font-weight: 600;
 }
 
-.home-link:visited {
+.order-link:visited {
     color: black;
 }
 
-.home-link:hover {
+.order-link:hover {
     font-weight: 900;
     border: 2px solid black;
     cursor: pointer;
 }
 
-.home-link.disabled {
+.order-link.disabled {
     border: 1px solid rgb(199, 199, 199);
     color: rgb(199, 199, 199);
 }
 
-.home-link.disabled:hover {
+.order-link.disabled:hover {
     cursor: default;
     font-weight: 500;
 }
