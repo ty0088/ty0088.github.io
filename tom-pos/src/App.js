@@ -71,7 +71,6 @@ const App = () => {
         setItemsData(dataObj);
       break;
       case 'orders':
-        console.log(dataObj);
         setOrdersData(dataObj);
       break;
       case 'sub-menus':
