@@ -5,7 +5,7 @@ import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
-const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData, setDataDB}) => {
+const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
     // const [item, setItem] = useState(itemObj); //remove item state, use itemObj prop --------------

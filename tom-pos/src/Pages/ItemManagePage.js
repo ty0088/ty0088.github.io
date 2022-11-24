@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';
 
-const ItemManage = ({taxData, menusData, setDataDB}) => {
-    const [itemData, setItemData] = useState({});
+const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
+    // const [itemData, setItemData] = useState({}); ---------------------
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
     const [itemNames, setItemNames] = useState([]);
@@ -31,39 +31,26 @@ const ItemManage = ({taxData, menusData, setDataDB}) => {
         'print-customer': true
     };
 
-    //load in item data from firebase db
-    useEffect(() => {
-        initData();
-    // eslint-disable-next-line
-    }, []);
-
+    //call setSort anytime a sort/filter/search key is changed
     useEffect(() => {
         setSort(tempData);
     // eslint-disable-next-line
     }, [sortBy, dir, filterMenu, searchName]);
 
-    //update item names for restricted names list
+    //update item names for restricted names list and set data for itemsData
     useEffect(() => {
         const getItemNames = (data) => {
             let nameArr = [];
             Object.keys(data).forEach(id => nameArr.push(data[id]['item-name']));
             setItemNames(nameArr)
         };
-        getItemNames(itemData);
-    }, [itemData]);
-
-    //get initial data from App state ------------------------------------
-    //set initial data from db
-    const initData = async () => {
-        const itemSnap = await getDBDoc('items');
-        const dbData = itemSnap.data();
-        setData(dbData);
-    };
+        getItemNames(itemsData);
+        setData(itemsData)
+    }, [itemsData]);
 
     //set working states with new data
     const setData = (data) => {
-        setItemData(data);//setting state and data from APP-------------
-        setTempData(data);
+        setTempData({...data});
         setSort(data);
     };
 
@@ -130,7 +117,7 @@ const ItemManage = ({taxData, menusData, setDataDB}) => {
         let deleteData = {...tempData};
         delete deleteData[itemID];
         setData(deleteData);
-        setDB(deleteData, 'items'); //call setDB function from App ---------------
+        setDataDB(deleteData, 'items');
     };
 
     const addItemClick = () => {
@@ -144,14 +131,14 @@ const ItemManage = ({taxData, menusData, setDataDB}) => {
     };
 
     const cancelAdd = () => {
-        setData({...itemData});
+        setData({...itemsData});
     };
 
     const changeItem = (item) => {
         const itemID = item.itemID;
         const changeData = {...tempData, [itemID]: item};
         setData(changeData);
-        setDB(changeData, 'items'); //setting state and data from APP-------------
+        setDataDB(changeData, 'items');
     };
 
     return (
