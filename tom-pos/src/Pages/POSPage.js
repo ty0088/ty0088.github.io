@@ -5,7 +5,7 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 
-const POS = () => {
+const POS = ({itemsData, menusData}) => {
     const { orderNo } = useParams();
     return (
         <div id='pos-container'>
@@ -18,7 +18,7 @@ const POS = () => {
             <div id='order-head'>
                 Order {orderNo}
             </div>
-            <POSMenu />
+            <POSMenu menusData={menusData} itemsData={itemsData} />
             <OrderTab orderNo={orderNo} />
         </div>
     );
