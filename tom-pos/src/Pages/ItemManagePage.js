@@ -8,7 +8,6 @@ import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';
 
 const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
-    // const [itemData, setItemData] = useState({}); ---------------------
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
     const [itemNames, setItemNames] = useState([]);

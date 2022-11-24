@@ -8,7 +8,6 @@ import MessageDelete from './MessageDelete';
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
-    // const [item, setItem] = useState(itemObj); //remove item state, use itemObj prop --------------
     const [tempItem, setTempItem] = useState({...itemObj});
 
     //keep item and tempItem updated with prop itemObj on each render
@@ -19,7 +18,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
         }
         setTempItem({...itemObj});
-        // setItem({...itemObj}); //remove item state, use itemObj prop --------------
     }, [itemObj]);
 
     const editClick = () => {
@@ -32,9 +30,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 setEditFlag(false);
                 document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
                 document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
-                // setItem(tempItem); //remove item state, use itemObj prop --------------
-                //call setDataDB ---------
-                setDataDB(tempItem, 'items');
                 changeItem(tempItem);
             } else {
                 //error message
@@ -45,7 +40,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
             setEditFlag(true);
             document.querySelectorAll(`#item-form button:not([data-id='${itemObj['itemID']}'] button)`).forEach(elem => elem.disabled = true);
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
-            setTempItem({...itemObj}); //remove item state, use itemObj prop --------------
+            setTempItem({...itemObj});
         }
     }
 
@@ -54,7 +49,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
         document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
         //reset tempItem
-        setTempItem({...itemObj}); //remove item state, use itemObj prop --------------
+        setTempItem({...itemObj});
         cancelAdd();
     }
 
