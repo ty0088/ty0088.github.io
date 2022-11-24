@@ -12,27 +12,11 @@ import MessageDelete from '../Components/MessageDelete';
 
 const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => {
     const [messageFlag, setMessageFlag] = useState(false);
-    // const [ordersData, setOrdersData] = useState({}); --------------
     const [orderNos, setOrderNos] = useState([]);
     const [delOrder, setDelOrder] = useState('');
     const [sortBy, setSortBy] = useState(status === 'OPEN' ? 'date-created' : 'date-closed');
     const [dir, setDir] = useState(true);
     const navigate = useNavigate();
-
-    // //get initial data from APP ---------------------------------------
-    // //initialise data from db
-    // useEffect(() => {
-    //     const getOrders = async () => {
-    //         const orderSnap = await getDBDoc('orders');
-    //         const dbData = orderSnap.data();
-    //         setOrdersData(dbData);  //move ordersData state to APP --------------
-    //         //sort and filter by date created for OPEN and date closed for CLOSED on initial render
-    //         const filterData = filterOrderNoBy(dbData, Object.keys(dbData), 'status', status);
-    //         const sortedData = sortOrderNoBy(dbData, filterData, sortBy, dir);
-    //         setOrderNos(sortedData);
-    //     };
-    //     getOrders();
-    // }, []);
 
     //initialise data whenever dataObj is changed and is not undefined
     useEffect(() => {
@@ -44,6 +28,7 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         }
         console.log(`list:`);
         console.log(ordersData);
+    // eslint-disable-next-line
     }, [ordersData]);
 
     //Sort an array of order numbers by -
@@ -91,8 +76,6 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         //delete item from data and db
         let deleteData = {...ordersData};
         delete deleteData[delOrder];
-        // setOrdersData(deleteData); //move ordersData state to APP --------------
-        // setDB(deleteData, 'orders'); //---------------
         setDataDB(deleteData, 'orders');
         //update order nos for re render of list
         const filterData = filterOrderNoBy(deleteData, Object.keys(deleteData), 'status', status);

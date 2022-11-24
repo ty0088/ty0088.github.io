@@ -2,7 +2,6 @@ import '../Styles/Orders.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-// import { getDBDoc, setDB } from '../Util/firebaseDB';
 
 const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
     const orderObj = {
@@ -30,21 +29,8 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
         'total-price': 0
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);
-    // const [ordersData, setOrdersData] = useState({}); //move ordersData state to APP --------------
     const [orderNos, setOrderNos] = useState();
     const navigate = useNavigate();
-
-    //initialise data from App --------------------------------
-    //initialise data from db
-    // useEffect(() => {
-    //     const getOrders = async () => {
-    //         const orderSnap = await getDBDoc('orders');
-    //         const dbData = orderSnap.data();
-    //         setOrdersData(dbData); //move ordersData state to APP --------------
-    //         setOrderNos(Object.keys(dbData).sort());
-    //     };
-    //     getOrders();
-    // }, []);
 
     //initialise data whenever dataObj is changed and is not undefined
     useEffect(() => {
@@ -74,8 +60,6 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
         setCurrOrder(nextOrderNo);
         //create new next orderObj and set state and db
         let newData = {...ordersData, [nextOrderNo]: {...orderObj, 'order-no': nextOrderNo}};
-        // setOrdersData(newData); //move ordersData state to APP --------------
-        // setDB(newData, 'orders'); //get setDB from App --------------
         setDataDB(newData, 'orders');
         navigate(`/tom-pos/pos/${nextOrderNo}`);
     };
@@ -83,11 +67,11 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
     //gets the next order number in format A0000
     const getNextOrderNo = () => {
         let lastOrderNo = '';
-        //if empty db then start at order no A0001
-        //else find the last used order no
         if (orderNos.length === 0 || orderNos === undefined) {
+            //if empty db then start at order no A0001
             lastOrderNo = 'A0000';
         } else {
+            //else find the last used order no
             lastOrderNo = orderNos[orderNos.length - 1];
         }
         let lastInts = parseInt(lastOrderNo.slice(1));
