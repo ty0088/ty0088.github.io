@@ -6,23 +6,28 @@ import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
 
-const SubMenu = () => {
-    const [menuData, setMenuData] = useState({});
+const SubMenu = ({menusData, setDataDB}) => {
+    // const [menuData, setMenuData] = useState({}); //---------------------
     const [tempData, setTempData] = useState({});
     const [levels, setLevels] = useState([]);
 
-    //get initial data from APP ----------------------
-    //on initial render load in data from firebase db
+    // //get initial data from APP ----------------------
+    // //on initial render load in data from firebase db
+    // useEffect(() => {
+    //     const getSubMenu = async () => {
+    //         const menuSnap = await getDBDoc('sub-menus');
+    //         const dbData = menuSnap.data();
+    //         setMenuData(dbData); //move menuData state to APP --------------
+    //         setTempData(dbData);
+    //         setLevels(Object.keys(dbData).map(string => parseInt(string)));
+    //     };
+    //     getSubMenu();
+    // }, []);
+
     useEffect(() => {
-        const getSubMenu = async () => {
-            const menuSnap = await getDBDoc('sub-menus');
-            const dbData = menuSnap.data();
-            setMenuData(dbData); //move menuData state to APP --------------
-            setTempData(dbData);
-            setLevels(Object.keys(dbData).map(string => parseInt(string)));
-        };
-        getSubMenu();
-    }, []);
+        setTempData({...menusData});
+        setLevels(Object.keys(menusData).map(string => parseInt(string)));
+    }, [menusData])
 
     const clickNewMenu = (e) => {
         const menuLevel = e.target.parentNode.getAttribute('data-level');
@@ -31,10 +36,9 @@ const SubMenu = () => {
     };
 
     const cancelEdit = () => {
-        setTempData({...menuData});
+        setTempData({...menusData});
     };
 
-    //whenever a new sub menu is added and submitted (new menu === ''), all items with no sub menu ('') will be re written with new sub menu ---------
     const submitChange = (newMenu, newParent, level, prevMenu) => {
         //if top level, set parent to "Menu" for db use
         newParent = newParent === 'N/A' ? 'Menu' : newParent;
@@ -61,8 +65,9 @@ const SubMenu = () => {
         }
         //update data
         setTempData(editData);
-        setMenuData(editData); //setting state and data from APP-------------
-        setDB(editData, 'sub-menus'); //setting state and data from APP-------------
+        // setMenuData(editData); //setting state and data from APP-------------
+        // setDB(editData, 'sub-menus'); //setting state and data from APP-------------
+        setDataDB(editData, 'sub-menus');
         setLevels(Object.keys(editData).map(string => parseInt(string)));
     };
 
@@ -79,8 +84,9 @@ const SubMenu = () => {
         //remove any empty levels and update data
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
-        setMenuData(deleteData); //setting state and data from APP-------------
-        setDB(deleteData, 'sub-menus'); //setting state and data from APP-------------
+        // setMenuData(deleteData); //setting state and data from APP-------------
+        // setDB(deleteData, 'sub-menus'); //setting state and data from APP-------------
+        setDataDB(deleteData, 'sub-menus');
         setLevels(Object.keys(deleteData).map(string => parseInt(string)));
     };
 
