@@ -5,7 +5,6 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MessageDelete from '../Components/MessageDelete';
 //----------------------------------------------
-//- delete button prompts confirmation pop up, then deletes
 //- sort/filter bar 
 //  sortBy: date-created, date-closed, order-no, total-price
 //  filterBy: date-created or date-closed
@@ -98,7 +97,7 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
     return (
         <div id='order-list-container'>
             {messageFlag &&
-                <MessageDelete name={delOrder} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                <MessageDelete name={`Order ${delOrder}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
                     message={'This will permanently delete the order from the database'}/>
             }
             <div id='order-list-form'>
@@ -113,18 +112,21 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
                 <div id='order-list'>
                     {orderNos.length > 0 &&
                         orderNos.map(orderNo => {
+                        //formats datestamp to date and time or empty value to dash
                         const orderCreated = orderData[orderNo]['date-created'] === '' ? '-' : orderData[orderNo]['date-created'].toDate().toLocaleString();
                         const orderClosed = orderData[orderNo]['date-closed'] === '' ? '-' : orderData[orderNo]['date-closed'].toDate().toLocaleString();
+                        //adds bold class to current order
+                        const addClass = orderNo === currOrder ? 'bold' : '';
                         return (
-                            <div key={orderNo} className='order-list-row' data-no={orderNo}>
+                            <div key={orderNo} className={`order-list-row ${addClass}`} data-no={orderNo}>
                                 <span>{orderCreated}</span>
                                 <span>{orderClosed}</span>
                                 <span>{orderData[orderNo]['order-no']}</span>
                                 <span>{orderData[orderNo]['order-name']}</span>
                                 <span>{new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(orderData[orderNo]['total-price'])}</span>
                                 <div>
-                                    <button type='button' onClick={openClick}>Open</button>
-                                    <button type='button' onClick={deleteClick}>Delete</button>
+                                    <button type='button' className={addClass} onClick={openClick}>Open</button>
+                                    <button type='button' className={addClass} onClick={deleteClick}>Delete</button>
                                 </div>
                             </div>
                         )})
