@@ -9,7 +9,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
 
     useEffect(() => {
         //initialise parent of sub menu
-        //if top menu then no parent
+        //if top menu then use system parent name 'Menu'
         let initParent = menuData[level][menu];
         initParent = initParent === 'Menu' ? 'N/A' : initParent;
         setParent(initParent);
@@ -93,6 +93,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         document.querySelector(`[data-id="${id}"]`).after(errElem);
     };
 
+    //removes any error messages and error classes
     const clearError = () => {
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));

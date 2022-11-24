@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { getDBDoc } from '../Util/firebaseDB';
 
 const MenuList = ({dfMenu, handleChange, allOption}) => {
-    const [menuData, setMenuData] = useState({});
+    const [menuData, setMenuData] = useState({}); //remove do not need ----------------
 
+    //get initial data as prop from parent ------------
     useEffect(() => {
         const getMenuDB = async () => {
             const menuSnap = await getDBDoc('sub-menus');

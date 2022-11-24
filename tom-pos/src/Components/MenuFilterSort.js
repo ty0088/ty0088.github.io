@@ -2,7 +2,7 @@ import '../Styles/ItemManage.css';
 import React from 'react';
 import MenuList from './MenuList';
 
-const UtilBar = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addItemClick, setSearchName}) => {
+const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addItemClick, setSearchName}) => {
 
     const changeSortBy = (e) => {
         const sortVal = e.target.value;
@@ -55,4 +55,4 @@ const UtilBar = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addIt
     );
 };
 
-export default UtilBar;
+export default MenuFilterSort;

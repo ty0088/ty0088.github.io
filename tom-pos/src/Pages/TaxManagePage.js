@@ -12,12 +12,13 @@ const TaxManage = () => {
     const [taxData, setTaxData] = useState({});
     const [tempData, setTempData] = useState({});
 
+    //get initial data from APP ----------------------------------------
     //on initial render load in data from firebase db
     useEffect(() => {
         const getTaxData = async () => {
             const taxSnap = await getDBDoc('tax-bands');
             const snapData = taxSnap.data();
-            setTaxData(snapData);
+            setTaxData(snapData); //setting state and data from APP------------- not required?
             setTempData(snapData);
         };
         getTaxData();
@@ -25,17 +26,17 @@ const TaxManage = () => {
 
     //set states and firebase db
     const updateTaxDB = (taxObj) => {
-        setTaxData({...taxObj});
+        setTaxData({...taxObj}); //setting state and data from APP-------------
         setTempData({...taxObj});
-        setDB({...taxObj}, 'tax-bands');
+        setDB({...taxObj}, 'tax-bands'); //setting state and data from APP-------------
     };
 
     const deleteTax = (label) => {
         let deleteData = {...tempData};
         delete deleteData[label];
-        setTaxData(deleteData);
+        setTaxData(deleteData);//setting state and data from APP-------------
         setTempData(deleteData);
-        setDB(deleteData, 'tax-bands');
+        setDB(deleteData, 'tax-bands');//setting state and data from APP-------------
         updateItemVal([[label]], '', 'tax-band');
     };
 

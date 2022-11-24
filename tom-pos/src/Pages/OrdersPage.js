@@ -31,16 +31,17 @@ const Orders = ({currOrder, setCurrOrder}) => {
         'total-price': 0
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);
-    const [ordersData, setOrdersData] = useState({});
+    const [ordersData, setOrdersData] = useState({}); //move ordersData state to APP --------------
     const [orderNos, setOrderNos] = useState();
     const navigate = useNavigate();
 
+    //initialise data from App --------------------------------
     //initialise data from db
     useEffect(() => {
         const getOrders = async () => {
             const orderSnap = await getDBDoc('orders');
             const dbData = orderSnap.data();
-            setOrdersData(dbData);
+            setOrdersData(dbData); //move ordersData state to APP --------------
             setOrderNos(Object.keys(dbData).sort());
         };
         getOrders();
@@ -66,8 +67,8 @@ const Orders = ({currOrder, setCurrOrder}) => {
         setCurrOrder(nextOrderNo);
         //create new next orderObj and set state and db
         let newData = {...ordersData, [nextOrderNo]: {...orderObj, 'order-no': nextOrderNo}};
-        setOrdersData(newData);
-        setDB(newData, 'orders');
+        setOrdersData(newData); //move ordersData state to APP --------------
+        setDB(newData, 'orders'); //get setDB from App --------------
         navigate(`/tom-pos/pos/${nextOrderNo}`);
     };
 
@@ -93,14 +94,6 @@ const Orders = ({currOrder, setCurrOrder}) => {
         return `${lastChar}${strZero}${nextInt}`;
     }
 
-    //--------------------------------------
-    //make order-link-container its own component
-    //make orderListPage into a component
-    //initially render link container, onclick the content changes i.e. to orderList component
-    //this way, the orderObj state is shared between components
-    //--------------------------------------
-
-    
     return (
         <div id='order-container'>
             <div className='order-link-container'>

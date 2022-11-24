@@ -8,18 +8,18 @@ import MessageDelete from './MessageDelete';
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
-    const [item, setItem] = useState(itemObj);
+    const [item, setItem] = useState(itemObj); //remove item state, use itemObj prop --------------
     const [tempItem, setTempItem] = useState(itemObj);
 
     //keep item and tempItem updated with prop itemObj on each render
     useEffect(() => {
         if (itemObj['item-name'] === '') {
             setEditFlag(true);
-            document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true);
+            document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true); //remove item state, use itemObj prop --------------
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
         }
         setTempItem({...itemObj});
-        setItem({...itemObj});
+        setItem({...itemObj}); //remove item state, use itemObj prop --------------
     // eslint-disable-next-line
     }, [itemObj]);
 
@@ -33,7 +33,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 setEditFlag(false);
                 document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
                 document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
-                setItem(tempItem);
+                setItem(tempItem); //remove item state, use itemObj prop --------------
                 changeItem(tempItem);
             } else {
                 //error message
@@ -44,7 +44,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
             setEditFlag(true);
             document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true);
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
-            setTempItem(item);
+            setTempItem(item); //remove item state, use itemObj prop --------------
         }
     }
 
@@ -53,7 +53,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
         document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
         //reset tempItem
-        setTempItem(item);
+        setTempItem(item); //remove item state, use itemObj prop --------------
         cancelAdd();
     }
 
@@ -96,8 +96,8 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
     };
 
     //input validation
-    const checkInputs = (item) => {
-        const inputs = Object.keys(item);
+    const checkInputs = (obj) => {
+        const inputs = Object.keys(obj);
         let lastInput = '';
         let errMessage = '';
         const result = inputs.every(input => {
@@ -106,7 +106,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 case 'item-name':
                     //item-name: required, no repeats
                     errMessage = 'Item name should non-blank and cannot already exist';
-                    return item['item-name'].toString().trim() === '' || isNameRepeat(item['item-name'].toString().trim()) ? false : true;
+                    return obj['item-name'].toString().trim() === '' || isNameRepeat(obj['item-name'].toString().trim()) ? false : true;
                 case 'sub-menu':
                     //sub-menu: none
                     return true;
@@ -116,36 +116,36 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                 case 'price': 
                     //price: must be number, 0 required
                     errMessage = 'Price is required or 0 value used';
-                    return isNumber(item['price']) ? true : false;
+                    return isNumber(obj['price']) ? true : false;
                 case 'tax-band':
                     //tax-band: none
                     return true;
                 case 'cost': 
                     //cost: must be number, 0 required
                     errMessage = 'Cost is required or 0 value used';
-                    return isNumber(item['cost']) ? true : false;
+                    return isNumber(obj['cost']) ? true : false;
                 case 'qty':
                     //qty: can be blank or have a number'
                     errMessage = 'Must be a number or left blank';
-                    return isNumber(item['qty']) || item['qty'] === '' ? true : false;
+                    return isNumber(obj['qty']) || obj['qty'] === '' ? true : false;
                 case 'mods':
                     //mods: must be array. array can be empty, but no '' values
-                    const modIndex = item['mods'].indexOf('');
+                    const modIndex = obj['mods'].indexOf('');
                     lastInput = `mods-${modIndex}`;
                     errMessage = 'Input must not be empty, delete mod field if not using';
-                    return Array.isArray(item['mods']) && !item['mods'].includes('') ? true : false;
+                    return Array.isArray(obj['mods']) && !obj['mods'].includes('') ? true : false;
                 case 'options':
                     //options: must be array. array can be empty, but no '' values
-                    const opIndex = item['options'].indexOf('');
+                    const opIndex = obj['options'].indexOf('');
                     lastInput = `options-${opIndex}`;
                     errMessage = 'Input must not be empty, delete option field if not using';
-                    return Array.isArray(item['options']) && !item['options'].includes('') ? true : false;
+                    return Array.isArray(obj['options']) && !obj['options'].includes('') ? true : false;
                 case 'print-customer':
                     //print: must be bool
-                    return typeof item['print-customer'] === 'boolean' ? true : false;
+                    return typeof obj['print-customer'] === 'boolean' ? true : false;
                 case 'print-kitchen':
                     //print: must be bool
-                    return typeof item['print-kitchen'] === 'boolean' ? true : false;
+                    return typeof obj['print-kitchen'] === 'boolean' ? true : false;
                 default:
                     return true;
             }

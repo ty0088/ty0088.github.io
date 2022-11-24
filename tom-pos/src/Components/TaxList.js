@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { getDBDoc } from '../Util/firebaseDB';
 
 const TaxList = ({itemID, taxBand, handleChange}) => {
-    const [taxData, setTaxData] = useState({});
+    const [taxData, setTaxData] = useState({}); //change from state to prop ---------------
 
+    //get taxData from Parent ---------------
     useEffect(() => {
         const getTaxDB = async () => {
             const taxSnap = await getDBDoc('tax-bands');

@@ -6,21 +6,22 @@ import { getDBDoc } from '../Util/firebaseDB';
 const POSMenu = () => {
     const [menuFlag, setMenuFlag] = useState(false);
     const [itemFlag, setItemFlag] = useState(false);
-    const [menuData, setMenuData] = useState({});
-    const [menuKeys, setMenuKeys] = useState([]);
+    const [menuData, setMenuData] = useState({}); //remove as state and change menuData to a prop --------------
     const [itemData, setItemData] = useState({});
     const [menuItems, setMenuItems] = useState([]);
+    const [menuKeys, setMenuKeys] = useState([]);
     const [parentKey, setParentKey] = useState('Menu');
     const [currLevel, setCurrLevel] = useState(0);
     const [navPath, setNavPath] = useState([]);
 
+    //get all initial data and states from APP --------------------
     //on initial render get sub-menu keys and set initial menu buttons and any initial items
     useEffect(() => {
         const setInitMenu = async () => {
             //get sub menu data from firestore
             const menuSnap = await getDBDoc('sub-menus');
             const menuData = menuSnap.data();
-            setMenuData(menuData);
+            setMenuData(menuData); //get data state from APP --------------
             //initialise root sub menus if any
             let initMenuKeys = [];
             if (Object.keys(menuData).length > 0) {
@@ -29,7 +30,7 @@ const POSMenu = () => {
             //get item data from firestore
             const itemSnap = await getDBDoc('items');
             const tempItemData = itemSnap.data();
-            setItemData(tempItemData);
+            setItemData(tempItemData); //get data state from APP --------------
             if (initMenuKeys.length > 0 ) {
                 setMenuKeys(initMenuKeys);
                 setMenuFlag(true);
@@ -50,18 +51,18 @@ const POSMenu = () => {
         let nextKeys = [];
         //if root menu selected, set root menu, otherwise find next menu
         if (parentMenu === 'Menu') {
-            nextKeys = Object.keys(menuData[0]).sort();
+            nextKeys = Object.keys(menuData[0]).sort(); //get data state from APP -------------- ?? from prop
             setMenuFlag(true);
             setCurrLevel(nextLevel);
             setMenuKeys(nextKeys);
             setParentKey(parentMenu);
         } else {
-            clickLevel = parseInt(Object.keys(menuData).find(level => Object.keys(menuData[level]).find(menu => menu === parentMenu)));
+            clickLevel = parseInt(Object.keys(menuData).find(level => Object.keys(menuData[level]).find(menu => menu === parentMenu))); //get data state from APP -------------- from prop?
             nextLevel = clickLevel + 1;
             //if not an end menu, set the next menu
             //otherwise do not set and display next menu
             if (!isMenuEnd(clickLevel, parentMenu)) {
-                nextKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort();
+                nextKeys = Object.keys(menuData[nextLevel]).filter(key => menuData[nextLevel][key] === parentMenu).sort(); // from prop ?? ----------
                 setMenuFlag(true);
                 setCurrLevel(nextLevel);
                 setMenuKeys(nextKeys);
@@ -77,7 +78,7 @@ const POSMenu = () => {
             setNavPath(navPath.slice(0, nextLevel));
         }
         //set any items belonging to menu
-        setItems(parentMenu, itemData);
+        setItems(parentMenu, itemData); // from prop ?? ----------
     };
 
     //set sub menu one level back
@@ -86,7 +87,7 @@ const POSMenu = () => {
         if (isMenuEnd(currLevel, parentKey) && !menuFlag) {
             menuPathCopy = navPath.slice(0, currLevel);
             setMenuFlag(true);
-            setItems(parentKey, itemData)
+            setItems(parentKey, itemData); // from prop ?? ----------
         } else {
             const prevLevel = currLevel - 1;
             if (prevLevel >= 0) {
@@ -96,7 +97,7 @@ const POSMenu = () => {
                 setCurrLevel(prevLevel);
                 setMenuKeys(menuKeys);
                 setParentKey(parentMenu);
-                setItems(parentMenu, itemData);
+                setItems(parentMenu, itemData); // from prop ?? ----------
             }
         }
         setNavPath(menuPathCopy);
@@ -120,8 +121,8 @@ const POSMenu = () => {
     //determines if the menu is end of branch
     const isMenuEnd = (currLevel, currMenu) => {
         const nextLevel = currLevel + 1;
-        if (!!menuData[nextLevel]) {
-            const nextMenuValues = Object.values(menuData[nextLevel]);
+        if (!!menuData[nextLevel]) { // from prop ?? ----------
+            const nextMenuValues = Object.values(menuData[nextLevel]); // from prop ?? ----------
             return (nextMenuValues.includes(currMenu)) ? false : true;
         } else {
             return true;

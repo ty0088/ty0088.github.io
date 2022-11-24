@@ -2,13 +2,10 @@ import '../Styles/ItemManage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-// eslint-disable-next-line
-import { getDBDoc, setDB, addItem } from '../Util/firebaseDB';
+import { getDBDoc, setDB } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
-import UtilBar from '../Components/MenuFilterSort';
-
-//headers to be fixed and rows to have own container to be scrollable ----------------
+import MenuFilterSort from '../Components/MenuFilterSort';
 
 const ItemManage = () => {
     const [itemData, setItemData] = useState({});
@@ -55,6 +52,7 @@ const ItemManage = () => {
         getItemNames(itemData);
     }, [itemData]);
 
+    //get initial data from App state ------------------------------------
     //set initial data from db
     const initData = async () => {
         const itemSnap = await getDBDoc('items');
@@ -64,7 +62,7 @@ const ItemManage = () => {
 
     //set working states with new data
     const setData = (data) => {
-        setItemData(data);
+        setItemData(data);//setting state and data from APP-------------
         setTempData(data);
         setSort(data);
     };
@@ -132,7 +130,7 @@ const ItemManage = () => {
         let deleteData = {...tempData};
         delete deleteData[itemID];
         setData(deleteData);
-        setDB(deleteData, 'items');
+        setDB(deleteData, 'items'); //call setDB function from App ---------------
     };
 
     const addItemClick = () => {
@@ -153,7 +151,7 @@ const ItemManage = () => {
         const itemID = item.itemID;
         const changeData = {...tempData, [itemID]: item};
         setData(changeData);
-        setDB(changeData, 'items');
+        setDB(changeData, 'items'); //setting state and data from APP-------------
     };
 
     return (
@@ -161,7 +159,7 @@ const ItemManage = () => {
             <div id='item-form'>
                 <div id='item-top-bar'>
                     <h1>Item Management</h1>
-                    <UtilBar sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
+                    <MenuFilterSort sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
                         addItemClick={addItemClick} setSearchName={setSearchName}/>
                 </div>
                 <div id='item-header'>

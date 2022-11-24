@@ -12,19 +12,20 @@ import MessageDelete from '../Components/MessageDelete';
 
 const OrderList = ({status, currOrder, setCurrOrder}) => {
     const [messageFlag, setMessageFlag] = useState(false);
-    const [orderData, setOrdersData] = useState({});
+    const [ordersData, setOrdersData] = useState({});
     const [orderNos, setOrderNos] = useState([]);
     const [delOrder, setDelOrder] = useState('');
     const [sortBy, setSortBy] = useState(status === 'OPEN' ? 'date-created' : 'date-closed');
     const [dir, setDir] = useState(true);
     const navigate = useNavigate();
 
+    //get initial data from APP ---------------------------------------
     //initialise data from db
     useEffect(() => {
         const getOrders = async () => {
             const orderSnap = await getDBDoc('orders');
             const dbData = orderSnap.data();
-            setOrdersData(dbData);
+            setOrdersData(dbData);  //move ordersData state to APP --------------
             //sort and filter by date created for OPEN and date closed for CLOSED on initial render
             const filterData = filterOrderNoBy(dbData, Object.keys(dbData), 'status', status);
             const sortedData = sortOrderNoBy(dbData, filterData, sortBy, dir);
@@ -76,9 +77,9 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
     const confirmDelete = () => {
         setMessageFlag(false);
         //delete item from data and db
-        let deleteData = {...orderData};
+        let deleteData = {...ordersData};
         delete deleteData[delOrder];
-        setOrdersData(deleteData);
+        setOrdersData(deleteData); //move ordersData state to APP --------------
         setDB(deleteData, 'orders');
         //update order nos for re render of list
         const filterData = filterOrderNoBy(deleteData, Object.keys(deleteData), 'status', status);
@@ -113,17 +114,17 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
                     {orderNos.length > 0 &&
                         orderNos.map(orderNo => {
                         //formats datestamp to date and time or empty value to dash
-                        const orderCreated = orderData[orderNo]['date-created'] === '' ? '-' : orderData[orderNo]['date-created'].toDate().toLocaleString();
-                        const orderClosed = orderData[orderNo]['date-closed'] === '' ? '-' : orderData[orderNo]['date-closed'].toDate().toLocaleString();
+                        const orderCreated = ordersData[orderNo]['date-created'] === '' ? '-' : ordersData[orderNo]['date-created'].toDate().toLocaleString();
+                        const orderClosed = ordersData[orderNo]['date-closed'] === '' ? '-' : ordersData[orderNo]['date-closed'].toDate().toLocaleString();
                         //adds bold class to current order
                         const addClass = orderNo === currOrder ? 'bold700' : '';
                         return (
                             <div key={orderNo} className={`order-list-row ${addClass}`} data-no={orderNo}>
                                 <span>{orderCreated}</span>
                                 <span>{orderClosed}</span>
-                                <span>{orderData[orderNo]['order-no']}</span>
-                                <span>{orderData[orderNo]['order-name']}</span>
-                                <span>{new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(orderData[orderNo]['total-price'])}</span>
+                                <span>{ordersData[orderNo]['order-no']}</span>
+                                <span>{ordersData[orderNo]['order-name']}</span>
+                                <span>{new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(ordersData[orderNo]['total-price'])}</span>
                                 <div>
                                     <button type='button' className={addClass} onClick={openClick}>Open</button>
                                     <button type='button' className={addClass} onClick={deleteClick}>Delete</button>
