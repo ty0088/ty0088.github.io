@@ -2,47 +2,28 @@ import '../Styles/TaxPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc, setDB } from '../Util/firebaseDB';
 import TaxRow from '../Components/TaxRow';
 import updateItemVal from '../Util/updateItemVal';
 
 //headers to be fixed and rows to have own container to be scrollable ----------------
 
 const TaxManage = ({taxData, itemsData, setDataDB}) => {
-    // const [taxData, setTaxData] = useState({}); //----------------
     const [tempData, setTempData] = useState({});
-
-    // //get initial data from APP ----------------------------------------
-    // //on initial render load in data from firebase db
-    // useEffect(() => {
-    //     const getTaxData = async () => {
-    //         const taxSnap = await getDBDoc('tax-bands');
-    //         const snapData = taxSnap.data();
-    //         setTaxData(snapData); //setting state and data from APP------------- not required?
-    //         setTempData(snapData);
-    //     };
-    //     getTaxData();
-    // }, []);
 
     useEffect(() => {
         setTempData({...taxData});
     }, [taxData])
 
-    //set states and firebase db
     const updateTaxDB = (taxObj) => {
-        // setTaxData({...taxObj}); //setting state and data from APP-------------
         setTempData(taxObj);
-        // setDB({...taxObj}, 'tax-bands'); //setting state and data from APP-------------
         setDataDB(taxObj, 'tax-bands'); 
     };
 
     const deleteTax = (label) => {
         let deleteData = {...tempData};
         delete deleteData[label];
-        // setTaxData(deleteData);//setting state and data from APP-------------
         setTempData(deleteData);
         setDataDB(deleteData, 'tax-bands'); 
-        // setDB(deleteData, 'tax-bands');//setting state and data from APP-------------
         updateItemVal([[label]], '', 'tax-band', setDataDB, itemsData);
     };
 
