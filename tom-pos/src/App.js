@@ -38,12 +38,6 @@ const App = () => {
     };
   // eslint-disable-next-line
   }, [])
-
-  // /orders
-  //        /open-orders
-  //        /closed-orders
-  //        /pos
-  //            /:orderNo
   
   return (
     <div id='main-container'>

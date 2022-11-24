@@ -4,6 +4,14 @@
     grid-template-rows: 460px 40px;
 }
 
+.back-link-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .backend-link {
     height: 150px;
     width: 150px;

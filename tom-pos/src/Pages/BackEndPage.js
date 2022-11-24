@@ -9,7 +9,7 @@ const BackEnd = () => {
     if (!!getAuth().currentUser) {
         return (
             <div id='BackEnd-container'>
-                <div className='link-container'>
+                <div className='back-link-container'>
                     <Link to='/tom-pos/submenu' className='backend-link'>Sub Menu Management</Link>
                     <Link to='/tom-pos/items' className='backend-link'>Item Management</Link>
                     <Link to='/tom-pos/tax' className='backend-link'>VAT Management</Link>
