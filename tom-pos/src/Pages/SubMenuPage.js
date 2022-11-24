@@ -46,7 +46,6 @@ const SubMenu = ({menusData, itemsData, setDataDB}) => {
         Object.keys(editData).forEach(level => { if (Object.keys(editData[level]).length === 0) delete editData[level] });
         //update Item sub menu property if previous menu was NOT blank i.e. a new sub menu
         if (prevMenu !== '') {
-            console.log('!');
             updateItemVal([[prevMenu]], newMenu, 'sub-menu', setDataDB, itemsData);
         }
         setTempData(editData);
