@@ -52,7 +52,7 @@ const App = () => {
     let dataArr = [];
     //set state functions in order as the data is read from DB
     const setStateArr = [setFinData, setItemsData, setOrdersData, setMenusData, setTaxData, setUserData];
-    //get user collection from DB and convert data
+    //get user collection from DB and set each data obj to its relevant state
     const dbSnap = await getDBCol();
     dbSnap.forEach(doc => {
       dataArr.push(doc.data())

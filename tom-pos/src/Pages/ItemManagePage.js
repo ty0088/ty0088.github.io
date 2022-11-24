@@ -2,7 +2,6 @@ import '../Styles/ItemManage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc, setDB } from '../Util/firebaseDB';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';

@@ -1,7 +1,6 @@
-import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDocs, collection } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import fireApp from './firebaseApp';
-import { v4 as uuidv4 } from 'uuid';
 
 const db = getFirestore(fireApp);
 
@@ -20,51 +19,10 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     }
 };
 
-const addItem = async (subMenu, name, description, options, mods, qty, price, taxBand, cost, custReceipt, kitchReceipt) => {
-    const user = getAuth().currentUser;
-    const itemID = uuidv4();
-    const itemObj = {
-        "itemID": itemID,
-        "sub-menu": subMenu,
-        "item-name": name,
-        "description": description,
-        "options": options,
-        "mods": mods,
-        "qty": qty,
-        "price": price,
-        "tax-band": taxBand,
-        "cost": cost,
-        "print-kitchen": kitchReceipt,
-        "print-customer": custReceipt
-    };
-    try {
-        await updateDoc(doc(db, user.uid, "items"), {[itemID]:itemObj});
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 const setDB = async (obj, dbDoc) => {
     const user = getAuth().currentUser;
     try {
         await setDoc(doc(db, user.uid, dbDoc), obj);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const getDBDoc = async (docRef) => {
-    const user = getAuth().currentUser;
-    const errorMessage = { code : 404, message : `${docRef} document NOT found` };
-    try {
-        const docSnap = await getDoc(doc(db, user.uid, docRef))
-        if (docSnap.exists()) {
-            console.log(`${docRef} found`);
-            return docSnap;
-        } else {
-            console.log(`${docRef} NOT found`);
-            throw errorMessage;
-        }
     } catch (error) {
         console.log(error);
     }
@@ -80,4 +38,4 @@ const getDBCol = async () => {
     }
 };
 
-export { addUser, getDBDoc, addItem, setDB, getDBCol };
+export { addUser, setDB, getDBCol };
