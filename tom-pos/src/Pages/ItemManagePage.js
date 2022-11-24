@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';
 
-const ItemManage = ({taxData, menusData}) => {
+const ItemManage = ({taxData, menusData, setDataDB}) => {
     const [itemData, setItemData] = useState({});
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
@@ -180,7 +180,7 @@ const ItemManage = ({taxData, menusData}) => {
                 <div id='item-list'>
                     {Object.keys(tempData).length > 0 &&
                         sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
-                            changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} taxData={taxData} menusData={menusData} />)
+                            changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} taxData={taxData} menusData={menusData} setDataDB={setDataDB} />)
                     }
                     {Object.keys(tempData).length === 0 &&
                         <div>You have no items, please add one using the 'Add Item' button above</div>

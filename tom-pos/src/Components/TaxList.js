@@ -1,7 +1,6 @@
 import React from 'react';
 
 const TaxList = ({itemID, taxBand, handleChange, taxData}) => {
-    console.log(taxData);
     if (Object.keys(taxData).length > 0) {
         return (
             <select key={itemID} data-input={'tax-band'} defaultValue={taxBand} onChange={handleChange}>

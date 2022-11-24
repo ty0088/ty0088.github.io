@@ -2,7 +2,6 @@ import '../Styles/OrderList.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MessageDelete from '../Components/MessageDelete';
 //----------------------------------------------
 //- sort/filter bar 

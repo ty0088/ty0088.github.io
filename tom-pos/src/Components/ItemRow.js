@@ -5,22 +5,21 @@ import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
-const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
+const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData, setDataDB}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
-    const [item, setItem] = useState(itemObj); //remove item state, use itemObj prop --------------
-    const [tempItem, setTempItem] = useState(itemObj);
+    // const [item, setItem] = useState(itemObj); //remove item state, use itemObj prop --------------
+    const [tempItem, setTempItem] = useState({...itemObj});
 
     //keep item and tempItem updated with prop itemObj on each render
     useEffect(() => {
         if (itemObj['item-name'] === '') {
             setEditFlag(true);
-            document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true); //remove item state, use itemObj prop --------------
+            document.querySelectorAll(`#item-form button:not([data-id='${itemObj['itemID']}'] button)`).forEach(elem => elem.disabled = true); //remove item state, use itemObj prop --------------
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
         }
         setTempItem({...itemObj});
-        setItem({...itemObj}); //remove item state, use itemObj prop --------------
-    // eslint-disable-next-line
+        // setItem({...itemObj}); //remove item state, use itemObj prop --------------
     }, [itemObj]);
 
     const editClick = () => {
@@ -33,7 +32,9 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 setEditFlag(false);
                 document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
                 document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
-                setItem(tempItem); //remove item state, use itemObj prop --------------
+                // setItem(tempItem); //remove item state, use itemObj prop --------------
+                //call setDataDB ---------
+                setDataDB(tempItem, 'items');
                 changeItem(tempItem);
             } else {
                 //error message
@@ -42,9 +43,9 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         } else {
             //edit item
             setEditFlag(true);
-            document.querySelectorAll(`#item-form button:not([data-id='${item['itemID']}'] button)`).forEach(elem => elem.disabled = true);
+            document.querySelectorAll(`#item-form button:not([data-id='${itemObj['itemID']}'] button)`).forEach(elem => elem.disabled = true);
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
-            setTempItem(item); //remove item state, use itemObj prop --------------
+            setTempItem({...itemObj}); //remove item state, use itemObj prop --------------
         }
     }
 
@@ -53,7 +54,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
         document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
         //reset tempItem
-        setTempItem(item); //remove item state, use itemObj prop --------------
+        setTempItem({...itemObj}); //remove item state, use itemObj prop --------------
         cancelAdd();
     }
 
@@ -175,7 +176,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         const upperName = newName.toUpperCase();
         const nameList = itemNames.map(name => name.toUpperCase());
         const index = nameList.indexOf(upperName);
-        if (index > -1 && item['item-name'].toUpperCase() === upperName) {
+        if (index > -1 && itemObj['item-name'].toUpperCase() === upperName) {
             nameList.splice(index, 1);
         }
         return nameList.includes(upperName) ? true : false;
