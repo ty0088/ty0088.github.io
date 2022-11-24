@@ -26,8 +26,6 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
             const sortedData = sortOrderNoBy(ordersData, filterData, sortBy, dir);
             setOrderNos(sortedData);
         }
-        console.log(`list:`);
-        console.log(ordersData);
     // eslint-disable-next-line
     }, [ordersData]);
 
