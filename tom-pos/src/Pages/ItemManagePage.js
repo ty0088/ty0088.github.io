@@ -190,7 +190,7 @@ const ItemManage = () => {
                 </div>
             </div>
             <div className='nav-footer'>
-                <Link to='/tom-pos/home' className='foot-link'>Home</Link>
+                <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>

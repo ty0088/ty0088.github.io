@@ -17,7 +17,7 @@ const BackEnd = () => {
                     <Link to='/tom-pos/backend' className='backend-link'>Financial Reports</Link>
                 </div>
                 <div className='nav-footer'>
-                    <Link to='/tom-pos/home' className='foot-link'>Home</Link>
+                    <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                     <button type='button' onClick={signOutAcc}>Sign Out</button>
                 </div>
             </div>

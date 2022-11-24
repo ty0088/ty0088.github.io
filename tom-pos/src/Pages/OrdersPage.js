@@ -1,12 +1,11 @@
 import '../Styles/Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
 import { serverTimestamp } from "firebase/firestore";
 import { signOutAcc } from '../Util/firebaseAuth';
 import { getDBDoc, setDB } from '../Util/firebaseDB';
 
-const Home = ({currOrder, setCurrOrder}) => {
+const Orders = ({currOrder, setCurrOrder}) => {
     const orderObj = {
         'order-no': '',
         'order-name': '',
@@ -115,4 +114,4 @@ const Home = ({currOrder, setCurrOrder}) => {
         );
 };
 
-export default Home;
+export default Orders;

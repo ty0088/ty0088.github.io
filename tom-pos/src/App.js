@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import './Styles/style.css';
 import Login from './Pages/LoginPage';
-import Home from './Pages/HomePage';
+import Orders from './Pages/OrdersPage';
 import POS from './Pages/POSPage';
 import BackEnd from './Pages/BackEndPage';
 import SignUp from './Pages/SignUpPage';
@@ -24,7 +24,7 @@ const App = () => {
       if (user) {
           // User is signed in
           console.log(`${user.uid} is logged in`);
-          navigate('/tom-pos/home');
+          navigate('/tom-pos/order');
       } else {
           // User is signed out
           console.log('user is signed out');
@@ -44,7 +44,7 @@ const App = () => {
     <div id='main-container'>
         <Routes>
           <Route path='/tom-pos' element={<Login />} />
-          <Route path='/tom-pos/home' element={<Home currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
+          <Route path='/tom-pos/orders' element={<Orders currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
           <Route path='/tom-pos/signup' element={<SignUp />} />
           <Route path='/tom-pos/pos' element={<POS />}>
             <Route path=':orderNo' element={<POS />} />

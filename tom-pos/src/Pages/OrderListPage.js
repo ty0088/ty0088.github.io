@@ -116,7 +116,7 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
                         const orderCreated = orderData[orderNo]['date-created'] === '' ? '-' : orderData[orderNo]['date-created'].toDate().toLocaleString();
                         const orderClosed = orderData[orderNo]['date-closed'] === '' ? '-' : orderData[orderNo]['date-closed'].toDate().toLocaleString();
                         //adds bold class to current order
-                        const addClass = orderNo === currOrder ? 'bold' : '';
+                        const addClass = orderNo === currOrder ? 'bold700' : '';
                         return (
                             <div key={orderNo} className={`order-list-row ${addClass}`} data-no={orderNo}>
                                 <span>{orderCreated}</span>
@@ -137,7 +137,8 @@ const OrderList = ({status, currOrder, setCurrOrder}) => {
                 </div>
             </div>
             <div className='nav-footer'>
-                <Link to='/tom-pos/home' className='foot-link'>Home</Link>
+                <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
+                <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
         </div>

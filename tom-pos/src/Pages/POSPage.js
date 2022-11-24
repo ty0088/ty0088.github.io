@@ -1,7 +1,6 @@
 import '../Styles/POS.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
 import { signOutAcc } from '../Util/firebaseAuth';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
@@ -11,9 +10,10 @@ const POS = () => {
     return (
         <div id='pos-container'>
             <div id='pos-nav'>
-                <Link to='/tom-pos/home' className='pos-nav-link'>Home</Link>
+                <Link to='/tom-pos/orders' className='pos-nav-link'>ORDERS</Link>
                 <Link to='/tom-pos/open-orders' className='pos-nav-link'>OPEN Orders</Link>
-                <Link onClick={signOutAcc} className='pos-nav-link'>Sign Out</Link>
+                <Link to='/tom-pos/backend' className='pos-nav-link'>Back End</Link>
+                <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
             <div id='order-head'>
                 Order {orderNo}
