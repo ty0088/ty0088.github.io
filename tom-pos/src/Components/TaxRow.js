@@ -15,7 +15,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setDataDB, item
             setEditFlag(true);
             document.querySelectorAll(`#tax-form button:not([data-label='${label}'] button)`).forEach(elem => elem.disabled = true);
         }
-    }, [data]);
+    }, [data, label]);
 
     const editClick = () => {
         if (!editFlag) {
