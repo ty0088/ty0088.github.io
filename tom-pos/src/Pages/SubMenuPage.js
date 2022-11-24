@@ -2,27 +2,12 @@ import '../Styles/SubMenu.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc, setDB } from '../Util/firebaseDB';
 import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
 
 const SubMenu = ({menusData, setDataDB}) => {
-    // const [menuData, setMenuData] = useState({}); //---------------------
     const [tempData, setTempData] = useState({});
     const [levels, setLevels] = useState([]);
-
-    // //get initial data from APP ----------------------
-    // //on initial render load in data from firebase db
-    // useEffect(() => {
-    //     const getSubMenu = async () => {
-    //         const menuSnap = await getDBDoc('sub-menus');
-    //         const dbData = menuSnap.data();
-    //         setMenuData(dbData); //move menuData state to APP --------------
-    //         setTempData(dbData);
-    //         setLevels(Object.keys(dbData).map(string => parseInt(string)));
-    //     };
-    //     getSubMenu();
-    // }, []);
 
     useEffect(() => {
         setTempData({...menusData});
@@ -65,8 +50,6 @@ const SubMenu = ({menusData, setDataDB}) => {
         }
         //update data
         setTempData(editData);
-        // setMenuData(editData); //setting state and data from APP-------------
-        // setDB(editData, 'sub-menus'); //setting state and data from APP-------------
         setDataDB(editData, 'sub-menus');
         setLevels(Object.keys(editData).map(string => parseInt(string)));
     };
@@ -84,8 +67,6 @@ const SubMenu = ({menusData, setDataDB}) => {
         //remove any empty levels and update data
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
-        // setMenuData(deleteData); //setting state and data from APP-------------
-        // setDB(deleteData, 'sub-menus'); //setting state and data from APP-------------
         setDataDB(deleteData, 'sub-menus');
         setLevels(Object.keys(deleteData).map(string => parseInt(string)));
     };
@@ -107,7 +88,6 @@ const SubMenu = ({menusData, setDataDB}) => {
         const nextLevel = Object.keys(tempData).length;
         let addData = {...tempData, [nextLevel]: {}};
         setTempData(addData);
-        // setMenuData(addData); // not required ?? ---------------------
         setLevels(Object.keys(addData).map(string => parseInt(string)));
     };
  
