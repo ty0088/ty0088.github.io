@@ -1,22 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { getDBDoc } from '../Util/firebaseDB';
+import React from 'react';
 
-const MenuList = ({dfMenu, handleChange, allOption}) => {
-    const [menuData, setMenuData] = useState({}); //remove do not need ----------------
-
-    //get initial data as prop from parent ------------
-    useEffect(() => {
-        const getMenuDB = async () => {
-            const menuSnap = await getDBDoc('sub-menus');
-            const dbData = menuSnap.data();
-            setMenuData(dbData);
-        };
-        getMenuDB();
-    }, [])
-
-    if (Object.keys(menuData).length > 0) {
+const MenuList = ({dfMenu, handleChange, allOption, menusData}) => {
+    if (Object.keys(menusData).length > 0) {
         let menuArr = [];
-        Object.keys(menuData).forEach(level => Object.keys(menuData[level]).forEach(menu => menuArr.push(menu)));
+        Object.keys(menusData).forEach(level => Object.keys(menusData[level]).forEach(menu => menuArr.push(menu)));
         menuArr.sort();
         return (
             <select data-input={'sub-menu'} value={dfMenu} onChange={handleChange}>

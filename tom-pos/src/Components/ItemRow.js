@@ -5,7 +5,7 @@ import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
-const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData}) => {
+const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
     const [item, setItem] = useState(itemObj); //remove item state, use itemObj prop --------------
@@ -158,7 +158,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
         //highlight error input and display error message underneath
-        console.log(input)
         const errInput = document.querySelector(`[data-input='${input}']`);
         const itemID = errInput.closest('[data-id]').getAttribute('data-id');
         const leftPos = errInput.offsetLeft;
@@ -273,7 +272,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                         <button className='edit-btn' type='button' onClick={cancelClick}>Cancel</button>
                     </div>
                     <input type='text' data-input='item-name' value={tempItem['item-name']} autoFocus onChange={handleChange}></input>
-                    <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange} allOption={false} />
+                    <MenuList menusData={menusData} dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange} allOption={false} />
                     <input type='text' data-input='description' value={tempItem['description']} onChange={handleChange}></input>
                     <input type='number' data-input='price' value={tempItem['price']} onChange={handleChange}></input>
                     <TaxList taxData={taxData} itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>

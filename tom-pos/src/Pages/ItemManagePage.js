@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';
 
-const ItemManage = ({taxData}) => {
+const ItemManage = ({taxData, menusData}) => {
     const [itemData, setItemData] = useState({});
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
@@ -160,7 +160,7 @@ const ItemManage = ({taxData}) => {
                 <div id='item-top-bar'>
                     <h1>Item Management</h1>
                     <MenuFilterSort sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
-                        addItemClick={addItemClick} setSearchName={setSearchName}/>
+                        addItemClick={addItemClick} setSearchName={setSearchName} menusData={menusData} />
                 </div>
                 <div id='item-header'>
                     <span>#</span>
@@ -180,7 +180,7 @@ const ItemManage = ({taxData}) => {
                 <div id='item-list'>
                     {Object.keys(tempData).length > 0 &&
                         sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
-                            changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} taxData={taxData} />)
+                            changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} taxData={taxData} menusData={menusData} />)
                     }
                     {Object.keys(tempData).length === 0 &&
                         <div>You have no items, please add one using the 'Add Item' button above</div>

@@ -1,19 +1,7 @@
-import React, { useState, useEffect } from 'react';
-// import { getDBDoc } from '../Util/firebaseDB';
+import React from 'react';
 
 const TaxList = ({itemID, taxBand, handleChange, taxData}) => {
-    // const [taxData, setTaxData] = useState({}); //change from state to prop ---------------
-
-    // //get taxData from Parent ---------------
-    // useEffect(() => {
-    //     const getTaxDB = async () => {
-    //         const taxSnap = await getDBDoc('tax-bands');
-    //         const dbData = taxSnap.data();
-    //         setTaxData(dbData);
-    //     };
-    //     getTaxDB();
-    // }, []);
-
+    console.log(taxData);
     if (Object.keys(taxData).length > 0) {
         return (
             <select key={itemID} data-input={'tax-band'} defaultValue={taxBand} onChange={handleChange}>

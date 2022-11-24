@@ -2,7 +2,7 @@ import '../Styles/ItemManage.css';
 import React from 'react';
 import MenuList from './MenuList';
 
-const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addItemClick, setSearchName}) => {
+const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addItemClick, setSearchName, menusData}) => {
 
     const changeSortBy = (e) => {
         const sortVal = e.target.value;
@@ -45,7 +45,7 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
             </div>
             <div className='bar-func'>
                 Filter by Sub menu &nbsp;
-                <MenuList dfMenu={filterMenu} handleChange={changeFilterBy} allOption={true}/>
+                <MenuList menusData={menusData} dfMenu={filterMenu} handleChange={changeFilterBy} allOption={true}/>
             </div>
             <div className='bar-func'>
                 Search by item name &nbsp;
