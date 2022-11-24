@@ -1,15 +1,14 @@
 import '../Styles/Orders.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { serverTimestamp } from "firebase/firestore";
 import { signOutAcc } from '../Util/firebaseAuth';
-import { getDBDoc, setDB } from '../Util/firebaseDB';
+// import { getDBDoc, setDB } from '../Util/firebaseDB';
 
-const Orders = ({currOrder, setCurrOrder}) => {
+const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
     const orderObj = {
         'order-no': '',
         'order-name': '',
-        'date-created': serverTimestamp(),
+        'date-created': new Date(),
         'date-closed': '',
         'status': 'OPEN',
         'items': [
@@ -31,21 +30,28 @@ const Orders = ({currOrder, setCurrOrder}) => {
         'total-price': 0
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);
-    const [ordersData, setOrdersData] = useState({}); //move ordersData state to APP --------------
+    // const [ordersData, setOrdersData] = useState({}); //move ordersData state to APP --------------
     const [orderNos, setOrderNos] = useState();
     const navigate = useNavigate();
 
     //initialise data from App --------------------------------
     //initialise data from db
+    // useEffect(() => {
+    //     const getOrders = async () => {
+    //         const orderSnap = await getDBDoc('orders');
+    //         const dbData = orderSnap.data();
+    //         setOrdersData(dbData); //move ordersData state to APP --------------
+    //         setOrderNos(Object.keys(dbData).sort());
+    //     };
+    //     getOrders();
+    // }, []);
+
+    //initialise data whenever dataObj is changed and is not undefined
     useEffect(() => {
-        const getOrders = async () => {
-            const orderSnap = await getDBDoc('orders');
-            const dbData = orderSnap.data();
-            setOrdersData(dbData); //move ordersData state to APP --------------
-            setOrderNos(Object.keys(dbData).sort());
-        };
-        getOrders();
-    }, []);
+        if (ordersData) {
+            setOrderNos(Object.keys(ordersData).sort());
+        }
+    }, [ordersData]);
 
     //set current order state depending if any current order loaded
     useEffect(() => {
@@ -62,13 +68,15 @@ const Orders = ({currOrder, setCurrOrder}) => {
     };
 
     //NEW Order
+    //when DB is updated
     const newOrderClick = () => {
         const nextOrderNo = getNextOrderNo();
         setCurrOrder(nextOrderNo);
         //create new next orderObj and set state and db
         let newData = {...ordersData, [nextOrderNo]: {...orderObj, 'order-no': nextOrderNo}};
-        setOrdersData(newData); //move ordersData state to APP --------------
-        setDB(newData, 'orders'); //get setDB from App --------------
+        // setOrdersData(newData); //move ordersData state to APP --------------
+        // setDB(newData, 'orders'); //get setDB from App --------------
+        setDataDB(newData, 'orders');
         navigate(`/tom-pos/pos/${nextOrderNo}`);
     };
 

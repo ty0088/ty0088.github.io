@@ -1,24 +1,9 @@
-import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import fireApp from './firebaseApp';
 import { v4 as uuidv4 } from 'uuid';
 
 const db = getFirestore(fireApp);
-
-const itemObj = {
-    itemID: 0,
-    "sub-menu": "",
-    itemName: "",
-    description: "",
-    options: [],
-    mods: [],
-    qty: 0,
-    price: 0,
-    "tax-band": "",
-    cost: 0,
-    "print-kitchen": false,
-    "print-customer": true
-};
 
 const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     const user = getAuth().currentUser;
@@ -85,4 +70,14 @@ const getDBDoc = async (docRef) => {
     }
 };
 
-export { addUser, getDBDoc, addItem, setDB };
+const getDBCol = async () => {
+    const user = getAuth().currentUser;
+    try {
+        const colSnap = await getDocs(collection(db, user.uid));
+        return colSnap;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { addUser, getDBDoc, addItem, setDB, getDBCol };
