@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { getDBDoc } from '../Util/firebaseDB';
+// import { getDBDoc } from '../Util/firebaseDB';
 
-const TaxList = ({itemID, taxBand, handleChange}) => {
-    const [taxData, setTaxData] = useState({}); //change from state to prop ---------------
+const TaxList = ({itemID, taxBand, handleChange, taxData}) => {
+    // const [taxData, setTaxData] = useState({}); //change from state to prop ---------------
 
-    //get taxData from Parent ---------------
-    useEffect(() => {
-        const getTaxDB = async () => {
-            const taxSnap = await getDBDoc('tax-bands');
-            const dbData = taxSnap.data();
-            setTaxData(dbData);
-        };
-        getTaxDB();
-    }, []);
+    // //get taxData from Parent ---------------
+    // useEffect(() => {
+    //     const getTaxDB = async () => {
+    //         const taxSnap = await getDBDoc('tax-bands');
+    //         const dbData = taxSnap.data();
+    //         setTaxData(dbData);
+    //     };
+    //     getTaxDB();
+    // }, []);
 
     if (Object.keys(taxData).length > 0) {
         return (

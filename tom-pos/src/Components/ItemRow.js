@@ -5,7 +5,7 @@ import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
 
-const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames}) => {
+const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
     const [item, setItem] = useState(itemObj); //remove item state, use itemObj prop --------------
@@ -276,7 +276,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames})
                     <MenuList dfMenu={tempItem['sub-menu']} itemID={tempItem.itemID} handleChange={handleChange} allOption={false} />
                     <input type='text' data-input='description' value={tempItem['description']} onChange={handleChange}></input>
                     <input type='number' data-input='price' value={tempItem['price']} onChange={handleChange}></input>
-                    <TaxList itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
+                    <TaxList taxData={taxData} itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
                     <input type='number' data-input='cost' value={tempItem['cost']} onChange={handleChange}></input>
                     <input type='text' data-input='qty' value={tempItem['qty']} onChange={handleChange}></input>
                     <div className='mod-list'>

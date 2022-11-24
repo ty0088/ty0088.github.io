@@ -101,7 +101,7 @@ const App = () => {
           <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} ordersData={ordersData} setDataDB={setDataDB} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />
           <Route path='/tom-pos/submenu' element={<SubMenu />} />
-          <Route path='/tom-pos/items' element={<ItemManage />} />
+          <Route path='/tom-pos/items' element={<ItemManage taxData={taxData}/>} />
           <Route path='/tom-pos/tax' element={<TaxManage />} />
         </Routes>
     </div>
