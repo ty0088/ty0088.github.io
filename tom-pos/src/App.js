@@ -93,9 +93,7 @@ const App = () => {
           <Route path='/tom-pos' element={<Login />} />
           <Route path='/tom-pos/orders' element={<Orders ordersData={ordersData} setDataDB={setDataDB} currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
           <Route path='/tom-pos/signup' element={<SignUp />} />
-          <Route path='/tom-pos/pos' element={<POS itemsData={itemsData} menusData={menusData} />}>
-            <Route path=':orderNo' element={<POS itemsData={itemsData} menusData={menusData} />} />
-          </Route>
+          <Route path='/tom-pos/pos/:orderNo' element={<POS ordersData={ordersData} itemsData={itemsData} menusData={menusData} setDataDB={setDataDB} />} />
           <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} ordersData={ordersData} setDataDB={setDataDB} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} ordersData={ordersData} setDataDB={setDataDB} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />

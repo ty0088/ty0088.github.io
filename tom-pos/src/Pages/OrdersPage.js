@@ -10,22 +10,11 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
         'date-created': new Date(),
         'date-closed': '',
         'status': 'OPEN',
-        'items': [
-            {
-                'id': '',
-                'name': '',
-                'qty': 0,
-                'tax-band': '',
-                'tax-rate': 0,
-                'unit-price': 0,
-                'add-price': 0,
-                'mods': [],
-                'options': []
-            }
-        ],
+        'items': [],
         'sub-price': 0,
         'tip-price': 0,
         'add-price': 0,
+        'disc-price': 0,
         'total-price': 0
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);

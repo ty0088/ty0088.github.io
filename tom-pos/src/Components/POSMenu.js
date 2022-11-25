@@ -2,7 +2,7 @@ import '../Styles/POS.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const POSMenu = ({itemsData, menusData}) => {
+const POSMenu = ({itemsData, menusData, addItem}) => {
     const [menuFlag, setMenuFlag] = useState(false);
     const [itemFlag, setItemFlag] = useState(false);
     const [menuItems, setMenuItems] = useState([]);
@@ -95,6 +95,7 @@ const POSMenu = ({itemsData, menusData}) => {
         const menu = menuKey === 'Menu' ? '' : menuKey;
         const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'] === menu);
         let menuItemArr = menuItemIDs.map(ID => [data[ID]['item-name'], ID]);
+        console.log(menuItemArr);
         menuItemArr.sort();
         if (menuItemIDs.length > 0) {
             setMenuItems(menuItemArr);
@@ -113,6 +114,15 @@ const POSMenu = ({itemsData, menusData}) => {
         } else {
             return true;
         }
+    };
+
+    const itemClick = (e) => {
+        const itemID = e.target.getAttribute('data-id');
+        //check if mods/options available -------------
+        //if mods/options available, prompt pop up and allow user to change mods/options and submit or cancel -------------
+        //if not, call addItem
+        addItem(itemID, [], [], '');
+        console.log(itemsData[itemID]['item-name']);
     };
     
     //Menu nav bar component
@@ -153,7 +163,7 @@ const POSMenu = ({itemsData, menusData}) => {
             <div className='btns-container'>
                 {menuItems.map((itemArr, i) => {
                     return (
-                        <button className='item-btn' type='button' key={i} data-id={itemArr[1]} onClick={() => console.log(itemArr[0])}>{itemArr[0]}</button>
+                        <button className='item-btn' type='button' key={i} data-id={itemArr[1]} onClick={itemClick}>{itemArr[0]}</button>
                     );
                 })}
             </div>
