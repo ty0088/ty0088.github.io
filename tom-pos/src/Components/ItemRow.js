@@ -4,6 +4,7 @@ import isNumber from 'is-number';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
 import MessageDelete from './MessageDelete';
+import formatCurrency from '../Util/formatCurrency';
 
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
     const [editFlag, setEditFlag] = useState(false);
@@ -239,9 +240,9 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 <span>{tempItem['item-name']}</span>
                 <span>{tempItem['sub-menu']}</span>
                 <span>{tempItem['description']}</span>
-                <span>{price}</span>
+                <span>{formatCurrency(price)}</span>
                 <span>{tempItem['tax-band']}</span>
-                <span>{cost}</span>
+                <span>{formatCurrency(cost)}</span>
                 <span>{tempItem['qty']}</span>
                 <div className='mod-list'>
                     {tempItem['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}

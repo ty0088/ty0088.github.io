@@ -1,7 +1,9 @@
 import '../Styles/OrderTab.css';
 import React, { useState, useEffect } from 'react';
+import formatCurrency from '../Util/formatCurrency';
+import OrderRow from './OrderRow';
 
-const OrderTab = ({orderObj}) => {
+const OrderTab = ({orderObj, taxData}) => {
     const [orderItems, setOrderItems] = useState([]);
 
     //update order item list whenever new order data recieved
@@ -12,23 +14,36 @@ const OrderTab = ({orderObj}) => {
     }, [orderObj])
 
     useEffect(() => {
+        console.log(orderObj);
         console.log(orderItems);
     })
 
     return (
         <div id='order-tab-container'>
-            <div id='order-row-container'>
+            <div id='order-tab-rows'>
                 {orderItems.length > 0 &&
-                    orderItems.map((item, i) => <span key={i}>{item['name']}</span>)
+                    orderItems.map((item, i) => <OrderRow key={i} itemObj={item} taxData={taxData} />)
                 }
             </div>
             <div id='order-sub-container'>
                 <div id='order-price-container'>
-                    <span id='total-price'>{new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(orderObj['total-price'])}</span>
-                    <div id='sub-prices'>
-                        <span id='sub-total-price'></span>
-                        <span id='sub-total-price'></span>
+                    <span id='total-price'>{formatCurrency(orderObj['total-price'])}</span>
+                    <div id='sub-price-container'>
+                        <div id='price-labels'>
+                            <span>Sub Total:</span>
+                            <span>Discounts:</span>
+                            <span>VAT:</span>
+                        </div>
+                        <div id='price-amounts'>
+                            <span>{formatCurrency(orderObj['sub-price'])}</span>
+                            <span>{formatCurrency(orderObj['disc-price'])}</span>
+                            <span>VAT</span>
+                        </div>
                     </div>
+                </div>
+                <div id='order-btn-container'>
+                    <button type='button'>PAY</button>
+                    <button type='button'>PRINT</button>
                 </div>
             </div>
         </div>

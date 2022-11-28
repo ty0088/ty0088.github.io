@@ -5,7 +5,7 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 
-const POS = ({ordersData, itemsData, menusData, setDataDB}) => {
+const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
     const { orderNo } = useParams();
     const [orderObj, setOrderObj] = useState({});
     const orderItemObj = {
@@ -80,7 +80,7 @@ const POS = ({ordersData, itemsData, menusData, setDataDB}) => {
                 <span className="material-symbols-outlined">edit</span>
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addItem={addItem} />
-            <OrderTab orderObj={orderObj} />
+            <OrderTab orderObj={orderObj} taxData={taxData} />
         </div>
     );
 };
