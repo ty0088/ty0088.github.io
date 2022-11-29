@@ -30,23 +30,22 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
 
     //add item to Order ---------------
     const addItem = (id, mods, opts, notes) => {
-        let itemData = {};
+        let orderData = {};
         const [result, itemIndex] = doesItemExist(id, mods, opts)
         if (!result) {
             //if item does not exist then add new item to order
             const itemObj = {...getItemObj(id), 'qty': 1, 'mods': mods, 'options': opts, 'notes': notes};
-            itemData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
-            setOrderObj(itemData);
+            orderData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
+            setOrderObj(orderData);
         } else {
             //if item does already exist then add 1 to item qty
             const plusQty = orderObj['items'][itemIndex]['qty'] + 1;
             let itemsArr = [...orderObj['items']];
             itemsArr[itemIndex]['qty'] = plusQty;
-            itemData = {...orderObj, 'items': itemsArr};
+            orderData = {...orderObj, 'items': itemsArr};
         }
-        console.log(itemData);
-        const OrdersObj = {...ordersData, [orderNo]: itemData}
-        setDataDB(OrdersObj, 'orders');
+        const addData = {...ordersData, [orderNo]: orderData}
+        setDataDB(addData, 'orders');
     };
 
     //checks whether item (inc mods/options/notes) already exists
@@ -62,8 +61,19 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
             'id': id,
             'name': itemsData[id]['item-name'],
             'tax-band': itemsData[id]['tax-band'],
+            'tax-rate': taxData[itemsData[id]['tax-band']],
             'unit-price': itemsData[id]['price']
         }
+    };
+
+    //deletes item from order
+    const deleteItem = (itemIndex) => {
+        let itemsData = [...orderObj['items']];
+        itemsData.splice(itemIndex, 1);
+        const orderData = {...orderObj, 'items': itemsData};
+        const deleteData = {...ordersData, [orderNo]: orderData};
+        setOrderObj(orderData);
+        setDataDB(deleteData, 'orders');
     };
 
     return (
@@ -80,7 +90,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
                 <span className="material-symbols-outlined">edit</span>
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addItem={addItem} />
-            <OrderTab orderObj={orderObj} taxData={taxData} />
+            <OrderTab orderObj={orderObj} taxData={taxData} deleteItem={deleteItem} />
         </div>
     );
 };

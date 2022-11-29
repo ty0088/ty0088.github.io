@@ -95,7 +95,6 @@ const POSMenu = ({itemsData, menusData, addItem}) => {
         const menu = menuKey === 'Menu' ? '' : menuKey;
         const menuItemIDs = Object.keys(data).filter(itemID => data[itemID]['sub-menu'] === menu);
         let menuItemArr = menuItemIDs.map(ID => [data[ID]['item-name'], ID]);
-        console.log(menuItemArr);
         menuItemArr.sort();
         if (menuItemIDs.length > 0) {
             setMenuItems(menuItemArr);

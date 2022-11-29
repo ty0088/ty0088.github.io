@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 import OrderRow from './OrderRow';
 
-const OrderTab = ({orderObj, taxData}) => {
+const OrderTab = ({orderObj, taxData, deleteItem}) => {
     const [orderItems, setOrderItems] = useState([]);
 
     //update order item list whenever new order data recieved
@@ -13,16 +13,26 @@ const OrderTab = ({orderObj, taxData}) => {
         }
     }, [orderObj])
 
-    useEffect(() => {
-        console.log(orderObj);
-        console.log(orderItems);
-    })
+    //return order sub total price ----
+    const getOrderSubTotal = () => {
+
+    };
+
+    //return order VAT amount -----
+    const getOrderVAT = () => {
+
+    };
+
+    //return order total prcie ----
+    const getOrderTotal = () => {
+
+    };
 
     return (
         <div id='order-tab-container'>
             <div id='order-tab-rows'>
                 {orderItems.length > 0 &&
-                    orderItems.map((item, i) => <OrderRow key={i} itemObj={item} taxData={taxData} />)
+                    orderItems.map((item, i) => <OrderRow key={i} index={i} itemObj={item} taxData={taxData} deleteItem={deleteItem} />)
                 }
             </div>
             <div id='order-sub-container'>
