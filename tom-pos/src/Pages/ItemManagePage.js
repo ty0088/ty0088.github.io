@@ -153,8 +153,8 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
                     <span>Name</span>
                     <span>Sub Menu</span>
                     <span>Description</span>
-                    <span>Price</span>
-                    <span>Tax Band</span>
+                    <span>Price inc VAT</span>
+                    <span>VAT Band</span>
                     <span>Cost</span>
                     <span>Qty</span>
                     <span>Mods</span>

@@ -13,7 +13,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
         'name': '',
         'qty': 0,
         'tax-band': '',
-        'tax-rate': 0, // not required?? Price/tax arithmetics to be in its own module -------------
+        'tax-rate': 0,
         'unit-price': 0,
         'add-price': 0,
         'mods': [],
@@ -90,7 +90,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
                 <span className="material-symbols-outlined">edit</span>
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addItem={addItem} />
-            <OrderTab orderObj={orderObj} taxData={taxData} deleteItem={deleteItem} />
+            <OrderTab orderObj={orderObj} taxData={taxData} deleteItem={deleteItem}/>
         </div>
     );
 };

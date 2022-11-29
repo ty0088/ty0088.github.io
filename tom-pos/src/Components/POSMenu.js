@@ -149,7 +149,7 @@ const POSMenu = ({itemsData, menusData, addItem}) => {
             <div className='btns-container'>
                 {menuKeyArr.map((menuKey, i) => {
                     return (
-                        <button className='menu-btn' type='button' key={i} onClick={setSubMenu}>{menuKey}</button>
+                        <button className='menu-btn link' type='button' key={i} onClick={setSubMenu}>{menuKey}</button>
                     );
                 })}
             </div>
@@ -162,7 +162,7 @@ const POSMenu = ({itemsData, menusData, addItem}) => {
             <div className='btns-container'>
                 {menuItems.map((itemArr, i) => {
                     return (
-                        <button className='item-btn' type='button' key={i} data-id={itemArr[1]} onClick={itemClick}>{itemArr[0]}</button>
+                        <button className='item-btn link' type='button' key={i} data-id={itemArr[1]} onClick={itemClick}>{itemArr[0]}</button>
                     );
                 })}
             </div>

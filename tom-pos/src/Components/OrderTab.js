@@ -5,6 +5,14 @@ import OrderRow from './OrderRow';
 
 const OrderTab = ({orderObj, taxData, deleteItem}) => {
     const [orderItems, setOrderItems] = useState([]);
+    const [subTotal, setSubTotal] = useState(0);
+    const [tax, setTax] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    //discount needs to be set at the order level i.e. 10% off or £5 off ---------
+    //discount % will reduce all item total prices and tax amounts by % ------------
+    //discount fixed amount needs to be proportioned to each item and then reduced per item and tax accordingly----------
 
     //update order item list whenever new order data recieved
     useEffect(() => {
@@ -13,19 +21,30 @@ const OrderTab = ({orderObj, taxData, deleteItem}) => {
         }
     }, [orderObj])
 
-    //return order sub total price ----
-    const getOrderSubTotal = () => {
+    //update prices when orderItems update
+    useEffect(() => {
+        setSubTotal(getSubTotal());
+        setTax(getTax());
+    }, [orderItems]);
 
+    //update total price when sub-total, tax or discount is updated
+    useEffect(() => {
+        setTotalPrice(getTotalPrice());
+    }, [subTotal, tax, discount]);
+
+    //return order sub total price: sum for all items ((unit-price + add-price) / effective total tax rate)
+    const getSubTotal = () => {
+        return orderItems.reduce((sum, currItem) => sum + (((currItem['unit-price'] + currItem['add-price']) / ((currItem['tax-rate'] + 100) / 100)) * currItem['qty']), 0);
     };
 
-    //return order VAT amount -----
-    const getOrderVAT = () => {
-
+    //return order tax/VAT amount: sum for all items (item sub-total * tax-rate * qty)
+    const getTax = () => {
+        return orderItems.reduce((sum, currItem) => sum + (((currItem['unit-price'] + currItem['add-price']) / ((currItem['tax-rate'] + 100) / 100)) * (currItem['tax-rate'] / 100) * currItem['qty']), 0);
     };
 
-    //return order total prcie ----
-    const getOrderTotal = () => {
-
+    //return order total price: sub-total + tax - discount
+    const getTotalPrice = () => {
+        return subTotal + tax - discount;
     };
 
     return (
@@ -37,7 +56,7 @@ const OrderTab = ({orderObj, taxData, deleteItem}) => {
             </div>
             <div id='order-sub-container'>
                 <div id='order-price-container'>
-                    <span id='total-price'>{formatCurrency(orderObj['total-price'])}</span>
+                    <span id='total-price'>{formatCurrency(totalPrice)}</span>
                     <div id='sub-price-container'>
                         <div id='price-labels'>
                             <span>Sub Total:</span>
@@ -45,9 +64,9 @@ const OrderTab = ({orderObj, taxData, deleteItem}) => {
                             <span>VAT:</span>
                         </div>
                         <div id='price-amounts'>
-                            <span>{formatCurrency(orderObj['sub-price'])}</span>
-                            <span>{formatCurrency(orderObj['disc-price'])}</span>
-                            <span>VAT</span>
+                            <span>{formatCurrency(subTotal)}</span>
+                            <span>Discount</span>
+                            <span>{formatCurrency(tax)}</span>
                         </div>
                     </div>
                 </div>
