@@ -14,10 +14,10 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
         'sub-price': 0, // update this variable when order is closed ----------------
         'tip-price': 0,
         'add-price': 0,
+        'tax-due': 0,
         'disc-price': 0,
         'disc-info': {}, // to allow item totals/tax to be worked out, format {type: fixed/percentage, amount: 0}----------
         'total-price': 0, // update this variable when order is closed ----------------
-        'tax-due': 0
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);
     const [orderNos, setOrderNos] = useState();

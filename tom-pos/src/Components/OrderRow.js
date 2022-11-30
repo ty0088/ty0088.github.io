@@ -14,15 +14,18 @@ const OrderRow = ({index, itemObj, deleteItem}) => {
     const deleteClick = () => {
         deleteItem(index);
     };
+
+    const itemClick = (e) => {
+        //bring up item edit pop up -----------
+        console.log(`edit ${itemObj['name']}, index ${index}`);
+    };
     
     //options need to show any additional prices -----------
     return (
         <div className='order-row-container'>
             <div className='order-row'>
-                <span className="material-symbols-outlined qty-symbols link">remove</span>
-                <span className='flex-row-center'>{itemObj['qty']}</span>
-                <span className="material-symbols-outlined qty-symbols link">add</span>
-                <span className='flex-row-start item-name'>{itemObj['name']}</span>
+                <span className='flex-row-center bold700'>{itemObj['qty']}</span>
+                <span className='flex-row-start item-name link' onClick={itemClick}>{itemObj['name']}</span>
                 <span className='flex-row-center'>{formatCurrency(itemPrice)}</span>
                 <span className="material-symbols-outlined flex-row-center link" onClick={deleteClick}>delete</span>
             </div>

@@ -6,7 +6,7 @@
 
 .order-row {
     display: grid;
-    grid-template-columns: 25px 25px 25px 180px 85px 30px;
+    grid-template-columns: 30px 200px 110px 30px;
 }
 
 .order-row > .material-symbols-outlined {
@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     font-size: 0.9em;
-    margin-left: 85px;
+    margin-left: 40px;
     color: rgb(100, 100, 100);
 }
 

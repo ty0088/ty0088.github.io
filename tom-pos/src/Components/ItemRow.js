@@ -61,7 +61,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
         //parse price and cost number inputs
-        if (input === 'price' || input === 'cost') {
+        if (input === 'price' || (input === 'cost' && value !== '')) {
             value = parseFloat(value);
         }
         //update tempItem obj with changes ready for submission
@@ -102,7 +102,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
             switch (input)  {
                 case 'item-name':
                     //item-name: required, no repeats
-                    errMessage = 'Item name should non-blank and cannot already exist';
+                    errMessage = 'Item name must be non-blank and cannot already exist';
                     return obj['item-name'].toString().trim() === '' || isNameRepeat(obj['item-name'].toString().trim()) ? false : true;
                 case 'sub-menu':
                     //sub-menu: none
@@ -111,16 +111,16 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                     //description: none
                     return true;
                 case 'price': 
-                    //price: must be number, 0 required
-                    errMessage = 'Price is required or 0 value used';
-                    return isNumber(obj['price']) ? true : false;
+                    //price: +ve number is required
+                    errMessage = 'Price must be non-blank and a number equal or larger than 0';
+                    return isNumber(obj['price']) && obj['price'] >= 0 ? true : false;
                 case 'tax-band':
                     //tax-band: none
                     return true;
                 case 'cost': 
-                    //cost: must be number, 0 required
-                    errMessage = 'Cost is required or 0 value used';
-                    return isNumber(obj['cost']) ? true : false;
+                    //cost: must be +ve number or blank
+                    errMessage = 'Cost must a number equal or larger than 0 or left blank. If left blank, profit margin calculations will not work';
+                    return isNumber(obj['cost']) || obj['cost'] === '' ? true : false;
                 case 'qty':
                     //qty: can be blank or have a number'
                     errMessage = 'Must be a number or left blank';
@@ -230,9 +230,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
     }
 
     if (!editFlag) {
-        const price = parseFloat(tempItem['price']).toFixed(2);
-        const cost = parseFloat(tempItem['cost']).toFixed(2);
-
         return (
             <div className='item-row' data-id={tempItem['itemID']}>
                 <span>{index + 1}.</span>
@@ -240,9 +237,12 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 <span>{tempItem['item-name']}</span>
                 <span>{tempItem['sub-menu']}</span>
                 <span>{tempItem['description']}</span>
-                <span>{formatCurrency(price)}</span>
+                <span>{formatCurrency(tempItem['price'])}</span>
                 <span>{tempItem['tax-band']}</span>
-                <span>{formatCurrency(cost)}</span>
+                <span>
+                    {!isNumber(tempItem['cost']) && tempItem['cost']}
+                    {isNumber(tempItem['cost']) && formatCurrency(tempItem['cost'])}
+                </span>
                 <span>{tempItem['qty']}</span>
                 <div className='mod-list'>
                     {tempItem['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}
@@ -273,7 +273,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                     <input type='text' data-input='description' value={tempItem['description']} onChange={handleChange}></input>
                     <input type='number' data-input='price' value={tempItem['price']} onChange={handleChange}></input>
                     <TaxList taxData={taxData} itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
-                    <input type='number' data-input='cost' value={tempItem['cost']} onChange={handleChange}></input>
+                    <input type='text' data-input='cost' value={tempItem['cost']} onChange={handleChange}></input>
                     <input type='text' data-input='qty' value={tempItem['qty']} onChange={handleChange}></input>
                     <div className='mod-list'>
                         {
