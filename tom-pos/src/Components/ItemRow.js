@@ -6,6 +6,11 @@ import TaxList from './TaxList';
 import DeletePopUp from './DeletePopUp';
 import formatCurrency from '../Util/formatCurrency';
 
+//--------------------------------------------------------------------------------------
+//- mods/options to have an optional additional price
+//- adding a mod/option with additional price, updates item add-price
+//--------------------------------------------------------------------------------------
+
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);

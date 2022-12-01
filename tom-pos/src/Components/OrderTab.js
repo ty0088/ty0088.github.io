@@ -2,6 +2,11 @@ import '../Styles/OrderTab.css';
 import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 import OrderRow from './OrderRow';
+import OrderEditPopUp from './OrderEditPopUp';
+
+//--------------------------------------------------------------------------------------
+//- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items
+//--------------------------------------------------------------------------------------
 
 const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
     const [editFlag, setEditFlag] = useState(false);
@@ -11,11 +16,6 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
     const [subDiscount, setSubDiscount] = useState(0);
     const [discRate, setDiscRate] = useState(0); 
     const [totalPrice, setTotalPrice] = useState(0);
-
-    //--------------------------------------------------------------------------------------
-    //- order edit button > pop up with form for order name, discount type/amount, eat in / takeout toggle, edit notes
-    //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items
-    //--------------------------------------------------------------------------------------
 
     //update order item list whenever new order data recieved
     useEffect(() => {
@@ -67,7 +67,7 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
             <div id='order-head'>
                 <span>Order {orderNo}</span>
                 <span>{orderObj['order-name']}</span>
-                <span className="material-symbols-outlined">edit</span>
+                <span className="material-symbols-outlined link" onClick={editClick}>edit</span>
             </div>
             <div id='order-tab-rows'>
                 {orderItems.length > 0 &&
@@ -95,6 +95,9 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
                     <button type='button'>PRINT</button>
                 </div>
             </div>
+            {editFlag &&
+                <OrderEditPopUp />
+            }
         </div>
     );
 };

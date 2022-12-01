@@ -34,8 +34,8 @@ const OrderRow = ({index, itemObj, deleteItem}) => {
                 <span className="material-symbols-outlined flex-row-center link" onClick={deleteClick}>delete</span>
             </div>
             <div className='order-row-add'>
-                {itemObj['mods'].map((mod, i) => <span key={i}>{mod}</span>)}
-                {itemObj['options'].map((option, i) => <span key={i}>{option}</span>)}
+                {itemObj['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}
+                {itemObj['options'].map((option, i) => <span key={i}>- {option}</span>)}
                 {itemObj['notes'] !== '' &&
                     <span>*{itemObj['notes']}*</span>
                 }
