@@ -28,7 +28,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
         }
     }, []);
 
-    //add item to Order ---------------
+    //add item to Order
     const addItem = (id, mods, opts, notes) => {
         let orderData = {};
         const [result, itemIndex] = doesItemExist(id, mods, opts)
@@ -48,7 +48,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
         setDataDB(addData, 'orders');
     };
 
-    //checks whether item (inc mods/options/notes) already exists
+    //checks whether item (inc mods/options/notes) already exists -------------------------
     const doesItemExist= (id, mods, opts, notes) => {
         const itemIndex = 0; //-----------
         return [false, itemIndex]; //---------------- only new items to be created atm
@@ -84,13 +84,8 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
                 <Link to='/tom-pos/backend' className='pos-nav-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
-            <div id='order-head'>
-                <span>Order {orderNo}</span>
-                <span>{orderObj['order-name']}</span>
-                <span className="material-symbols-outlined">edit</span>
-            </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addItem={addItem} />
-            <OrderTab orderObj={orderObj} taxData={taxData} deleteItem={deleteItem}/>
+            <OrderTab orderNo={orderNo} orderObj={orderObj} taxData={taxData} deleteItem={deleteItem}/>
         </div>
     );
 };

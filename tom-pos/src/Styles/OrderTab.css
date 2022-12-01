@@ -1,11 +1,26 @@
 #order-tab-container {
-    border: 1px solid black;
     display: grid;
-    grid-template-rows: 1fr 120px;
+    grid-template-rows: 35px 1fr 120px;
     grid-template-columns: 1fr;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+#order-head {
+    border: 1px solid black;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-around;
+    padding-left: 10px;
+    column-gap: 50px;
+    font-weight: 600;
 }
 
 #order-tab-rows {
+    border: 1px solid black;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -16,7 +31,7 @@
     grid-template-rows: 60px 50px;
     grid-template-columns: 1fr;
     padding: 5px;
-    border-top: 2px solid black;
+    border: 1px solid black;
 }
 
 #order-price-container {
