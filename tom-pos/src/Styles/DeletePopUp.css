@@ -11,7 +11,7 @@
     z-index: 999;
 }
 
-#delete-pop-up {
+#delete-popup {
     height: 300px;
     width: 400px;
     padding: 20px;
@@ -29,7 +29,7 @@
     font-weight: 800;
 }
 
-.ex-message {
+#ex-message {
     font-size: 0.75em;
     margin: 10px 0 10px 0;
 }
