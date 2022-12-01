@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
-import MessageDelete from './MessageDelete';
+import DeletePopUp from './DeletePopUp';
 import formatCurrency from '../Util/formatCurrency';
 
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
@@ -259,7 +259,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
             <div className='item-row-container'>
                 <div className='item-row' data-id={tempItem['itemID']}>
                     {messageFlag &&
-                        <MessageDelete name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                        <DeletePopUp name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
                             message={'This will permanently delete the item from the database'}/>
                     }
                     <span>{index + 1}.</span>

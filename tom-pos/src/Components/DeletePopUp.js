@@ -1,16 +1,14 @@
-import '../Styles/MessageDelete.css';
+import '../Styles/DeletePopUp.css';
 import React from 'react';
 
-const MessageDelete = ({name, cancelDelete, confirmDelete, message}) => {
+const DeletePopUp = ({name, cancelDelete, confirmDelete, message}) => {
     return (
-        <div id='message-container'>
-            <div id='pop-up'>
+        <div id='delete-popup-container'>
+            <div id='delete-pop-up'>
                 <span>Are you sure you want to delete</span>
-                    <span className='bold'>{name}</span>
+                <span className='bold800'>{name}</span>
                 <span>from the database?</span>
-                <span className='ex-message'>
-                    {message}
-                </span>
+                <span className='ex-message'>{message}</span>
                 <div id='conf-btns'>
                     <button type='button' onClick={cancelDelete}>Cancel</button>
                     <button type='button' onClick={confirmDelete}>Confirm</button>
@@ -20,4 +18,4 @@ const MessageDelete = ({name, cancelDelete, confirmDelete, message}) => {
     );
 }
 
-export default MessageDelete;
+export default DeletePopUp;

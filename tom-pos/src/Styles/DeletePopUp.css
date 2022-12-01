@@ -1,4 +1,4 @@
-#message-container {
+#delete-popup-container {
     height: 500px;
     width: 1000px;
     background-color: rgba(0,0,0,0.4);
@@ -11,7 +11,7 @@
     z-index: 999;
 }
 
-#pop-up {
+#delete-pop-up {
     height: 300px;
     width: 400px;
     padding: 20px;
@@ -25,8 +25,8 @@
     font-size: 1.5em;
 }
 
-.bold {
-    font-weight: 900;
+.bold800 {
+    font-weight: 800;
 }
 
 .ex-message {

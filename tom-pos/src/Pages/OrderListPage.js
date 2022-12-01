@@ -2,7 +2,8 @@ import '../Styles/OrderList.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import MessageDelete from '../Components/MessageDelete';
+import DeletePopUp from '../Components/DeletePopUp';
+
 //----------------------------------------------
 //- sort/filter bar 
 //  sortBy: date-created, date-closed, order-no, total-price
@@ -90,10 +91,6 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
 
     return (
         <div id='order-list-container'>
-            {messageFlag &&
-                <MessageDelete name={`Order ${delOrder}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                    message={'This will permanently delete the order from the database'}/>
-            }
             <div id='order-list-form'>
                 <h1>{status} Orders</h1>
                 <div id='order-list-header'>
@@ -136,6 +133,10 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
+            {messageFlag &&
+                <DeletePopUp name={`Order ${delOrder}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                    message={'This will permanently delete the order from the database'}/>
+            }
         </div>
     );
 };

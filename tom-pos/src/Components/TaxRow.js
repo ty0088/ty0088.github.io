@@ -1,7 +1,7 @@
 import '../Styles/TaxPage.css';
 import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
-import MessageDelete from './MessageDelete';
+import DeletePopUp from './DeletePopUp';
 import updateItemVal from '../Util/updateItemVal';
 
 const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setDataDB, itemsData}) => {
@@ -114,7 +114,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setDataDB, item
         return (
             <div className='tax-row' data-label={label}>
                 {messageFlag &&
-                    <MessageDelete name={label} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                    <DeletePopUp name={label} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
                         message={'This will permanently delete the tax rate from the database'}/>
                 }
                 <input type='text' data-input='label' defaultValue={label} autoFocus />
