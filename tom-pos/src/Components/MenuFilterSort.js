@@ -32,24 +32,24 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
             <button type='button' onClick={addItemClick}>Add Item</button>
             <button type='button' onClick={resetFilters}>Reset Filters</button>
             <div className='flex-row-center'>
-                Sort by&nbsp;
-                <select id={'sort-by'} value={sortBy} onChange={changeSortBy}>
-                    <option value={'item-name'}>Item Name</option>
-                    <option value={'sub-menu'}>Sub Menu</option>
-                    <option value={'price'}>Price</option>
-                    <option value={'tax-band'}>Tax Band</option>
-                    <option value={'cost'}>Cost</option>
-                    <option value={'qty'}>Qty</option>
+                <span>Sort by :</span>
+                <select id='sort-by' value={sortBy} onChange={changeSortBy}>
+                    <option value='item-name'>Item Name</option>
+                    <option value='sub-menu'>Sub Menu</option>
+                    <option value='price'>Price</option>
+                    <option value='tax-band'>Tax Band</option>
+                    <option value='cost'>Cost</option>
+                    <option value='qty'>Qty</option>
                 </select>
                 <span className="material-symbols-outlined link" onClick={toggleDir}>unfold_more</span>
             </div>
             <div>
-                Filter by Sub menu &nbsp;
+                <span>Filter by Sub menu :</span>
                 <MenuList menusData={menusData} dfMenu={filterMenu} handleChange={changeFilterBy} allOption={true}/>
             </div>
             <div>
                 Search by item name &nbsp;
-                <input type="text" id={'search-name'} onChange={searchByName}></input>
+                <input type="text" id='search-name' onChange={searchByName}></input>
             </div>
         </div>
     );
