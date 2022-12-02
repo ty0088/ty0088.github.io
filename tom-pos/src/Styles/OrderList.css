@@ -3,6 +3,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: 470px 30px;
     position: relative;
+    text-align: center;
 }
 
 #order-list-form {
@@ -16,7 +17,7 @@
 #order-list-header {
     padding: 3px 0 3px 0;
     display: grid;
-    grid-template-columns: 180px 180px 100px 200px 100px 160px;
+    grid-template-columns: 180px 180px 100px 200px 100px 220px;
     grid-template-rows: 1fr;
     font-weight: 700;
     border-top: 1px solid gray;
@@ -31,7 +32,7 @@
 .order-list-row {
     padding: 3px 0px 3px 0px;
     display: grid;
-    grid-template-columns: 180px 180px 100px 200px 100px 160px;
+    grid-template-columns: 180px 180px 100px 200px 100px 220px;
     grid-template-rows: 1fr;
 }
 
@@ -41,11 +42,11 @@
 
 #order-list-btns {
     display: flex;
-    column-gap: 10px;
+    justify-content: space-around;
 }
 
 .order-list-row button {
-    width: 75px;
+    width: 90px;
 }
 
 .bold700 {

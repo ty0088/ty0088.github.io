@@ -31,7 +31,7 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
         <div id='menu-sort-filter-bar'>
             <button type='button' onClick={addItemClick}>Add Item</button>
             <button type='button' onClick={resetFilters}>Reset Filters</button>
-            <div className='bar-func'>
+            <div className='flex-row-center'>
                 Sort by&nbsp;
                 <select id={'sort-by'} value={sortBy} onChange={changeSortBy}>
                     <option value={'item-name'}>Item Name</option>
@@ -43,11 +43,11 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
                 </select>
                 <span className="material-symbols-outlined link" onClick={toggleDir}>unfold_more</span>
             </div>
-            <div className='bar-func'>
+            <div>
                 Filter by Sub menu &nbsp;
                 <MenuList menusData={menusData} dfMenu={filterMenu} handleChange={changeFilterBy} allOption={true}/>
             </div>
-            <div className='bar-func'>
+            <div>
                 Search by item name &nbsp;
                 <input type="text" id={'search-name'} onChange={searchByName}></input>
             </div>

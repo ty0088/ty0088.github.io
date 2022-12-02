@@ -26,7 +26,7 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
         'qty': '',
         'price': 0,
         'tax-band': '',
-        'cost': 0,
+        'cost': '',
         'print-kitchen': false,
         'print-customer': true
     };

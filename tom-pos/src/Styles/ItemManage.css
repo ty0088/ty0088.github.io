@@ -23,6 +23,7 @@
     font-weight: 700;
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
+    align-items: center;
 }
 
 #item-list {
@@ -110,9 +111,4 @@
 
 #menu-sort-filter-bar > * {
     margin-right: 10px;
-}
-
-.bar-func {
-    display: flex;
-    align-items: center;
 }

@@ -32,21 +32,3 @@
     margin-left: 40px;
     color: rgb(100, 100, 100);
 }
-
-.flex-row-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.flex-row-start {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.flex-row-end {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}

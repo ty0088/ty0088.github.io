@@ -5,6 +5,20 @@
     font-family: 'Lato', sans-serif;
 }
 
+#root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: black;
+}
+
+#main-container {
+    height: 500px;
+    width: 1000px;
+    background-color: white;
+}
+
 .material-symbols-outlined {
     font-variation-settings:
     'FILL' 0,
@@ -18,16 +32,20 @@
     font-weight: 800;
 }
 
-#root {
+.flex-row-center {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: black;
 }
 
-#main-container {
-    height: 500px;
-    width: 1000px;
-    background-color: white;
+.flex-row-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex-row-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
