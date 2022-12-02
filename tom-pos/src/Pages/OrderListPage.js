@@ -3,17 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import DeletePopUp from '../Components/DeletePopUp';
-
-//----------------------------------------------
-//- sort/filter bar 
-//  sortBy: date-created, date-closed, order-no, total-price
-//  filterBy: date-created or date-closed
-//----------------------------------------------
+import OrderFilterSort from '../Components/OrdersFilterSort';
 
 const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => {
     const [messageFlag, setMessageFlag] = useState(false);
     const [orderNos, setOrderNos] = useState([]);
     const [delOrder, setDelOrder] = useState('');
+    const [filterDate, setFilterDate] = useState('');
+    const [dateType, setDateType] = useState('');
     const [sortBy, setSortBy] = useState(status === 'OPEN' ? 'date-created' : 'date-closed');
     const [dir, setDir] = useState(true);
     const navigate = useNavigate();
@@ -22,20 +19,19 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
     useEffect(() => {
         if (ordersData) {
             //sort and filter by date created for OPEN and date closed for CLOSED on initial render
-            const filterData = filterOrderNoBy(ordersData, Object.keys(ordersData), 'status', status);
-            const sortedData = sortOrderNoBy(ordersData, filterData, sortBy, dir);
-            setOrderNos(sortedData);
+            filerSortSet(ordersData, Object.keys(ordersData), 'status', status, sortBy, dir);
         }
     // eslint-disable-next-line
     }, [ordersData]);
 
+
     //Sort an array of order numbers by -
-    const sortOrderNoBy = (dataObj, orderArr, sortBy, dir) => {
+    const sortOrderNoBy = (ordersObj, orderArr, sortBy, dir) => {
         let sortOrderArr = [...orderArr];
         if (sortOrderArr.length > 1) {
             sortOrderArr.sort((a,b) => {
-                let orderA = dataObj[a][sortBy];
-                let orderB = dataObj[b][sortBy];
+                let orderA = ordersObj[a][sortBy];
+                let orderB = ordersObj[b][sortBy];
                 //sort depending on asc/dsc
                 if (orderA < orderB) {
                     return dir === true ? -1 : 1;
@@ -48,11 +44,29 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         return sortOrderArr;
     };
 
-    //filter an array of order numbers by -
-    const filterOrderNoBy = (dataObj, orderArr, filterBy, filterVal) => {
+    //toggles sorting between asc/dsc
+    const toggleDir = () => {
+        setDir(!dir);
+    };
+
+    //filter an array of order numbers by obj property and val
+    const filterOrderNoBy = (ordersObj, orderArr, filterBy, filterVal) => {
         const dataArr = [...orderArr];
-        const filterArr = dataArr.filter(orderNo => dataObj[orderNo][filterBy] === filterVal);
+        const filterArr = dataArr.filter(orderNo => ordersObj[orderNo][filterBy] === filterVal);
         return filterArr;
+    };
+
+    //filter, sort and set orders -------------------- build filter sort bar first --------------
+    const filerSortSet = (ordersObj, orderArr, filterBy, filterVal, sortBy, dir) => {
+        const filterData = filterOrderNoBy(ordersObj, orderArr, filterBy, filterVal);
+        const sortedData = sortOrderNoBy(ordersObj, filterData, sortBy, dir);
+        setOrderNos(sortedData);
+    };
+
+    //filter by specific date-open or date-closed -----------------------
+    const filterByDate = (dateType, date) => {
+        const dateArr = filterOrderNoBy(ordersData, Object.keys(ordersData), dateType, date);
+        filerSortSet(ordersData, dateArr, 'status', status, sortBy, dir);
     };
 
     //open order in POS
@@ -93,6 +107,7 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         <div id='order-list-container'>
             <div id='order-list-form'>
                 <h1>{status} Orders</h1>
+                <OrderFilterSort sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} filterByDate={filterByDate} />
                 <div id='order-list-header'>
                     <span>Date-Time Created</span>
                     <span>Date-Time Closed</span>
@@ -115,7 +130,7 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
                                     <span>{ordersData[orderNo]['order-no']}</span>
                                     <span>{ordersData[orderNo]['order-name']}</span>
                                     <span>{new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(ordersData[orderNo]['total-price'])}</span>
-                                    <div>
+                                    <div id='order-list-btns'>
                                         <button type='button' className={addClass} onClick={openClick}>Open</button>
                                         <button type='button' className={addClass} onClick={deleteClick}>Delete</button>
                                     </div>

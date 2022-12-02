@@ -23,10 +23,15 @@
 }
 
 .tax-row {
+    width: 300px;
     display: grid;
     grid-template-columns: 150px 150px 660px;
     grid-template-rows: 1fr;
     margin-bottom: 5px;
+}
+
+.tax-row:nth-child(even) {
+    background-color: rgb(220, 220, 220);
 }
 
 #tax-form-headers > span, .tax-row > span {

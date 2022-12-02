@@ -35,7 +35,10 @@
 .menu-level {
     display: flex;
     margin: 5px 0 5px 0;
-    border-bottom: 1px solid rgb(199, 199, 199);
+}
+
+.menu-level:nth-child(even) {
+    background-color: rgb(220, 220, 220);
 }
 
 .level-text {

@@ -28,7 +28,7 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
     };
 
     return (
-        <div id='util-bar'>
+        <div id='menu-sort-filter-bar'>
             <button type='button' onClick={addItemClick}>Add Item</button>
             <button type='button' onClick={resetFilters}>Reset Filters</button>
             <div className='bar-func'>
@@ -41,7 +41,7 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
                     <option value={'cost'}>Cost</option>
                     <option value={'qty'}>Qty</option>
                 </select>
-                <span className="material-symbols-outlined" onClick={toggleDir}>unfold_more</span>
+                <span className="material-symbols-outlined link" onClick={toggleDir}>unfold_more</span>
             </div>
             <div className='bar-func'>
                 Filter by Sub menu &nbsp;

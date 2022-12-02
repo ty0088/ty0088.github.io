@@ -16,9 +16,11 @@
 #order-list-header {
     padding: 3px 0 3px 0;
     display: grid;
-    grid-template-columns: 180px 180px 100px 200px 100px 1fr;
+    grid-template-columns: 180px 180px 100px 200px 100px 160px;
     grid-template-rows: 1fr;
     font-weight: 700;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
 }
 
 #order-list {
@@ -27,17 +29,39 @@
 }
 
 .order-list-row {
-    margin: 2px 0px 2px 0px;
+    padding: 3px 0px 3px 0px;
     display: grid;
-    grid-template-columns: 180px 180px 100px 200px 100px 1fr;
+    grid-template-columns: 180px 180px 100px 200px 100px 160px;
     grid-template-rows: 1fr;
 }
 
+.order-list-row:nth-child(even) {
+    background-color: rgb(220, 220, 220);
+}
+
+#order-list-btns {
+    display: flex;
+    column-gap: 10px;
+}
+
 .order-list-row button {
-    margin-right: 20px;
     width: 75px;
 }
 
 .bold700 {
     font-weight: 700;
+}
+
+#order-sort-filter-bar {    
+    display: flex;
+    align-items: center;
+    margin: 5px 0px 5px 0;
+    font-size: 0.8em;
+    font-weight: 600;
+    padding: 0 0 5px 0;
+    width: 980px;
+}
+
+#order-sort-filter-bar > * {
+    margin-right: 10px;
 }

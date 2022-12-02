@@ -21,6 +21,8 @@
     grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px;
     grid-template-rows: 1fr;
     font-weight: 700;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
 }
 
 #item-list {
@@ -28,28 +30,26 @@
     overflow-y: auto;
 }
 
-.item-row-container {
-    display: flex;
-    flex-direction: column;
-}
-
 .item-row {
-    padding: 3px 0 3px 0;
+    padding: 5px 0 5px 0;
     display: grid;
     grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px;
     grid-template-rows: 1fr;
-    border-top: 1px solid gray;
+}
+
+.item-row:nth-child(even) {
+    background-color: rgb(220, 220, 220);
 }
 
 #edit-btn-con {
     display: flex;
     flex-direction: column;
+    row-gap: 5px;
 }
 
 .edit-btn {
     height: 20px;
     width: 50px;
-    margin: 5px 0 5px 0;
 }
 
 .mod-list {
@@ -98,26 +98,21 @@
     align-items: flex-start;
 }
 
-#util-bar {    
+#menu-sort-filter-bar {    
     display: flex;
     align-items: center;
     margin: 5px 0px 5px 0;
     font-size: 0.8em;
     font-weight: 600;
     padding: 0 0 5px 0;
-    border-bottom: 1px solid gray;
     width: 1240px;
 }
 
-#util-bar > * {
+#menu-sort-filter-bar > * {
     margin-right: 10px;
 }
 
 .bar-func {
     display: flex;
     align-items: center;
-}
-
-.bar-func > span:hover {
-    cursor: pointer;
 }
