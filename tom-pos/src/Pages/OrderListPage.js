@@ -49,14 +49,15 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
             if (d1 === '') {
                 return false
             } else {
-                d1 = serverTime === '' ? '' : serverTime.toDate();
+                //if serverTime is not a Date obj (i.e. firebase timestamp) then convert
+                d1 = serverTime instanceof Date ? serverTime : serverTime.toDate();
                 d1.setHours(12, 0, 0, 0);
-                d2 = filterDate === '' ? '' : new Date(filterDate);
+                //if filterDate is blank
+                d2 = new Date(filterDate);
                 d2.setHours(12, 0, 0, 0);
             }
             return d1.getTime() === d2.getTime();
         };
-        //when no date present i.e "-", error -------------------------
         const dateFilteredNos = filterDate !== '' ? statusFilteredNos.filter(orderNo => compareDate(ordersObj[orderNo][dateType], filterDate)) : [...statusFilteredNos];
         setOrderNos(dateFilteredNos);
     };

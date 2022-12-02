@@ -25,7 +25,6 @@ const OrderFilterSort = ({sortBy, setSortBy, dir, setDir, setFilterDate, setDate
 
     const changeDate = (e) => {
         const date = e.target.value;
-        console.log(date);
         setFilterDate(date)
     };
     

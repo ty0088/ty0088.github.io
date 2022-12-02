@@ -14,13 +14,13 @@ import TaxManage from './Pages/TaxManagePage';
 import OrderList from './Pages/OrderListPage';
 
 const App = () => {
-  const [finData, setFinData] = useState();
-  const [itemsData, setItemsData] = useState();
-  const [ordersData, setOrdersData] = useState();
-  const [menusData, setMenusData] = useState();
-  const [taxData, setTaxData] = useState();
-  const [userData, setUserData] = useState();
-  const [currOrder, setCurrOrder] = useState();
+  const [finData, setFinData] = useState({});
+  const [itemsData, setItemsData] = useState({});
+  const [ordersData, setOrdersData] = useState({});
+  const [menusData, setMenusData] = useState({});
+  const [taxData, setTaxData] = useState({});
+  const [userData, setUserData] = useState({});
+  const [currOrder, setCurrOrder] = useState('');
   const navigate = useNavigate();
   const auth = getAuth();
   
