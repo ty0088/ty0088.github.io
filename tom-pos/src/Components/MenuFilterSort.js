@@ -2,7 +2,7 @@ import '../Styles/ItemManage.css';
 import React from 'react';
 import MenuList from './MenuList';
 
-const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu, addItemClick, setSearchName, menusData}) => {
+const MenuFilterSort = ({sortBy, setSortBy, dir, setDir, filterMenu, setFilterMenu, addItemClick, setSearchName, menusData}) => {
 
     const changeSortBy = (e) => {
         const sortVal = e.target.value;
@@ -23,8 +23,9 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
         setSortBy('item-name');
         setFilterMenu('ALL');
         setSearchName('');
-        document.getElementById('sort-by').value = 'item-name';
-        document.getElementById('search-name').value = '';
+        setDir(true);
+        document.getElementById('menu-sort-by').value = 'item-name';
+        document.getElementById('item-search-name').value = '';
     };
 
     return (
@@ -33,7 +34,7 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
             <button type='button' onClick={resetFilters}>Reset Filters</button>
             <div className='flex-row-center'>
                 <span>Sort by :</span>
-                <select id='sort-by' value={sortBy} onChange={changeSortBy}>
+                <select id='menu-sort-by' value={sortBy} onChange={changeSortBy}>
                     <option value='item-name'>Item Name</option>
                     <option value='sub-menu'>Sub Menu</option>
                     <option value='price'>Price</option>
@@ -41,7 +42,7 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
                     <option value='cost'>Cost</option>
                     <option value='qty'>Qty</option>
                 </select>
-                <span className="material-symbols-outlined link" onClick={toggleDir}>unfold_more</span>
+                <span className="material-symbols-outlined link" onClick={() => setDir(!dir)}>unfold_more</span>
             </div>
             <div>
                 <span>Filter by Sub menu :</span>
@@ -49,7 +50,7 @@ const MenuFilterSort = ({sortBy, setSortBy, toggleDir, filterMenu, setFilterMenu
             </div>
             <div>
                 Search by item name &nbsp;
-                <input type="text" id='search-name' onChange={searchByName}></input>
+                <input type="text" id='item-search-name' onChange={searchByName}></input>
             </div>
         </div>
     );

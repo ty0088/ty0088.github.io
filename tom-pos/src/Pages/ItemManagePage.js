@@ -31,9 +31,9 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
         'print-customer': true
     };
 
-    //call setSort anytime a sort/filter/search key is changed
+    //call setSortFilter anytime a sort/filter/search key is changed
     useEffect(() => {
-        setSort(tempData);
+        setSortFilter(tempData);
     // eslint-disable-next-line
     }, [sortBy, dir, filterMenu, searchName]);
 
@@ -45,13 +45,13 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
             setItemNames(nameArr)
         };
         getItemNames(itemsData);
-        setData(itemsData)
+        setData(itemsData);
     }, [itemsData]);
 
     //set working states with new data
     const setData = (data) => {
         setTempData({...data});
-        setSort(data);
+        setSortFilter(data);
     };
 
     //if name and sub menu = '' then 
@@ -101,16 +101,11 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
     };
 
     //sort data and filter for render
-    const setSort = (data) => {
-        const sortedIDs = sortItemsBy(data, sortBy, dir);
-        const filterIDs = filterMenu !== 'ALL' ? sortedIDs.filter(itemID => data[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
-        const searchIDs = searchName !== '' ? filterIDs.filter(itemID => data[itemID]['item-name'].toUpperCase().startsWith(searchName.toUpperCase())) : [...filterIDs];
+    const setSortFilter = (dataObj) => {
+        const sortedIDs = sortItemsBy(dataObj, sortBy, dir);
+        const filterIDs = filterMenu !== 'ALL' ? sortedIDs.filter(itemID => dataObj[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
+        const searchIDs = searchName !== '' ? filterIDs.filter(itemID => dataObj[itemID]['item-name'].toUpperCase().startsWith(searchName.toUpperCase())) : [...filterIDs];
         setSortedItems(searchIDs);
-    };
-
-    //toggles sorting between asc/dsc
-    const toggleDir = () => {
-        setDir(!dir);
     };
 
     const deleteItem = (itemID) => {
@@ -127,7 +122,7 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
         setSearchName('');
         document.getElementById('search-name').value = '';
         setTempData(addData);
-        setSort(addData);
+        setSortFilter(addData);
     };
 
     const cancelAdd = () => {
@@ -146,7 +141,7 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
             <div id='item-form'>
                 <div id='item-top-bar'>
                     <h1>Item Management</h1>
-                    <MenuFilterSort sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
+                    <MenuFilterSort sortBy={sortBy} setSortBy={setSortBy} dir={dir} setDir={setDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
                         addItemClick={addItemClick} setSearchName={setSearchName} menusData={menusData} />
                 </div>
                 <div id='item-header'>

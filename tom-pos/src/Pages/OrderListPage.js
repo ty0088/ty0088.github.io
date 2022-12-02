@@ -10,24 +10,18 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
     const [orderNos, setOrderNos] = useState([]);
     const [delOrder, setDelOrder] = useState('');
     const [filterDate, setFilterDate] = useState('');
-    const [dateType, setDateType] = useState('');
+    const [dateType, setDateType] = useState(status === 'OPEN' ? 'date-created' : 'date-closed');
     const [sortBy, setSortBy] = useState(status === 'OPEN' ? 'date-created' : 'date-closed');
     const [dir, setDir] = useState(true);
     const navigate = useNavigate();
 
-    //initialise data whenever dataObj is changed and is not undefined
     useEffect(() => {
-        if (ordersData) {
-            //sort and filter by date created for OPEN and date closed for CLOSED on initial render
-            filerSortSet(ordersData, Object.keys(ordersData), 'status', status, sortBy, dir);
-        }
-    // eslint-disable-next-line
-    }, [ordersData]);
-
+        setFilterSort(ordersData);
+    }, [sortBy, dir, filterDate, dateType]);
 
     //Sort an array of order numbers by -
-    const sortOrderNoBy = (ordersObj, orderArr, sortBy, dir) => {
-        let sortOrderArr = [...orderArr];
+    const sortOrderNoBy = (ordersObj, sortBy, dir) => {
+        let sortOrderArr = Object.keys(ordersObj);
         if (sortOrderArr.length > 1) {
             sortOrderArr.sort((a,b) => {
                 let orderA = ordersObj[a][sortBy];
@@ -44,29 +38,27 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         return sortOrderArr;
     };
 
-    //toggles sorting between asc/dsc
-    const toggleDir = () => {
-        setDir(!dir);
-    };
-
-    //filter an array of order numbers by obj property and val
-    const filterOrderNoBy = (ordersObj, orderArr, filterBy, filterVal) => {
-        const dataArr = [...orderArr];
-        const filterArr = dataArr.filter(orderNo => ordersObj[orderNo][filterBy] === filterVal);
-        return filterArr;
-    };
-
-    //filter, sort and set orders -------------------- build filter sort bar first --------------
-    const filerSortSet = (ordersObj, orderArr, filterBy, filterVal, sortBy, dir) => {
-        const filterData = filterOrderNoBy(ordersObj, orderArr, filterBy, filterVal);
-        const sortedData = sortOrderNoBy(ordersObj, filterData, sortBy, dir);
-        setOrderNos(sortedData);
-    };
-
-    //filter by specific date-open or date-closed -----------------------
-    const filterByDate = (dateType, date) => {
-        const dateArr = filterOrderNoBy(ordersData, Object.keys(ordersData), dateType, date);
-        filerSortSet(ordersData, dateArr, 'status', status, sortBy, dir);
+    const setFilterSort = (ordersObj) => {
+        const sortedOrderNos =  sortOrderNoBy(ordersObj, sortBy, dir);
+        //filter by status order depending on which order list (open/closed) is being viewed
+        const statusFilteredNos = sortedOrderNos.filter(orderNo => ordersObj[orderNo]['status'] === status);
+        //Set date objects TIME to 12:00:00:00 and compare fn
+        const compareDate = (serverTime, filterDate) => {
+            let d1 = serverTime;
+            let d2 = filterDate;
+            if (d1 === '') {
+                return false
+            } else {
+                d1 = serverTime === '' ? '' : serverTime.toDate();
+                d1.setHours(12, 0, 0, 0);
+                d2 = filterDate === '' ? '' : new Date(filterDate);
+                d2.setHours(12, 0, 0, 0);
+            }
+            return d1.getTime() === d2.getTime();
+        };
+        //when no date present i.e "-", error -------------------------
+        const dateFilteredNos = filterDate !== '' ? statusFilteredNos.filter(orderNo => compareDate(ordersObj[orderNo][dateType], filterDate)) : [...statusFilteredNos];
+        setOrderNos(dateFilteredNos);
     };
 
     //open order in POS
@@ -88,11 +80,8 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         //delete item from data and db
         let deleteData = {...ordersData};
         delete deleteData[delOrder];
+        setFilterSort(deleteData);
         setDataDB(deleteData, 'orders');
-        //update order nos for re render of list
-        const filterData = filterOrderNoBy(deleteData, Object.keys(deleteData), 'status', status);
-        const sortedData = sortOrderNoBy(deleteData, filterData, sortBy, dir);
-        setOrderNos(sortedData);
         //if delete order is current order, reset current order
         if (currOrder === delOrder) {
             setCurrOrder();
@@ -107,7 +96,7 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         <div id='order-list-container'>
             <div id='order-list-form'>
                 <h1>{status} Orders</h1>
-                <OrderFilterSort sortBy={sortBy} setSortBy={setSortBy} toggleDir={toggleDir} filterByDate={filterByDate} />
+                <OrderFilterSort sortBy={sortBy} setSortBy={setSortBy} dir={dir} setDir={setDir} setFilterDate={setFilterDate} setDateType={setDateType} />
                 <div id='order-list-header'>
                     <span>Date-Time Created</span>
                     <span>Date-Time Closed</span>
