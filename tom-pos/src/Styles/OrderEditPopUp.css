@@ -1,0 +1,99 @@
+#order-edit-container {
+    height: 500px;
+    width: 1000px;
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#order-edit-popup {
+    height: 400px;
+    width: 400px;
+    padding: 20px;
+    border: 2px solid Black;
+    border-radius: 5px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 100px 256px;
+    grid-template-rows: 50px 200px 1fr;
+}
+
+#order-edit-header {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    font-size: 1.5em;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+}
+
+#order-edit-labels {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 100px 50px;
+}
+
+#order-edit-labels > * {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 10px;
+}
+
+#order-edit-inputs {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 100px 50px;
+}
+
+#order-name-input {
+    height: 30px;
+    width: 90%;
+}
+
+#order-notes-input {
+    resize: none;
+    max-height: 90px;
+    max-width: 90%;;
+    white-space: pre-wrap;
+}
+
+#order-edit-disc {
+    width: 90%;
+    display: flex;
+    column-gap: 10px;
+}
+
+#order-edit-disc > button {
+    height: 25px;
+    width: 50px;
+}
+
+#order-edit-btns {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#order-edit-btns > button {
+    height: 30px;
+    width: 100px;
+}

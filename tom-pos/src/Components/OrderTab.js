@@ -6,6 +6,7 @@ import OrderEditPopUp from './OrderEditPopUp';
 
 //--------------------------------------------------------------------------------------
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items
+//- update order obj price values when adding items. Only update DB when order is payed and closed?
 //--------------------------------------------------------------------------------------
 
 const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
@@ -54,7 +55,7 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
 
     const editClick = () => {
         //prompt order edit pop up ----
-        setEditFlag(true)
+        setEditFlag(true);
     };
 
     const discountInput = () => {
@@ -96,7 +97,7 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
                 </div>
             </div>
             {editFlag &&
-                <OrderEditPopUp />
+                <OrderEditPopUp orderNo={orderNo} setEditFlag={setEditFlag}/>
             }
         </div>
     );
