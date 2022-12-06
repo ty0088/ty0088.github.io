@@ -7,6 +7,7 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
     const orderObj = {
         'order-no': '',
         'order-name': '',
+        'order-notes': '',
         'date-created': new Date(),
         'date-closed': '',
         'status': 'OPEN',
@@ -16,7 +17,7 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
         'add-price': 0,
         'tax-due': 0,
         'disc-price': 0,
-        'disc-info': {}, // to allow item totals/tax to be worked out, format {type: fixed/percentage, amount: 0}----------
+        'disc-rate': 0,
         'total-price': 0, // update this variable when order is closed ----------------
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);

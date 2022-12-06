@@ -7,6 +7,7 @@ import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';
 
 // separate eat in / takeout tax rates ------------
+//set root data obj when saving, setItemsData -----------
 
 const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
     const [tempData, setTempData] = useState({});

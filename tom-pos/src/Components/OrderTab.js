@@ -15,7 +15,7 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
     const [subDiscount, setSubDiscount] = useState(0);
-    const [discRate, setDiscRate] = useState(0); 
+    const [discRate, setDiscRate] = useState(0); //get from order obj 'disc-rate' ------------------
     const [totalPrice, setTotalPrice] = useState(0);
 
     //update order item list whenever new order data recieved
@@ -97,7 +97,7 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
                 </div>
             </div>
             {editFlag &&
-                <OrderEditPopUp orderNo={orderNo} setEditFlag={setEditFlag}/>
+                <OrderEditPopUp orderNo={orderNo} setEditFlag={setEditFlag} orderObj={orderObj} />
             }
         </div>
     );

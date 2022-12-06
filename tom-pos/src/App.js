@@ -13,6 +13,10 @@ import ItemManage from './Pages/ItemManagePage';
 import TaxManage from './Pages/TaxManagePage';
 import OrderList from './Pages/OrderListPage';
 
+//have a root based save root data obj and setDataDB function in App --------------
+//this way, the method of data saving can be controlled in this one place ------------
+//the saving method could be local, online db, etc -------------------
+
 const App = () => {
   const [finData, setFinData] = useState({});
   const [itemsData, setItemsData] = useState({});

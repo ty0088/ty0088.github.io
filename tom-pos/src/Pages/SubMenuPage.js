@@ -5,6 +5,9 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
 
+//setMenusData, set root data obj when submitting --------------
+//will require setItemsData too ------------
+
 const SubMenu = ({menusData, itemsData, setDataDB}) => {
     const [tempData, setTempData] = useState({});
     const [levels, setLevels] = useState([]);

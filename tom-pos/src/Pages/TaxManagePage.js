@@ -6,6 +6,7 @@ import TaxRow from '../Components/TaxRow';
 import updateItemVal from '../Util/updateItemVal';
 
 //headers to be fixed and rows to have own container to be scrollable ----------------
+//setTaxData and setItemsData, set root data objs when updating or deleting ---------------
 
 const TaxManage = ({taxData, itemsData, setDataDB}) => {
     const [tempData, setTempData] = useState({});

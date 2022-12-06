@@ -5,6 +5,8 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import DeletePopUp from '../Components/DeletePopUp';
 import OrderFilterSort from '../Components/OrdersFilterSort';
 
+//set root data obj when deleting, setOrdersData -------------------
+
 const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => {
     const [messageFlag, setMessageFlag] = useState(false);
     const [orderNos, setOrderNos] = useState([]);

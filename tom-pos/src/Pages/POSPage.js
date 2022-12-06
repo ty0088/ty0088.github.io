@@ -5,6 +5,8 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 
+//update root data obj setOrdersData -----------------
+
 const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
     const { orderNo } = useParams();
     const [orderObj, setOrderObj] = useState({});
@@ -46,6 +48,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
         }
         const addData = {...ordersData, [orderNo]: orderData}
         setDataDB(addData, 'orders');
+        //setOrdersData, set root data obj -----------------
     };
 
     //checks whether item (inc mods/options/notes) already exists -------------------------
