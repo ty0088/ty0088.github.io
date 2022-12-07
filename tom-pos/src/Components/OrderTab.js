@@ -9,13 +9,13 @@ import OrderEditPopUp from './OrderEditPopUp';
 //- update order obj price values when adding items. Only update DB when order is payed and closed?
 //--------------------------------------------------------------------------------------
 
-const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
+const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
     const [subDiscount, setSubDiscount] = useState(0);
-    const [discRate, setDiscRate] = useState(0); //get from order obj 'disc-rate' ------------------
+    const [discRate, setDiscRate] = useState(orderObj['disc-rate']); //get from order obj 'disc-rate' ------------------
     const [totalPrice, setTotalPrice] = useState(0);
 
     //update order item list whenever new order data recieved
@@ -63,6 +63,12 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
         //setDiscType({type, amount})
     };
 
+    //updates order with orderNo in ordersData and DB
+    const updateOrder = (orderNo, orderObj) => {
+        const updateData = {...ordersData, [orderNo]: orderObj};
+        setRootData(updateData, 'orders');
+    };
+
     return (
         <div id='order-tab-container'>
             <div id='order-head'>
@@ -97,7 +103,7 @@ const OrderTab = ({orderNo, orderObj, taxData, deleteItem}) => {
                 </div>
             </div>
             {editFlag &&
-                <OrderEditPopUp orderNo={orderNo} setEditFlag={setEditFlag} orderObj={orderObj} />
+                <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder} />
             }
         </div>
     );

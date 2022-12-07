@@ -5,8 +5,6 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 
-//update root data obj setOrdersData -----------------
-
 const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
     const { orderNo } = useParams();
     const [orderObj, setOrderObj] = useState({});
@@ -23,12 +21,11 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         'notes': ''
     };
 
-    //set current order into local state on initial render
     useEffect(() => {
         if (ordersData) {
             setOrderObj(ordersData[orderNo]);
         }
-    }, []);
+    }, [ordersData, orderNo]);
 
     //add item to Order
     const addItem = (id, mods, opts, notes) => {
@@ -48,7 +45,6 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         }
         const addData = {...ordersData, [orderNo]: orderData}
         setRootData(addData, 'orders');
-        //setOrdersData, set root data obj -----------------
     };
 
     //checks whether item (inc mods/options/notes) already exists -------------------------
@@ -88,7 +84,8 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addItem={addItem} />
-            <OrderTab orderNo={orderNo} orderObj={orderObj} taxData={taxData} deleteItem={deleteItem}/>
+            <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} taxData={taxData} deleteItem={deleteItem}
+                setRootData={setRootData} />
         </div>
     );
 };

@@ -12,7 +12,7 @@
 }
 
 #order-edit-popup {
-    height: 400px;
+    height: 350px;
     width: 400px;
     padding: 20px;
     border: 2px solid Black;
@@ -20,7 +20,7 @@
     background-color: white;
     display: grid;
     grid-template-columns: 100px 256px;
-    grid-template-rows: 50px 200px 1fr;
+    grid-template-rows: 50px 230px 1fr;
 }
 
 #order-edit-header {
@@ -41,7 +41,7 @@
     grid-row-end: 3;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 50px 100px 50px;
+    grid-template-rows: 45px 105px 70px;
 }
 
 #order-edit-labels > * {
@@ -56,31 +56,65 @@
     grid-row-start: 2;
     grid-row-end: 3;
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 50px 100px 50px;
+    grid-template-columns: 256px;
+    grid-template-rows: 45px 105px 70px;
 }
 
 #order-name-input {
     height: 30px;
-    width: 90%;
 }
 
 #order-notes-input {
     resize: none;
     max-height: 90px;
-    max-width: 90%;;
     white-space: pre-wrap;
 }
 
 #order-edit-disc {
-    width: 90%;
+    width: 100%;
     display: flex;
-    column-gap: 10px;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
-#order-edit-disc > button {
+.order-disc-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 25px;
-    width: 50px;
+    width: 55px;
+    background-color: rgb(250, 250, 250);
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 3px;
+    font-size: 14px;
+    color: rgb(200, 200, 200);
+}
+
+.order-disc-button.selected {
+    background-color: rgb(240, 240, 240);
+    border: 1px solid rgb(100, 100, 100);
+    color: rgb(100, 100, 100);
+}
+
+.order-disc-button:hover {
+    cursor: pointer;
+    background-color: rgb(200, 200, 200);
+    color: rgb(100, 100, 100);
+}
+
+#cust-disc-btn {
+    width: 70px;
+}
+
+#disc-input-div {
+    /* display: flex;
+    justify-content: right; */
+    font-size: 0.8em;
+}
+
+#disc-input-div > input {
+    height: 25px;
+    width: 60px;
 }
 
 #order-edit-btns {
@@ -88,7 +122,6 @@
     grid-column-end: 3;
     grid-row-start: 3;
     grid-row-end: 4;
-    width: 90%;
     display: flex;
     justify-content: space-between;
 }

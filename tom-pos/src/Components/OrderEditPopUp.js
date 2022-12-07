@@ -1,28 +1,36 @@
 import '../Styles/OrderEditPopUp.css';
 import React, { useState, useEffect } from 'react';
 
-//--------------------------------------------------------------------------------------
-//- discount: custom discount amount to be bring up input and value to be in state
-//--------------------------------------------------------------------------------------
-
-const OrderEditPopUp = ({orderNo, setEditFlag, orderObj}) => {
+const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
     const [orderName, setOrderName] = useState(orderObj['order-name']);
     const [orderNotes, setOrderNotes] = useState(orderObj['order-notes']);
+    const [disc, setDisc] = useState(orderObj['disc-rate']);
 
-    // useEffect(() => {
-    //     console.log(orderObj);
-    // })
+    useEffect(() => {
+        const discBtnSelect = () => {
+            document.querySelectorAll('[data-disc]').forEach(elem => elem.classList.remove('selected'));
+            if (disc === 0) {
+                document.querySelector('[data-disc="0"]').classList.add('selected');
+            } else if (disc === 5) {
+                document.querySelector('[data-disc="5"]').classList.add('selected');
+            } else if (disc === 10) {
+                document.querySelector('[data-disc="10"]').classList.add('selected');
+            } else {
+                document.getElementById('cust-disc-btn').classList.add('selected');
+            }
+        };
+        discBtnSelect();
+    }, []);
 
     const editSaveClick = () => {
-        // update object ------
         const saveObj = {
             ...orderObj,
             'order-name': orderName,
-            'order-notes': orderNotes
+            'order-notes': orderNotes,
+            'disc-rate': disc
         };
-        
-        console.log(saveObj);
-        // update DB -----
+        updateOrder(orderNo, saveObj);
+        setEditFlag(false);
     };
 
     const editCloseClick = () => {
@@ -30,16 +38,35 @@ const OrderEditPopUp = ({orderNo, setEditFlag, orderObj}) => {
     };
 
     const nameChange = (e) => {
-        const val = e.target.value.trim();
+        const val = e.target.value;
         setOrderName(val)
-        console.log(val);
     };
 
     const noteChange = (e) => {
         const val = e.target.value;
         setOrderNotes(val);
-        console.log(val);
     };
+
+    const discClick = (e) => {
+        const clickRate = parseFloat(e.target.getAttribute('data-disc'));
+        if (isNaN(clickRate)) {
+            document.getElementById('cust-disc-input').focus();
+        } else {
+            document.querySelectorAll('[data-disc]').forEach(elem => elem.classList.remove('selected'));
+            e.target.classList.add('selected');
+            setDisc(clickRate);
+
+        }
+    };
+
+    const discChange = (e) => {
+        let changeRate = parseFloat(e.target.value);
+        changeRate = isNaN(changeRate) ? 0 : changeRate > 100 ? 100 : changeRate < 0 ? 0 : changeRate;
+        setDisc(changeRate);
+        const custElem = document.getElementById('cust-disc-btn');
+        custElem.setAttribute('data-disc', changeRate);
+        custElem.innerText = `${changeRate} *`;
+    }
 
     return (
         <div id='order-edit-container'>
@@ -54,10 +81,14 @@ const OrderEditPopUp = ({orderNo, setEditFlag, orderObj}) => {
                     <input type='text' id='order-name-input' value={orderName} onChange={nameChange} />
                     <textarea id='order-notes-input'value={orderNotes} onChange={noteChange} />
                     <div id='order-edit-disc'>
-                        <button type='button'>0</button>
-                        <button type='button'>5</button>
-                        <button type='button'>10</button>
-                        <button type='button'>Custom</button>
+                        <span className='order-disc-button' data-disc='0' onClick={discClick}>0</span>
+                        <span className='order-disc-button' data-disc='5' onClick={discClick}>5</span>
+                        <span className='order-disc-button' data-disc='10' onClick={discClick}>10</span>
+                        <span className='order-disc-button' id='cust-disc-btn' onClick={discClick}>Custom</span>
+                        <div id='disc-input-div'> 
+                            *custom amount :
+                            <input type='number' id='cust-disc-input' min='0' max='100' value={disc} onChange={discChange}/>
+                        </div>
                     </div>
                 </div>
                 <div id='order-edit-btns'>
