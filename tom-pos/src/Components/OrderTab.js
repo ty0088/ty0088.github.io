@@ -15,14 +15,18 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
     const [subDiscount, setSubDiscount] = useState(0);
-    const [discRate, setDiscRate] = useState(orderObj['disc-rate']); //get from order obj 'disc-rate' ------------------
+    const [discRate, setDiscRate] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(() => {
+        console.log(orderObj['disc-rate']);
+    })
 
     //update order item list whenever new order data recieved
     useEffect(() => {
         if (Object.keys(orderObj).length > 0) {
-            setDiscRate(0) // set at 10% initally for working ----------- 
             setOrderItems(orderObj['items']);
+            setDiscRate(orderObj['disc-rate']);
         }
     }, [orderObj])
 
