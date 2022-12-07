@@ -9,7 +9,7 @@ import MenuFilterSort from '../Components/MenuFilterSort';
 // separate eat in / takeout tax rates ------------
 //set root data obj when saving, setItemsData -----------
 
-const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
+const ItemManage = ({itemsData, taxData, menusData, setRootData}) => {
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
     const [itemNames, setItemNames] = useState([]);
@@ -113,7 +113,7 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
         let deleteData = {...tempData};
         delete deleteData[itemID];
         setData(deleteData);
-        setDataDB(deleteData, 'items');
+        setRootData(deleteData, 'items');
     };
 
     const addItemClick = () => {
@@ -134,7 +134,7 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
         const itemID = item.itemID;
         const changeData = {...tempData, [itemID]: item};
         setData(changeData);
-        setDataDB(changeData, 'items');
+        setRootData(changeData, 'items');
     };
 
     return (
@@ -163,7 +163,7 @@ const ItemManage = ({itemsData, taxData, menusData, setDataDB}) => {
                 <div id='item-list'>
                     {Object.keys(tempData).length > 0 &&
                         sortedItems.map((itemID, i) => <ItemRow key={i} index={i} itemObj={tempData[itemID]} deleteItem={deleteItem}
-                            changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} taxData={taxData} menusData={menusData} setDataDB={setDataDB} />)
+                            changeItem={changeItem} cancelAdd={cancelAdd} itemNames={itemNames} taxData={taxData} menusData={menusData} setRootData={setRootData} />)
                     }
                     {Object.keys(tempData).length === 0 &&
                         <div>You have no items, please add one using the 'Add Item' button above</div>

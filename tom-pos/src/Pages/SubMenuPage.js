@@ -5,10 +5,8 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
 
-//setMenusData, set root data obj when submitting --------------
-//will require setItemsData too ------------
 
-const SubMenu = ({menusData, itemsData, setDataDB}) => {
+const SubMenu = ({menusData, itemsData, setRootData}) => {
     const [tempData, setTempData] = useState({});
     const [levels, setLevels] = useState([]);
 
@@ -49,10 +47,10 @@ const SubMenu = ({menusData, itemsData, setDataDB}) => {
         Object.keys(editData).forEach(level => { if (Object.keys(editData[level]).length === 0) delete editData[level] });
         //update Item sub menu property if previous menu was NOT blank i.e. a new sub menu
         if (prevMenu !== '') {
-            updateItemVal([[prevMenu]], newMenu, 'sub-menu', setDataDB, itemsData);
+            updateItemVal([[prevMenu]], newMenu, 'sub-menu', setRootData, itemsData);
         }
         setTempData(editData);
-        setDataDB(editData, 'sub-menus');
+        setRootData(editData, 'sub-menus');
         setLevels(Object.keys(editData).map(string => parseInt(string)));
     };
 
@@ -65,11 +63,11 @@ const SubMenu = ({menusData, itemsData, setDataDB}) => {
             delete deleteData[level][menu];
         });
         //Remove related menus from items
-        updateItemVal(menus, '', 'sub-menu', setDataDB, itemsData);
+        updateItemVal(menus, '', 'sub-menu', setRootData, itemsData);
         //remove any empty levels and update data
         Object.keys(deleteData).forEach(level => { if (Object.keys(deleteData[level]).length === 0) delete deleteData[level] });
         setTempData(deleteData);
-        setDataDB(deleteData, 'sub-menus');
+        setRootData(deleteData, 'sub-menus');
         setLevels(Object.keys(deleteData).map(string => parseInt(string)));
     };
 

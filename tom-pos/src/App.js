@@ -13,7 +13,7 @@ import ItemManage from './Pages/ItemManagePage';
 import TaxManage from './Pages/TaxManagePage';
 import OrderList from './Pages/OrderListPage';
 
-//have a root based save root data obj and setDataDB function in App --------------
+//have a root based save root data obj and setRootData function in App --------------
 //this way, the method of data saving can be controlled in this one place ------------
 //the saving method could be local, online db, etc -------------------
 
@@ -65,7 +65,8 @@ const App = () => {
     setStateArr.forEach((func, i) => func(dataArr[i]));
   };
 
-  const setDataDB = (dataObj, doc) => {
+  //set root data and DB
+  const setRootData = (dataObj, doc) => {
     setDB(dataObj, doc);
     switch (doc)  {
       case 'financial':
@@ -90,20 +91,20 @@ const App = () => {
         break;
     };
   }
-  
+
   return (
     <div id='main-container'>
         <Routes>
           <Route path='/tom-pos' element={<Login />} />
-          <Route path='/tom-pos/orders' element={<Orders ordersData={ordersData} setDataDB={setDataDB} currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
+          <Route path='/tom-pos/orders' element={<Orders ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
           <Route path='/tom-pos/signup' element={<SignUp />} />
-          <Route path='/tom-pos/pos/:orderNo' element={<POS ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setDataDB={setDataDB} />} />
-          <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} ordersData={ordersData} setDataDB={setDataDB} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
-          <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} ordersData={ordersData} setDataDB={setDataDB} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
+          <Route path='/tom-pos/pos/:orderNo' element={<POS ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setRootData={setRootData} />} />
+          <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
+          <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />
-          <Route path='/tom-pos/submenu' element={<SubMenu menusData={menusData} itemsData={itemsData} setDataDB={setDataDB} />} />
-          <Route path='/tom-pos/items' element={<ItemManage itemsData={itemsData} taxData={taxData} menusData={menusData} setDataDB={setDataDB} />} />
-          <Route path='/tom-pos/tax' element={<TaxManage taxData={taxData} itemsData={itemsData} setDataDB={setDataDB} />} />
+          <Route path='/tom-pos/submenu' element={<SubMenu menusData={menusData} itemsData={itemsData} setRootData={setRootData} />} />
+          <Route path='/tom-pos/items' element={<ItemManage itemsData={itemsData} taxData={taxData} menusData={menusData} setRootData={setRootData} />} />
+          <Route path='/tom-pos/tax' element={<TaxManage taxData={taxData} itemsData={itemsData} setRootData={setRootData} />} />
         </Routes>
     </div>
   );

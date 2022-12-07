@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 
-const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
+const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
     const orderObj = {
         'order-no': '',
         'order-name': '',
@@ -52,7 +52,7 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setDataDB}) => {
         setCurrOrder(nextOrderNo);
         //create new next orderObj and set state and db
         let newData = {...ordersData, [nextOrderNo]: {...orderObj, 'order-no': nextOrderNo}};
-        setDataDB(newData, 'orders');
+        setRootData(newData, 'orders');
         navigate(`/tom-pos/pos/${nextOrderNo}`);
     };
 

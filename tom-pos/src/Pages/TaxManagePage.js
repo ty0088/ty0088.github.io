@@ -6,9 +6,8 @@ import TaxRow from '../Components/TaxRow';
 import updateItemVal from '../Util/updateItemVal';
 
 //headers to be fixed and rows to have own container to be scrollable ----------------
-//setTaxData and setItemsData, set root data objs when updating or deleting ---------------
 
-const TaxManage = ({taxData, itemsData, setDataDB}) => {
+const TaxManage = ({taxData, itemsData, setRootData}) => {
     const [tempData, setTempData] = useState({});
 
     useEffect(() => {
@@ -17,15 +16,15 @@ const TaxManage = ({taxData, itemsData, setDataDB}) => {
 
     const updateTaxDB = (taxObj) => {
         setTempData(taxObj);
-        setDataDB(taxObj, 'tax-bands'); 
+        setRootData(taxObj, 'tax-bands'); 
     };
 
     const deleteTax = (label) => {
         let deleteData = {...tempData};
         delete deleteData[label];
         setTempData(deleteData);
-        setDataDB(deleteData, 'tax-bands'); 
-        updateItemVal([[label]], '', 'tax-band', setDataDB, itemsData);
+        setRootData(deleteData, 'tax-bands'); 
+        updateItemVal([[label]], '', 'tax-band', setRootData, itemsData);
     };
 
     const addTaxClick = () => {
@@ -49,7 +48,7 @@ const TaxManage = ({taxData, itemsData, setDataDB}) => {
                     {Object.keys(tempData).length > 0 &&
                         Object.keys(tempData).sort().map((label, i) => <TaxRow key={i} data={tempData} 
                             label={label} updateTaxDB={updateTaxDB} deleteTax={deleteTax} cancelAdd={cancelAdd}
-                            setDataDB={setDataDB} itemsData={itemsData} />)
+                            setRootData={setRootData} itemsData={itemsData} />)
                     }
                     <button type='button' onClick={addTaxClick}>Add Tax Rate</button>
                 </div>

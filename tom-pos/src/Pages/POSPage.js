@@ -7,7 +7,7 @@ import OrderTab from '../Components/OrderTab';
 
 //update root data obj setOrdersData -----------------
 
-const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
+const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
     const { orderNo } = useParams();
     const [orderObj, setOrderObj] = useState({});
     const orderItemObj = {
@@ -47,7 +47,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
             orderData = {...orderObj, 'items': itemsArr};
         }
         const addData = {...ordersData, [orderNo]: orderData}
-        setDataDB(addData, 'orders');
+        setRootData(addData, 'orders');
         //setOrdersData, set root data obj -----------------
     };
 
@@ -76,7 +76,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setDataDB}) => {
         const orderData = {...orderObj, 'items': itemsData};
         const deleteData = {...ordersData, [orderNo]: orderData};
         setOrderObj(orderData);
-        setDataDB(deleteData, 'orders');
+        setRootData(deleteData, 'orders');
     };
 
     return (

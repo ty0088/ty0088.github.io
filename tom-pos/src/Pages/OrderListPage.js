@@ -7,7 +7,7 @@ import OrderFilterSort from '../Components/OrdersFilterSort';
 
 //set root data obj when deleting, setOrdersData -------------------
 
-const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => {
+const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) => {
     const [messageFlag, setMessageFlag] = useState(false);
     const [orderNos, setOrderNos] = useState([]);
     const [delOrder, setDelOrder] = useState('');
@@ -84,7 +84,7 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setDataDB}) => 
         let deleteData = {...ordersData};
         delete deleteData[delOrder];
         setFilterSort(deleteData);
-        setDataDB(deleteData, 'orders');
+        setRootData(deleteData, 'orders');
         //if delete order is current order, reset current order
         if (currOrder === delOrder) {
             setCurrOrder();
