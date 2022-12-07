@@ -19,18 +19,13 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
     const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
-        console.log(orderObj['disc-rate']);
-    })
-
-    //update order item list whenever new order data recieved
-    useEffect(() => {
         if (Object.keys(orderObj).length > 0) {
             setOrderItems(orderObj['items']);
             setDiscRate(orderObj['disc-rate']);
         }
-    }, [orderObj])
+    }, [orderObj]);
 
-    //update sub-total and tax prices when orderItems update
+    //update sub-total and tax prices when orderItems or discRate changes
     useEffect(() => {
         //return order sub total price (exc any discount): sum for all items ((unit-price + add-price) / effective total tax rate)
         const getSubTotal = () => {
@@ -42,7 +37,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
         };
         setSubTotal(getSubTotal());
         setTax(getTax());
-    }, [orderItems, discRate]); //discRate required as dependency ?? -------------
+    }, [orderItems, discRate]);
 
     //update order total price: sub-total + tax (discount applied to subtotal and tax if applicable)
     useEffect(() => {
@@ -58,13 +53,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
     }, [discRate, subTotal]);
 
     const editClick = () => {
-        //prompt order edit pop up ----
         setEditFlag(true);
-    };
-
-    const discountInput = () => {
-        //get discount info from user input ----- user clicks edit and inputs discount type and amount
-        //setDiscType({type, amount})
     };
 
     //updates order with orderNo in ordersData and DB
@@ -107,7 +96,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
                 </div>
             </div>
             {editFlag &&
-                <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder} />
+                <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder}/>
             }
         </div>
     );

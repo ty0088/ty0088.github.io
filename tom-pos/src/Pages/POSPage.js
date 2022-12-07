@@ -44,6 +44,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             orderData = {...orderObj, 'items': itemsArr};
         }
         const addData = {...ordersData, [orderNo]: orderData}
+        console.log(addData);
         setRootData(addData, 'orders');
     };
 

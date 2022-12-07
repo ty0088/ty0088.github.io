@@ -31,6 +31,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
             //submit edit
             //input validation
             const [result, input, errMessage] = checkInputs(tempItem);
+            console.log(result, input, errMessage);
             if (result) {
                 //reset flags and buttons and set changed item and update db
                 setEditFlag(false);
@@ -120,8 +121,9 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                     errMessage = 'Price must be non-blank and a number equal or larger than 0';
                     return isNumber(obj['price']) && obj['price'] >= 0 ? true : false;
                 case 'tax-band':
-                    //tax-band: none
-                    return true;
+                    //tax-band: Required
+                    errMessage = 'VAT Band is required, select a non-blank band';
+                    return obj['tax-band'] !== '';
                 case 'cost': 
                     //cost: must be +ve number or blank
                     errMessage = 'Cost must a number equal or larger than 0 or left blank. If left blank, profit margin calculations will not work';
@@ -170,7 +172,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         errElem.style.width = `${errInput.parentElement.clientWidth - leftPos}.px`;
         errElem.classList.add('error-message');
         errElem.innerText = `${input} field is invalid. ${message}`;
-        document.querySelector(`.item-row-container > [data-id='${itemID}']`).appendChild(errElem);
+        document.querySelector(`.item-row[data-id='${itemID}']`).appendChild(errElem);
     };
 
     const isNameRepeat = (newName) => {

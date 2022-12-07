@@ -27,6 +27,7 @@ const ItemManage = ({itemsData, taxData, menusData, setRootData}) => {
         'qty': '',
         'price': 0,
         'tax-band': '',
+        'tax-rate': '',
         'cost': '',
         'print-kitchen': false,
         'print-customer': true
@@ -121,7 +122,7 @@ const ItemManage = ({itemsData, taxData, menusData, setRootData}) => {
         const menu = filterMenu === 'ALL' ? '' : filterMenu;
         const addData = {...tempData, [itemID]: {...itemTemplate, 'sub-menu': menu, itemID: itemID}};
         setSearchName('');
-        document.getElementById('search-name').value = '';
+        document.getElementById('item-search-name').value = '';
         setTempData(addData);
         setSortFilter(addData);
     };

@@ -6,6 +6,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
     const [orderNotes, setOrderNotes] = useState(orderObj['order-notes']);
     const [disc, setDisc] = useState(orderObj['disc-rate']);
 
+    //on initial render of pop up, have correct discount button selected
     useEffect(() => {
         const discBtnSelect = () => {
             document.querySelectorAll('[data-disc]').forEach(elem => elem.classList.remove('selected'));
@@ -16,7 +17,9 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
             } else if (disc === 10) {
                 document.querySelector('[data-disc="10"]').classList.add('selected');
             } else {
-                document.getElementById('cust-disc-btn').classList.add('selected');
+                const elem = document.getElementById('cust-disc-btn');
+                elem.classList.add('selected');
+                elem.innerText = `${disc} *`;
             }
         };
         discBtnSelect();
@@ -49,18 +52,19 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
 
     const discClick = (e) => {
         const clickRate = parseFloat(e.target.getAttribute('data-disc'));
+        //if clicking custom rate that is not set, focus on input
         if (isNaN(clickRate)) {
             document.getElementById('cust-disc-input').focus();
         } else {
             document.querySelectorAll('[data-disc]').forEach(elem => elem.classList.remove('selected'));
             e.target.classList.add('selected');
             setDisc(clickRate);
-
         }
     };
 
     const discChange = (e) => {
         let changeRate = parseFloat(e.target.value);
+        //changeRate is required to be between 0 and 100
         changeRate = isNaN(changeRate) ? 0 : changeRate > 100 ? 100 : changeRate < 0 ? 0 : changeRate;
         setDisc(changeRate);
         const custElem = document.getElementById('cust-disc-btn');
