@@ -121,7 +121,6 @@ const POSMenu = ({itemsData, menusData, addItem}) => {
         //if mods/options available, prompt pop up and allow user to change mods/options and submit or cancel -------------
         //if not, call addItem
         addItem(itemID, [], [], '');
-        console.log(itemsData[itemID]['item-name']);
     };
     
     //Menu nav bar component

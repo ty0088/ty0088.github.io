@@ -23,6 +23,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
             }
         };
         discBtnSelect();
+        // eslint-disable-next-line
     }, []);
 
     const editSaveClick = () => {

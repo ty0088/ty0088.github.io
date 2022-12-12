@@ -27,31 +27,45 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         }
     }, [ordersData, orderNo]);
 
+    //addClick ------------
+
     //add item to Order
     const addItem = (id, mods, opts, notes) => {
         let orderData = {};
-        const [result, itemIndex] = doesItemExist(id, mods, opts)
+        const [result, itemIndex] = isItemRepeat(id, mods, opts, notes);
         if (!result) {
-            //if item does not exist then add new item to order
+            //if item is unique then add new item to order
             const itemObj = {...getItemObj(id), 'qty': 1, 'mods': mods, 'options': opts, 'notes': notes};
             orderData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
             setOrderObj(orderData);
         } else {
-            //if item does already exist then add 1 to item qty
+            //if item already exist then add 1 to item qty
             const plusQty = orderObj['items'][itemIndex]['qty'] + 1;
             let itemsArr = [...orderObj['items']];
             itemsArr[itemIndex]['qty'] = plusQty;
             orderData = {...orderObj, 'items': itemsArr};
         }
         const addData = {...ordersData, [orderNo]: orderData}
-        console.log(addData);
         setRootData(addData, 'orders');
     };
 
-    //checks whether item (inc mods/options/notes) already exists -------------------------
-    const doesItemExist= (id, mods, opts, notes) => {
-        const itemIndex = 0; //-----------
-        return [false, itemIndex]; //---------------- only new items to be created atm
+    const isItemRepeat= (id, mods, opts, notes) => {
+        const existingItems = [...orderObj['items']];
+        let result = false;
+        let index = 0;
+        //For each existing item check if IDs, mods, options and notes all match. If all matches, return true and index of matching item
+        result = existingItems.some((item, itemIndex) => {
+            // console.log(item);
+            if (item['id'] === id) {
+                index = itemIndex;
+                return ((item['mods'].sort().every((item, i) => item === mods.sort()[i]) && item['mods'].length === mods.length)
+                    && (item['options'].sort().every((item, i) => item === opts.sort()[i]) && item['options'].length === opts.length))
+                    && item['notes'].trim() === notes.trim();
+            } else {
+                return false;
+            }
+        });
+        return [result, index];
     };
 
     //return new orderItemObj with item values

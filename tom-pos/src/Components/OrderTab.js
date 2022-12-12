@@ -6,7 +6,7 @@ import OrderEditPopUp from './OrderEditPopUp';
 
 //--------------------------------------------------------------------------------------
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items
-//- update order obj price values when adding items. Only update DB when order is payed and closed?
+//- update add-price, date-closed, disc-price, status = 'CLOSED', sub-price, tax-due, tip-price, total-price on PAY
 //--------------------------------------------------------------------------------------
 
 const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootData}) => {
