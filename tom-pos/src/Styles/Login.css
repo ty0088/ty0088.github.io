@@ -7,10 +7,6 @@
     font-size: 20px;
 }
 
-#logo {
-    font-weight: 900;
-}
-
 #login-input-container {
     margin-top: 20px;
 }
@@ -56,4 +52,11 @@
     font-weight: 700;
     color: red;
     text-align: center;
+}
+
+.logo {
+    font-size: 45px;
+    font-weight: 800;
+    text-align: center;
+    align-content: center;
 }

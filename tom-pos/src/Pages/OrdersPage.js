@@ -80,6 +80,10 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
 
     return (
         <div id='order-container'>
+            <div className='flex-column-center'>
+                <span className='logo'>TOM POS</span>
+                <h4>Web Based Point of Sale System</h4>
+            </div>
             <div className='order-link-container'>
                 {currOrdFlag &&
                     <span className='order-link' onClick={currOrderClick}>CURRENT Order {currOrder}</span>

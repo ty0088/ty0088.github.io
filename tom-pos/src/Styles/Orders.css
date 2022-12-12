@@ -1,7 +1,7 @@
 #order-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 460px 40px;
+    grid-template-rows: 100px 360px 40px;
 }
 
 .order-link-container {

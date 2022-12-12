@@ -20,7 +20,7 @@ const Login = () => {
 
     return (
         <div id='login-container'>
-            <h1 id='logo'>TOM POS</h1>
+            <span className='logo'>TOM POS</span>
             <h4>Web Based Point of Sale System</h4>
             <div id='login-input-container'>
                 <form>
