@@ -37,7 +37,6 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             //if item is unique then add new item to order
             const itemObj = {...getItemObj(id), 'qty': 1, 'mods': mods, 'options': opts, 'notes': notes};
             orderData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
-            setOrderObj(orderData);
         } else {
             //if item already exist then add 1 to item qty
             const plusQty = orderObj['items'][itemIndex]['qty'] + 1;
@@ -45,6 +44,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             itemsArr[itemIndex]['qty'] = plusQty;
             orderData = {...orderObj, 'items': itemsArr};
         }
+        setOrderObj(orderData);
         const addData = {...ordersData, [orderNo]: orderData}
         setRootData(addData, 'orders');
     };

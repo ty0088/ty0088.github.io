@@ -9,12 +9,14 @@ import formatCurrency from '../Util/formatCurrency';
 
 const OrderRow = ({index, itemObj, deleteItem}) => {
     const [itemPrice, setItemPrice] = useState(0);
+    const itemQty = itemObj['qty'];
 
     useEffect(() => {
         //set individual item total price = (unit price + addition price) * qty
+        console.log('!');
         const totalPrice = ((itemObj['unit-price'] + itemObj['add-price']) * itemObj['qty']);
         setItemPrice(totalPrice);
-    }, [itemObj])
+    }, [itemQty, itemObj])
 
     const deleteClick = () => {
         deleteItem(index);
