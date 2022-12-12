@@ -55,7 +55,6 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         let index = 0;
         //For each existing item check if IDs, mods, options and notes all match. If all matches, return true and index of matching item
         result = existingItems.some((item, itemIndex) => {
-            // console.log(item);
             if (item['id'] === id) {
                 index = itemIndex;
                 return ((item['mods'].sort().every((item, i) => item === mods.sort()[i]) && item['mods'].length === mods.length)

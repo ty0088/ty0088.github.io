@@ -5,8 +5,9 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
     const [orderName, setOrderName] = useState(orderObj['order-name']);
     const [orderNotes, setOrderNotes] = useState(orderObj['order-notes']);
     const [disc, setDisc] = useState(orderObj['disc-rate']);
+    const [custDisc, setcustDisc] = useState(disc === 0 ? '' : disc === 5 ? '' : disc === 10 ? '' : disc);
 
-    //on initial render of pop up, have correct discount button selected
+    //correct discount button is selected
     useEffect(() => {
         const discBtnSelect = () => {
             document.querySelectorAll('[data-disc]').forEach(elem => elem.classList.remove('selected'));
@@ -19,12 +20,11 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
             } else {
                 const elem = document.getElementById('cust-disc-btn');
                 elem.classList.add('selected');
-                elem.innerText = `${disc} *`;
+                elem.innerText = `${custDisc} *`;
             }
         };
         discBtnSelect();
-        // eslint-disable-next-line
-    }, []);
+    }, [disc, custDisc]);
 
     const editSaveClick = () => {
         const saveObj = {
@@ -67,11 +67,12 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
         let changeRate = parseFloat(e.target.value);
         //changeRate is required to be between 0 and 100
         changeRate = isNaN(changeRate) ? 0 : changeRate > 100 ? 100 : changeRate < 0 ? 0 : changeRate;
+        setcustDisc(changeRate);
         setDisc(changeRate);
         const custElem = document.getElementById('cust-disc-btn');
         custElem.setAttribute('data-disc', changeRate);
         custElem.innerText = `${changeRate} *`;
-    }
+    };
 
     return (
         <div id='order-edit-container'>
@@ -89,10 +90,10 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
                         <span className='order-disc-button' data-disc='0' onClick={discClick}>0</span>
                         <span className='order-disc-button' data-disc='5' onClick={discClick}>5</span>
                         <span className='order-disc-button' data-disc='10' onClick={discClick}>10</span>
-                        <span className='order-disc-button' id='cust-disc-btn' onClick={discClick}>Custom</span>
+                        <span className='order-disc-button' id='cust-disc-btn' data-disc={custDisc} onClick={discClick}>Custom</span>
                         <div id='disc-input-div'> 
                             *custom amount :
-                            <input type='number' id='cust-disc-input' min='0' max='100' value={disc} onChange={discChange}/>
+                            <input type='number' id='cust-disc-input' min='0' max='100' value={custDisc} onChange={discChange}/>
                         </div>
                     </div>
                 </div>
