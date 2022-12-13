@@ -27,7 +27,7 @@ const OrderRow = ({index, itemObj, deleteItem}) => {
     };
     
     return (
-        <div className='order-row-container'>
+        <div className='order-row-container' data-row-index={index}>
             <div className='order-row'>
                 <span className='flex-row-center bold700'>{itemObj['qty']}</span>
                 <span className='flex-row-start item-name' onClick={itemClick}>{itemObj['name']}</span>

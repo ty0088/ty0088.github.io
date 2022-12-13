@@ -9,7 +9,7 @@ import OrderEditPopUp from './OrderEditPopUp';
 //- update add-price, date-closed, disc-price, status = 'CLOSED', sub-price, tax-due, tip-price, total-price on PAY
 //--------------------------------------------------------------------------------------
 
-const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootData}) => {
+const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootData, lastItemIndex}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
@@ -24,6 +24,13 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
             setDiscRate(orderObj['disc-rate']);
         }
     }, [orderObj]);
+
+    //when adding item, the appropriate line item is scrolled into view
+    useEffect(() => {
+        if (document.querySelector(`[data-row-index="${lastItemIndex}"]`)) {
+            document.querySelector(`[data-row-index="${lastItemIndex}"]`).scrollIntoView();
+        }
+    });
 
     //update sub-total and tax prices when orderItems or discRate changes
     useEffect(() => {
@@ -71,7 +78,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
             </div>
             <div id='order-tab-rows'>
                 {orderItems.length > 0 &&
-                    orderItems.map((item, i) => <OrderRow key={i} index={i} itemObj={item} taxData={taxData} deleteItem={deleteItem} />)
+                    orderItems.map((item, i) => <OrderRow key={i} index={i} itemObj={item} taxData={taxData} deleteItem={deleteItem} lastItemIndex={lastItemIndex}/>)
                 }
             </div>
             <div id='order-sub-container'>

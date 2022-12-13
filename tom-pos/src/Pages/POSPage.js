@@ -11,6 +11,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
     const [addFlag, setAddFlag] = useState(false);
     const [orderObj, setOrderObj] = useState({});
     const [newItemID, setNewItemID] = useState('');
+    const [lastItemIndex, setLastItemIndex] = useState('');
     const orderItemObj = {
         'id': '',
         'name': '',
@@ -59,12 +60,14 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             //if item is unique then add new item to order
             const itemObj = {...getItemObj(id), 'qty': 1, 'mods': mods, 'options': opts, 'notes': notes};
             orderData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
+            setLastItemIndex(Object.keys(orderData).length);
         } else {
             //if item already exist then add 1 to item qty
             const plusQty = orderObj['items'][itemIndex]['qty'] + 1;
             let itemsArr = [...orderObj['items']];
             itemsArr[itemIndex]['qty'] = plusQty;
             orderData = {...orderObj, 'items': itemsArr};
+            setLastItemIndex(itemIndex);
         }
         setOrderObj(orderData);
         const addData = {...ordersData, [orderNo]: orderData}
@@ -124,7 +127,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} taxData={taxData} deleteItem={deleteItem}
-                setRootData={setRootData} />
+                setRootData={setRootData} lastItemIndex={lastItemIndex}/>
         </div>
     );
 };
