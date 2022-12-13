@@ -46,7 +46,6 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
     };
 
     //NEW Order
-    //when DB is updated
     const newOrderClick = () => {
         const nextOrderNo = getNextOrderNo();
         setCurrOrder(nextOrderNo);
@@ -76,7 +75,7 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
         const nextInt = lastInts + 1;
         const strZero = nextInt.toString().length === 1 ? '000' : nextInt.toString().length === 2 ? '00' : nextInt.toString().length === 3 ? '0' : '';
         return `${lastChar}${strZero}${nextInt}`;
-    }
+    };
 
     return (
         <div id='order-container'>

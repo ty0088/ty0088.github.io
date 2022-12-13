@@ -13,7 +13,6 @@ const OrderRow = ({index, itemObj, deleteItem}) => {
 
     useEffect(() => {
         //set individual item total price = (unit price + addition price) * qty
-        console.log('!');
         const totalPrice = ((itemObj['unit-price'] + itemObj['add-price']) * itemObj['qty']);
         setItemPrice(totalPrice);
     }, [itemQty, itemObj])

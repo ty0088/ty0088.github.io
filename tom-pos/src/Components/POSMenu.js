@@ -2,7 +2,7 @@ import '../Styles/POS.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const POSMenu = ({itemsData, menusData, addItem}) => {
+const POSMenu = ({itemsData, menusData, addClick}) => {
     const [menuFlag, setMenuFlag] = useState(false);
     const [itemFlag, setItemFlag] = useState(false);
     const [menuItems, setMenuItems] = useState([]);
@@ -120,7 +120,8 @@ const POSMenu = ({itemsData, menusData, addItem}) => {
         //check if mods/options available -------------
         //if mods/options available, prompt pop up and allow user to change mods/options and submit or cancel -------------
         //if not, call addItem
-        addItem(itemID, [], [], '');
+        // addItem(itemID, [], [], '');
+        addClick(itemID);
     };
     
     //Menu nav bar component

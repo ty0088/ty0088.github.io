@@ -4,10 +4,13 @@ import { Link, useParams } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
+import AddItemPopUp from '../Components/AddItemPopUp';
 
 const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
     const { orderNo } = useParams();
+    const [addFlag, setAddFlag] = useState(false);
     const [orderObj, setOrderObj] = useState({});
+    const [newItemID, setNewItemID] = useState('');
     const orderItemObj = {
         'id': '',
         'name': '',
@@ -27,7 +30,26 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         }
     }, [ordersData, orderNo]);
 
-    //addClick ------------
+    const addClick = (itemID) => {
+        //if item has mods/options available, call pop up, else just add item
+        setNewItemID(itemID);
+        if (itemsData[itemID]['mods'].length > 0 || itemsData[itemID]['options'].length > 0) {
+            setAddFlag(true);
+        } else {
+            confirmAdd(itemID, [], [], '');
+        }
+    };
+
+    //confirm add ---------
+    const confirmAdd = (id, mods, opts, notes) => {
+        setAddFlag(false);
+        addItem(id, mods, opts, notes);
+    };
+
+    //cancel add ----------
+    const cancelAdd = () => {
+        setAddFlag(false);
+    };
 
     //add item to Order
     const addItem = (id, mods, opts, notes) => {
@@ -91,13 +113,16 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
 
     return (
         <div id='pos-container'>
+            {addFlag &&
+                <AddItemPopUp itemID={newItemID} confirmAdd={confirmAdd} cancelAdd={cancelAdd} itemData={itemsData[newItemID]} />
+            }
             <div id='pos-nav'>
                 <Link to='/tom-pos/orders' className='pos-nav-link'>ORDERS</Link>
                 <Link to='/tom-pos/open-orders' className='pos-nav-link'>OPEN Orders</Link>
                 <Link to='/tom-pos/backend' className='pos-nav-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
-            <POSMenu menusData={menusData} itemsData={itemsData} addItem={addItem} />
+            <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} taxData={taxData} deleteItem={deleteItem}
                 setRootData={setRootData} />
         </div>
