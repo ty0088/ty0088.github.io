@@ -2,8 +2,6 @@ import '../Styles/AddItemPopUp.css';
 import React, { useState, useEffect } from 'react';
 
 const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData}) => {
-    const [mods, setMods] = useState();
-    const [opts, setOpts] = useState();
 
     const addSaveClick = () => {
         //get input mods, options, notes and add item
