@@ -18,7 +18,7 @@
 #item-header {
     padding: 3px 0 3px 0;
     display: grid;
-    grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px;
+    grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 200px 200px 100px 100px;
     grid-template-rows: 1fr;
     font-weight: 700;
     border-top: 1px solid gray;
@@ -34,7 +34,7 @@
 .item-row {
     padding: 5px 0 5px 0;
     display: grid;
-    grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 150px 150px 100px 100px;
+    grid-template-columns: 30px 60px 150px 100px 150px 60px 60px 60px 60px 200px 200px 100px 100px;
     grid-template-rows: 1fr;
 }
 
@@ -64,11 +64,11 @@
 }
 
 .mod-row > input {
-    width: 65%;
+    width: 37%;
 }
 
 .mod-row > button {
-    width: 35%;
+    width: 26%;
 }
 
 .check-box {
@@ -106,7 +106,7 @@
     font-size: 0.8em;
     font-weight: 600;
     padding: 0 0 5px 0;
-    width: 1240px;
+    width: 1440px;
 }
 
 #menu-sort-filter-bar > * {

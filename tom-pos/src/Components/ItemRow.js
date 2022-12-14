@@ -31,7 +31,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
             //submit edit
             //input validation
             const [result, input, errMessage] = checkInputs(tempItem);
-            console.log(result, input, errMessage);
             if (result) {
                 //reset flags and buttons and set changed item and update db
                 setEditFlag(false);
@@ -75,18 +74,28 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         setTempItem(tempChange);
     };
 
-    //return correct input value depending on which input is changed
+    //return correct input value depending on which input is changed --------------
     const getInputValue = (e) => {
         let input = e.target.getAttribute('data-input')
         const inputType = e.target.getAttribute('type');
         let value = null;
         if (inputType === 'checkbox') {
             value = e.target.checked;
+        } else if (/mods-price/.test(input)) {
+            const changeIndex = parseInt(input.substring(11, input.length));
+            value = [...tempItem['mods-price']];
+            value.splice(changeIndex, 1, e.target.value);
+            input = 'mods-price';
         } else if (/mods/.test(input)) {
             const changeIndex = parseInt(input.substring(5, input.length));
             value = [...tempItem['mods']];
             value.splice(changeIndex, 1, e.target.value);
             input = 'mods';
+        } else if (/options-price/.test(input)) {
+            const changeIndex = parseInt(input.substring(14, input.length));
+            value = [...tempItem['options-price']];
+            value.splice(changeIndex, 1, e.target.value);
+            input = 'options-price';
         } else if (/options/.test(input)) {
             const changeIndex = parseInt(input.substring(8, input.length));
             value = [...tempItem['options']];
@@ -136,8 +145,14 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                     //mods: must be array. array can be empty, but no '' values
                     const modIndex = obj['mods'].indexOf('');
                     lastInput = `mods-${modIndex}`;
-                    errMessage = 'Input must not be empty, delete mod field if not using';
+                    errMessage = 'Label must not be blank, delete label if not using';
                     return Array.isArray(obj['mods']) && !obj['mods'].includes('') ? true : false;
+                case 'mods-price':
+                    //mods: must be array, values must be a number and non blank
+                    const modPriceIndex = obj['mods-price'].indexOf('');
+                    lastInput = `mods-price-${modPriceIndex}`;
+                    errMessage = 'Price must not be blank and a number';
+                    return Array.isArray(obj['mods-price']) && !obj['mods-price'].includes('')? true : false;
                 case 'options':
                     //options: must be array. array can be empty, but no '' values
                     const opIndex = obj['options'].indexOf('');
@@ -189,17 +204,22 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
     const modOpDelete = (e) => {
         const input = e.target.getAttribute('data-input');
         let changeIndex = 0;
-        let type = '';
+        let type1 = '';
+        let type2 = '';
         if (/mods/.test(input)) {
             changeIndex = parseInt(input.substring(5, input.length));
-            type = 'mods';        
+            type1 = 'mods';   
+            type2 = 'mods-price';
         } else if (/options/.test(input)) {
             changeIndex = parseInt(input.substring(8, input.length));
-            type = 'options';
+            type1 = 'options';
+            type2 = 'options-price';
         }
-        const arr = [...tempItem[type]];
-        arr.splice(changeIndex, 1);
-        setTempItem({...tempItem, [type]: arr});
+        const arr1 = [...tempItem[type1]];
+        const arr2 = [...tempItem[type2]];
+        arr1.splice(changeIndex, 1);
+        arr2.splice(changeIndex, 1);
+        setTempItem({...tempItem, [type1]: arr1, [type2]: arr2});
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
     };
@@ -207,8 +227,17 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
     //add a new mod or option
     const modOpAdd = (e) => {
         let input = e.target.getAttribute('data-input');
-        const tempArr = [...tempItem[input], ''];
-        setTempItem({...tempItem, [input]: tempArr});
+        let tempArr1 = [];
+        let tempArr2 = [];
+        if (input === 'mods') {
+            tempArr1 = [...tempItem['mods'], ''];
+            tempArr2 = [...tempItem['mods-price'], 0];
+            setTempItem({...tempItem, 'mods': tempArr1, 'mods-price': tempArr2});
+        } else {
+            tempArr1 = [...tempItem['options'], ''];
+            tempArr2 = [...tempItem['options-price'], 0];
+            setTempItem({...tempItem, 'options': tempArr1, 'options-price': tempArr2});
+        }
     };
 
     const deleteClick = () => {
@@ -252,10 +281,10 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 </span>
                 <span>{tempItem['qty']}</span>
                 <div className='mod-list'>
-                    {tempItem['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}
+                    {tempItem['mods'].map((mod, i) => <span key={i}>- {mod} : <span>{formatCurrency(tempItem['mods-price'][i])}</span></span>)}
                 </div>
                 <div className='mod-list'>
-                    {tempItem['options'].map((mod, i) => <span key={i}>- {mod}</span>)}
+                    {tempItem['options'].map((opt, i) => <span key={i}>- {opt} : <span>{formatCurrency(tempItem['options-price'][i])}</span></span>)}
                 </div>
                 <YesNoSpan bool={tempItem['print-customer']} />
                 <YesNoSpan bool={tempItem['print-kitchen']} />
@@ -287,6 +316,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                             return (
                                 <div className='mod-row' key={i}>
                                     <input type='text' data-input={`mods-${i}`} value={mod} onChange={handleChange}/>
+                                    <input type='number' data-input={`mods-price-${i}`} value={tempItem['mods-price'][i]} onChange={handleChange}/>
                                     <button type='button' data-input={`mods-${i}`} onClick={modOpDelete}>Delete</button>
                                 </div>
                             );  
@@ -300,6 +330,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                             return (
                                 <div className='mod-row' key={i}>
                                     <input type='text' data-input={`options-${i}`} value={option} onChange={handleChange}/>
+                                    <input type='number' data-input={`options-price-${i}`} value={tempItem['options-price'][i]} onChange={handleChange}/>
                                     <button type='button' data-input={`options-${i}`} onClick={modOpDelete}>Delete</button>
                                 </div>
                             );  
