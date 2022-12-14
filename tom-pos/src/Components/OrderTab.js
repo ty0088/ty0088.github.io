@@ -59,6 +59,26 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
         setSubDiscount(subTotal * (discRate / 100));
     }, [discRate, subTotal]);
 
+    //update order prices whenever total price is updated
+    useEffect(() => {
+        updateOrderPrices();
+    }, [totalPrice]);
+
+    const updateOrderPrices = () => {
+        //update add-price, disc-price, sub-price, tax-due, total-price
+        const priceData = {
+            ...ordersData,
+            [orderNo]: {
+                ...ordersData[orderNo],
+                'disc-price': Math.round(subDiscount * 100 + Number.EPSILON ) / 100,
+                'sub-price': Math.round( subTotal * 100 + Number.EPSILON ) / 100,
+                'tax-due': Math.round( tax * 100 + Number.EPSILON ) / 100,
+                'total-price': Math.round( totalPrice * 100 + Number.EPSILON ) / 100
+            }
+        };
+        setRootData(priceData, 'orders');
+    };
+
     const editClick = () => {
         setEditFlag(true);
     };
