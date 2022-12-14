@@ -41,26 +41,38 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         }
     };
 
-    //confirm add ---------
     const confirmAdd = (id, mods, opts, notes) => {
         setAddFlag(false);
         addItem(id, mods, opts, notes);
     };
 
-    //cancel add ----------
     const cancelAdd = () => {
         setAddFlag(false);
     };
 
+    const getAddPrice = (id, mods, opts) => {
+        const modsSum = mods.reduce((sum, currMod) => {
+            const modIndex = itemsData[id]['mods'].indexOf(currMod);
+            return sum + itemsData[id]['mods-price'][modIndex];
+        }, 0);
+        const optsSum = opts.reduce((sum, currOpt) => {
+            const optIndex = itemsData[id]['options'].indexOf(currOpt);
+            return sum + itemsData[id]['options-price'][optIndex];
+        }, 0);
+        return modsSum + optsSum;
+    };
+
+    //calculate item add-price based on mods-price array and options-price array ------------
     //add item to Order
     const addItem = (id, mods, opts, notes) => {
         let orderData = {};
         const [result, itemIndex] = isItemRepeat(id, mods, opts, notes);
+        const addPrice = getAddPrice(id, mods, opts);
         if (!result) {
             //if item is unique then add new item to order
-            const itemObj = {...getItemObj(id), 'qty': 1, 'mods': mods, 'options': opts, 'notes': notes};
+            const itemObj = {...getItemObj(id), 'add-price': addPrice, 'qty': 1, 'mods': mods, 'options': opts, 'notes': notes};
             orderData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
-            setLastItemIndex(Object.keys(orderData).length);
+            setLastItemIndex(Object.keys(orderData).length - 1);
         } else {
             //if item already exist then add 1 to item qty
             const plusQty = orderObj['items'][itemIndex]['qty'] + 1;

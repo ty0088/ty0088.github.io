@@ -65,7 +65,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         //clear any previous error messages
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
-        //parse price and cost number inputs
+        //parse number inputs
         if (input === 'price' || (input === 'cost' && value !== '')) {
             value = parseFloat(value);
         }
@@ -84,7 +84,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         } else if (/mods-price/.test(input)) {
             const changeIndex = parseInt(input.substring(11, input.length));
             value = [...tempItem['mods-price']];
-            value.splice(changeIndex, 1, e.target.value);
+            value.splice(changeIndex, 1, e.target.value === '' ? 0 : parseFloat(e.target.value));
             input = 'mods-price';
         } else if (/mods/.test(input)) {
             const changeIndex = parseInt(input.substring(5, input.length));
@@ -94,7 +94,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         } else if (/options-price/.test(input)) {
             const changeIndex = parseInt(input.substring(14, input.length));
             value = [...tempItem['options-price']];
-            value.splice(changeIndex, 1, e.target.value);
+            value.splice(changeIndex, 1, e.target.value === '' ? 0 : parseFloat(e.target.value));
             input = 'options-price';
         } else if (/options/.test(input)) {
             const changeIndex = parseInt(input.substring(8, input.length));
@@ -152,7 +152,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                     const modPriceIndex = obj['mods-price'].indexOf('');
                     lastInput = `mods-price-${modPriceIndex}`;
                     errMessage = 'Price must not be blank and a number';
-                    return Array.isArray(obj['mods-price']) && !obj['mods-price'].includes('')? true : false;
+                    return Array.isArray(obj['mods-price']) && (!obj['mods-price'].includes(''))? true : false;
                 case 'options':
                     //options: must be array. array can be empty, but no '' values
                     const opIndex = obj['options'].indexOf('');

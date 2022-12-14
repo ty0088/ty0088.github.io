@@ -22,32 +22,32 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData}) => {
             <div id='add-item-popup' >
                 <span id='add-head-span'>{itemData['item-name']}</span>
                 <div className='flex-row-center'>
-                    <fieldset className='add-fieldset'>
-                        <legend>Mods</legend>
-                        {itemData['mods'].length > 0 &&
-                        itemData['mods'].map((mod, i) => {
-                            return (
-                                <div key={i}>
-                                    <input type="checkbox" id={`mod-check-${i}`} value={mod} />
-                                    <label htmlFor={`mod-check-${i}`}>{mod}</label>
-                                </div>
-                            )
-                        })
-                    }
-                    </fieldset>
-                    <fieldset className='add-fieldset'>
-                        <legend>Options</legend>
-                        {itemData['options'].length > 0 &&
-                            itemData['options'].map((opt, i) => {
+                    {itemData['mods'].length > 0 &&
+                        <fieldset className='add-fieldset'>
+                            <legend>Mods</legend>
+                            {itemData['mods'].map((mod, i) => {
                                 return (
                                     <div key={i}>
-                                        <input type="checkbox" id={`opt-check-${i}`} value={opt} />
-                                        <label htmlFor={`opt-check-${i}`}>{opt}</label>
+                                        <input type="checkbox" id={`mod-check-${i}`} value={mod} />
+                                        <label htmlFor={`mod-check-${i}`}>{mod}</label>
                                     </div>
                                 )
-                            })
-                        }
-                    </fieldset>
+                            })}
+                        </fieldset>
+                    }
+                    {itemData['options'].length > 0 &&
+                        <fieldset className='add-fieldset'>
+                            <legend>Options</legend>
+                                {itemData['options'].map((opt, i) => {
+                                    return (
+                                        <div key={i}>
+                                            <input type="checkbox" id={`opt-check-${i}`} value={opt} />
+                                            <label htmlFor={`opt-check-${i}`}>{opt}</label>
+                                        </div>
+                                    )
+                                })}
+                        </fieldset>
+                    }
                 </div>
                 <div id='note-input-cont'>
                     <label htmlFor='notes-input'>Notes:</label>
