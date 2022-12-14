@@ -62,7 +62,6 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         return modsSum + optsSum;
     };
 
-    //calculate item add-price based on mods-price array and options-price array ------------
     //add item to Order
     const addItem = (id, mods, opts, notes) => {
         let orderData = {};
@@ -82,7 +81,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             setLastItemIndex(itemIndex);
         }
         setOrderObj(orderData);
-        const addData = {...ordersData, [orderNo]: orderData}
+        const addData = {...ordersData, [orderNo]: orderData};
         setRootData(addData, 'orders');
     };
 

@@ -74,7 +74,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         setTempItem(tempChange);
     };
 
-    //return correct input value depending on which input is changed --------------
+    //return correct input value depending on which input is changed
     const getInputValue = (e) => {
         let input = e.target.getAttribute('data-input')
         const inputType = e.target.getAttribute('type');

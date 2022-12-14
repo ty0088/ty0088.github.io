@@ -6,7 +6,7 @@ import OrderEditPopUp from './OrderEditPopUp';
 
 //--------------------------------------------------------------------------------------
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items
-//- update add-price, date-closed, disc-price, status = 'CLOSED', sub-price, tax-due, tip-price, total-price on PAY
+//- update status = 'CLOSED', tip-price, total-price on PAY
 //--------------------------------------------------------------------------------------
 
 const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootData, lastItemIndex}) => {
