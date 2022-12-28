@@ -10,7 +10,7 @@ import OrderEditPopUp from './OrderEditPopUp';
 //- PRINT button click -> pop up confirming print receipt(s)
 //--------------------------------------------------------------------------------------
 
-const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, lastItemIndex, getAddPrice}) => {
+const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
@@ -92,9 +92,9 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
 
     const updateItem = (itemObj, index) => {
         let itemsArr = [...ordersData[orderNo]['items']];
+        setLastItemIndex(index);
         itemsArr.splice(index, 1, itemObj);
         const updateData = {...ordersData, [orderNo]: {...orderObj, 'items': itemsArr}};
-        console.log(updateData);
         setRootData(updateData, 'orders');
     };
 

@@ -1,6 +1,8 @@
 import '../Styles/AddItemPopUp.css';
 import React, { useState, useEffect } from 'react';
 
+//options to show prices --------------
+
 const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData}) => {
 
     const addSaveClick = () => {

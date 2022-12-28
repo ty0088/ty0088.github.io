@@ -4,10 +4,6 @@ import formatCurrency from '../Util/formatCurrency';
 import EditItemPopUp from './EditItemPopUp';
 import DeletePopUp from './DeletePopUp';
 
-//------------------------------------------------------
-// - options need to show any additional prices
-//------------------------------------------------------
-
 const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPrice}) => {
     const [editItemFlag, setEditItemFlag] = useState(false);
     const [deleteFlag, setDeleteFlag] = useState(false);
@@ -39,12 +35,7 @@ const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPric
     };
 
     const saveItemClick = () => {
-        //get all inputs and create orderObj copy and update ordersObj -------------
-        //get mods - [id^="mod-check"]
-        //get options - [id^="opt-check"]
-        //get notes - #notes-input
-        //get qty - #edit-qty
-
+        //get mods, options, notes, qty inputs and calc additional price
         let inputMods = [];
         let inputOpts = [];
         document.querySelectorAll('[id^="mod-check"]').forEach(elem => {if (elem.checked) {inputMods.push(elem.value)}});
@@ -53,7 +44,8 @@ const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPric
         const itemQty = parseInt(document.getElementById('edit-qty').innerText);
         const addPrice = getAddPrice(itemObj['id'], inputMods, inputOpts);
         setEditItemFlag(false);
-        updateItem({...itemObj, 'add-price': addPrice, 'qty': itemQty, 'mods': inputMods, 'options': inputOpts, 'notes': inputNotes}, index); //---------
+        //update data
+        updateItem({...itemObj, 'add-price': addPrice, 'qty': itemQty, 'mods': inputMods, 'options': inputOpts, 'notes': inputNotes}, index);
     };
 
     const cancelItemClick = () => {

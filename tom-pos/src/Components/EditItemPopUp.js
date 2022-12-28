@@ -2,6 +2,8 @@ import '../Styles/EditItemPopUp.css';
 import '../Styles/AddItemPopUp.css';
 import React, { useState, useEffect } from 'react';
 
+//options to show prices --------------
+
 const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelItemClick}) => {
     const [qty, setQty] = useState(itemObj['qty']);
 
