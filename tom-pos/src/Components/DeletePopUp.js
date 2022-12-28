@@ -7,7 +7,6 @@ const DeletePopUp = ({name, cancelDelete, confirmDelete, message}) => {
             <div id='delete-popup'>
                 <span>Are you sure you want to delete</span>
                 <span className='bold800'>{name}</span>
-                <span>from the database?</span>
                 <span id='ex-message'>{message}</span>
                 <div id='conf-btns'>
                     <button type='button' onClick={cancelDelete}>Cancel</button>

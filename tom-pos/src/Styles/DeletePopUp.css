@@ -21,12 +21,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     font-size: 1.5em;
-}
-
-.bold800 {
-    font-weight: 800;
 }
 
 #ex-message {

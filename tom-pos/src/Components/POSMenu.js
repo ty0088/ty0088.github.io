@@ -2,6 +2,10 @@ import '../Styles/POS.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+//keep end menu buttons visible ??? ---------
+//items can only be assigned to end menus ----------
+//this is so the end menus can be easily switched between without having to press back and select menu--------
+
 const POSMenu = ({itemsData, menusData, addClick}) => {
     const [menuFlag, setMenuFlag] = useState(false);
     const [itemFlag, setItemFlag] = useState(false);
@@ -117,10 +121,6 @@ const POSMenu = ({itemsData, menusData, addClick}) => {
 
     const itemClick = (e) => {
         const itemID = e.target.getAttribute('data-id');
-        //check if mods/options available -------------
-        //if mods/options available, prompt pop up and allow user to change mods/options and submit or cancel -------------
-        //if not, call addItem
-        // addItem(itemID, [], [], '');
         addClick(itemID);
     };
     

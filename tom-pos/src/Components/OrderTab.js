@@ -5,11 +5,12 @@ import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
 
 //--------------------------------------------------------------------------------------
-//- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items
-//- update status = 'CLOSED', tip-price, total-price on PAY
+//- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
+//- PAY button click -> update status = 'CLOSED', tip-price, total-price on PAY
+//- PRINT button click -> pop up confirming print receipt(s)
 //--------------------------------------------------------------------------------------
 
-const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootData, lastItemIndex}) => {
+const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, lastItemIndex, getAddPrice}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
@@ -89,6 +90,14 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
         setRootData(updateData, 'orders');
     };
 
+    const updateItem = (itemObj, index) => {
+        let itemsArr = [...ordersData[orderNo]['items']];
+        itemsArr.splice(index, 1, itemObj);
+        const updateData = {...ordersData, [orderNo]: {...orderObj, 'items': itemsArr}};
+        console.log(updateData);
+        setRootData(updateData, 'orders');
+    };
+
     return (
         <div id='order-tab-container'>
             <div id='order-head'>
@@ -98,7 +107,8 @@ const OrderTab = ({orderNo, orderObj, ordersData, taxData, deleteItem, setRootDa
             </div>
             <div id='order-tab-rows'>
                 {orderItems.length > 0 &&
-                    orderItems.map((item, i) => <OrderRow key={i} index={i} itemObj={item} taxData={taxData} deleteItem={deleteItem} lastItemIndex={lastItemIndex}/>)
+                    orderItems.map((item, i) => <OrderRow key={i} index={i} itemObj={item} deleteItem={deleteItem} 
+                        updateItem={updateItem} itemsData={itemsData} getAddPrice={getAddPrice} />)
                 }
             </div>
             <div id='order-sub-container'>

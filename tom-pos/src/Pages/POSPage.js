@@ -51,6 +51,9 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
     };
 
     const getAddPrice = (id, mods, opts) => {
+        console.log(id);
+        console.log(mods);
+        console.log(opts);
         const modsSum = mods.reduce((sum, currMod) => {
             const modIndex = itemsData[id]['mods'].indexOf(currMod);
             return sum + itemsData[id]['mods-price'][modIndex];
@@ -137,8 +140,8 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
-            <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} taxData={taxData} deleteItem={deleteItem}
-                setRootData={setRootData} lastItemIndex={lastItemIndex}/>
+            <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} itemsData={itemsData} deleteItem={deleteItem}
+                setRootData={setRootData} lastItemIndex={lastItemIndex} getAddPrice={getAddPrice}/>
         </div>
     );
 };

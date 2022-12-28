@@ -1,38 +1,78 @@
 import '../Styles/OrderRow.css';
 import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
+import EditItemPopUp from './EditItemPopUp';
+import DeletePopUp from './DeletePopUp';
 
 //------------------------------------------------------
 // - options need to show any additional prices
-// - clicking on item row prompts item edit pop up
 //------------------------------------------------------
 
-const OrderRow = ({index, itemObj, deleteItem}) => {
+const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPrice}) => {
+    const [editItemFlag, setEditItemFlag] = useState(false);
+    const [deleteFlag, setDeleteFlag] = useState(false);
     const [itemPrice, setItemPrice] = useState(0);
-    const itemQty = itemObj['qty'];
 
     useEffect(() => {
         //set individual item total price = (unit price + addition price) * qty
         const totalPrice = ((itemObj['unit-price'] + itemObj['add-price']) * itemObj['qty']);
         setItemPrice(totalPrice);
-    }, [itemQty, itemObj])
+    }, [itemObj])
 
     const deleteClick = () => {
-        deleteItem(index);
+        setEditItemFlag(false);
+        setDeleteFlag(true);
     };
 
-    const itemClick = (e) => {
-        //bring up item edit pop up -----------
-        console.log(`edit ${itemObj['name']}, index ${index}`);
+    const confirmDelete = () => {
+        deleteItem(index);
+        setDeleteFlag(false);
+    };
+
+    const cancelDelete = () => {
+        setDeleteFlag(false);
+        setEditItemFlag(true);
+    };
+
+    const itemEditClick = () => {
+        setEditItemFlag(true);
+    };
+
+    const saveItemClick = () => {
+        //get all inputs and create orderObj copy and update ordersObj -------------
+        //get mods - [id^="mod-check"]
+        //get options - [id^="opt-check"]
+        //get notes - #notes-input
+        //get qty - #edit-qty
+
+        let inputMods = [];
+        let inputOpts = [];
+        document.querySelectorAll('[id^="mod-check"]').forEach(elem => {if (elem.checked) {inputMods.push(elem.value)}});
+        document.querySelectorAll('[id^="opt-check"]').forEach(elem => {if (elem.checked) {inputOpts.push(elem.value)}});
+        const inputNotes = document.getElementById('notes-input').value;
+        const itemQty = parseInt(document.getElementById('edit-qty').innerText);
+        const addPrice = getAddPrice(itemObj['id'], inputMods, inputOpts);
+        setEditItemFlag(false);
+        updateItem({...itemObj, 'add-price': addPrice, 'qty': itemQty, 'mods': inputMods, 'options': inputOpts, 'notes': inputNotes}, index); //---------
+    };
+
+    const cancelItemClick = () => {
+        setEditItemFlag(false);
     };
     
     return (
         <div className='order-row-container' data-row-index={index}>
+            {editItemFlag &&
+                <EditItemPopUp itemObj={itemObj} itemData={itemsData[itemObj['id']]} deleteClick={deleteClick} saveItemClick={saveItemClick} cancelItemClick={cancelItemClick} />
+            }
+            {deleteFlag &&
+                <DeletePopUp name={itemObj['name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete} message={'This will permanently delete the item(s) from the order'} />
+            }
             <div className='order-row'>
                 <span className='flex-row-center bold700'>{itemObj['qty']}</span>
-                <span className='flex-row-start item-name' onClick={itemClick}>{itemObj['name']}</span>
+                <span className='flex-row-start item-name'>{itemObj['name']}</span>
                 <span className='flex-row-center'>{formatCurrency(itemPrice)}</span>
-                <span className="material-symbols-outlined flex-row-center link" onClick={deleteClick}>delete</span>
+                <span className="material-symbols-outlined flex-row-center link" onClick={itemEditClick}>edit_square</span>
             </div>
             <div className='order-row-add'>
                 {itemObj['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}
