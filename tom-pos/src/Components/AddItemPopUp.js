@@ -14,12 +14,7 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) =>
         document.querySelectorAll('[id^="opt-check"]').forEach(elem => {if (elem.checked) {inputOpts.push(elem.value)}});
         setMods(inputMods);
         setOpts(inputOpts);
-        setPrice(getPrice(inputMods, inputOpts));
-    };
-
-    const getPrice = (mods, opts) => {
-        const addPrice = getAddPrice(itemID, mods, opts);
-        return itemData['price'] + addPrice;
+        setPrice(itemData['price'] + getAddPrice(itemID, inputMods, inputOpts));
     };
 
     const addSaveClick = () => {
