@@ -7,7 +7,7 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) =>
     const [mods, setMods] = useState([]);
     const [opts, setOpts] = useState([]);
 
-    const getChecks = () => {
+    const handleCheck = () => {
         let inputMods = [];
         let inputOpts = [];
         document.querySelectorAll('[id^="mod-check"]').forEach(elem => {if (elem.checked) {inputMods.push(elem.value)}});
@@ -43,7 +43,7 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) =>
                             {itemData['mods'].map((mod, i) => {
                                 return (
                                     <div key={i}>
-                                        <input type="checkbox" id={`mod-check-${i}`} value={mod} onChange={getChecks} />
+                                        <input type="checkbox" id={`mod-check-${i}`} value={mod} onChange={handleCheck} />
                                         <label htmlFor={`mod-check-${i}`}>{mod} +{itemData['mods-price'][i]}</label>
                                     </div>
                                 )
@@ -56,7 +56,7 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) =>
                                 {itemData['options'].map((opt, i) => {
                                     return (
                                         <div key={i}>
-                                            <input type="checkbox" id={`opt-check-${i}`} value={opt} onChange={getChecks} />
+                                            <input type="checkbox" id={`opt-check-${i}`} value={opt} onChange={handleCheck} />
                                             <label htmlFor={`opt-check-${i}`}>{opt} +{itemData['options-price'][i]}</label>
                                         </div>
                                     )
