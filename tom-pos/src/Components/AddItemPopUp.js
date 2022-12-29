@@ -7,6 +7,7 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) =>
     const [mods, setMods] = useState([]);
     const [opts, setOpts] = useState([]);
 
+    //update price, mods and option states when check box changed
     const handleCheck = () => {
         let inputMods = [];
         let inputOpts = [];

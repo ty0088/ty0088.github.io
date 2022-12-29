@@ -9,11 +9,13 @@ const EditItemPopUp = ({orderItemObj, itemData, deleteClick, saveItemClick, canc
     const [tPrice, setTPrice] = useState((orderItemObj['unit-price'] + orderItemObj['add-price']) * orderItemObj['qty']);
     const [uPrice, setUPrice] = useState((orderItemObj['unit-price'] + orderItemObj['add-price']));
 
+    //when mods, options or qty is changed, update total price and unit price
     useEffect(() => {
         setTPrice((orderItemObj['unit-price'] + getAddPrice(orderItemObj['id'], mods, opts)) * qty);
         setUPrice(orderItemObj['unit-price'] + getAddPrice(orderItemObj['id'], mods, opts));
     }, [qty, mods, opts]);
 
+    //update mods and option states when check box changed
     const handleCheck = () => {
         let inputMods = [];
         let inputOpts = [];
