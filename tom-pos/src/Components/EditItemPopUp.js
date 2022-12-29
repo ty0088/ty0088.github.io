@@ -1,11 +1,27 @@
 import '../Styles/EditItemPopUp.css';
-import '../Styles/AddItemPopUp.css';
 import React, { useState, useEffect } from 'react';
+import formatCurrency from '../Util/formatCurrency';
 
-//options to show prices --------------
+const EditItemPopUp = ({orderItemObj, itemData, deleteClick, saveItemClick, cancelItemClick, getAddPrice}) => {
+    const [qty, setQty] = useState(orderItemObj['qty']);
+    const [mods, setMods] = useState(orderItemObj['mods']);
+    const [opts, setOpts] = useState(orderItemObj['options']);
+    const [tPrice, setTPrice] = useState((orderItemObj['unit-price'] + orderItemObj['add-price']) * orderItemObj['qty']);
+    const [uPrice, setUPrice] = useState((orderItemObj['unit-price'] + orderItemObj['add-price']));
 
-const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelItemClick}) => {
-    const [qty, setQty] = useState(itemObj['qty']);
+    useEffect(() => {
+        setTPrice((orderItemObj['unit-price'] + getAddPrice(orderItemObj['id'], mods, opts)) * qty);
+        setUPrice(orderItemObj['unit-price'] + getAddPrice(orderItemObj['id'], mods, opts));
+    }, [qty, mods, opts]);
+
+    const handleCheck = () => {
+        let inputMods = [];
+        let inputOpts = [];
+        document.querySelectorAll('[id^="mod-check"]').forEach(elem => {if (elem.checked) {inputMods.push(elem.value)}});
+        document.querySelectorAll('[id^="opt-check"]').forEach(elem => {if (elem.checked) {inputOpts.push(elem.value)}});
+        setMods(inputMods);
+        setOpts(inputOpts);
+    };
 
     const addQty = () => {
         setQty(qty + 1);
@@ -20,6 +36,10 @@ const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelIte
         <div id='edit-item-popup-container'>
             <div id='edit-item-popup'>
                 <span id='edit-head-span'>{itemData['item-name']}</span>
+                <div id='edit-price-cont'>
+                    <span>Total Price: {formatCurrency(tPrice)}</span>
+                    <span>Unit Price: {formatCurrency(uPrice)}</span>
+                </div>
                 <div id='edit-qty-cont'>
                     <span className="material-symbols-outlined link" onClick={minusQty}>remove</span>
                     <span id='edit-qty'>{qty}</span>
@@ -32,7 +52,8 @@ const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelIte
                             {itemData['mods'].map((mod, i) => {
                                 return (
                                     <div key={i}>
-                                        <input type="checkbox" id={`mod-check-${i}`} value={mod} defaultChecked={!!itemObj['mods'].includes(mod)} />
+                                        <input type="checkbox" id={`mod-check-${i}`} value={mod} defaultChecked={!!orderItemObj['mods'].includes(mod)}
+                                            onChange={() => handleCheck()} />
                                         <label htmlFor={`mod-check-${i}`}>{mod} +{itemData['mods-price'][i]}</label>
                                     </div>
                                 )
@@ -45,7 +66,8 @@ const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelIte
                                 {itemData['options'].map((opt, i) => {
                                     return (
                                         <div key={i}>
-                                            <input type="checkbox" id={`opt-check-${i}`} value={opt} defaultChecked={!!itemObj['options'].includes(opt)} />
+                                            <input type="checkbox" id={`opt-check-${i}`} value={opt} defaultChecked={!!orderItemObj['options'].includes(opt)}
+                                                onChange={() => handleCheck()} />
                                             <label htmlFor={`opt-check-${i}`}>{opt} +{itemData['options-price'][i]}</label>
                                         </div>
                                     )
@@ -55,7 +77,7 @@ const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelIte
                 </div>
                 <div id='edit-note-input'>
                     <label htmlFor='notes-input'>Notes:</label>
-                    <textarea id='notes-input' rows='4' defaultValue={itemObj['notes']}/>
+                    <textarea id='notes-input' rows='4' defaultValue={orderItemObj['notes']}/>
                 </div>
                 <div id='edit-item-btns'>
                     <button type='button' onClick={saveItemClick}>Save</button>

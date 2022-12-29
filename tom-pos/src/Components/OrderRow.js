@@ -55,7 +55,8 @@ const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPric
     return (
         <div className='order-row-container' data-row-index={index}>
             {editItemFlag &&
-                <EditItemPopUp itemObj={itemObj} itemData={itemsData[itemObj['id']]} deleteClick={deleteClick} saveItemClick={saveItemClick} cancelItemClick={cancelItemClick} />
+                <EditItemPopUp orderItemObj={itemObj} itemData={itemsData[itemObj['id']]} deleteClick={deleteClick} saveItemClick={saveItemClick}
+                    cancelItemClick={cancelItemClick} getAddPrice={getAddPrice} />
             }
             {deleteFlag &&
                 <DeletePopUp name={itemObj['name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete} message={'This will permanently delete the item(s) from the order'} />
