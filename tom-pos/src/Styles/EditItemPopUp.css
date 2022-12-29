@@ -39,7 +39,7 @@
 }
 
 #edit-item-btns > button {
-    margin: 5px;
+    margin: 5px 30px 5px 30px;
     font-size: 14px;
     width: 100px;
     height: 25px;

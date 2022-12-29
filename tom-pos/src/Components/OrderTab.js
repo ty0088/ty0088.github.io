@@ -3,15 +3,16 @@ import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
+import PayPopUp from './PayPopUp';
 
 //--------------------------------------------------------------------------------------
-//- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
-//- PAY button click -> update status = 'CLOSED', tip-price, total-price on PAY
 //- PRINT button click -> pop up confirming print receipt(s)
+//- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
 //--------------------------------------------------------------------------------------
 
 const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice}) => {
     const [editFlag, setEditFlag] = useState(false);
+    const [payFlag, setPayFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
@@ -90,6 +91,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setRootData(updateData, 'orders');
     };
 
+    //update item data within order data items array
     const updateItem = (itemObj, index) => {
         let itemsArr = [...ordersData[orderNo]['items']];
         setLastItemIndex(index);
@@ -98,8 +100,26 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setRootData(updateData, 'orders');
     };
 
+    const payClick = () => {
+        setPayFlag(true);
+    };
+
+    const confirmPay = () => {
+        setPayFlag(false);
+    };
+
+    const cancelPay = () => {
+        setPayFlag(false);
+    }; 
+
     return (
         <div id='order-tab-container'>
+            {editFlag &&
+                <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder}/>
+            }
+            {payFlag &&
+                <PayPopUp confirmPay={confirmPay} cancelPay={cancelPay} />
+            }
             <div id='order-head'>
                 <span>Order {orderNo}</span>
                 <span>{orderObj['order-name']}</span>
@@ -128,13 +148,10 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                     </div>
                 </div>
                 <div id='order-btn-container'>
-                    <button type='button'>PAY</button>
+                    <button type='button' onClick={payClick}>PAY</button>
                     <button type='button'>PRINT</button>
                 </div>
             </div>
-            {editFlag &&
-                <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder}/>
-            }
         </div>
     );
 };
