@@ -33,7 +33,7 @@ const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelIte
                                 return (
                                     <div key={i}>
                                         <input type="checkbox" id={`mod-check-${i}`} value={mod} defaultChecked={!!itemObj['mods'].includes(mod)} />
-                                        <label htmlFor={`mod-check-${i}`}>{mod}</label>
+                                        <label htmlFor={`mod-check-${i}`}>{mod} +{itemData['mods-price'][i]}</label>
                                     </div>
                                 )
                             })}
@@ -46,7 +46,7 @@ const EditItemPopUp = ({itemObj, itemData, deleteClick, saveItemClick, cancelIte
                                     return (
                                         <div key={i}>
                                             <input type="checkbox" id={`opt-check-${i}`} value={opt} defaultChecked={!!itemObj['options'].includes(opt)} />
-                                            <label htmlFor={`opt-check-${i}`}>{opt}</label>
+                                            <label htmlFor={`opt-check-${i}`}>{opt} +{itemData['options-price'][i]}</label>
                                         </div>
                                     )
                                 })}

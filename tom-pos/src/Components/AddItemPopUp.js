@@ -1,18 +1,30 @@
 import '../Styles/AddItemPopUp.css';
 import React, { useState, useEffect } from 'react';
+import formatCurrency from '../Util/formatCurrency';
 
-//options to show prices --------------
+const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) => {
+    const [price, setPrice] = useState(itemData['price']);
+    const [mods, setMods] = useState([]);
+    const [opts, setOpts] = useState([]);
 
-const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData}) => {
-
-    const addSaveClick = () => {
-        //get input mods, options, notes and add item
+    const getChecks = () => {
         let inputMods = [];
         let inputOpts = [];
-        const inputNotes = document.getElementById('notes-input').value;
         document.querySelectorAll('[id^="mod-check"]').forEach(elem => {if (elem.checked) {inputMods.push(elem.value)}});
         document.querySelectorAll('[id^="opt-check"]').forEach(elem => {if (elem.checked) {inputOpts.push(elem.value)}});
-        confirmAdd(itemID, inputMods, inputOpts, inputNotes);
+        setMods(inputMods);
+        setOpts(inputOpts);
+        setPrice(getPrice(inputMods, inputOpts));
+    };
+
+    const getPrice = (mods, opts) => {
+        const addPrice = getAddPrice(itemID, mods, opts);
+        return itemData['price'] + addPrice;
+    };
+
+    const addSaveClick = () => {
+        const inputNotes = document.getElementById('notes-input').value;
+        confirmAdd(itemID, mods, opts, inputNotes);
     };
 
     const addCancelClick = () => {
@@ -23,6 +35,7 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData}) => {
         <div id='add-item-container'>
             <div id='add-item-popup' >
                 <span id='add-head-span'>{itemData['item-name']}</span>
+                <span>Total Price: {formatCurrency(price)}</span>
                 <div className='flex-row-center'>
                     {itemData['mods'].length > 0 &&
                         <fieldset className='add-fieldset'>
@@ -30,8 +43,8 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData}) => {
                             {itemData['mods'].map((mod, i) => {
                                 return (
                                     <div key={i}>
-                                        <input type="checkbox" id={`mod-check-${i}`} value={mod} />
-                                        <label htmlFor={`mod-check-${i}`}>{mod}</label>
+                                        <input type="checkbox" id={`mod-check-${i}`} value={mod} onChange={getChecks} />
+                                        <label htmlFor={`mod-check-${i}`}>{mod} +{itemData['mods-price'][i]}</label>
                                     </div>
                                 )
                             })}
@@ -43,8 +56,8 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData}) => {
                                 {itemData['options'].map((opt, i) => {
                                     return (
                                         <div key={i}>
-                                            <input type="checkbox" id={`opt-check-${i}`} value={opt} />
-                                            <label htmlFor={`opt-check-${i}`}>{opt}</label>
+                                            <input type="checkbox" id={`opt-check-${i}`} value={opt} onChange={getChecks} />
+                                            <label htmlFor={`opt-check-${i}`}>{opt} +{itemData['options-price'][i]}</label>
                                         </div>
                                     )
                                 })}

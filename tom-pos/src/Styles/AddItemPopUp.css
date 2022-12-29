@@ -12,8 +12,8 @@
 }
 
 #add-item-popup {
-    height: 350px;
-    width: 400px;
+    height: 400px;
+    width: 500px;
     padding: 20px;
     border: 2px solid Black;
     border-radius: 5px;
@@ -42,7 +42,7 @@
 }
 
 .add-fieldset {
-    width: 150px;
+    width: 200px;
     padding: 10px;
     font-size: 1.1em;
     margin: 10px;
@@ -60,5 +60,5 @@
 }
 
 #note-input-cont > textarea {
-    width: 320px;
+    width: 420px;
 }

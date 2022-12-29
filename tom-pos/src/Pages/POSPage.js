@@ -128,7 +128,8 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
     return (
         <div id='pos-container'>
             {addFlag &&
-                <AddItemPopUp itemID={newItemID} confirmAdd={confirmAdd} cancelAdd={cancelAdd} itemData={itemsData[newItemID]} />
+                <AddItemPopUp itemID={newItemID} confirmAdd={confirmAdd} cancelAdd={cancelAdd} itemData={itemsData[newItemID]}
+                    getAddPrice={getAddPrice} />
             }
             <div id='pos-nav'>
                 <Link to='/tom-pos/orders' className='pos-nav-link'>ORDERS</Link>
@@ -138,7 +139,7 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} itemsData={itemsData} deleteItem={deleteItem}
-                setRootData={setRootData} lastItemIndex={lastItemIndex} setLastItemIndex={setLastItemIndex} getAddPrice={getAddPrice}/>
+                setRootData={setRootData} lastItemIndex={lastItemIndex} setLastItemIndex={setLastItemIndex} getAddPrice={getAddPrice} />
         </div>
     );
 };
