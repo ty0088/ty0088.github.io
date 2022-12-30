@@ -19,6 +19,8 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [subDiscount, setSubDiscount] = useState(0);
     const [discRate, setDiscRate] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [tipRate, setTipRate] = useState(0);
+    const [tipAmount, setTipAmount] = useState(orderObj['tip-price']);
 
     useEffect(() => {
         if (Object.keys(orderObj).length > 0) {
@@ -48,13 +50,13 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setTax(getTax());
     }, [orderItems, discRate]);
 
-    //update order total price: sub-total + tax (discount applied to subtotal and tax if applicable)
+    //update order total price: sub-total + tax + tip (discount applied to subtotal and tax if applicable)
     useEffect(() => {
         const getTotalPrice = () => {
-            return subTotal - subDiscount + tax;
+            return subTotal - subDiscount + tax + tipAmount;
         };
         setTotalPrice(getTotalPrice());
-    }, [subTotal, subDiscount, tax]);
+    }, [subTotal, subDiscount, tax, tipAmount]);
 
     //update prices when discount updated
     useEffect(() => {
@@ -72,7 +74,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             ...ordersData,
             [orderNo]: {
                 ...ordersData[orderNo],
-                'disc-price': Math.round(subDiscount * 100 + Number.EPSILON ) / 100,
+                'disc-price': Math.round(subDiscount * 100 + Number.EPSILON ) / 100, //EPSILON for round error
                 'sub-price': Math.round( subTotal * 100 + Number.EPSILON ) / 100,
                 'tax-due': Math.round( tax * 100 + Number.EPSILON ) / 100,
                 'total-price': Math.round( totalPrice * 100 + Number.EPSILON ) / 100
@@ -105,6 +107,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     };
 
     const confirmPay = () => {
+        //update status = 'CLOSED', tip-price, total-price on PAY ----------
         setPayFlag(false);
     };
 
@@ -118,7 +121,8 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                 <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder}/>
             }
             {payFlag &&
-                <PayPopUp confirmPay={confirmPay} cancelPay={cancelPay} />
+                <PayPopUp confirmPay={confirmPay} cancelPay={cancelPay} orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
+                    setDiscRate={setDiscRate} discAmount={subDiscount} tipAmount={tipAmount} setTipAmount={setTipAmount} updateOrder={updateOrder}/>
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>

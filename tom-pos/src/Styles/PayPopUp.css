@@ -8,19 +8,118 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 998;
 }
 
 #pay-popup {
-    height: 400px;
-    width: 500px;
+    height: 394px;
+    width: 604px;
     padding: 20px;
     border: 2px solid Black;
     border-radius: 5px;
     background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-y: auto;
+}
+
+#pay-left-col {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    grid-template-rows: repeat(8, 43.75px);
+    font-size: 20px;
+    font-weight: 800;
+    align-items: center;
+}
+
+.pay-total {
+    font-size: 25px;
+}
+
+.pay-amount {
+    font-size: 22px;
+    color: red;
+}
+
+.pay-change {
+    font-size: 22px;
+    color: rgb(0, 175, 23);
+}
+
+#pay-left-col > button {
+    margin-right: 20px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+#pay-right-col {
+    display: grid;
+    grid-template-columns: 280px;
+    grid-template-rows: 87.5px 87.5px 87.5px 87.5px;
+    align-items: center;
+    font-weight: 600;
+}
+
+.pay-btn-cont {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+}
+
+#pay-cash-inputs {
+    height: 100%;
+    border: 1px solid rgb(200, 200, 200);
+    padding: 5px;
+    display: grid;
+    grid-template-rows: 20px 1fr;
+}
+
+#pay-card-inputs {
+    height: 100%;
+    border: 1px solid rgb(200, 200, 200);
+    padding: 5px;
+    display: grid;
+    grid-template-rows: 20px 1fr;
+}
+
+#pay-disc-inputs {
+    height: 100%;
+    border: 1px solid rgb(200, 200, 200);
+    padding: 5px;
+    display: grid;
+    grid-template-rows: 20px 1fr;
+}
+
+#pay-tip-inputs {
+    height: 100%;
+    border: 1px solid rgb(200, 200, 200);
+    padding: 5px;
+    display: grid;
+    grid-template-rows: 20px 1fr;
+}
+
+.pay-button {
+    display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
+    background-color: rgb(240, 240, 240);
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 3px;
+    font-size: 16px;
+    height: 50px;
+    width: 50px;
+}
+
+.pay-button:hover {
+    cursor: pointer;
+}
+
+.pay-button:active {
+    cursor: pointer;
+    background-color: rgb(200, 200, 200);
+}
+
+.pay-card-btn {
+    height: 50px;
+    width: 130px;
 }
