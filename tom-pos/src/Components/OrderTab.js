@@ -1,12 +1,16 @@
 import '../Styles/OrderTab.css';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import formatCurrency from '../Util/formatCurrency';
 import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
 import PayPopUp from './PayPopUp';
-import AmountInputPopUp from './AmountInputPopUp';
+
 
 //--------------------------------------------------------------------------------------
+//- if trying to close order when amount due > 0, error message or highlight amount due
+//- amount due turns green if = 0, change due turn green if > 0
+//- if order is closed, read only unless order is re-opened
 //- PRINT button click -> pop up confirming print receipt(s)
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
 //--------------------------------------------------------------------------------------
@@ -23,6 +27,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [tipRate, setTipRate] = useState(0);
     const [tipAmount, setTipAmount] = useState(0);
     const [preTipTotal, setPreTipTotal] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (Object.keys(orderObj).length > 0) {
@@ -117,11 +122,17 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     };
 
     const confirmPay = () => {
-        //update status = 'CLOSED', tip-price, total-price on PAY -----------------
+        //change order status to 'CLOSED' and navigate to Order page 
+        const saveObj = {
+            ...orderObj,
+            'status': 'CLOSED'
+        };
+        updateOrder(orderObj['order-no'], saveObj);
         setPayFlag(false);
+        navigate('/tom-pos/orders');
     };
 
-    const cancelPay = () => {
+    const backPay = () => {
         setPayFlag(false);
     }; 
 
@@ -131,7 +142,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                 <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder}/>
             }
             {payFlag &&
-                <PayPopUp confirmPay={confirmPay} cancelPay={cancelPay} orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
+                <PayPopUp confirmPay={confirmPay} backPay={backPay} orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
                     discAmount={discAmount} tipAmount={tipAmount} setTipAmount={setTipAmount} updateOrder={updateOrder} tipRate={tipRate}
                     setTipRate={setTipRate} preTipTotal={preTipTotal}/>
             }
