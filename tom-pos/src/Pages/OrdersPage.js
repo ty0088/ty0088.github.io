@@ -12,13 +12,16 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
         'date-closed': '',
         'status': 'OPEN',
         'items': [],
-        'sub-price': 0, // update this variable when order is closed ----------------
+        'sub-price': 0,
         'tip-price': 0,
+        'tip-rate': 0,
         'add-price': 0,
         'tax-due': 0,
         'disc-price': 0,
         'disc-rate': 0,
-        'total-price': 0, // update this variable when order is closed ----------------
+        'total-price': 0,
+        'cash-paid': 0,
+        'card-paid': 0
     };
     const [currOrdFlag, setCurrOrdFlag] = useState(false);
     const [orderNos, setOrderNos] = useState();

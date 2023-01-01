@@ -91,8 +91,8 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
                         <span className='order-disc-button' data-disc='5' onClick={discClick}>5</span>
                         <span className='order-disc-button' data-disc='10' onClick={discClick}>10</span>
                         <span className='order-disc-button' id='cust-disc-btn' data-disc={custDisc} onClick={discClick}>Custom</span>
-                        <div id='disc-input-div'> 
-                            *custom rate :
+                        <div id='disc-input-div'>
+                            <label htmlFor='cust-disc-input'>*custom rate :</label>
                             <input type='number' id='cust-disc-input' min='0' max='100' value={custDisc} onChange={discChange}/>
                         </div>
                     </div>

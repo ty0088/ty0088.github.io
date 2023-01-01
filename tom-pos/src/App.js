@@ -67,7 +67,7 @@ const App = () => {
 
   //set root data and DB
   const setRootData = (dataObj, doc) => {
-    setDB(dataObj, doc);
+    // setDB(dataObj, doc); ---------------------
     switch (doc)  {
       case 'financial':
         setFinData(dataObj);

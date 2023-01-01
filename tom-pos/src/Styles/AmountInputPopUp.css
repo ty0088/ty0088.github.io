@@ -1,0 +1,31 @@
+#amount-input-container {
+    height: 500px;
+    width: 1000px;
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#amount-input-popup {
+    height: 200px;
+    width: 300px;
+    padding: 20px;
+    border: 2px solid Black;
+    border-radius: 5px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#amount-input-popup input {
+    height: 30px;
+    width: 100px;
+    margin: 10px;
+}

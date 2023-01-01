@@ -4,6 +4,7 @@ import formatCurrency from '../Util/formatCurrency';
 import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
 import PayPopUp from './PayPopUp';
+import AmountInputPopUp from './AmountInputPopUp';
 
 //--------------------------------------------------------------------------------------
 //- PRINT button click -> pop up confirming print receipt(s)
@@ -16,16 +17,18 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
-    const [subDiscount, setSubDiscount] = useState(0);
+    const [discAmount, setDiscAmount] = useState(0);
     const [discRate, setDiscRate] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [tipRate, setTipRate] = useState(0);
-    const [tipAmount, setTipAmount] = useState(orderObj['tip-price']);
+    const [tipAmount, setTipAmount] = useState(0);
+    const [preTipTotal, setPreTipTotal] = useState(0);
 
     useEffect(() => {
         if (Object.keys(orderObj).length > 0) {
             setOrderItems(orderObj['items']);
             setDiscRate(orderObj['disc-rate']);
+            setTipRate(orderObj['tip-rate']);
         }
     }, [orderObj]);
 
@@ -50,18 +53,25 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setTax(getTax());
     }, [orderItems, discRate]);
 
-    //update order total price: sub-total + tax + tip (discount applied to subtotal and tax if applicable)
+    //update order total price: sub-total + tax + tip + discount
     useEffect(() => {
         const getTotalPrice = () => {
-            return subTotal - subDiscount + tax + tipAmount;
+            const preTotal = subTotal - discAmount + tax;
+            setPreTipTotal(preTotal);
+            return  preTotal + tipAmount;
         };
         setTotalPrice(getTotalPrice());
-    }, [subTotal, subDiscount, tax, tipAmount]);
+    }, [subTotal, discAmount, tax, tipAmount]);
 
     //update prices when discount updated
     useEffect(() => {
-        setSubDiscount(subTotal * (discRate / 100));
+        setDiscAmount(subTotal * (discRate / 100));
     }, [discRate, subTotal]);
+
+    //calc tip amount if tip rate entered
+    useEffect(() => {
+        setTipAmount(preTipTotal * (tipRate / 100));
+    }, [preTipTotal, tipRate]);
 
     //update order prices whenever total price is updated
     useEffect(() => {
@@ -69,15 +79,15 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     }, [totalPrice]);
 
     const updateOrderPrices = () => {
-        //update add-price, disc-price, sub-price, tax-due, total-price
         const priceData = {
             ...ordersData,
             [orderNo]: {
                 ...ordersData[orderNo],
-                'disc-price': Math.round(subDiscount * 100 + Number.EPSILON ) / 100, //EPSILON for round error
-                'sub-price': Math.round( subTotal * 100 + Number.EPSILON ) / 100,
-                'tax-due': Math.round( tax * 100 + Number.EPSILON ) / 100,
-                'total-price': Math.round( totalPrice * 100 + Number.EPSILON ) / 100
+                'disc-price': Math.round(discAmount * 100 + Number.EPSILON) / 100, //EPSILON for round error
+                'sub-price': Math.round(subTotal * 100 + Number.EPSILON) / 100,
+                'tax-due': Math.round(tax * 100 + Number.EPSILON) / 100,
+                'total-price': Math.round(totalPrice * 100 + Number.EPSILON) / 100,
+                'tip-price': Math.round(tipAmount * 100 + Number.EPSILON) / 100
             }
         };
         setRootData(priceData, 'orders');
@@ -107,7 +117,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     };
 
     const confirmPay = () => {
-        //update status = 'CLOSED', tip-price, total-price on PAY ----------
+        //update status = 'CLOSED', tip-price, total-price on PAY -----------------
         setPayFlag(false);
     };
 
@@ -122,7 +132,8 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             }
             {payFlag &&
                 <PayPopUp confirmPay={confirmPay} cancelPay={cancelPay} orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
-                    setDiscRate={setDiscRate} discAmount={subDiscount} tipAmount={tipAmount} setTipAmount={setTipAmount} updateOrder={updateOrder}/>
+                    discAmount={discAmount} tipAmount={tipAmount} setTipAmount={setTipAmount} updateOrder={updateOrder} tipRate={tipRate}
+                    setTipRate={setTipRate} preTipTotal={preTipTotal}/>
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>
@@ -146,7 +157,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                         </div>
                         <div id='price-amounts'>
                             <span>{formatCurrency(subTotal)}</span>
-                            <span>{formatCurrency(subDiscount)}</span>
+                            <span>{formatCurrency(discAmount)}</span>
                             <span>{formatCurrency(tax)}</span>
                         </div>
                     </div>

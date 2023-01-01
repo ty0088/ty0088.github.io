@@ -1,19 +1,27 @@
 import '../Styles/PayPopUp.css';
 import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
+import AmountInputPopUp from './AmountInputPopUp';
 
-const PayPopUp = ({confirmPay, cancelPay, orderObj, totalPrice, discRate, discAmount, tipAmount, setTipAmount, updateOrder}) => {
+//cash tendered custom amount -----------
+//card tendered custom amount -----------
+//custom discount rate ------------------
+//tip input buttons - rate or amount input ---------
+
+const PayPopUp = ({confirmPay, cancelPay, orderObj, totalPrice, discRate, discAmount, tipAmount, setTipAmount,
+    updateOrder, tipRate, setTipRate, preTipTotal}) => {
+
+    const [inputFlag, setInputFlag] = useState(false);
     const [amountDue, setAmountDue] = useState(totalPrice);
     const [changeDue, setChangeDue] = useState(0);
     const [cashPaid, setCashPaid] = useState(0);
     const [cardPaid, setCardPaid] = useState(0);
-    const [tipRate, setTipRate] = useState(0);
+    const [currInput, setCurrInput] = useState('');
 
     useEffect(() => {
         let amountVal = totalPrice - (cashPaid + cardPaid);
         let changeVal = 0;
         if (amountVal < 0) {
-            console.log('!');
             changeVal = Math.abs(amountVal);
             amountVal = 0;
         }
@@ -37,8 +45,25 @@ const PayPopUp = ({confirmPay, cancelPay, orderObj, totalPrice, discRate, discAm
         updateOrder(orderObj['order-no'], saveObj);
     };
 
+    const tipRateClick = (rate) => {
+        const saveObj = {
+            ...orderObj,
+            'tip-rate': rate
+        };
+        updateOrder(orderObj['order-no'], saveObj);
+    };
+
+    const custInputClick = (input) => {
+        setInputFlag(true);
+        setCurrInput(input);
+    };
+
     return (
         <div id='pay-popup-container'>
+            {inputFlag && 
+                <AmountInputPopUp currInput={currInput} setInputFlag={setInputFlag} setCashPaid={setCashPaid} setCardPaid={setCardPaid}
+                    discRateClick={discRateClick} tipRateClick={tipRateClick} preTipTotal={preTipTotal} />
+            }
             <div id='pay-popup'>
                 <div id='pay-left-col'>
                     <span className='pay-total'>Total Price:</span><span className='pay-total'>{formatCurrency(totalPrice)}</span>
@@ -49,37 +74,47 @@ const PayPopUp = ({confirmPay, cancelPay, orderObj, totalPrice, discRate, discAm
                     <span>Discount:</span><span>{formatCurrency(discAmount)} / {discRate}%</span>
                     <span>Tip:</span><span>{formatCurrency(tipAmount)} / {tipRate}%</span>
                     <button type='button' onClick={confirmPay}>PAY</button>
-                    <button type='button' onClick={cancelPay}>Cancel</button>
+                    <button type='button' onClick={cancelPay}>BACK</button>
                 </div>
                 <div id='pay-right-col'>
                     <div id='pay-cash-inputs'>
                         <span>Cash Tendered</span>
                         <div className='pay-btn-cont'>
+                            <span className='pay-button' onClick={() => cashClick(0)}>CLR</span>
                             <span className='pay-button' onClick={() => cashClick(5)}>£5</span>
                             <span className='pay-button' onClick={() => cashClick(10)}>£10</span>
                             <span className='pay-button' onClick={() => cashClick(15)}>£15</span>
                             <span className='pay-button' onClick={() => cashClick(20)}>£20</span>
-                            <span className='pay-button'>Enter</span>
+                            <span className='pay-button' onClick={() => custInputClick('Cash')}>Enter</span>
                         </div>
                     </div>
                     <div id='pay-card-inputs'>
                         <span>Card Tendered</span>
                         <div className='pay-btn-cont'>
+                            <span className='pay-button pay-card-btn' onClick={() => cardClick(0)}>CLR</span>
                             <span className='pay-button pay-card-btn' onClick={() => cardClick(amountDue)}>{formatCurrency(amountDue)}</span>
-                            <span className='pay-button pay-card-btn'>Enter</span>
+                            <span className='pay-button pay-card-btn' onClick={() => custInputClick('Card')}>Enter</span>
                         </div>
                     </div>
                     <div id='pay-disc-inputs'>
                         <span>Discount</span>
                         <div className='pay-btn-cont'>
+                            <span className='pay-button' onClick={() => discRateClick(0)}>CLR</span>
                             <span className='pay-button' onClick={() => discRateClick(5)}>5%</span>
                             <span className='pay-button' onClick={() => discRateClick(10)}>10%</span>
                             <span className='pay-button' onClick={() => discRateClick(15)}>15%</span>
-                            <span className='pay-button'>Enter</span>
+                            <span className='pay-button' onClick={() => custInputClick('Discount')}>Enter</span>
                         </div>
-                        </div>
+                    </div>
                     <div id='pay-tip-inputs'>
                         <span>Tip</span>
+                        <div className='pay-btn-cont'>
+                            <span className='pay-button' onClick={() => tipRateClick(0)}>CLR</span>
+                            <span className='pay-button' onClick={() => tipRateClick(5)}>5%</span>
+                            <span className='pay-button' onClick={() => tipRateClick(10)}>10%</span>
+                            <span className='pay-button' onClick={() => tipRateClick(15)}>15%</span>
+                            <span className='pay-button' onClick={() => custInputClick('Tip')}>Enter</span>
+                        </div>
                     </div>
                 </div>
             </div>

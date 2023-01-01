@@ -50,7 +50,7 @@
     border-width: 1px;
 }
 
-.add-fieldset > legend, label{
+.add-fieldset > legend, .add-fieldset > label{
     font-size: 0.9em;
     margin-left: 5px;
 }
