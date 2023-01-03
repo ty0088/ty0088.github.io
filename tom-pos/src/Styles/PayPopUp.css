@@ -38,12 +38,10 @@
 
 .pay-amount {
     font-size: 22px;
-    color: red;
 }
 
 .pay-change {
     font-size: 22px;
-    color: rgb(0, 175, 23);
 }
 
 #pay-left-col > button {

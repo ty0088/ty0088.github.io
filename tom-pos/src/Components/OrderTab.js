@@ -7,9 +7,7 @@ import OrderEditPopUp from './OrderEditPopUp';
 import PayPopUp from './PayPopUp';
 
 
-//--------------------------------------------------------------------------------------
-//- if trying to close order when amount due > 0, error message or highlight amount due
-//- amount due turns green if = 0, change due turn green if > 0
+//-------------------------------------------------------------------------------------
 //- if order is closed, read only unless order is re-opened
 //- PRINT button click -> pop up confirming print receipt(s)
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???

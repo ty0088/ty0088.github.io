@@ -8,19 +8,36 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
     const [inputFlag, setInputFlag] = useState(false);
     const [amountDue, setAmountDue] = useState(totalPrice);
     const [changeDue, setChangeDue] = useState(0);
+    const [cardAmount, setCardAmount] = useState(0);
     const [cashPaid, setCashPaid] = useState(0);
     const [cardPaid, setCardPaid] = useState(0);
     const [currInput, setCurrInput] = useState('');
+    const [dueError, setDueError] = useState('');
 
     useEffect(() => {
         let amountVal = totalPrice - (cashPaid + cardPaid);
         let changeVal = 0;
+        //if amount due is < 0, set change due
         if (amountVal < 0) {
             changeVal = Math.abs(amountVal);
             amountVal = 0;
         }
+        //change colour of amount due text depending on how much is due
+        if (amountVal > 0) {
+            document.querySelectorAll('.pay-amount').forEach(elem => elem.style.color = 'rgb(255, 0, 0)');
+        } else {
+            setDueError('');
+            document.querySelectorAll('.pay-amount').forEach(elem => elem.style.color = 'rgb(0, 175, 23)');
+        }
+        //change colour of change due if > 0
+        if (changeVal > 0) {
+            document.querySelectorAll('.pay-change').forEach(elem => elem.style.color = 'rgb(0, 175, 23)');
+        } else {
+            document.querySelectorAll('.pay-change').forEach(elem => elem.style.color = 'rgb(0, 0, 0)');
+        }
         setAmountDue(amountVal);
         setChangeDue(changeVal);
+        setCardAmount(totalPrice - cashPaid);
     }, [totalPrice, cashPaid, cardPaid]);
 
     const cashClick = (amount) => {
@@ -55,6 +72,8 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
     const payClick = () => {
         if (amountDue === 0) {
             confirmPay();
+        } else {
+            setDueError(' <-----');
         }
     }
 
@@ -67,7 +86,7 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
             <div id='pay-popup'>
                 <div id='pay-left-col'>
                     <span className='pay-total'>Total Price:</span><span className='pay-total'>{formatCurrency(totalPrice)}</span>
-                    <span className='pay-amount'>Amount Due:</span><span className='pay-amount'>{formatCurrency(amountDue)}</span>
+                    <span className='pay-amount'>Amount Due:</span><span className='pay-amount'>{formatCurrency(amountDue)}<span id='due-error'>{dueError}</span></span>
                     <span className='pay-change'>Change Due:</span><span className='pay-change'>{formatCurrency(changeDue)}</span>
                     <span>Cash Paid:</span><span>{formatCurrency(cashPaid)}</span>
                     <span>Card Paid:</span><span>{formatCurrency(cardPaid)}</span>
@@ -80,40 +99,40 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
                     <div id='pay-cash-inputs'>
                         <span>Cash Tendered</span>
                         <div className='pay-btn-cont'>
-                            <span className='pay-button' onClick={() => cashClick(0)}>0</span>
+                            <span className='pay-button' onClick={() => cashClick(0)}>CLR</span>
                             <span className='pay-button' onClick={() => cashClick(5)}>£5</span>
                             <span className='pay-button' onClick={() => cashClick(10)}>£10</span>
                             <span className='pay-button' onClick={() => cashClick(15)}>£15</span>
                             <span className='pay-button' onClick={() => cashClick(20)}>£20</span>
-                            <span className='pay-button' onClick={() => custInputClick('Cash')}>Enter</span>
+                            <span className='pay-button' onClick={() => custInputClick('cash')}>Enter</span>
                         </div>
                     </div>
                     <div id='pay-card-inputs'>
                         <span>Card Tendered</span>
                         <div className='pay-btn-cont'>
-                            <span className='pay-button pay-card-btn' onClick={() => cardClick(0)}>0</span>
-                            <span className='pay-button pay-card-btn' onClick={() => cardClick(amountDue)}>{formatCurrency(amountDue)}</span>
-                            <span className='pay-button pay-card-btn' onClick={() => custInputClick('Card')}>Enter</span>
+                            <span className='pay-button pay-card-btn' onClick={() => cardClick(0)}>CLR</span>
+                            <span className='pay-button pay-card-btn' onClick={() => cardClick(cardAmount)}>{formatCurrency(cardAmount)}</span>
+                            <span className='pay-button pay-card-btn' onClick={() => custInputClick('card')}>Enter</span>
                         </div>
                     </div>
                     <div id='pay-disc-inputs'>
                         <span>Discount</span>
                         <div className='pay-btn-cont'>
-                            <span className='pay-button' onClick={() => discRateClick(0)}>0</span>
+                            <span className='pay-button' onClick={() => discRateClick(0)}>CLR</span>
                             <span className='pay-button' onClick={() => discRateClick(5)}>5%</span>
                             <span className='pay-button' onClick={() => discRateClick(10)}>10%</span>
                             <span className='pay-button' onClick={() => discRateClick(15)}>15%</span>
-                            <span className='pay-button' onClick={() => custInputClick('Discount')}>Enter</span>
+                            <span className='pay-button' onClick={() => custInputClick('discount')}>Enter</span>
                         </div>
                     </div>
                     <div id='pay-tip-inputs'>
                         <span>Tip</span>
                         <div className='pay-btn-cont'>
-                            <span className='pay-button' onClick={() => tipRateClick(0)}>0</span>
+                            <span className='pay-button' onClick={() => tipRateClick(0)}>CLR</span>
                             <span className='pay-button' onClick={() => tipRateClick(5)}>5%</span>
                             <span className='pay-button' onClick={() => tipRateClick(10)}>10%</span>
                             <span className='pay-button' onClick={() => tipRateClick(12.5)}>12.5%</span>
-                            <span className='pay-button' onClick={() => custInputClick('Tip')}>Enter</span>
+                            <span className='pay-button' onClick={() => custInputClick('tip')}>Enter</span>
                         </div>
                     </div>
                 </div>
