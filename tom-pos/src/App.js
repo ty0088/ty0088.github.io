@@ -13,10 +13,6 @@ import ItemManage from './Pages/ItemManagePage';
 import TaxManage from './Pages/TaxManagePage';
 import OrderList from './Pages/OrderListPage';
 
-//have a root based save root data obj and setRootData function in App --------------
-//this way, the method of data saving can be controlled in this one place ------------
-//the saving method could be local, online db, etc -------------------
-
 const App = () => {
   const [finData, setFinData] = useState({});
   const [itemsData, setItemsData] = useState({});
@@ -30,7 +26,7 @@ const App = () => {
   
   useEffect(() => {
     //redirect user to approriate page based on user auth status on each load of webpage
-    //need listener to be able to work independently of render i.e. in case user is logged out--------------
+    //need listener to be able to work independently of render i.e. in case user is logged out-------------- ?????
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
           // User is signed in
@@ -98,7 +94,7 @@ const App = () => {
           <Route path='/tom-pos' element={<Login />} />
           <Route path='/tom-pos/orders' element={<Orders ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
           <Route path='/tom-pos/signup' element={<SignUp />} />
-          <Route path='/tom-pos/pos/:orderNo' element={<POS ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setRootData={setRootData} />} />
+          <Route path='/tom-pos/pos/:orderNo' element={<POS ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setRootData={setRootData} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/backend' element={<BackEnd />} />

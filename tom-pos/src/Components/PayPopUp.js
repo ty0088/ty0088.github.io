@@ -1,9 +1,10 @@
 import '../Styles/PayPopUp.css';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import formatCurrency from '../Util/formatCurrency';
 import AmountInputPopUp from './AmountInputPopUp';
 
-const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmount, tipAmount, updateOrder, tipRate, preTipTotal}) => {
+const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, updateOrder, tipRate, preTipTotal, setPayFlag, setCurrOrder}) => {
 
     const [inputFlag, setInputFlag] = useState(false);
     const [amountDue, setAmountDue] = useState(totalPrice);
@@ -13,10 +14,13 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
     const [cardPaid, setCardPaid] = useState(0);
     const [currInput, setCurrInput] = useState('');
     const [dueError, setDueError] = useState('');
+    const navigate = useNavigate();
 
+    //calculate amount due, change due and card pay button amount
     useEffect(() => {
         let amountVal = totalPrice - (cashPaid + cardPaid);
         let changeVal = 0;
+        setDueError('');
         //if amount due is < 0, set change due
         if (amountVal < 0) {
             changeVal = Math.abs(amountVal);
@@ -26,7 +30,6 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
         if (amountVal > 0) {
             document.querySelectorAll('.pay-amount').forEach(elem => elem.style.color = 'rgb(255, 0, 0)');
         } else {
-            setDueError('');
             document.querySelectorAll('.pay-amount').forEach(elem => elem.style.color = 'rgb(0, 175, 23)');
         }
         //change colour of change due if > 0
@@ -70,12 +73,28 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
     };
 
     const payClick = () => {
-        if (amountDue === 0) {
-            confirmPay();
-        } else {
-            setDueError(' <-----');
-        }
+        //close order if amount due < 0 and order has items
+        if (amountDue === 0 && orderObj['items'].length > 0) {
+            const payObj = {
+                ...orderObj,
+                'status': 'CLOSED',
+                'date-closed': new Date(),
+                'cash-paid': Math.round(cashPaid * 100 + Number.EPSILON) / 100,
+                'card-paid': Math.round(cardPaid * 100 + Number.EPSILON) / 100
+            };
+            updateOrder(orderObj['order-no'], payObj);
+            setCurrOrder('');
+            setPayFlag(false);
+            navigate('/tom-pos/orders');
+        } else if (amountDue > 0 && orderObj['items'].length > 0) {
+            setDueError('');
+            setTimeout(() => setDueError(' <-----'), 100);
+        } 
     }
+
+    const backClick = () => {
+        setPayFlag(false);
+    }; 
 
     return (
         <div id='pay-popup-container'>
@@ -93,7 +112,7 @@ const PayPopUp = ({confirmPay, backPay, orderObj, totalPrice, discRate, discAmou
                     <span>Discount:</span><span>{formatCurrency(discAmount)} / {discRate}%</span>
                     <span>Tip:</span><span>{formatCurrency(tipAmount)} / {tipRate}%</span>
                     <button type='button' onClick={payClick}>PAY</button>
-                    <button type='button' onClick={backPay}>BACK</button>
+                    <button type='button' onClick={backClick}>BACK</button>
                 </div>
                 <div id='pay-right-col'>
                     <div id='pay-cash-inputs'>

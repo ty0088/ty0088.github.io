@@ -1,6 +1,5 @@
 import '../Styles/OrderTab.css';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import formatCurrency from '../Util/formatCurrency';
 import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
@@ -13,7 +12,9 @@ import PayPopUp from './PayPopUp';
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
 //--------------------------------------------------------------------------------------
 
-const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice}) => {
+const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice,
+                    setCurrOrder}) => {
+    
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
@@ -25,7 +26,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [tipRate, setTipRate] = useState(0);
     const [tipAmount, setTipAmount] = useState(0);
     const [preTipTotal, setPreTipTotal] = useState(0);
-    const navigate = useNavigate();
+    const [totalAddPrice, setTotalAddPrice] = useState(0);
 
     useEffect(() => {
         if (Object.keys(orderObj).length > 0) {
@@ -42,7 +43,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         }
     });
 
-    //update sub-total and tax prices when orderItems or discRate changes
+    //update sub-total, tax and total additional prices when orderItems or discRate changes
     useEffect(() => {
         //return order sub total price (exc any discount): sum for all items ((unit-price + add-price) / effective total tax rate)
         const getSubTotal = () => {
@@ -52,8 +53,12 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         const getTax = () => {
             return orderItems.reduce((sum, currItem) => sum + ((((currItem['unit-price'] + currItem['add-price']) / ((currItem['tax-rate'] + 100) / 100)) * ((100 - discRate) / 100)) * (currItem['tax-rate'] / 100) * currItem['qty']), 0);
         };
+        const getTotalAddPrice = () => {
+            return orderItems.reduce((sum, currItem) => sum + currItem['add-price'], 0);
+        };
         setSubTotal(getSubTotal());
         setTax(getTax());
+        setTotalAddPrice(getTotalAddPrice());
     }, [orderItems, discRate]);
 
     //update order total price: sub-total + tax + tip + discount
@@ -81,6 +86,10 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         updateOrderPrices();
     }, [totalPrice]);
 
+    const editClick = () => {
+        setEditFlag(true);
+    };
+
     const updateOrderPrices = () => {
         const priceData = {
             ...ordersData,
@@ -90,14 +99,11 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                 'sub-price': Math.round(subTotal * 100 + Number.EPSILON) / 100,
                 'tax-due': Math.round(tax * 100 + Number.EPSILON) / 100,
                 'total-price': Math.round(totalPrice * 100 + Number.EPSILON) / 100,
-                'tip-price': Math.round(tipAmount * 100 + Number.EPSILON) / 100
+                'tip-price': Math.round(tipAmount * 100 + Number.EPSILON) / 100,
+                'add-price': Math.round(totalAddPrice * 100 + Number.EPSILON) / 100
             }
         };
         setRootData(priceData, 'orders');
-    };
-
-    const editClick = () => {
-        setEditFlag(true);
     };
 
     //updates order with orderNo in ordersData and DB
@@ -119,30 +125,15 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setPayFlag(true);
     };
 
-    const confirmPay = () => {
-        //change order status to 'CLOSED' and navigate to Order page 
-        const saveObj = {
-            ...orderObj,
-            'status': 'CLOSED'
-        };
-        updateOrder(orderObj['order-no'], saveObj);
-        setPayFlag(false);
-        navigate('/tom-pos/orders');
-    };
-
-    const backPay = () => {
-        setPayFlag(false);
-    }; 
-
     return (
         <div id='order-tab-container'>
             {editFlag &&
                 <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder}/>
             }
             {payFlag &&
-                <PayPopUp confirmPay={confirmPay} backPay={backPay} orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
+                <PayPopUp orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
                     discAmount={discAmount} tipAmount={tipAmount} setTipAmount={setTipAmount} updateOrder={updateOrder} tipRate={tipRate}
-                    setTipRate={setTipRate} preTipTotal={preTipTotal}/>
+                    setTipRate={setTipRate} preTipTotal={preTipTotal} setPayFlag={setPayFlag} setCurrOrder={setCurrOrder} />
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>

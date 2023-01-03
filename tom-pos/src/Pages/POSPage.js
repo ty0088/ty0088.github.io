@@ -6,7 +6,7 @@ import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 import AddItemPopUp from '../Components/AddItemPopUp';
 
-const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
+const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder}) => {
     const { orderNo } = useParams();
     const [addFlag, setAddFlag] = useState(false);
     const [orderObj, setOrderObj] = useState({});
@@ -69,7 +69,14 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
         const addPrice = getAddPrice(id, mods, opts);
         if (!result) {
             //if item is unique then add new item to order
-            const itemObj = {...getItemObj(id), 'add-price': addPrice, 'qty': 1, 'mods': mods, 'options': opts, 'notes': notes};
+            const itemObj = {
+                ...getItemObj(id),
+                'add-price': addPrice,
+                'qty': 1,
+                'mods': mods,
+                'options': opts,
+                'notes': notes
+            };
             orderData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
             setLastItemIndex(Object.keys(orderData).length - 1);
         } else {
@@ -139,7 +146,8 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData}) => {
             </div>
             <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} itemsData={itemsData} deleteItem={deleteItem}
-                setRootData={setRootData} lastItemIndex={lastItemIndex} setLastItemIndex={setLastItemIndex} getAddPrice={getAddPrice} />
+                setRootData={setRootData} lastItemIndex={lastItemIndex} setLastItemIndex={setLastItemIndex} getAddPrice={getAddPrice}
+                setCurrOrder={setCurrOrder} />
         </div>
     );
 };
