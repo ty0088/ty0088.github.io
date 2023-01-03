@@ -67,7 +67,10 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) =
     //open order in POS
     const openClick = (e) => {
         const orderNo = e.target.closest('[data-no]').getAttribute('data-no');
-        setCurrOrder(orderNo);
+        //only set as current order if status is OPEN
+        if (ordersData[orderNo]['status'] === 'OPEN') {
+            setCurrOrder(orderNo);
+        }
         navigate(`/tom-pos/pos/${orderNo}`);
     };
 
