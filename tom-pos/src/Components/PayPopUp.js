@@ -5,6 +5,7 @@ import formatCurrency from '../Util/formatCurrency';
 import AmountInputPopUp from './AmountInputPopUp';
 
 //On pay show change due on a new pop up -------------
+//change pop up to have New Order button or return to Order page ---------------
 
 const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, updateOrder, tipRate, preTipTotal, setPayFlag, setCurrOrder}) => {
 
