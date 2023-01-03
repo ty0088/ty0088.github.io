@@ -1,11 +1,15 @@
 import '../Styles/OrderEditPopUp.css';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DeletePopUp from './DeletePopUp';
 
-const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
+const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootData, ordersData, setCurrOrder}) => {
+    const [delFlag, setDelFlag] = useState(false);
     const [orderName, setOrderName] = useState(orderObj['order-name']);
     const [orderNotes, setOrderNotes] = useState(orderObj['order-notes']);
     const [disc, setDisc] = useState(orderObj['disc-rate']);
     const [custDisc, setcustDisc] = useState(disc === 0 ? '' : disc === 5 ? '' : disc === 10 ? '' : disc);
+    const navigate = useNavigate();
 
     //correct discount button is selected
     useEffect(() => {
@@ -74,8 +78,40 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
         custElem.innerText = `${changeRate} *`;
     };
 
+    //prompt delete confirmation
+    const deleteClick = () => {
+        setDelFlag(true);
+    };
+
+    const confirmDelete = () => {
+        setDelFlag(false);
+        //delete item from data and db
+        let deleteData = {...ordersData};
+        delete deleteData[orderNo];
+        setRootData(deleteData, 'orders');
+        setCurrOrder();
+        navigate('/tom-pos/orders');
+    };
+
+    const cancelDelete = () => {
+        setDelFlag(false);
+    };
+
+    const reOpenClick = () => {
+        const saveObj = {
+            ...orderObj,
+            'status': 'OPEN'
+        };
+        updateOrder(orderNo, saveObj);
+        setEditFlag(false);
+    };
+
     return (
         <div id='order-edit-container'>
+            {delFlag &&
+                <DeletePopUp name={`Order ${orderNo}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                    message={'This will permanently delete the order from the database'}/>
+            }
             <div id='order-edit-popup'>
                 <span id='order-edit-header'>Order: {orderNo}</span>
                 <div id='order-edit-labels'>
@@ -98,8 +134,14 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder}) => {
                     </div>
                 </div>
                 <div id='order-edit-btns'>
-                    <button type='button' onClick={editSaveClick}>Save</button>
+                    {orderObj['status'] === 'OPEN' &&
+                        <button type='button' onClick={editSaveClick}>Save</button>
+                    }
+                    {orderObj['status'] === 'CLOSED' &&
+                        <button type='button' onClick={reOpenClick}>RE-OPEN</button>
+                    }
                     <button type='button' onClick={editCloseClick}>Close</button>
+                    <button type='button' onClick={deleteClick}>Delete</button>
                 </div>
 
 

@@ -12,9 +12,7 @@ import PayPopUp from './PayPopUp';
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
 //--------------------------------------------------------------------------------------
 
-const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice,
-                    setCurrOrder}) => {
-    
+const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice, setCurrOrder}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
@@ -81,7 +79,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setTipAmount(preTipTotal * (tipRate / 100));
     }, [preTipTotal, tipRate]);
 
-    //update order prices whenever total price is updated
+    //update order obj prices whenever total price is updated
     useEffect(() => {
         updateOrderPrices();
     }, [totalPrice]);
@@ -128,7 +126,8 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     return (
         <div id='order-tab-container'>
             {editFlag &&
-                <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder}/>
+                <OrderEditPopUp orderNo={orderNo} orderObj={orderObj} setEditFlag={setEditFlag} updateOrder={updateOrder} setRootData={setRootData}
+                    ordersData={ordersData} setCurrOrder={setCurrOrder} />
             }
             {payFlag &&
                 <PayPopUp orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
@@ -163,7 +162,9 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                     </div>
                 </div>
                 <div id='order-btn-container'>
-                    <button type='button' onClick={payClick}>PAY</button>
+                    {orderObj['status'] === 'OPEN' &&
+                        <button type='button' onClick={payClick}>PAY</button>
+                    }
                     <button type='button'>PRINT</button>
                 </div>
             </div>

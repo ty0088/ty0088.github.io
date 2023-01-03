@@ -144,7 +144,15 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrd
                 <Link to='/tom-pos/backend' className='pos-nav-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
-            <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
+            {orderObj['status'] === 'OPEN' &&
+                <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
+            }
+            {orderObj['status'] === 'CLOSED' &&
+                <div id='pos-closed-message' className='flex-column-center'>
+                    <span >Order is CLOSED, please RE-OPEN it to make changes.</span>
+                    <span >To RE-OPEN, go to EDIT order</span>
+                </div>
+            }
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} itemsData={itemsData} deleteItem={deleteItem}
                 setRootData={setRootData} lastItemIndex={lastItemIndex} setLastItemIndex={setLastItemIndex} getAddPrice={getAddPrice}
                 setCurrOrder={setCurrOrder} />

@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 998;
 }
 
 #order-edit-popup {
@@ -112,15 +112,15 @@
 }
 
 #order-edit-btns {
-    grid-column-start: 2;
+    grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 3;
     grid-row-end: 4;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 #order-edit-btns > button {
     height: 30px;
-    width: 100px;
+    width: 80px;
 }

@@ -97,6 +97,10 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) =
 
     return (
         <div id='order-list-container'>
+            {messageFlag &&
+                <DeletePopUp name={`Order ${delOrder}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
+                    message={'This will permanently delete the order from the database'}/>
+            }
             <div id='order-list-form'>
                 <h1>{status} Orders</h1>
                 <OrderFilterSort sortBy={sortBy} setSortBy={setSortBy} dir={dir} setDir={setDir} setFilterDate={setFilterDate} setDateType={setDateType} />
@@ -140,10 +144,6 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) =
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
-            {messageFlag &&
-                <DeletePopUp name={`Order ${delOrder}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                    message={'This will permanently delete the order from the database'}/>
-            }
         </div>
     );
 };

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import formatCurrency from '../Util/formatCurrency';
 import AmountInputPopUp from './AmountInputPopUp';
 
+//On pay show change due on a new pop up -------------
+
 const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, updateOrder, tipRate, preTipTotal, setPayFlag, setCurrOrder}) => {
 
     const [inputFlag, setInputFlag] = useState(false);
@@ -83,7 +85,7 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
                 'card-paid': Math.round(cardPaid * 100 + Number.EPSILON) / 100
             };
             updateOrder(orderObj['order-no'], payObj);
-            setCurrOrder('');
+            setCurrOrder();
             setPayFlag(false);
             navigate('/tom-pos/orders');
         } else if (amountDue > 0 && orderObj['items'].length > 0) {

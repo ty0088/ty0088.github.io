@@ -102,3 +102,7 @@
 .pos-nav-link:hover {
     font-weight: 900;
 }
+
+#pos-closed-message {
+    border: 1px solid black;
+}
