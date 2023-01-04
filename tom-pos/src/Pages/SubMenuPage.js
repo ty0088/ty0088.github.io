@@ -22,6 +22,8 @@ const SubMenu = ({menusData, itemsData, setRootData}) => {
     };
 
     const cancelEdit = () => {
+        //set levels and temp data to original data if edit is cancelled
+        setLevels(Object.keys(menusData).map(string => parseInt(string)));
         setTempData({...menusData});
     };
 
