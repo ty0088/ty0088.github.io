@@ -1,6 +1,6 @@
 import '../Styles/SubMenu.css';
 import React, { useState, useEffect } from 'react';
-import DeletePopUp from './DeletePopUp';
+import ConfirmPopUp from './ConfirmPopUp';
 
 const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMenu}) => {
     const [editFlag, setEditFlag] = useState(false);
@@ -139,8 +139,8 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
                     <button type='button' className='menuBtn' onClick={deleteClick}>Delete</button>
                     <button type='button' className='menuBtn' onClick={cancelClick}>Cancel</button>
                     {messageFlag &&
-                        <DeletePopUp name={menu} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                            message={'This will delete any descendants of this menu and make any associated items menu-less'}/>
+                        <ConfirmPopUp name={menu} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete'}
+                            message2={'This will delete any descendants of this menu and make any associated items menu-less'}/>
                     }
                 </div>
             </div>

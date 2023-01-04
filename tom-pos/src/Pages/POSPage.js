@@ -6,6 +6,8 @@ import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 import AddItemPopUp from '../Components/AddItemPopUp';
 
+//if order is closed, show cash paid, card paid, discount, tip info in POS menu container ------------------------
+
 const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder}) => {
     const { orderNo } = useParams();
     const [addFlag, setAddFlag] = useState(false);

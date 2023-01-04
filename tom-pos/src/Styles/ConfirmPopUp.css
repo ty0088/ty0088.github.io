@@ -1,0 +1,44 @@
+#confirm-popup-container {
+    height: 500px;
+    width: 1000px;
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#confirm-popup {
+    height: 300px;
+    width: 400px;
+    padding: 20px;
+    border: 2px solid Black;
+    border-radius: 5px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#confirm-message1 {
+    margin: 10px 0 10px 0;
+}
+
+#confirm-message2 {
+    font-size: 0.75em;
+    margin: 10px 0 10px 0;
+}
+
+#confirm-btns > button {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100px;
+    height: 50px;
+}

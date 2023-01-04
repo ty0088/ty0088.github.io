@@ -2,7 +2,7 @@ import '../Styles/OrderRow.css';
 import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 import EditItemPopUp from './EditItemPopUp';
-import DeletePopUp from './DeletePopUp';
+import ConfirmPopUp from './ConfirmPopUp';
 
 const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPrice}) => {
     const [editItemFlag, setEditItemFlag] = useState(false);
@@ -59,7 +59,8 @@ const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPric
                     cancelItemClick={cancelItemClick} getAddPrice={getAddPrice} />
             }
             {deleteFlag &&
-                <DeletePopUp name={itemObj['name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete} message={'This will permanently delete the item(s) from the order'} />
+                <ConfirmPopUp name={itemObj['name']} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete'}
+                    message2={'This will permanently delete the item(s) from the order'} />
             }
             <div className='order-row'>
                 <span className='flex-row-center bold700'>{itemObj['qty']}</span>

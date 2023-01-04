@@ -1,7 +1,7 @@
 import '../Styles/OrderEditPopUp.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DeletePopUp from './DeletePopUp';
+import ConfirmPopUp from './ConfirmPopUp';
 
 const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootData, ordersData, setCurrOrder}) => {
     const [delFlag, setDelFlag] = useState(false);
@@ -41,7 +41,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
         setEditFlag(false);
     };
 
-    const editCloseClick = () => {
+    const editCancelClick = () => {
         setEditFlag(false);
     };
 
@@ -109,8 +109,8 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
     return (
         <div id='order-edit-container'>
             {delFlag &&
-                <DeletePopUp name={`Order ${orderNo}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                    message={'This will permanently delete the order from the database'}/>
+                <ConfirmPopUp name={`Order ${orderNo}`} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete'}
+                    message2={'This will permanently delete the order from the database'}/>
             }
             <div id='order-edit-popup'>
                 <span id='order-edit-header'>Order: {orderNo}</span>
@@ -140,7 +140,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
                     {orderObj['status'] === 'CLOSED' &&
                         <button type='button' onClick={reOpenClick}>RE-OPEN</button>
                     }
-                    <button type='button' onClick={editCloseClick}>Close</button>
+                    <button type='button' onClick={editCancelClick}>Cancel</button>
                     <button type='button' onClick={deleteClick}>Delete</button>
                 </div>
 
