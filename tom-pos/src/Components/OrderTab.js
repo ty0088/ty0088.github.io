@@ -141,26 +141,28 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             </div>
             <div id='order-tab-rows'>
                 {orderItems.length > 0 &&
-                    orderItems.map((item, i) => <OrderRow key={i} index={i} itemObj={item} deleteItem={deleteItem} 
+                    orderItems.map((item, i) => <OrderRow key={i} index={i} status={orderObj['status']} itemObj={item} deleteItem={deleteItem} 
                         updateItem={updateItem} itemsData={itemsData} getAddPrice={getAddPrice} />)
                 }
             </div>
             <div id='order-sub-container'>
-                <div id='order-price-container'>
-                    <span id='total-price'>{formatCurrency(totalPrice)}</span>
-                    <div id='sub-price-container'>
-                        <div id='price-labels'>
-                            <span>Sub Total:</span>
-                            <span>Discounts:</span>
-                            <span>VAT:</span>
-                        </div>
-                        <div id='price-amounts'>
-                            <span>{formatCurrency(subTotal)}</span>
-                            <span>{formatCurrency(discAmount)}</span>
-                            <span>{formatCurrency(tax)}</span>
+                {orderObj['status'] === 'OPEN' &&
+                    <div id='order-price-container'>
+                        <span id='total-price'>{formatCurrency(totalPrice)}</span>
+                        <div id='sub-price-container'>
+                            <div id='price-labels'>
+                                <span>Sub Total:</span>
+                                <span>Discounts:</span>
+                                <span>VAT:</span>
+                            </div>
+                            <div id='price-amounts'>
+                                <span>{formatCurrency(subTotal)}</span>
+                                <span>{formatCurrency(discAmount)}</span>
+                                <span>{formatCurrency(tax)}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
                 <div id='order-btn-container'>
                     {orderObj['status'] === 'OPEN' &&
                         <button type='button' onClick={payClick}>PAY</button>

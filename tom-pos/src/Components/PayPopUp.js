@@ -105,7 +105,7 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
                 <AmountInputPopUp currInput={currInput} setInputFlag={setInputFlag} setCashPaid={setCashPaid} setCardPaid={setCardPaid}
                     discRateClick={discRateClick} tipRateClick={tipRateClick} preTipTotal={preTipTotal} />
             }
-            <div id='pay-popup'>
+            <div id='pay-popup-open'>
                 <div id='pay-left-col'>
                     <span className='pay-total'>Total Price:</span><span className='pay-total'>{formatCurrency(totalPrice)}</span>
                     <span className='pay-amount'>Amount Due:</span><span className='pay-amount'>{formatCurrency(amountDue)}<span id='due-error'>{dueError}</span></span>
@@ -114,8 +114,8 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
                     <span>Card Paid:</span><span>{formatCurrency(cardPaid)}</span>
                     <span>Discount:</span><span>{formatCurrency(discAmount)} / {discRate}%</span>
                     <span>Tip:</span><span>{formatCurrency(tipAmount)} / {tipRate}%</span>
-                    <button type='button' onClick={payClick}>PAY</button>
-                    <button type='button' onClick={backClick}>BACK</button>
+                    <button type='button' className='pay-pop-btn' onClick={payClick}>PAY</button>
+                    <button type='button' className='pay-pop-btn' onClick={backClick}>BACK</button>
                 </div>
                 <div id='pay-right-col'>
                     <div id='pay-cash-inputs'>

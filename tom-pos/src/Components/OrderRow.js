@@ -4,7 +4,7 @@ import formatCurrency from '../Util/formatCurrency';
 import EditItemPopUp from './EditItemPopUp';
 import ConfirmPopUp from './ConfirmPopUp';
 
-const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPrice}) => {
+const OrderRow = ({index, status, itemObj, deleteItem, updateItem, itemsData, getAddPrice}) => {
     const [editItemFlag, setEditItemFlag] = useState(false);
     const [deleteFlag, setDeleteFlag] = useState(false);
     const [itemPrice, setItemPrice] = useState(0);
@@ -66,7 +66,9 @@ const OrderRow = ({index, itemObj, deleteItem, updateItem, itemsData, getAddPric
                 <span className='flex-row-center bold700'>{itemObj['qty']}</span>
                 <span className='flex-row-start item-name'>{itemObj['name']}</span>
                 <span className='flex-row-center'>{formatCurrency(itemPrice)}</span>
-                <span className="material-symbols-outlined flex-row-center link" onClick={itemEditClick}>edit_square</span>
+                {status === 'OPEN' &&
+                    <span className="material-symbols-outlined flex-row-center link" onClick={itemEditClick}>edit_square</span>
+                }
             </div>
             <div className='order-row-add'>
                 {itemObj['mods'].map((mod, i) => <span key={i}>- {mod}</span>)}

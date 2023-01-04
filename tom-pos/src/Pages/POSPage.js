@@ -1,12 +1,11 @@
-import '../Styles/POS.css';
+import '../Styles/POSPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
+import formatCurrency from '../Util/formatCurrency';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 import AddItemPopUp from '../Components/AddItemPopUp';
-
-//if order is closed, show cash paid, card paid, discount, tip info in POS menu container ------------------------
 
 const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder}) => {
     const { orderNo } = useParams();
@@ -151,8 +150,17 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrd
             }
             {orderObj['status'] === 'CLOSED' &&
                 <div id='pos-closed-message' className='flex-column-center'>
-                    <span >Order is CLOSED, please RE-OPEN it to make changes.</span>
-                    <span >To RE-OPEN, go to EDIT order</span>
+                    <span>Order is CLOSED, please RE-OPEN it to make changes.</span>
+                    <span>To RE-OPEN, go to EDIT order</span>
+                    <div id='pay-popup-closed'>
+                        <span className='pay-total'>Total Price:</span><span className='pay-total'>{formatCurrency(orderObj['total-price'])}</span>
+                        <span>Sub Total:</span><span>{formatCurrency(orderObj['sub-price'])}</span>
+                        <span>VAT:</span><span>{formatCurrency(orderObj['tax-due'])}</span>
+                        <span>Cash Paid:</span><span>{formatCurrency(orderObj['cash-paid'])}</span>
+                        <span>Card Paid:</span><span>{formatCurrency(orderObj['card-paid'])}</span>
+                        <span>Discount:</span><span>{formatCurrency(orderObj['disc-price'])} / {orderObj['disc-rate']}%</span>
+                        <span>Tip:</span><span>{formatCurrency(orderObj['tip-price'])} / {orderObj['tip-rate']}%</span>
+                    </div>
                 </div>
             }
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} itemsData={itemsData} deleteItem={deleteItem}

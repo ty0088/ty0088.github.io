@@ -11,7 +11,7 @@
     z-index: 998;
 }
 
-#pay-popup {
+#pay-popup-open {
     height: 394px;
     width: 804px;
     padding: 20px;
@@ -42,13 +42,6 @@
 
 .pay-change {
     font-size: 22px;
-}
-
-#pay-left-col > button {
-    margin-right: 20px;
-    height: 40px;
-    font-size: 20px;
-    font-weight: 800;
 }
 
 #pay-right-col {
@@ -121,4 +114,26 @@
 .pay-card-btn {
     height: 50px;
     width: 100px;
+}
+
+#pay-popup-closed {
+    height: 357px;
+    width: 352px;
+    padding: 20px;
+    border: 1px solid Black;
+    border-radius: 5px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    grid-template-rows: repeat(7, 45px);
+    font-size: 20px;
+    font-weight: 800;
+    align-items: center;
+}
+
+.pay-pop-btn {
+    margin-right: 20px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: 800;
 }
