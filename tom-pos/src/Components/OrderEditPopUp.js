@@ -5,6 +5,7 @@ import ConfirmPopUp from './ConfirmPopUp';
 
 const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootData, ordersData, setCurrOrder}) => {
     const [delFlag, setDelFlag] = useState(false);
+    const [reOpenFlag, setReOpenFlag] = useState(false);
     const [orderName, setOrderName] = useState(orderObj['order-name']);
     const [orderNotes, setOrderNotes] = useState(orderObj['order-notes']);
     const [disc, setDisc] = useState(orderObj['disc-rate']);
@@ -98,19 +99,31 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
     };
 
     const reOpenClick = () => {
+        setReOpenFlag(true);
+    };
+
+    const confirmReOpen = () => {
         const saveObj = {
             ...orderObj,
             'status': 'OPEN'
         };
         updateOrder(orderNo, saveObj);
         setEditFlag(false);
-    };
+    }
+
+    const cancelReOpen = () => {
+        setReOpenFlag(false);
+    }
 
     return (
         <div id='order-edit-container'>
             {delFlag &&
                 <ConfirmPopUp name={`Order ${orderNo}`} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete'}
                     message2={'This will permanently delete the order from the database'}/>
+            }
+            {reOpenFlag &&
+                <ConfirmPopUp name={`Order ${orderNo}`} cancelClick={cancelReOpen} confirmClick={confirmReOpen} message1={'Are you sure you want RE-OPEN'}
+                message2={''}/>
             }
             <div id='order-edit-popup'>
                 <span id='order-edit-header'>Order: {orderNo}</span>

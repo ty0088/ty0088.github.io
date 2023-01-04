@@ -7,7 +7,6 @@ import PayPopUp from './PayPopUp';
 
 
 //-------------------------------------------------------------------------------------
-//- if order is closed, read only unless order is re-opened
 //- PRINT button click -> pop up confirming print receipt(s)
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
 //--------------------------------------------------------------------------------------
