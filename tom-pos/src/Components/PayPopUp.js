@@ -1,14 +1,12 @@
 import '../Styles/PayPopUp.css';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import formatCurrency from '../Util/formatCurrency';
 import AmountInputPopUp from './AmountInputPopUp';
 
 //On pay show change due on a new pop up -------------
 //change pop up to have New Order button or return to Order page ---------------
 
-const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, updateOrder, tipRate, preTipTotal, setPayFlag, setCurrOrder}) => {
-
+const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, updateOrder, tipRate, preTipTotal, setPayFlag, setCurrOrder, setChangeFlag}) => {
     const [inputFlag, setInputFlag] = useState(false);
     const [amountDue, setAmountDue] = useState(totalPrice);
     const [changeDue, setChangeDue] = useState(0);
@@ -17,7 +15,6 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
     const [cardPaid, setCardPaid] = useState(0);
     const [currInput, setCurrInput] = useState('');
     const [dueError, setDueError] = useState('');
-    const navigate = useNavigate();
 
     //calculate amount due, change due and card pay button amount
     useEffect(() => {
@@ -83,12 +80,13 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
                 'status': 'CLOSED',
                 'date-closed': new Date(),
                 'cash-paid': Math.round(cashPaid * 100 + Number.EPSILON) / 100,
-                'card-paid': Math.round(cardPaid * 100 + Number.EPSILON) / 100
+                'card-paid': Math.round(cardPaid * 100 + Number.EPSILON) / 100,
+                'change-due': Math.round(changeDue * 100 + Number.EPSILON) / 100
             };
             updateOrder(orderObj['order-no'], payObj);
             setCurrOrder();
             setPayFlag(false);
-            navigate('/tom-pos/orders');
+            setChangeFlag(true);
         } else if (amountDue > 0 && orderObj['items'].length > 0) {
             setDueError('');
             setTimeout(() => setDueError(' <-----'), 100);

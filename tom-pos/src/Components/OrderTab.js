@@ -4,7 +4,7 @@ import formatCurrency from '../Util/formatCurrency';
 import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
 import PayPopUp from './PayPopUp';
-
+import ChangePopUp from './ChangePopUp';
 
 //-------------------------------------------------------------------------------------
 //- PRINT button click -> pop up confirming print receipt(s)
@@ -14,6 +14,7 @@ import PayPopUp from './PayPopUp';
 const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice, setCurrOrder}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
+    const [changeFlag, setChangeFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
@@ -131,7 +132,10 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             {payFlag &&
                 <PayPopUp orderObj={orderObj} totalPrice={totalPrice} discRate={discRate}
                     discAmount={discAmount} tipAmount={tipAmount} setTipAmount={setTipAmount} updateOrder={updateOrder} tipRate={tipRate}
-                    setTipRate={setTipRate} preTipTotal={preTipTotal} setPayFlag={setPayFlag} setCurrOrder={setCurrOrder} />
+                    setTipRate={setTipRate} preTipTotal={preTipTotal} setPayFlag={setPayFlag} setCurrOrder={setCurrOrder} setChangeFlag={setChangeFlag} />
+            }
+            {changeFlag &&
+                <ChangePopUp ordersData={ordersData} orderObj={orderObj} setCurrOrder={setCurrOrder} setRootData={setRootData} setChangeFlag={setChangeFlag} />
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>
