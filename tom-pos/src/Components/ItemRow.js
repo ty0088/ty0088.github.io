@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
-import DeletePopUp from './DeletePopUp';
+import ConfirmPopUp from './ConfirmPopUp';
 import formatCurrency from '../Util/formatCurrency';
 
 //--------------------------------------------------------------------------------------
@@ -294,8 +294,8 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         return (
             <div className='item-row' data-id={tempItem['itemID']}>
                 {messageFlag &&
-                    <DeletePopUp name={tempItem['item-name']} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                        message={'This will permanently delete the item from the database'}/>
+                    <ConfirmPopUp name={tempItem['item-name']} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete'}
+                        message2={'This will permanently delete the item from the database'}/>
                 }
                 <span>{index + 1}.</span>
                 <div id='edit-btn-con'>

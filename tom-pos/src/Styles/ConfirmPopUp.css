@@ -1,4 +1,4 @@
-#delete-popup-container {
+#confirm-popup-container {
     height: 500px;
     width: 1000px;
     background-color: rgba(0,0,0,0.4);
@@ -11,7 +11,7 @@
     z-index: 999;
 }
 
-#delete-popup {
+#confirm-popup {
     height: 300px;
     width: 400px;
     padding: 20px;
@@ -26,12 +26,16 @@
     font-size: 1.5em;
 }
 
-#ex-message {
+#confirm-message1 {
+    margin: 10px 0 10px 0;
+}
+
+#confirm-message2 {
     font-size: 0.75em;
     margin: 10px 0 10px 0;
 }
 
-#conf-btns > button {
+#confirm-btns > button {
     margin: 20px;
     font-size: 20px;
     font-weight: 700;

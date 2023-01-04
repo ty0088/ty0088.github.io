@@ -2,10 +2,8 @@ import '../Styles/OrderList.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
-import DeletePopUp from '../Components/DeletePopUp';
+import ConfirmPopUp from '../Components/ConfirmPopUp';
 import OrderFilterSort from '../Components/OrdersFilterSort';
-
-//set root data obj when deleting, setOrdersData -------------------
 
 const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) => {
     const [messageFlag, setMessageFlag] = useState(false);
@@ -101,8 +99,8 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) =
     return (
         <div id='order-list-container'>
             {messageFlag &&
-                <DeletePopUp name={`Order ${delOrder}`} cancelDelete={cancelDelete} confirmDelete={confirmDelete}
-                    message={'This will permanently delete the order from the database'}/>
+                <ConfirmPopUp name={`Order ${delOrder}`} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete'}
+                    message2={'This will permanently delete the order from the database'}/>
             }
             <div id='order-list-form'>
                 <h1>{status} Orders</h1>
