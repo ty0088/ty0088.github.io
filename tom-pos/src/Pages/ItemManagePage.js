@@ -1,4 +1,4 @@
-import '../Styles/ItemManage.css';
+import '../Styles/ItemManagePage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';

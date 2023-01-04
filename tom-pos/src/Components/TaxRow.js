@@ -1,4 +1,4 @@
-import '../Styles/TaxPage.css';
+import '../Styles/TaxManagePage.css';
 import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import ConfirmPopUp from './ConfirmPopUp';

@@ -106,3 +106,8 @@
 #pos-closed-message {
     border: 1px solid black;
 }
+
+#pos-closed-message > span {
+    margin-bottom: 10px;
+    font-weight: 600;
+}

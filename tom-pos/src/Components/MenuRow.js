@@ -1,4 +1,4 @@
-import '../Styles/SubMenu.css';
+import '../Styles/SubMenuPage.css';
 import React, { useState, useEffect } from 'react';
 import ConfirmPopUp from './ConfirmPopUp';
 

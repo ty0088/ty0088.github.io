@@ -1,4 +1,4 @@
-import '../Styles/Login.css'
+import '../Styles/LoginPage.css'
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';

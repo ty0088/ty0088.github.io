@@ -1,4 +1,4 @@
-import '../Styles/OrderList.css';
+import '../Styles/OrderListPage.css';
 import React from 'react';
 
 const OrderFilterSort = ({sortBy, setSortBy, dir, setDir, setFilterDate, setDateType}) => {

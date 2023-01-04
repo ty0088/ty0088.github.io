@@ -1,4 +1,4 @@
-import '../Styles/BackEnd.css';
+import '../Styles/BackEndPage.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';

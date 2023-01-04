@@ -1,4 +1,4 @@
-import '../Styles/SubMenu.css';
+import '../Styles/SubMenuPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';

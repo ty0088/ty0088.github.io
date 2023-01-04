@@ -1,15 +1,10 @@
-import '../Styles/ItemManage.css';
+import '../Styles/ItemManagePage.css';
 import React, { useState, useEffect } from 'react';
 import isNumber from 'is-number';
 import MenuList from './MenuList';
 import TaxList from './TaxList';
 import ConfirmPopUp from './ConfirmPopUp';
 import formatCurrency from '../Util/formatCurrency';
-
-//--------------------------------------------------------------------------------------
-//- mods/options to have an optional additional price
-//- adding a mod/option with additional price, updates item add-price
-//--------------------------------------------------------------------------------------
 
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
     const [editFlag, setEditFlag] = useState(false);

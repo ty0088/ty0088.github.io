@@ -1,4 +1,4 @@
-import '../Styles/TaxPage.css';
+import '../Styles/TaxManagePage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';

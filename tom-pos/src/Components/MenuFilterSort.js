@@ -1,4 +1,4 @@
-import '../Styles/ItemManage.css';
+import '../Styles/ItemManagePage.css';
 import React from 'react';
 import MenuList from './MenuList';
 
