@@ -1,0 +1,5 @@
+#receipt-container {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+}

@@ -23,7 +23,9 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrd
         'add-price': 0,
         'mods': [],
         'options': [],
-        'notes': ''
+        'notes': '',
+        'print-kitchen': false,
+        'print-customer': false
     };
 
     useEffect(() => {
@@ -76,7 +78,9 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrd
                 'qty': 1,
                 'mods': mods,
                 'options': opts,
-                'notes': notes
+                'notes': notes,
+                'print-kitchen': itemsData[id]['print-kitchen'],
+                'print-customer': itemsData[id]['print-customer']
             };
             orderData = {...orderObj, 'items': [...orderObj['items'], itemObj]};
             setLastItemIndex(Object.keys(orderData).length - 1);

@@ -68,3 +68,9 @@
 .bold600 {
     font-weight: 600;
 }
+
+#new-window-container {
+    width: 256px;
+    height: auto;
+    border: 1px solid black;
+}

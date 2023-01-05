@@ -5,6 +5,8 @@ import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
 import PayPopUp from './PayPopUp';
 import ChangePopUp from './ChangePopUp';
+import NewWindow from 'react-new-window'
+import ReceiptTemplate from './ReceiptTemplate';
 
 //-------------------------------------------------------------------------------------
 //- PRINT button click -> pop up confirming print receipt(s)
@@ -23,6 +25,8 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
     const [changeFlag, setChangeFlag] = useState(false);
+    const [printKitchFlag, setPrintKitchFlag] = useState(false);
+    const [printCustFlag, setPrintCustFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
@@ -131,6 +135,15 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setPayFlag(true);
     };
 
+    const printClick = () => {
+        setPrintKitchFlag(true);
+    };
+
+    const printClose = (win) => {
+        // win.print();
+        // win.onafterprint = () => win.close();
+    };
+
     return (
         <div id='order-tab-container'>
             {editFlag &&
@@ -144,6 +157,12 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             }
             {changeFlag &&
                 <ChangePopUp ordersData={ordersData} orderObj={orderObj} setCurrOrder={setCurrOrder} setRootData={setRootData} setChangeFlag={setChangeFlag} />
+            }
+            {printKitchFlag &&
+                //Render new window with kitchen receipt. Print on open and reset flag on close
+                <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintKitchFlag(false)}>
+                    <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} />
+                </NewWindow>
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>
@@ -178,7 +197,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                     {orderObj['status'] === 'OPEN' &&
                         <button type='button' onClick={payClick}>PAY</button>
                     }
-                    <button type='button'>PRINT</button>
+                    <button type='button' onClick={printClick}>PRINT</button>
                 </div>
             </div>
         </div>
