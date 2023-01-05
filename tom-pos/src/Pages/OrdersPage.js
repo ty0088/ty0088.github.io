@@ -2,6 +2,7 @@ import '../Styles/OrdersPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
+import getNextOrderNo from '../Util/getNextOrderNo';
 
 const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
     const newOrderObj = {
@@ -51,34 +52,12 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
 
     //NEW Order
     const newOrderClick = () => {
-        const nextOrderNo = getNextOrderNo();
+        const nextOrderNo = getNextOrderNo(orderNos);
         setCurrOrder(nextOrderNo);
         //create new next newOrderObj and set state and db
         const newData = {...ordersData, [nextOrderNo]: {...newOrderObj, 'order-no': nextOrderNo}};
         setRootData(newData, 'orders');
         navigate(`/tom-pos/pos/${nextOrderNo}`);
-    };
-
-    //gets the next order number in format A0000
-    const getNextOrderNo = () => {
-        let lastOrderNo = '';
-        if (orderNos.length === 0 || orderNos === undefined) {
-            //if empty db then start at order no A0001
-            lastOrderNo = 'A0000';
-        } else {
-            //else find the last used order no
-            lastOrderNo = orderNos[orderNos.length - 1];
-        }
-        let lastInts = parseInt(lastOrderNo.slice(1));
-        let lastChar = lastOrderNo.slice(0, 1);
-        //if last number is reached, then restart numbering with next lead characted, A9999 -> B0001
-        if (lastInts === 9999) {
-            lastInts = 0;
-            lastChar = String.fromCharCode(lastChar.charCodeAt(0) + 1);
-        }
-        const nextInt = lastInts + 1;
-        const strZero = nextInt.toString().length === 1 ? '000' : nextInt.toString().length === 2 ? '00' : nextInt.toString().length === 3 ? '0' : '';
-        return `${lastChar}${strZero}${nextInt}`;
     };
 
     return (
