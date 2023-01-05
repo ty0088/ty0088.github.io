@@ -8,6 +8,14 @@ import ChangePopUp from './ChangePopUp';
 
 //-------------------------------------------------------------------------------------
 //- PRINT button click -> pop up confirming print receipt(s)
+//- create receipt layout(s)/page(s) --> window.print each option
+//- ESC/POS protocol for thermal printers. Thermal printer required to check ...
+//
+// 1. Kitchen receipt template
+// 2. Customer receipt template
+// 3. Print pop up - confirm selection of printers to print to, confirm print, cancel print
+// 4. On PAY confirmation, auto print receipt(s) depending on items print options
+//
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
 //--------------------------------------------------------------------------------------
 
