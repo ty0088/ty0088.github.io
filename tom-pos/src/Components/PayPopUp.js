@@ -88,7 +88,7 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
             setDueError('');
             setTimeout(() => setDueError(' <-----'), 100);
         } 
-    }
+    };
 
     const backClick = () => {
         setPayFlag(false);
