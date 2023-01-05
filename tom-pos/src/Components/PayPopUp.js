@@ -15,7 +15,7 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
 
     //calculate amount due, change due and card pay button amount
     useEffect(() => {
-        let amountVal = totalPrice - (cashPaid + cardPaid);
+        let amountVal = Math.round((totalPrice - (cashPaid + cardPaid)) * 100 + Number.EPSILON) / 100;
         let changeVal = 0;
         setDueError('');
         //if amount due is < 0, set change due
