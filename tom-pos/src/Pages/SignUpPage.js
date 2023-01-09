@@ -35,7 +35,7 @@ const SignUp = () => {
 
     return (
         <div id='sign-up-container'>
-            <h1 id='logo'>TOM POS</h1>
+            <h1 id='logo'>TOM POS - Sign Up!</h1>
             <form id='sign-up-form' >
                 <div className='input-row'>
                     <div className='input-box'>
