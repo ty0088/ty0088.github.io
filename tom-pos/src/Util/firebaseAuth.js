@@ -1,19 +1,15 @@
 import { 
     getAuth,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
     signOut,
-    onAuthStateChanged,
-    setPersistence,
-    browserSessionPersistence
+    updateEmail,
+    updatePassword,
+    deleteUser
 } from "firebase/auth";
-// import { redirect, useNavigate } from "react-router-dom";
 
 const auth = getAuth();
 
 const signOutAcc = () => {
     signOut(auth).catch((error) => {
-        // An error happened.
         console.log(`${error.code}: ${error.message}`);
     });
 };
@@ -22,52 +18,34 @@ const isUserSignedIn = () => {
     return !!getAuth().currentUser;
 }
 
-// moved sign up function to SignUp.js ----------------------------
-// const signUpEmail = (email, password) => {
-//     createUserWithEmailAndPassword(auth, email, password)
-//     .then((userCredential) => {
-//         // Signed in 
-//         const user = userCredential.user;
-//         console.log(user.uid + ' has signed up');
-//       })
-//     .catch((error) => {
-//         const errorCode = error.code;
-//         const errorMessage = error.message;
-//         console.log(errorMessage)
-//     });
-// };
+const updateUserEmail = (email) => {
+    updateEmail(auth.currentUser, email).then(() => {
+        console.log(`Email updated to ${email}`);
+    }).catch((error) => {
+        console.log(`${error.code}: ${error.message}`);
+    });
+};
 
-// moved login function to Login.js ----------------------------
-// const signIn = (email, password) => {
-//     signInWithEmailAndPassword(auth, email, password)
-//     .then((userCredential) => {
-//         // Signed in 
-//         const user = userCredential.user;
-//     })
-//     .catch((error) => {
-//         const errorCode = error.code;
-//         const errorMessage = error.message;
-//         console.log(errorMessage)
-//     });
-// };
+const updateUserPassword = (password) => {
+    updatePassword(auth.currentUser, password).then(() => {
+        console.log('Update successful');
+      }).catch((error) => {
+        console.log(`${error.code}: ${error.message}`);
+      });
+};
 
-// auth listener moved to App.js -------------------------------
-// onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//         // User is signed in, see docs for a list of available properties
-//         // https://firebase.google.com/docs/reference/js/firebase.User
-//         const uid = user.uid;
-//         console.log('user: ' + uid + ' has signed in');
-//         // const navigate = useNavigate();
-//         // navigate('/tom-pos/pos');
-//         // redirect("/tom-pos/pos");
-//     } else {
-//         // User is signed out
-//         console.log('user has signed out');
-//     }
-// });
+const deleteUserAcc = () => {
+    deleteUser(auth.currentUser).then(() => {
+        console.log('User account deleted');
+    }).catch((error) => {
+        console.log(`${error.code}: ${error.message}`);
+    });
+};
 
 export {
     signOutAcc,
-    isUserSignedIn
+    isUserSignedIn,
+    updateUserEmail,
+    updateUserPassword,
+    deleteUserAcc
 };
