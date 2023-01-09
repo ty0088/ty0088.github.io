@@ -2,6 +2,16 @@ import '../Styles/ReceiptTemplate.css';
 import React from 'react';
 import formatCurrency from '../Util/formatCurrency';
 
+// -----------------------------------------------
+// References to the following still required:
+// - Picture logo
+// - Company trading name
+// - Company registered name
+// - Company phone no / email
+// - Company VAT number
+// - Thank you message
+// -----------------------------------------------
+
 const ReceiptTemplate = ({receiptType, orderObj, orderItems, itemsData}) => {
 
     if (receiptType === 'kitchen') {
