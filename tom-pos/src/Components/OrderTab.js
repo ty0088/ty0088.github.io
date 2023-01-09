@@ -136,7 +136,9 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     };
 
     const printClick = () => {
-        setPrintKitchFlag(true);
+        //Pop up confirmation asking user which receipt(s) to print ------------------------
+        // setPrintKitchFlag(true);
+        setPrintCustFlag(true);
     };
 
     const printClose = (win) => {
@@ -162,6 +164,12 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                 //Render new window with kitchen receipt. Print on open and reset flag on close
                 <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintKitchFlag(false)}>
                     <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} orderItems={orderItems} />
+                </NewWindow>
+            }
+            {printCustFlag &&
+                //Render new window with customer receipt. Print on open and reset flag on close
+                <NewWindow title={`Customer Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintCustFlag(false)}>
+                    <ReceiptTemplate receiptType={'customer'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} />
                 </NewWindow>
             }
             <div id='order-head'>
