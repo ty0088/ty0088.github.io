@@ -1,5 +1,29 @@
 #receipt-container {
-    padding-top: 50px;
+    width: 100%;
+    padding: 50px 10px 10px 10px;
     display: flex;
     flex-direction: column;
+    font-size: 20px;
+}
+
+#kitch-order-no {
+    font-size: 1.3em;
+    font-weight: 800;
+}
+
+#kitch-date {
+    margin: 10px 0 15px 0;
+}
+
+.kitch-item-row {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.kitch-row-add {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8em;
 }

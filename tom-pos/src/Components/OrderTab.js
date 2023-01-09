@@ -161,7 +161,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             {printKitchFlag &&
                 //Render new window with kitchen receipt. Print on open and reset flag on close
                 <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintKitchFlag(false)}>
-                    <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} />
+                    <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} orderItems={orderItems} />
                 </NewWindow>
             }
             <div id='order-head'>
