@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import getNextOrderNo from '../Util/getNextOrderNo';
 
-const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
+const OrdersPage = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
     const newOrderObj = {
         'order-no': '',
         'order-name': '',
@@ -85,4 +85,4 @@ const Orders = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
     );
 };
 
-export default Orders;
+export default OrdersPage;

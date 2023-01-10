@@ -7,7 +7,7 @@ import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 import AddItemPopUp from '../Components/AddItemPopUp';
 
-const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder}) => {
+const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder}) => {
     const { orderNo } = useParams();
     const [addFlag, setAddFlag] = useState(false);
     const [orderObj, setOrderObj] = useState({});
@@ -174,5 +174,5 @@ const POS = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrd
     );
 };
 
-export default POS;
+export default POSPage;
 

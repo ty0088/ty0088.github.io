@@ -7,7 +7,7 @@ import updateItemVal from '../Util/updateItemVal';
 
 //headers to be fixed and rows to have own container to be scrollable ----------------
 
-const TaxManage = ({taxData, itemsData, setRootData}) => {
+const TaxManagePage = ({taxData, itemsData, setRootData}) => {
     const [tempData, setTempData] = useState({});
 
     useEffect(() => {
@@ -62,4 +62,4 @@ const TaxManage = ({taxData, itemsData, setRootData}) => {
     );
 };
 
-export default TaxManage;
+export default TaxManagePage;

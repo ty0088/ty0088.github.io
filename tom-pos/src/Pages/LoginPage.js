@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-const Login = () => {
+const LoginPage = () => {
     const auth = getAuth();
 
     //log into firebase by email/password
@@ -43,4 +43,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;

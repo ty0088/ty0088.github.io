@@ -3,15 +3,15 @@ import React, {useState, useEffect} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getDBCol, setDB } from './Util/firebaseDB';
-import Login from './Pages/LoginPage';
-import Orders from './Pages/OrdersPage';
-import POS from './Pages/POSPage';
-import BackEnd from './Pages/BackEndPage';
-import SignUp from './Pages/SignUpPage';
-import SubMenu from './Pages/SubMenuPage';
-import ItemManage from './Pages/ItemManagePage';
-import TaxManage from './Pages/TaxManagePage';
-import OrderList from './Pages/OrderListPage';
+import LoginPage from './Pages/LoginPage';
+import OrdersPage from './Pages/OrdersPage';
+import POSPage from './Pages/POSPage';
+import BackEndPage from './Pages/BackEndPage';
+import SignUpPage from './Pages/SignUpPage';
+import SubMenuPage from './Pages/SubMenuPage';
+import ItemManagePage from './Pages/ItemManagePage';
+import TaxManagePage from './Pages/TaxManagePage';
+import OrderListPage from './Pages/OrderListPage';
 
 const App = () => {
   const [finData, setFinData] = useState({});
@@ -91,16 +91,16 @@ const App = () => {
   return (
     <div id='main-container'>
         <Routes>
-          <Route path='/tom-pos' element={<Login />} />
-          <Route path='/tom-pos/orders' element={<Orders ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
-          <Route path='/tom-pos/signup' element={<SignUp />} />
-          <Route path='/tom-pos/pos/:orderNo' element={<POS ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setRootData={setRootData} setCurrOrder={setCurrOrder} />} />
-          <Route path='/tom-pos/open-orders' element={<OrderList status={'OPEN'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
-          <Route path='/tom-pos/closed-orders' element={<OrderList status={'CLOSED'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
-          <Route path='/tom-pos/backend' element={<BackEnd />} />
-          <Route path='/tom-pos/submenu' element={<SubMenu menusData={menusData} itemsData={itemsData} setRootData={setRootData} />} />
-          <Route path='/tom-pos/items' element={<ItemManage itemsData={itemsData} taxData={taxData} menusData={menusData} setRootData={setRootData} />} />
-          <Route path='/tom-pos/tax' element={<TaxManage taxData={taxData} itemsData={itemsData} setRootData={setRootData} />} />
+          <Route path='/tom-pos' element={<LoginPage />} />
+          <Route path='/tom-pos/orders' element={<OrdersPage ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
+          <Route path='/tom-pos/signup' element={<SignUpPage />} />
+          <Route path='/tom-pos/pos/:orderNo' element={<POSPage ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setRootData={setRootData} setCurrOrder={setCurrOrder} />} />
+          <Route path='/tom-pos/open-orders' element={<OrderListPage status={'OPEN'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
+          <Route path='/tom-pos/closed-orders' element={<OrderListPage status={'CLOSED'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
+          <Route path='/tom-pos/backend' element={<BackEndPage />} />
+          <Route path='/tom-pos/submenu' element={<SubMenuPage menusData={menusData} itemsData={itemsData} setRootData={setRootData} />} />
+          <Route path='/tom-pos/items' element={<ItemManagePage itemsData={itemsData} taxData={taxData} menusData={menusData} setRootData={setRootData} />} />
+          <Route path='/tom-pos/tax' element={<TaxManagePage taxData={taxData} itemsData={itemsData} setRootData={setRootData} />} />
         </Routes>
     </div>
   );

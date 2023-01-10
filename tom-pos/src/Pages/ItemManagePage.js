@@ -9,7 +9,7 @@ import MenuFilterSort from '../Components/MenuFilterSort';
 // separate eat in / takeout tax rates ------------
 //set root data obj when saving, setItemsData -----------
 
-const ItemManage = ({itemsData, taxData, menusData, setRootData}) => {
+const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
     const [itemNames, setItemNames] = useState([]);
@@ -182,4 +182,4 @@ const ItemManage = ({itemsData, taxData, menusData, setRootData}) => {
     );
 };
 
-export default ItemManage;
+export default ItemManagePage;

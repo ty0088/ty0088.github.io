@@ -5,7 +5,7 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import OrderFilterSort from '../Components/OrdersFilterSort';
 
-const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) => {
+const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData}) => {
     const [messageFlag, setMessageFlag] = useState(false);
     const [orderNos, setOrderNos] = useState([]);
     const [delOrder, setDelOrder] = useState('');
@@ -149,4 +149,4 @@ const OrderList = ({status, currOrder, setCurrOrder, ordersData, setRootData}) =
     );
 };
 
-export default OrderList;
+export default OrderListPage;

@@ -4,7 +4,7 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
 import { addUser } from '../Util/firebaseDB';
 
-const SignUp = () => {
+const SignUpPage = () => {
     const auth = getAuth();
 
     //submit form, validate inputs then create firebase user
@@ -87,4 +87,4 @@ const SignUp = () => {
     );
 }
 
-export default SignUp;
+export default SignUpPage;

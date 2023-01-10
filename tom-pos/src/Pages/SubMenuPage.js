@@ -6,7 +6,7 @@ import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
 
 
-const SubMenu = ({menusData, itemsData, setRootData}) => {
+const SubMenuPage = ({menusData, itemsData, setRootData}) => {
     const [tempData, setTempData] = useState({});
     const [levels, setLevels] = useState([]);
 
@@ -147,4 +147,4 @@ const SubMenu = ({menusData, itemsData, setRootData}) => {
     );
 };
 
-export default SubMenu;
+export default SubMenuPage;

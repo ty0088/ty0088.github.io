@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 
-const BackEnd = () => {
+const BackEndPage = () => {
     return (
         <div id='BackEnd-container'>
             <div className='back-link-container'>
@@ -21,4 +21,4 @@ const BackEnd = () => {
     );
 };
 
-export default BackEnd;
+export default BackEndPage;
