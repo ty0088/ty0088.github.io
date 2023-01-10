@@ -8,7 +8,21 @@ const db = getFirestore(fireApp);
 
 const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     const user = getAuth().currentUser;
-    const userData = {firstName, lastName, compName, email, phoneNo};
+    const userData = {
+        'first-name': firstName,
+        'last-name': lastName,
+        'comp-reg-name': compName,
+        'comp-trade-name': '',
+        'account-email': email,
+        'contact-email': '',
+        'account-phone': phoneNo,
+        'contact-phone': '',
+        'reg-address': '',
+        'trade-address': '',
+        'tax-ref': '',
+        'receipt-message': 'Thank you for your custom'
+    };
+
     try {
         await setDoc(doc(db, user.uid, "user-data"), userData);
         await setDoc(doc(db, user.uid, "sub-menus"), {});
