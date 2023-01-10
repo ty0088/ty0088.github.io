@@ -47,7 +47,7 @@ const SignUpPage = () => {
                         <input type='text' id='last-name' name='last-name' required />   
                     </div>
                     <div className='input-box'>
-                        <label htmlFor='comp'>Company Name</label>
+                        <label htmlFor='comp'>Company Registered Name</label>
                         <input type='text' id='comp-name' name='comp-name' required />   
                     </div>
                 </div>
