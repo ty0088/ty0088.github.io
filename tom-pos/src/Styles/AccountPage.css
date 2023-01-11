@@ -71,3 +71,12 @@ label.acc-trade {
     width: 150px;
     padding: 5px;
 }
+.acc-error-border {
+    border: 2px solid rgb(255, 0, 0);
+}
+
+.acc-error-message {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(255, 0, 0);
+}

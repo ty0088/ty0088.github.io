@@ -42,17 +42,17 @@ const AccountPage = ({setRootData, userData}) => {
 
     //onClick change handler
     const changeHandler = (e) => {
+        //remove any error message/border on changed element
+        e.target.classList.remove('acc-error-border');
+        const errMessage = e.target.parentElement.querySelector('.acc-error-message');
+        if (errMessage) errMessage.remove();
         //on change, activate save button
         setChangeFlag(true);
+        //set new input
         const inputId = e.target.id;
         const inputVal = e.target.value;
         const changeData = {...tempUserData, [inputId]: inputVal};
         setTempUserData(changeData);
-    };
-
-    //input validation
-    const checkInputs = () => {
-        const inputs = Object.keys();
     };
 
     const changeEmailClick = () => {
@@ -66,11 +66,23 @@ const AccountPage = ({setRootData, userData}) => {
     };
 
     const saveClick = () => {
-        //input validation
-        //if valid
-        setConfirmFlag(true);
-        //else
-        //display error
+        document.querySelectorAll('.acc-error-message').forEach(elem => elem.remove());
+        document.querySelectorAll('.acc-error-border').forEach(elem => elem.classList.remove('acc-error-border'));
+        const errorArr = checkInputs();
+        if (errorArr.length === 0) {
+            setConfirmFlag(true);
+        } else {
+            errorArr.forEach(error => {
+                const elemID = error[0];
+                const errorMessage = error[1];
+                const errorElem = document.createElement('span');
+                errorElem.classList.add('acc-error-message');
+                errorElem.innerText = errorMessage;
+                //setTimeout allows error border/message to "flash" if already present
+                setTimeout(() => document.getElementById(elemID).classList.add('acc-error-border'), 200); 
+                setTimeout(() => document.getElementById(elemID).parentElement.insertBefore(errorElem, null), 200); 
+            });
+        }
     };
 
     const confirmSave = () => {
@@ -88,6 +100,8 @@ const AccountPage = ({setRootData, userData}) => {
     };
 
     const confirmDiscard = () => {
+        document.querySelectorAll('.acc-error-message').forEach(elem => elem.remove());
+        document.querySelectorAll('.acc-error-border').forEach(elem => elem.classList.remove('acc-error-border'));
         setChangeFlag(false);
         setDiscardFlag(false);
         setTempUserData({...userData});
@@ -95,6 +109,84 @@ const AccountPage = ({setRootData, userData}) => {
 
     const cancelDiscard = () => {
         setDiscardFlag(false);
+    };
+
+    //Check inputs and return error(s) with messages
+    const checkInputs = () => {
+        const inputs = Object.keys(tempUserData);
+        let errorInputs = [];
+        inputs.forEach(input => {
+            switch(input) {
+                case 'first-name':
+                    //required
+                    if (tempUserData[input] === '') {
+                        errorInputs.push([input, '*Required']);
+                    }
+                    break;
+                case 'last-name':                    
+                    //required
+                    if (tempUserData[input] === '') {
+                        errorInputs.push([input, '*Required']);
+                    }
+                    break;
+                case 'account-phone':
+                    //must only contain whole numbers if used
+                    if (!/^[0-9]\d*$/.test(tempUserData[input]) && tempUserData[input] !== '') {
+                        errorInputs.push([input, '*Only digits allowed']);
+                    }
+                    break;
+                case 'comp-reg-name':
+                    //required
+                    if (tempUserData[input] === '') {
+                        errorInputs.push([input, '*Required']);
+                    }
+                    break;
+                case 'reg-address-1':
+                    //required
+                    if (tempUserData[input] === '') {
+                        errorInputs.push([input, '*Required']);
+                    }
+                    break;
+                case 'reg-address-town':
+                    //required
+                    if (tempUserData[input] === '') {
+                        errorInputs.push([input, '*Required']);
+                    }
+                    break;
+                case 'reg-address-postcode':
+                    //required and must be post code format
+                    if (tempUserData[input] === '' || !/^([A-Z][A-HJ-Y]?[0-9][A-Z0-9]? ?[0-9][A-Z]{2}|GIR ?0A{2})$/gi.test(tempUserData[input])) {
+                        errorInputs.push([input, '*Post code not valid']);
+                    }
+                    break;
+                case 'tax-ref':
+                    //must only contain whole numbers
+                    if (!/^[0-9]\d*$/.test(tempUserData[input]) && tempUserData[input] !== '') {
+                        errorInputs.push([input, '*Only digits allowed']);
+                    }
+                    break;
+                case 'contact-email':
+                    //must be email format
+                    if (!/^([\w\d._\-#+])+@([\w\d._\-#]+[.][\w\d._\-#]+)+$/.test(tempUserData[input])) {
+                        errorInputs.push([input, '*Email not valid']);
+                    }
+                    break;
+                case 'contact-phone':
+                    //must only contain whole numbers if used
+                    if (!/^[0-9]\d*$/.test(tempUserData[input]) && tempUserData[input] !== '') {
+                        errorInputs.push([input, '*Only digits allowed']);
+                    }
+                    break;
+                case 'trade-address-postcode':
+                    //required and must be post code format
+                    if (tempUserData[input] === '' || !/^([A-Z][A-HJ-Y]?[0-9][A-Z0-9]? ?[0-9][A-Z]{2}|GIR ?0A{2})$/gi.test(tempUserData[input])) {
+                        errorInputs.push([input, '*Post code not valid']);
+                    }
+                    break;
+                default:
+            }
+        });
+        return errorInputs;
     };
 
     return (
@@ -161,7 +253,7 @@ const AccountPage = ({setRootData, userData}) => {
                     </div>
                     <div className='acc-input-row'>
                         <label htmlFor='tax-ref' className='acc-reg'>VAT number:</label>
-                        <input type='text' id='tax-ref' value={tempUserData['tax-ref']} onChange={changeHandler} />   
+                        <input type='number' id='tax-ref' value={tempUserData['tax-ref']} onChange={changeHandler} />   
                     </div>
                 </div>
                 <div className='account-form-col'>
