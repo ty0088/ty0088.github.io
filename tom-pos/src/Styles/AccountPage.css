@@ -1,0 +1,72 @@
+#account-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 420px 30px;
+    position: relative;
+}
+
+#account-container > h1 {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+#account-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.account-form-col {
+    margin: 0px 10px 0 10px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.account-form-col > :nth-child(8) {
+    margin-top: 10px;
+}
+
+.account-form-info {
+    font-size: 14px;
+}
+
+.acc-input-row {
+    display: flex;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.acc-input-row > label {
+    text-align: end;
+    margin-right: 10px;
+}
+
+label.acc-user {
+    width: 125px;
+}
+
+label.acc-reg {
+    width: 125px;
+}
+
+label.acc-trade {
+    width: 150px;
+}
+
+.acc-input-row > input {
+    width: 200px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+#acc-btns {
+    display: flex;
+    justify-content: center;
+    column-gap: 30px;
+    margin-top: 50px;
+}
+
+#acc-btns > button {
+    width: 150px;
+    padding: 5px;
+}

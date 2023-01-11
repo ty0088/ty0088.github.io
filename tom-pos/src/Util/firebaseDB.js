@@ -17,10 +17,18 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
         'contact-email': '',
         'account-phone': phoneNo,
         'contact-phone': '',
-        'reg-address': '',
-        'trade-address': '',
+        'reg-address-1': '',
+        'reg-address-2': '',
+        'reg-address-town': '',
+        'reg-address-county': '',
+        'reg-address-postcode': '',
+        'trade-address-1': '',
+        'trade-address-2': '',
+        'trade-address-town': '',
+        'trade-address-county': '',
+        'trade-address-postcode': '',
         'tax-ref': '',
-        'receipt-message': 'Thank you for your custom'
+        'receipt-message': 'Thank you'
     };
 
     try {

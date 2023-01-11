@@ -12,6 +12,7 @@ import SubMenuPage from './Pages/SubMenuPage';
 import ItemManagePage from './Pages/ItemManagePage';
 import TaxManagePage from './Pages/TaxManagePage';
 import OrderListPage from './Pages/OrderListPage';
+import AccountPage from './Pages/AccountPage';
 
 const App = () => {
   const [finData, setFinData] = useState({});
@@ -101,6 +102,7 @@ const App = () => {
           <Route path='/tom-pos/submenu' element={<SubMenuPage menusData={menusData} itemsData={itemsData} setRootData={setRootData} />} />
           <Route path='/tom-pos/items' element={<ItemManagePage itemsData={itemsData} taxData={taxData} menusData={menusData} setRootData={setRootData} />} />
           <Route path='/tom-pos/tax' element={<TaxManagePage taxData={taxData} itemsData={itemsData} setRootData={setRootData} />} />
+          <Route path='/tom-pos/account' element={<AccountPage setRootData={setRootData} userData={userData} />} />
         </Routes>
     </div>
   );
