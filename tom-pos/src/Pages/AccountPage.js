@@ -4,12 +4,6 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 
-// ----------------------------------------------------------
-// User details - First name, last name, email, phone number, password
-// Company details - Registered name, trading name, registered address, location address, VAT number, 
-//                   contact email, contact phone number, logo, thank you message
-// ----------------------------------------------------------
-
 //used for updating user data document in firestore --------------- to be deleted
 // const userUpdate = {
 //     'first-name': 'Bob',
@@ -39,6 +33,10 @@ const AccountPage = ({setRootData, userData}) => {
     const [confirmFlag, setConfirmFlag] = useState(false);
     const [discardFlag, setDiscardFlag] = useState(false);
     const [tempUserData, setTempUserData] = useState({...userData});
+
+    useEffect(() => {
+        setTempUserData({...userData})
+    }, [userData]);
 
     //onClick change handler
     const changeHandler = (e) => {
