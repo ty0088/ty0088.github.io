@@ -37,6 +37,7 @@ import ConfirmPopUp from '../Components/ConfirmPopUp';
 const AccountPage = ({setRootData, userData}) => {
     const [changeFlag, setChangeFlag] = useState(false);
     const [confirmFlag, setConfirmFlag] = useState(false);
+    const [discardFlag, setDiscardFlag] = useState(false);
     const [tempUserData, setTempUserData] = useState({...userData});
 
     //onClick change handler
@@ -50,8 +51,8 @@ const AccountPage = ({setRootData, userData}) => {
     };
 
     //input validation
-    const inputValidation = () => {
-        
+    const checkInputs = () => {
+        const inputs = Object.keys();
     };
 
     const changeEmailClick = () => {
@@ -78,20 +79,33 @@ const AccountPage = ({setRootData, userData}) => {
         setRootData({...tempUserData}, 'user-data');
     };
 
-    const cancelConfirm = () => {
+    const cancelSave = () => {
         setConfirmFlag(false);
     };
 
     const discardClick = () => {
+        setDiscardFlag(true);
+    };
+
+    const confirmDiscard = () => {
         setChangeFlag(false);
+        setDiscardFlag(false);
         setTempUserData({...userData});
+    };
+
+    const cancelDiscard = () => {
+        setDiscardFlag(false);
     };
 
     return (
         <div id='account-container'>
             {confirmFlag &&
-                <ConfirmPopUp name={''} cancelClick={cancelConfirm} confirmClick={confirmSave} message1={'Are you sure you want to save changes to profile.'}
-                    message2={'This will permanently save all changes.'} />
+                <ConfirmPopUp name={''} cancelClick={cancelSave} confirmClick={confirmSave} message1={'Are you sure you want to SAVE all changes to your profile?'}
+                    message2={''} />
+            }
+            {discardFlag &&
+                <ConfirmPopUp name={''} cancelClick={cancelDiscard} confirmClick={confirmDiscard} message1={'Are you sure you want to DISCARD all changes?'}
+                message2={''} />
             }
             <h1>Account Settings</h1>
             <div id='account-form'>
