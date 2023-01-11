@@ -32,12 +32,12 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     };
 
     try {
-        await setDoc(doc(db, user.uid, "user-data"), userData);
-        await setDoc(doc(db, user.uid, "sub-menus"), {});
+        await setDoc(doc(db, user.uid, "financial"), {});
         await setDoc(doc(db, user.uid, "items"), {});
         await setDoc(doc(db, user.uid, "orders"), {});
+        await setDoc(doc(db, user.uid, "sub-menus"), {});
         await setDoc(doc(db, user.uid, "tax-bands"), {});
-        await setDoc(doc(db, user.uid, "financial"), {});
+        await setDoc(doc(db, user.uid, "user-data"), userData);
     } catch (error) {
         console.log(error);
     }
