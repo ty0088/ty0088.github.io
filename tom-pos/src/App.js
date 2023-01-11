@@ -14,6 +14,11 @@ import TaxManagePage from './Pages/TaxManagePage';
 import OrderListPage from './Pages/OrderListPage';
 import AccountPage from './Pages/AccountPage';
 
+//on initial sign up, user data is not loaded into local memory, refresh is required -------
+//likely due to async firestore creating data and App.js getDBData() not grabbing anything initally -------
+//getDBData() - if userData returns empty {}, it should try again in 500ms(?) -------
+//monitor user-data collection for changes?? ----------
+
 const App = () => {
   const [finData, setFinData] = useState({});
   const [itemsData, setItemsData] = useState({});
@@ -56,6 +61,7 @@ const App = () => {
     //get user collection from DB and set each data obj to its relevant state
     const dbSnap = await getDBCol();
     dbSnap.forEach(doc => {
+      console.log(doc.data());
       dataArr.push(doc.data())
     });
     //set each data obj to state
