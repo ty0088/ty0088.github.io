@@ -56,7 +56,6 @@ const App = () => {
     //get user collection from DB and set each data obj to its relevant state
     const dbSnap = await getDBCol();
     dbSnap.forEach(doc => {
-      console.log(doc.data());
       dataArr.push(doc.data())
     });
     //set each data obj to state

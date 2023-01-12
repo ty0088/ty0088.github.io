@@ -1,0 +1,64 @@
+#auth-popup-container {
+    height: 500px;
+    width: 1000px;
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#auth-popup {
+    height: 300px;
+    width: 500px;
+    padding: 20px;
+    border: 2px solid Black;
+    border-radius: 5px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.auth-popup-row {
+    display: flex;
+    margin: 10px 0 10px 0;
+}
+
+.auth-popup-row > label {
+    font-size: 16px;
+    font-weight: 600;
+    width: 180px;
+    text-align: end;
+}
+
+.auth-popup-row > input {
+    height: 25px;
+    width: 200px;
+    margin-left: 10px;
+}
+
+#auth-btns {
+    margin-top: 10px;
+}
+
+#auth-btns > button {
+    height: 30px;
+    width: 100px;
+    margin: 0 10px 0 10px;
+}
+
+.auth-error-border {
+    border: 2px solid rgb(255, 0, 0);
+}
+
+.auth-error-message {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(255, 0, 0);
+}

@@ -1,8 +1,9 @@
 import '../Styles/AccountPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { signOutAcc, updateUserEmail, updateUserPassword, getCredential, reauthenticateUser } from '../Util/firebaseAuth';
+import { signOutAcc, updateUserEmail, updateUserPassword, reAuthUser } from '../Util/firebaseAuth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
+import AuthenticatePopUp from '../Components/AuthenticatePopUp';
 
 //used for updating user data document in firestore --------------- to be deleted
 // const userUpdate = {
@@ -32,6 +33,8 @@ const AccountPage = ({setRootData, userData}) => {
     const [changeFlag, setChangeFlag] = useState(false);
     const [confirmFlag, setConfirmFlag] = useState(false);
     const [discardFlag, setDiscardFlag] = useState(false);
+    const [reAuthFlag, setReAuthFlag] = useState(false);
+    const [changeType, setChangeType] = useState('');
     const [tempUserData, setTempUserData] = useState({...userData});
 
     useEffect(() => {
@@ -51,16 +54,6 @@ const AccountPage = ({setRootData, userData}) => {
         const inputVal = e.target.value;
         const changeData = {...tempUserData, [inputId]: inputVal};
         setTempUserData(changeData);
-    };
-
-    const changeEmailClick = () => {
-        console.log('change email');
-        //prompt confirmation
-    };
-
-    const changePassClick = () => {
-        console.log('change password');
-        //prompt confirmation
     };
 
     const saveClick = () => {
@@ -107,6 +100,30 @@ const AccountPage = ({setRootData, userData}) => {
 
     const cancelDiscard = () => {
         setDiscardFlag(false);
+    };
+
+    const changeEmailClick = () => {
+        setChangeType('email')
+        setReAuthFlag(true);
+    };
+
+    const confirmEmailChange = (newEmail) => {
+        updateUserEmail(newEmail);
+        setReAuthFlag(false);
+    };
+
+    const changePassClick = () => {
+        setChangeType('password');
+        setReAuthFlag(true);
+    };
+
+    const confirmPassChange = (newPass) => {
+        updateUserPassword(newPass);
+        setReAuthFlag(false);
+    };
+
+    const cancelReAuth = () => {
+        setReAuthFlag(false);
     };
 
     //Check inputs and return error(s) with messages
@@ -196,6 +213,10 @@ const AccountPage = ({setRootData, userData}) => {
             {discardFlag &&
                 <ConfirmPopUp name={''} cancelClick={cancelDiscard} confirmClick={confirmDiscard} message1={'Are you sure you want to DISCARD all changes?'}
                 message2={''} />
+            }
+            {reAuthFlag &&
+                <AuthenticatePopUp cancelClick={cancelReAuth} changeType={changeType} confirmEmailChange={confirmEmailChange} confirmPassChange={confirmPassChange}
+                    reAuthUser={reAuthUser} signOutAcc={signOutAcc} setRootData={setRootData} userData={userData} />
             }
             <h1>Account Settings</h1>
             <div id='account-form'>

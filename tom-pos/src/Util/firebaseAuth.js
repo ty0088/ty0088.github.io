@@ -44,16 +44,16 @@ const deleteUserAcc = () => {
     });
 };
 
-const getCredential = (password) => {
-    return EmailAuthProvider.credential(auth.currentUser.email, password);
-};
-
-const reauthenticateUser = (credential) => {
-    reauthenticateWithCredential(auth.currentUser, credential).then(() => {
-        console.log(`User ${auth.currentUser.uid} re-authenticated`);
-    }).catch((error) => {
+const reAuthUser = async (password) => {
+    try {
+        const credential = EmailAuthProvider.credential(auth.currentUser.email, password);
+        const userCredential = await reauthenticateWithCredential(auth.currentUser, credential);
+        console.log(`User ${userCredential.user.uid} is re-authenticated`);
+        return true;
+    } catch (error) {
         console.log(`${error.code}: ${error.message}`);
-    });
+        return false;
+    }
 };
 
 export {
@@ -62,6 +62,5 @@ export {
     updateUserEmail,
     updateUserPassword,
     deleteUserAcc,
-    getCredential,
-    reauthenticateUser
+    reAuthUser
 };
