@@ -1,7 +1,7 @@
 import '../Styles/AccountPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { signOutAcc } from '../Util/firebaseAuth';
+import { signOutAcc, updateUserEmail, updateUserPassword, getCredential, reauthenticateUser } from '../Util/firebaseAuth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 
 //used for updating user data document in firestore --------------- to be deleted
@@ -165,7 +165,7 @@ const AccountPage = ({setRootData, userData}) => {
                     break;
                 case 'contact-email':
                     //must be email format
-                    if (!/^([\w\d._\-#+])+@([\w\d._\-#]+[.][\w\d._\-#]+)+$/.test(tempUserData[input])) {
+                    if (!/^([\w\d._\-#+])+@([\w\d._\-#]+[.][\w\d._\-#]+)+$/.test(tempUserData[input]) && tempUserData[input] !== '') {
                         errorInputs.push([input, '*Email not valid']);
                     }
                     break;
@@ -177,7 +177,7 @@ const AccountPage = ({setRootData, userData}) => {
                     break;
                 case 'trade-address-postcode':
                     //required and must be post code format
-                    if (tempUserData[input] === '' || !/^([A-Z][A-HJ-Y]?[0-9][A-Z0-9]? ?[0-9][A-Z]{2}|GIR ?0A{2})$/gi.test(tempUserData[input])) {
+                    if (!/^([A-Z][A-HJ-Y]?[0-9][A-Z0-9]? ?[0-9][A-Z]{2}|GIR ?0A{2})$/gi.test(tempUserData[input]) && tempUserData[input] !== '') {
                         errorInputs.push([input, '*Post code not valid']);
                     }
                     break;
