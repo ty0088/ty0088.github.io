@@ -20,7 +20,7 @@ const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirm
             if (result) {
                 if (changeType === 'email') {
                     await confirmEmailChange(input1);
-                    setRootData({...userData, 'account-email': input1});
+                    setRootData({...userData, 'account-email': input1}, 'user-data'); //TypeError: Cannot read properties of undefined (reading 'indexOf') firebaseDB.js:51 --------------------------
                     alert('Email successfully changed, you will now be signed out, please sign back in');
                     signOutAcc();
                 } else {
