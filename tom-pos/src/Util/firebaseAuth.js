@@ -3,7 +3,9 @@ import {
     signOut,
     updateEmail,
     updatePassword,
-    deleteUser
+    deleteUser,
+    EmailAuthProvider,
+    reauthenticateWithCredential
 } from "firebase/auth";
 
 const auth = getAuth();
@@ -16,7 +18,7 @@ const signOutAcc = () => {
 
 const isUserSignedIn = () => {
     return !!getAuth().currentUser;
-}
+};
 
 const updateUserEmail = (email) => {
     updateEmail(auth.currentUser, email).then(() => {
@@ -29,9 +31,9 @@ const updateUserEmail = (email) => {
 const updateUserPassword = (password) => {
     updatePassword(auth.currentUser, password).then(() => {
         console.log('Update successful');
-      }).catch((error) => {
+    }).catch((error) => {
         console.log(`${error.code}: ${error.message}`);
-      });
+    });
 };
 
 const deleteUserAcc = () => {
@@ -42,10 +44,24 @@ const deleteUserAcc = () => {
     });
 };
 
+const getCredential = (password) => {
+    return EmailAuthProvider.credential(auth.currentUser.email, password);
+};
+
+const reauthenticateUser = (credential) => {
+    reauthenticateWithCredential(auth.currentUser, credential).then(() => {
+        console.log(`User ${auth.currentUser.uid} re-authenticated`);
+    }).catch((error) => {
+        console.log(`${error.code}: ${error.message}`);
+    });
+};
+
 export {
     signOutAcc,
     isUserSignedIn,
     updateUserEmail,
     updateUserPassword,
-    deleteUserAcc
+    deleteUserAcc,
+    getCredential,
+    reauthenticateUser
 };
