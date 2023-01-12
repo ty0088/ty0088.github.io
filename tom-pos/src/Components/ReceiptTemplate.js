@@ -5,10 +5,11 @@ import formatCurrency from '../Util/formatCurrency';
 // -----------------------------------------------
 // References to the following still required:
 // - Picture logo
-// - Company trading name
 // - Company registered name
-// - Company phone no / email
-// - Company VAT number
+// - Registered address
+// - contact email / phone no
+// - trading address
+// - VAT number
 // - Thank you message
 // -----------------------------------------------
 

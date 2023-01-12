@@ -4,6 +4,8 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
 import { addUser } from '../Util/firebaseDB';
 
+//Add address line 1, address line 2, address town, address post code to form ---------------------
+
 const SignUpPage = () => {
     const auth = getAuth();
 
