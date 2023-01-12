@@ -1,13 +1,13 @@
 import '../Styles/SignUpPage.css'
 import { Link } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
 import { addUser } from '../Util/firebaseDB';
 
 const SignUpPage = () => {
     const auth = getAuth();
 
-    //submit form, validate inputs then create firebase user
+    //submit form, validate inputs then create firebase user and signs out
     const submitForm = (e) => {
         const firstName = document.getElementById('first-name').value;
         const lastName = document.getElementById('last-name').value;
@@ -19,12 +19,13 @@ const SignUpPage = () => {
         //validate inputs then submit to firebase
         if (validateForm(e)) {
             createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then( async (userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user.uid + ' has signed up');
                 //add user data to firestore
-                addUser(firstName, lastName, compName, email, phoneNo);
+                await addUser(firstName, lastName, compName, email, phoneNo);
+                await signOut(auth);
             })
             .catch((error) => {
                 console.log(`${error.code}: ${error.message}`);
