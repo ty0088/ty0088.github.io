@@ -95,7 +95,7 @@ const App = () => {
           <Route path='/tom-pos' element={<LoginPage />} />
           <Route path='/tom-pos/orders' element={<OrdersPage ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder}/>} />
           <Route path='/tom-pos/signup' element={<SignUpPage />} />
-          <Route path='/tom-pos/pos/:orderNo' element={<POSPage ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setRootData={setRootData} setCurrOrder={setCurrOrder} />} />
+          <Route path='/tom-pos/pos/:orderNo' element={<POSPage ordersData={ordersData} itemsData={itemsData} menusData={menusData} taxData={taxData} setRootData={setRootData} setCurrOrder={setCurrOrder} userData={userData} />} />
           <Route path='/tom-pos/open-orders' element={<OrderListPage status={'OPEN'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/closed-orders' element={<OrderListPage status={'CLOSED'} ordersData={ordersData} setRootData={setRootData} currOrder={currOrder} setCurrOrder={setCurrOrder} />} />
           <Route path='/tom-pos/backend' element={<BackEndPage />} />

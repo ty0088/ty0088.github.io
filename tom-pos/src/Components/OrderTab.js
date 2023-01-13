@@ -21,7 +21,7 @@ import ReceiptTemplate from './ReceiptTemplate';
 //- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
 //--------------------------------------------------------------------------------------
 
-const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice, setCurrOrder}) => {
+const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice, setCurrOrder, userData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
     const [changeFlag, setChangeFlag] = useState(false);
@@ -163,13 +163,13 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             {printKitchFlag &&
                 //Render new window with kitchen receipt. Print on open and reset flag on close
                 <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintKitchFlag(false)}>
-                    <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} orderItems={orderItems} />
+                    <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} userData={userData} />
                 </NewWindow>
             }
             {printCustFlag &&
                 //Render new window with customer receipt. Print on open and reset flag on close
                 <NewWindow title={`Customer Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintCustFlag(false)}>
-                    <ReceiptTemplate receiptType={'customer'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} />
+                    <ReceiptTemplate receiptType={'customer'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} userData={userData} />
                 </NewWindow>
             }
             <div id='order-head'>

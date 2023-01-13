@@ -2,18 +2,7 @@ import '../Styles/ReceiptTemplate.css';
 import React from 'react';
 import formatCurrency from '../Util/formatCurrency';
 
-// -----------------------------------------------
-// References to the following still required:
-// - Picture logo
-// - Company registered name
-// - Registered address
-// - contact email / phone no
-// - trading address
-// - VAT number
-// - Thank you message
-// -----------------------------------------------
-
-const ReceiptTemplate = ({receiptType, orderObj, orderItems, itemsData}) => {
+const ReceiptTemplate = ({receiptType, orderObj, orderItems, itemsData, userData}) => {
 
     if (receiptType === 'kitchen') {
         return (
@@ -48,8 +37,8 @@ const ReceiptTemplate = ({receiptType, orderObj, orderItems, itemsData}) => {
         return (
             <div id='receipt-container'>
                 <div id='cust-header'>
-                    <span>LOGO Placeholder</span>
-                    <span>Company Trading Name Placeholder</span>
+                    <span id='cust-name'>{userData['comp-trade-name']}</span>
+                    {userData['tax-ref'] !== '' && <span>VAT No. {userData['tax-ref']}</span>}
                     <span>{(new Date()).toLocaleString('en-GB', {weekday: 'short', hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'numeric', day: 'numeric'})}</span>
                     <span>Order No {orderObj['order-no']}</span>
                 </div>
@@ -105,11 +94,19 @@ const ReceiptTemplate = ({receiptType, orderObj, orderItems, itemsData}) => {
                 </div>
                 <span className='receipt-divider'>---------------------------------------</span>
                 <div id='cust-info-cont'>
-                        <span>Company Name</span>
-                        <span>Company Registered Address</span>
-                        <span>Company Phone Number / Email</span>
-                        <span>Company VAT number</span>
-                        <span>Thank You Message</span>
+                        <div>
+                            <span>{userData['trade-address-1']},</span>
+                            <span> {userData['trade-address-2']}</span>
+                        </div>
+                        <div>
+                            <span>{userData['trade-address-town']},</span>
+                            <span> {userData['trade-address-postcode']}</span>
+                        </div>
+                        <div>
+                            <span>{userData['contact-phone']},</span>
+                            <span> {userData['contact-email']}</span>
+                        </div>
+                        <span>{userData['receipt-message']}</span>
                 </div>
             </div>
         );

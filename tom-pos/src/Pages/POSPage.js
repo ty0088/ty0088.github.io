@@ -7,7 +7,7 @@ import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 import AddItemPopUp from '../Components/AddItemPopUp';
 
-const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder}) => {
+const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder, userData}) => {
     const { orderNo } = useParams();
     const [addFlag, setAddFlag] = useState(false);
     const [orderObj, setOrderObj] = useState({});
@@ -169,7 +169,7 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
             }
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} itemsData={itemsData} deleteItem={deleteItem}
                 setRootData={setRootData} lastItemIndex={lastItemIndex} setLastItemIndex={setLastItemIndex} getAddPrice={getAddPrice}
-                setCurrOrder={setCurrOrder} />
+                setCurrOrder={setCurrOrder} userData={userData} />
         </div>
     );
 };
