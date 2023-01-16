@@ -3,7 +3,7 @@ import React from 'react';
 import formatCurrency from '../Util/formatCurrency';
 
 const ReceiptTemplate = ({receiptType, orderObj, orderItems, itemsData, userData}) => {
-
+    
     if (receiptType === 'kitchen') {
         return (
             <div id='receipt-container'>

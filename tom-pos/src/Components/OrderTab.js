@@ -1,12 +1,13 @@
 import '../Styles/OrderTab.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import formatCurrency from '../Util/formatCurrency';
+import NewWindow from 'react-new-window';
 import OrderRow from './OrderRow';
 import OrderEditPopUp from './OrderEditPopUp';
 import PayPopUp from './PayPopUp';
 import ChangePopUp from './ChangePopUp';
-import NewWindow from 'react-new-window'
 import ReceiptTemplate from './ReceiptTemplate';
+import PrintPopUp from './PrintPopUp';
 
 //-------------------------------------------------------------------------------------
 //- PRINT button click -> pop up confirming print receipt(s)
@@ -25,6 +26,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
     const [changeFlag, setChangeFlag] = useState(false);
+    const [printFlag, setPrintFlag] = useState(false);
     const [printKitchFlag, setPrintKitchFlag] = useState(false);
     const [printCustFlag, setPrintCustFlag] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
@@ -136,14 +138,22 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     };
 
     const printClick = () => {
-        //Pop up confirmation asking user which receipt(s) to print ------------------------
-        // setPrintKitchFlag(true);
-        setPrintCustFlag(true);
+        setPrintFlag(true);
     };
 
+    //printConfirm fn ---------
+    //confirm which receipt(s) to print
+    //set first print flag to call receipt pop up
+    //new window onOpen -> win.print
+    //win.onafterprint resolve
+    //.then win.close()
+    
+
     const printClose = (win) => {
-        // win.print();
-        // win.onafterprint = () => win.close();
+        setTimeout(() => { 
+            win.print();
+            win.onafterprint = win.close();
+        }, 100);
     };
 
     return (
@@ -162,15 +172,19 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             }
             {printKitchFlag &&
                 //Render new window with kitchen receipt. Print on open and reset flag on close
-                <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintKitchFlag(false)}>
+                <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={() => setPrintKitchFlag(false)}>
                     <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} userData={userData} />
                 </NewWindow>
             }
             {printCustFlag &&
                 //Render new window with customer receipt. Print on open and reset flag on close
-                <NewWindow title={`Customer Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={()=>setPrintCustFlag(false)}>
+                <NewWindow title={`Customer Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={() => setPrintCustFlag(false)}>
                     <ReceiptTemplate receiptType={'customer'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} userData={userData} />
                 </NewWindow>
+            }
+            {printFlag &&
+                <PrintPopUp setPrintFlag={setPrintFlag} printKitchFlag={printKitchFlag} setPrintKitchFlag={setPrintKitchFlag} printCustFlag={printCustFlag}
+                    setPrintCustFlag={setPrintCustFlag} />
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>
