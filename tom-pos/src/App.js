@@ -17,6 +17,8 @@ import CashUpPage from './Pages/CashUpPage';
 
 //page documentation ---------------------
 //demo account / no db write access ----------
+//Item Management: remove cost from item, not in current scope of project ---------------------
+//Item Management: error if item added but no VAT settings, as Tax Band is required. ItemRow.js:176 Uncaught TypeError: Cannot read properties of null (reading 'closest') ItemRow.js:176
 
 const App = () => {
   const [finData, setFinData] = useState({});
