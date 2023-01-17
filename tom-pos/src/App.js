@@ -13,6 +13,10 @@ import ItemManagePage from './Pages/ItemManagePage';
 import TaxManagePage from './Pages/TaxManagePage';
 import OrderListPage from './Pages/OrderListPage';
 import AccountPage from './Pages/AccountPage';
+import CashUpPage from './Pages/CashUpPage';
+
+//page documentation ---------------------
+//demo account / no db write access ----------
 
 const App = () => {
   const [finData, setFinData] = useState({});
@@ -27,7 +31,6 @@ const App = () => {
   
   useEffect(() => {
     //redirect user to approriate page based on user auth status on each load of webpage
-    //need listener to be able to work independently of render i.e. in case user is logged out-------------- ?????
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
           // User is signed in
@@ -103,6 +106,7 @@ const App = () => {
           <Route path='/tom-pos/items' element={<ItemManagePage itemsData={itemsData} taxData={taxData} menusData={menusData} setRootData={setRootData} />} />
           <Route path='/tom-pos/tax' element={<TaxManagePage taxData={taxData} itemsData={itemsData} setRootData={setRootData} />} />
           <Route path='/tom-pos/account' element={<AccountPage setRootData={setRootData} userData={userData} />} />
+          <Route path='/tom-pos/cashup' element={<CashUpPage finData={finData} ordersData={ordersData} setRootData={setRootData} />} />
         </Routes>
     </div>
   );

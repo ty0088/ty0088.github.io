@@ -4,8 +4,6 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';
 import { addUser } from '../Util/firebaseDB';
 
-//Add address line 1, address line 2, address town, address post code to form ---------------------
-
 const SignUpPage = () => {
     const auth = getAuth();
 
@@ -27,6 +25,7 @@ const SignUpPage = () => {
                 console.log(user.uid + ' has signed up');
                 //add user data to firestore
                 await addUser(firstName, lastName, compName, email, phoneNo);
+                //add collections (daily cash and day settings)
                 await signOut(auth);
             })
             .catch((error) => {

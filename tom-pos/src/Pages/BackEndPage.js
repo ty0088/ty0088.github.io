@@ -11,7 +11,7 @@ const BackEndPage = () => {
                 <Link to='/tom-pos/items' className='backend-link'>Item Management</Link>
                 <Link to='/tom-pos/tax' className='backend-link'>VAT Management</Link>
                 <Link to='/tom-pos/account' className='backend-link'>Account Settings</Link>
-                <Link to='/tom-pos/backend' className='backend-link'>Financial Reports</Link>
+                <Link to='/tom-pos/cashup' className='backend-link'>Daily Cash Up</Link>
             </div>
             <div className='nav-footer'>
                 <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
