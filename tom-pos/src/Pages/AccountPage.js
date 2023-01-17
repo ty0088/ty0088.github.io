@@ -5,29 +5,7 @@ import { signOutAcc, updateUserEmail, updateUserPassword, reAuthUser } from '../
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import AuthenticatePopUp from '../Components/AuthenticatePopUp';
 
-//used for updating user data document in firestore --------------- to be deleted
-// const userUpdate = {
-//     'first-name': 'Bob',
-//     'last-name': 'Burger',
-//     'comp-reg-name': 'Bobs Burger Ltd',
-//     'comp-trade-name': "Bob's Burger",
-//     'account-email': '1@1.com',
-//     'contact-email': 'bobs@burger.com',
-//     'account-phone': '0123456789',
-//     'contact-phone': '0123456789',
-//     'reg-address-1': '123 High Street',
-//     'reg-address-2': '',
-//     'reg-address-town': 'London',
-//     'reg-address-county': '',
-//     'reg-address-postcode': 'SE12 5HG',
-//     'trade-address-1': '123 High Street',
-//     'trade-address-2': '',
-//     'trade-address-town': 'London',
-//     'trade-address-county': '',
-//     'trade-address-postcode': 'SE12 5HG',
-//     'tax-ref': '5216695984',
-//     'receipt-message': 'Thank you'
-// };
+//Delete account --------------------------
 
 const AccountPage = ({setRootData, userData}) => {
     const [changeFlag, setChangeFlag] = useState(false);
