@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import formatCurrency from '../Util/formatCurrency';
 import getNextOrderNo from '../Util/getNextOrderNo';
 
-const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChangeFlag}) => {
+const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChangeFlag, setPrintKitchFlag, setPrintCustFlag}) => {
     const newOrderObj = {
         'order-no': '',
         'order-name': '',
@@ -34,8 +34,15 @@ const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChange
             setOrderNos(Object.keys(ordersData).sort());
         }
     }, [ordersData]);
-    
 
+    //auto print kitchen receipt if any item in order has print kitchen receipt enabled
+    useEffect(() => {
+        const checkKitchItem = orderObj['items'].some(item => item['print-kitchen']);
+        if (checkKitchItem) {
+            setPrintKitchFlag(true);
+        }
+    }, []);
+    
     //NEW Order
     const newOrderClick = () => {
         const nextOrderNo = getNextOrderNo(orderNos);
@@ -52,6 +59,10 @@ const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChange
         navigate('/tom-pos/orders');
     };
 
+    const printCustReceipt = () => {
+        setPrintCustFlag(true);
+    };
+
     return (
         <div id='change-popup-container'>
             <div id='change-popup'>
@@ -60,6 +71,7 @@ const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChange
                 <div id='change-popup-btns'>
                     <button type='button' onClick={newOrderClick}>New Order</button>
                     <button type='button' onClick={orderClick}>Orders</button>
+                    <button type='button' onClick={printCustReceipt}>Print Customer Receipt</button>
                 </div>
             </div>
         </div>

@@ -9,19 +9,6 @@ import ChangePopUp from './ChangePopUp';
 import ReceiptTemplate from './ReceiptTemplate';
 import PrintPopUp from './PrintPopUp';
 
-//-------------------------------------------------------------------------------------
-//- PRINT button click -> pop up confirming print receipt(s)
-//- create receipt layout(s)/page(s) --> window.print each option
-//- ESC/POS protocol for thermal printers. Thermal printer required to check ...
-//
-// 1. Kitchen receipt template
-// 2. Customer receipt template
-// 3. Print pop up - confirm selection of printers to print to, confirm print, cancel print
-// 4. On PAY confirmation, auto print receipt(s) depending on items print options
-//
-//- eat in / takeout option: eat in would set all items to 20%S tax, takeout allows for 0%Z rated items ???
-//--------------------------------------------------------------------------------------
-
 const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice, setCurrOrder, userData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
@@ -142,47 +129,48 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setPrintFlag(true);
     };
 
-    // [kitchen, customer]
     const confirmPrint = () => {
+        //receipts state: [kitchen, customer]
         const printKitchen = receipts[0];
         const printCustomer = receipts[1];
         
+        //if printing both receipts or just kitchen receipt, call print kitchen receipt
         if ((printKitchen && printCustomer) || (printKitchen && !printCustomer)) {
             setPrintKitchFlag(true);
         } else if (!printKitchen && printCustomer) {
+        //if printing just customer receipt, call print customer receipt
             setPrintCustFlag(true);
         } else {
             setPrintFlag(false);
         }
     };
 
-    const delayPromise = (t) => {
-        return new Promise(resolve => setTimeout(resolve, t));
-    }
-
     //delay print to allow new window to render before calling print
     const printDelay = (t, win) => {
-        return delayPromise(t).then(() => win.print());
+        return new Promise(resolve => setTimeout(resolve, t)).then(() => win.print());
     };
 
+    //resolve promise once print dialog is closed
     const printPromise = (win) => {
         return new Promise(resolve => win.onafterprint = resolve('Receipt Dialog Closed'));
     };
 
     const printKitchReceipt = async (win) => {
         await printDelay(50, win);
+        //once print promise is resolved, close receipt pop up window
         await printPromise(win).then(message => {
             console.log(message);
             win.close();
         }).catch(error => {
             console.log(error);
         });
-        //if both receipts required call for customer receipt
-        //if pop up blocking is enabled, new window will be blocked and app will throw window null error
-        //pop up blocking must be disabled or code changed so that second receipt print is called by user click
-        if (receipts[0] && receipts[1]) {
+        //if kitchen receipt also selected, call for customer receipt
+        //pop up blocker must be disabled to allow second pop up call
+        if (receipts[1]) {
             setPrintCustFlag(true);
         }
+        //reset receipts state
+        setReceipts([true, false]);
         setPrintFlag(false);
     };
 
@@ -208,7 +196,8 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                     setTipRate={setTipRate} preTipTotal={preTipTotal} setPayFlag={setPayFlag} setCurrOrder={setCurrOrder} setChangeFlag={setChangeFlag} />
             }
             {changeFlag &&
-                <ChangePopUp ordersData={ordersData} orderObj={orderObj} setCurrOrder={setCurrOrder} setRootData={setRootData} setChangeFlag={setChangeFlag} />
+                <ChangePopUp ordersData={ordersData} orderObj={orderObj} setCurrOrder={setCurrOrder} setRootData={setRootData} setChangeFlag={setChangeFlag}
+                 setPrintKitchFlag={setPrintKitchFlag} setPrintCustFlag={setPrintCustFlag} />
             }
             {printKitchFlag &&
                 //Render new window with kitchen receipt. Print on open and reset flag on close
