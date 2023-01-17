@@ -29,6 +29,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [printFlag, setPrintFlag] = useState(false);
     const [printKitchFlag, setPrintKitchFlag] = useState(false);
     const [printCustFlag, setPrintCustFlag] = useState(false);
+    const [receipts, setReceipts] = useState([true, false]); // [kitchen, customer] receipt required
     const [orderItems, setOrderItems] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
@@ -141,19 +142,58 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setPrintFlag(true);
     };
 
-    //printConfirm fn ---------
-    //confirm which receipt(s) to print
-    //set first print flag to call receipt pop up
-    //new window onOpen -> win.print
-    //win.onafterprint resolve
-    //.then win.close()
-    
+    // [kitchen, customer]
+    const confirmPrint = () => {
+        const printKitchen = receipts[0];
+        const printCustomer = receipts[1];
+        
+        if ((printKitchen && printCustomer) || (printKitchen && !printCustomer)) {
+            setPrintKitchFlag(true);
+        } else if (!printKitchen && printCustomer) {
+            setPrintCustFlag(true);
+        } else {
+            setPrintFlag(false);
+        }
+    };
 
-    const printClose = (win) => {
-        setTimeout(() => { 
-            win.print();
-            win.onafterprint = win.close();
-        }, 100);
+    const delayPromise = (t) => {
+        return new Promise(resolve => setTimeout(resolve, t));
+    }
+
+    //delay print to allow new window to render before calling print
+    const printDelay = (t, win) => {
+        return delayPromise(t).then(() => win.print());
+    };
+
+    const printPromise = (win) => {
+        return new Promise(resolve => win.onafterprint = resolve('Receipt Dialog Closed'));
+    };
+
+    const printKitchReceipt = async (win) => {
+        await printDelay(50, win);
+        await printPromise(win).then(message => {
+            console.log(message);
+            win.close();
+        }).catch(error => {
+            console.log(error);
+        });
+        //if both receipts required call for customer receipt
+        //if pop up blocking is enabled, new window will be blocked and app will throw window null error
+        //pop up blocking must be disabled or code changed so that second receipt print is called by user click
+        if (receipts[0] && receipts[1]) {
+            setPrintCustFlag(true);
+        }
+        setPrintFlag(false);
+    };
+
+    const printCustReceipt = async (win) => {
+        await printDelay(50, win);
+        await printPromise(win).then(message => {
+            console.log(message);
+            win.close();
+        }).catch(error => {
+            console.log(error);
+        });
     };
 
     return (
@@ -172,19 +212,18 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             }
             {printKitchFlag &&
                 //Render new window with kitchen receipt. Print on open and reset flag on close
-                <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={() => setPrintKitchFlag(false)}>
+                <NewWindow title={`Kitchen Receipt: Order No: ${orderNo}`} onOpen={win=>printKitchReceipt(win)} onUnload={() => setPrintKitchFlag(false)}>
                     <ReceiptTemplate receiptType={'kitchen'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} userData={userData} />
                 </NewWindow>
             }
             {printCustFlag &&
                 //Render new window with customer receipt. Print on open and reset flag on close
-                <NewWindow title={`Customer Receipt: Order No: ${orderNo}`} onOpen={win=>printClose(win)} onUnload={() => setPrintCustFlag(false)}>
+                <NewWindow title={`Customer Receipt: Order No: ${orderNo}`} onOpen={win=>printCustReceipt(win)} onUnload={() => setPrintCustFlag(false)}>
                     <ReceiptTemplate receiptType={'customer'} orderObj={orderObj} orderItems={orderItems} itemsData={itemsData} userData={userData} />
                 </NewWindow>
             }
             {printFlag &&
-                <PrintPopUp setPrintFlag={setPrintFlag} printKitchFlag={printKitchFlag} setPrintKitchFlag={setPrintKitchFlag} printCustFlag={printCustFlag}
-                    setPrintCustFlag={setPrintCustFlag} />
+                <PrintPopUp setPrintFlag={setPrintFlag} confirmPrint={confirmPrint} receipts={receipts} setReceipts={setReceipts} orderObj={orderObj} />
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>

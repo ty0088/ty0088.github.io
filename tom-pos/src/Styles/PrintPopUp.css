@@ -26,9 +26,39 @@
     font-size: 18px;
 }
 
+#print-input-cont {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#print-input-cont > span:first-child {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+#print-input-cont > span:not(:first-child) {
+    font-size: 14px;
+}
+
+.print-input-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.print-input-row > input {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
 #print-btns > button {
     font-size: 20px;
     height: 50px;
     width: 100px;
     margin: 0 15px 0 15px;
+    font-weight: 600;
 }
