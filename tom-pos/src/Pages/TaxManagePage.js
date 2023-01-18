@@ -41,8 +41,8 @@ const TaxManagePage = ({taxData, itemsData, setRootData}) => {
             <div id='tax-form'>
                 <h1>Value-Added Tax Management</h1>
                 <div id='tax-form-headers'>
-                    <span>Tax Label</span>
-                    <span>Tax Rate %</span>
+                    <span>Tax Band Label</span>
+                    <span>Tax Band Rate %</span>
                 </div>
                 <div id='tax-content'>
                     {Object.keys(tempData).length > 0 &&

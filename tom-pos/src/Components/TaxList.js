@@ -10,8 +10,8 @@ const TaxList = ({itemID, taxBand, handleChange, taxData}) => {
         );
     } else {
         return (
-            <select id={`tax-list-${itemID}`}>
-                <option value='N/A'>N/A</option>
+            <select key={itemID} data-input='tax-band'>
+                <option value=''></option>
             </select>
         );
     }
