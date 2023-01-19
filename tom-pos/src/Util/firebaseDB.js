@@ -32,7 +32,7 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     };
 
     try {
-        await setDoc(doc(db, user.uid, "financial"), {'daily-cash': [], 'day-settings': {'time-start': '08:00', 'time-end': '23:59', 'end-next-day': false}});
+        await setDoc(doc(db, user.uid, "financial"), {'daily-cash': [], 'day-settings': {'time-start': '00:00', 'time-end': '23:59', 'end-next-day': false}});
         await setDoc(doc(db, user.uid, "items"), {});
         await setDoc(doc(db, user.uid, "orders"), {});
         await setDoc(doc(db, user.uid, "sub-menus"), {});
