@@ -2,10 +2,6 @@
 import { initializeApp } from 'firebase/app';
 import { 
   getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
   setPersistence,
   browserSessionPersistence
 } from "firebase/auth";
