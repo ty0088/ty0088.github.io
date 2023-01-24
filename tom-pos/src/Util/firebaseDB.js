@@ -1,4 +1,4 @@
-import { getFirestore, doc, setDoc, getDocs, collection } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import fireApp from './firebaseApp';
 
@@ -62,4 +62,19 @@ const getDBCol = async () => {
     }
 };
 
-export { addUser, setDB, getDBCol };
+const deleteAllDocs = async () => {
+    const user = getAuth().currentUser;
+    try {
+        await deleteDoc(doc(db, user.uid, "financial"));
+        await deleteDoc(doc(db, user.uid, "items"));
+        await deleteDoc(doc(db, user.uid, "orders"));
+        await deleteDoc(doc(db, user.uid, "sub-menus"));
+        await deleteDoc(doc(db, user.uid, "tax-bands"));
+        await deleteDoc(doc(db, user.uid, "user-data"));
+        console.log('All documents deleted');
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { addUser, setDB, getDBCol, deleteAllDocs };

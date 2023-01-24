@@ -1,7 +1,7 @@
 import '../Styles/AuthenticatePopUp.css';
 import React from 'react';
 
-const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirmPassChange, reAuthUser, signOutAcc, setRootData, userData}) => {
+const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirmPassChange, confirmAccDelete, reAuthUser, signOutAcc, setRootData, userData}) => {
 
     const saveClick = async () => {
         //remove any previous error messages/borders
@@ -23,9 +23,11 @@ const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirm
                     setRootData({...userData, 'account-email': input1}, 'user-data');
                     alert('Email successfully changed, you will now be signed out, please sign back in');
                     signOutAcc();
-                } else {
+                } if (changeType === 'password') {
                     await confirmPassChange(input1);
                     alert('Password successfully changed, you will now be signed out, please sign back in');
+                } else {
+                    await confirmAccDelete();
                 }
             } else {
                 //display current password error border and message
@@ -45,13 +47,13 @@ const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirm
     const checkInputs = (input1, input2) => {
         let errMessage = '';
         let result = false;
-        if (changeType === 'email') {
+        if (changeType === 'email' || changeType === 'delete') {
             if (input1 !== input2) {
                 errMessage = 'Emails do not match';
             } else if (!/^([\w\d._\-#+])+@([\w\d._\-#]+[.][\w\d._\-#]+)+$/.test(input1) || !/^([\w\d._\-#+])+@([\w\d._\-#]+[.][\w\d._\-#]+)+$/.test(input2)) {
                 errMessage = 'Email is not valid';
-            } else if (input1 === userData['account-email']) {
-                errMessage = 'New email is the same as current email';
+            } else if (input1 !== userData['account-email']) {
+                errMessage = changeType === 'email' ? 'New email is the same as current email' : "Email does not match email on account";
             } else {
                 result = true;
             }
@@ -70,18 +72,26 @@ const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirm
     return (
         <div id='auth-popup-container'>
             <div id='auth-popup'>
-                <span className='auth-popup-row'>To change your account email address, please enter your current password and NEW email address and click "Save" to update.</span>
+                {changeType === 'email' &&
+                    <span className='auth-popup-row'>To change your account email address, please enter your current password and NEW email address and click "Save" to update.</span>
+                }
+                {changeType === 'password' &&
+                    <span className='auth-popup-row'>To change your account password, please enter your current password and NEW password and click "Save" to update.</span>
+                }
+                {changeType === 'delete' &&
+                    <span className='auth-popup-row'>To delete your account permanently, please enter your current password and current email and click "Save" to delete.</span>
+                }
                 <div className='auth-popup-row'>
                     <label htmlFor='auth-pass-input' className='acc-user'>*Current Password:</label>
                     <input type='password' id='auth-pass-input' /> 
                 </div>
                 <div className='auth-popup-row'>
-                    <label htmlFor='auth-auth-input1' className='acc-user'>{changeType === 'email' ? '*New Email:' : '*New Password:'}</label>
-                    <input type={changeType} id='auth-input1' /> 
+                    <label htmlFor='auth-auth-input1' className='acc-user'>{changeType === 'email' ? '*New Email:' : changeType === 'password' ? '*New Password:' : '*Current Email'}</label>
+                    <input type={changeType === 'delete' ? 'email' : changeType} id='auth-input1' /> 
                 </div>
                 <div className='auth-popup-row'>
-                    <label htmlFor='auth-input2' className='acc-user'>{changeType === 'email' ? '*Confirm New Email:' : '*Confirm New Password:'}</label>
-                    <input type={changeType} id='auth-input2' /> 
+                    <label htmlFor='auth-input2' className='acc-user'>{changeType === 'email' ? '*Confirm New Email:' : changeType === 'password' ? '*Confirm New Password:' : '*Confirm Current Email'}</label>
+                    <input type={changeType === 'delete' ? 'email' : changeType} id='auth-input2' /> 
                 </div>
                 <div id='auth-btns' className='auth-popup-row'>
                     <button type='button' onClick={saveClick}>Save</button>

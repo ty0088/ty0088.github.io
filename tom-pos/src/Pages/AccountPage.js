@@ -1,11 +1,9 @@
 import '../Styles/AccountPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { signOutAcc, updateUserEmail, updateUserPassword, reAuthUser } from '../Util/firebaseAuth';
+import { signOutAcc, updateUserEmail, updateUserPassword, deleteUserAcc, reAuthUser } from '../Util/firebaseAuth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import AuthenticatePopUp from '../Components/AuthenticatePopUp';
-
-//Delete account --------------------------
 
 const AccountPage = ({setRootData, userData}) => {
     const [changeFlag, setChangeFlag] = useState(false);
@@ -98,6 +96,15 @@ const AccountPage = ({setRootData, userData}) => {
     const confirmPassChange = (newPass) => {
         updateUserPassword(newPass);
         setReAuthFlag(false);
+    };
+
+    const deleteAccClick = () => {
+        setChangeType('delete');
+        setReAuthFlag(true);
+    };
+
+    const confirmAccDelete = () => {
+        deleteUserAcc();
     };
 
     const cancelReAuth = () => {
@@ -194,7 +201,7 @@ const AccountPage = ({setRootData, userData}) => {
             }
             {reAuthFlag &&
                 <AuthenticatePopUp cancelClick={cancelReAuth} changeType={changeType} confirmEmailChange={confirmEmailChange} confirmPassChange={confirmPassChange}
-                    reAuthUser={reAuthUser} signOutAcc={signOutAcc} setRootData={setRootData} userData={userData} />
+                    confirmAccDelete={confirmAccDelete} reAuthUser={reAuthUser} signOutAcc={signOutAcc} setRootData={setRootData} userData={userData} />
             }
             <h1>Account Settings</h1>
             <div id='account-form'>
@@ -291,6 +298,9 @@ const AccountPage = ({setRootData, userData}) => {
                     <div id='acc-btns'>
                         <button type='button' onClick={saveClick} disabled={!changeFlag}>Save All Changes</button>
                         <button type='button' onClick={discardClick} disabled={!changeFlag}>Discard All Changes</button>
+                    </div>
+                    <div id='acc-delete-btn'>
+                        <button type='button' onClick={deleteAccClick}>Delete Account</button>
                     </div>
                 </div>
             </div>

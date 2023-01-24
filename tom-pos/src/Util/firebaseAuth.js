@@ -7,6 +7,7 @@ import {
     EmailAuthProvider,
     reauthenticateWithCredential
 } from "firebase/auth";
+import { deleteAllDocs } from "./firebaseDB";
 
 const auth = getAuth();
 
@@ -36,12 +37,14 @@ const updateUserPassword = (password) => {
     });
 };
 
-const deleteUserAcc = () => {
-    deleteUser(auth.currentUser).then(() => {
+const deleteUserAcc = async () => {
+    try {
+        await deleteAllDocs();
+        await deleteUser(auth.currentUser);
         console.log('User account deleted');
-    }).catch((error) => {
+    } catch (error) {
         console.log(`${error.code}: ${error.message}`);
-    });
+    }
 };
 
 const reAuthUser = async (password) => {

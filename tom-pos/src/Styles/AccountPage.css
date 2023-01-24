@@ -80,3 +80,13 @@ label.acc-trade {
     font-weight: 600;
     color: rgb(255, 0, 0);
 }
+
+#acc-delete-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+#acc-delete-btn > button {
+    padding: 0 5px 0 5px;
+}
