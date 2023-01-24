@@ -123,7 +123,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
             }
             {reOpenFlag &&
                 <ConfirmPopUp name={`Order ${orderNo}`} cancelClick={cancelReOpen} confirmClick={confirmReOpen} message1={'Are you sure you want RE-OPEN'}
-                message2={''}/>
+                message2={'This will cause the close date to be updated.'}/>
             }
             <div id='order-edit-popup'>
                 <span id='order-edit-header'>Order: {orderNo}</span>
