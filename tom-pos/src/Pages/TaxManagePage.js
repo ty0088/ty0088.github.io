@@ -5,8 +5,6 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import TaxRow from '../Components/TaxRow';
 import updateItemVal from '../Util/updateItemVal';
 
-//headers to be fixed and rows to have own container to be scrollable ----------------
-
 const TaxManagePage = ({taxData, itemsData, setRootData}) => {
     const [tempData, setTempData] = useState({});
 

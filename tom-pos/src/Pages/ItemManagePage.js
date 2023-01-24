@@ -6,9 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';
 
-// separate eat in / takeout tax rates ------------
-//set root data obj when saving, setItemsData -----------
-
 const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
