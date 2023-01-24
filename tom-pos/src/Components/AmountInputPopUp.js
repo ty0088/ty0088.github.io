@@ -1,5 +1,5 @@
 import '../Styles/AmountInputPopUp.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const AmountInputPopUp = ({currInput, setInputFlag, setCashPaid, setCardPaid, discRateClick, tipRateClick, preTipTotal}) => {
     const [amountVal, setAmountVal] = useState(0);

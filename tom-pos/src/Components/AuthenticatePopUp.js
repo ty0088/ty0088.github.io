@@ -1,5 +1,5 @@
 import '../Styles/AuthenticatePopUp.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirmPassChange, reAuthUser, signOutAcc, setRootData, userData}) => {
 

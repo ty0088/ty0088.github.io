@@ -1,5 +1,5 @@
 import '../Styles/PrintPopUp.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const PrintPopUp = ({setPrintFlag, confirmPrint, receipts, setReceipts, orderObj}) => {
 

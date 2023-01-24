@@ -1,5 +1,5 @@
 import '../Styles/AddItemPopUp.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 
 const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) => {
