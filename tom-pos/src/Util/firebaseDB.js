@@ -2,8 +2,6 @@ import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from 'fireb
 import { getAuth } from 'firebase/auth';
 import fireApp from './firebaseApp';
 
-//Limit read and write to 1 per second ------------------------------------
-
 const db = getFirestore(fireApp);
 
 const addUser = async (firstName, lastName, compName, email, phoneNo) => {

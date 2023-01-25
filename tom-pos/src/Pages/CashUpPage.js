@@ -129,7 +129,7 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         }
     };
 
-    //function to get expected card, cash takings, Net Sales, Tips Taken, Discounts Given and VAT Due based on Day Settings ----------------
+    //function to calculate expected card/cash takings, Net Sales, Tips Taken, Discounts Given and VAT Due based on Day Settings
     const calcCashUpVals = () => {
         const filterOrderNos = getfilterOrderNos();
         const exCashTake = filterOrderNos.reduce((sum, orderNo) => sum + ordersData[orderNo]['cash-paid'], 0);
