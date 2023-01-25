@@ -88,9 +88,9 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         endDate.setHours(daySettings['time-end'].substr(0,2), daySettings['time-end'].substr(3,2), 0, 0);
         const filterNos = Object.keys(ordersData).filter(orderNo => {
             const dateData = ordersData[orderNo]['date-closed'];
-            //if a server timestamp, convert to date
-            const dateClosed = dateData instanceof Date ? dateData : dateData.toDate();
-            return dateClosed >= startDate && dateClosed <= endDate;
+            //convert order close date to correct format
+            const dateClosed = dateData === '' ? new Date(0) : dateData instanceof Date ? dateData : dateData.toDate();
+            return dateClosed.getTime() >= startDate.getTime() && dateClosed.getTime() <= endDate.getTime();
         });
         return filterNos.sort();
     };
