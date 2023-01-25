@@ -63,9 +63,11 @@
     font-size: 1.5em;
     font-weight: 600;
     margin: 5px;
+    padding: 5px;
     background-color: aqua;
     border: 1px solid black;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .menu-btn:hover {
@@ -79,9 +81,11 @@
     font-size: 1em;
     font-weight: 600;
     margin: 5px;
+    padding: 5px;
     background-color: rgb(144, 255, 186);
     border: 1px solid black;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .item-btn:hover {

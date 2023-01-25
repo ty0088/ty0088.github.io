@@ -270,11 +270,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 <span>{tempItem['description']}</span>
                 <span>{formatCurrency(tempItem['price'])}</span>
                 <span>{tempItem['tax-band']}</span>
-                <span>
-                    {!isNumber(tempItem['cost']) && tempItem['cost']}
-                    {isNumber(tempItem['cost']) && formatCurrency(tempItem['cost'])}
-                </span>
-                <span>{tempItem['qty']}</span>
                 <div className='mod-list'>
                     {tempItem['mods'].map((mod, i) => <span key={i}>- {mod} : <span>{formatCurrency(tempItem['mods-price'][i])}</span></span>)}
                 </div>
@@ -303,8 +298,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 <input type='text' data-input='description' value={tempItem['description']} onChange={handleChange}></input>
                 <input type='number' data-input='price' value={tempItem['price']} onChange={handleChange}></input>
                 <TaxList taxData={taxData} itemID={tempItem.itemID} taxBand={tempItem['tax-band']} handleChange={handleChange}/>
-                <input type='text' data-input='cost' value={tempItem['cost']} onChange={handleChange}></input>
-                <input type='text' data-input='qty' value={tempItem['qty']} onChange={handleChange}></input>
                 <div className='mod-list'>
                     {
                         tempItem['mods'].map((mod, i) => {

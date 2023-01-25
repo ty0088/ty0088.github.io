@@ -23,11 +23,9 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         'options-price':[],
         'mods': [],
         'mods-price': [],
-        'qty': '',
         'price': 0,
         'tax-band': '',
         'tax-rate': '',
-        'cost': '',
         'print-kitchen': false,
         'print-customer': true
     };
@@ -153,8 +151,6 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
                     <span>Description</span>
                     <span>Price inc VAT</span>
                     <span>VAT Band</span>
-                    <span>Cost</span>
-                    <span>Qty</span>
                     <span>Mods <br/> Label/Price</span>
                     <span>Options <br/> Label/Price</span>
                     <span>Print Customer</span>
