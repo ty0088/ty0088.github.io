@@ -16,7 +16,16 @@ const LoginPage = () => {
             console.log(`${error.code}: ${error.message}`);
             document.getElementById('login-error').innerText =  `${error.code}`;
         });
-    }
+    };
+
+    //demo account login
+    const demoLogin = () => {
+        signInWithEmailAndPassword(auth, '1@1.com', '123456')
+        .catch((error) => {
+            console.log(`${error.code}: ${error.message}`);
+            document.getElementById('login-error').innerText =  `${error.code}`;
+        });
+    };
 
     return (
         <div id='login-container'>
@@ -36,7 +45,8 @@ const LoginPage = () => {
                     <button type='submit' onClick={emailLogIn}>Sign In</button>
                 </form>
                 <div id='login-links-container'>
-                    <Link className='login-links' to='/tom-pos/signup'>Sign Up</Link>
+                    <Link className='login-links link' to='/tom-pos/signup'>Sign Up</Link>
+                    <span className='login-links link' onClick={demoLogin}>Demo Account</span>
                 </div>
             </div>
         </div>

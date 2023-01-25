@@ -2,6 +2,7 @@ import '../Styles/AccountPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOutAcc, updateUserEmail, updateUserPassword, deleteUserAcc, reAuthUser } from '../Util/firebaseAuth';
+import { getAuth } from 'firebase/auth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import AuthenticatePopUp from '../Components/AuthenticatePopUp';
 
@@ -12,6 +13,7 @@ const AccountPage = ({setRootData, userData}) => {
     const [reAuthFlag, setReAuthFlag] = useState(false);
     const [changeType, setChangeType] = useState('');
     const [tempUserData, setTempUserData] = useState({...userData});
+    const [demoState, setDemoState] = useState(getAuth().currentUser.uid === 'ANdnbzxTWvbukWQrTWmlvmcONai1');
 
     useEffect(() => {
         setTempUserData({...userData})
@@ -223,11 +225,11 @@ const AccountPage = ({setRootData, userData}) => {
                     <div className='acc-input-row'>
                         <label htmlFor='account-email' className='acc-user'>*Account Email:</label>
                         <input type='email' id='account-email' value={tempUserData['account-email']} disabled={true}/>
-                        <button type='button' onClick={changeEmailClick}>Change</button>
+                        <button type='button' onClick={changeEmailClick} disabled={demoState}>Change</button>
                     </div>
                     <div className='acc-input-row'>
                         <label className='acc-user'>*Password:</label>
-                        <button type='button' onClick={changePassClick}>Change</button>
+                        <button type='button' onClick={changePassClick} disabled={demoState}>Change</button>
                     </div>
                     <h4>Company (Registered) Profile:</h4>
                     <span className='account-form-info'>Used for account administration. VAT number will be displayed on receipt</span>
@@ -300,7 +302,7 @@ const AccountPage = ({setRootData, userData}) => {
                         <button type='button' onClick={discardClick} disabled={!changeFlag}>Discard All Changes</button>
                     </div>
                     <div id='acc-delete-btn'>
-                        <button type='button' onClick={deleteAccClick}>Delete Account</button>
+                        <button type='button' onClick={deleteAccClick} disabled={demoState}>Delete Account</button>
                     </div>
                 </div>
             </div>

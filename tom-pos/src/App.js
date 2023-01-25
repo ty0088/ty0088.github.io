@@ -16,7 +16,6 @@ import AccountPage from './Pages/AccountPage';
 import CashUpPage from './Pages/CashUpPage';
 
 //page documentation ---------------------
-//demo account / no db write access ----------
 
 const App = () => {
   const [finData, setFinData] = useState({});
@@ -40,6 +39,9 @@ const App = () => {
       } else {
           // User is signed out
           console.log('user is signed out');
+          //reset all data
+          const setStateArr = [setFinData, setItemsData, setOrdersData, setMenusData, setTaxData, setUserData];
+          setStateArr.forEach(setState => setState({}));
           navigate('/tom-pos');
       }
       setCurrOrder();
@@ -62,12 +64,15 @@ const App = () => {
       dataArr.push(doc.data())
     });
     //set each data obj to state
-    setStateArr.forEach((func, i) => func(dataArr[i]));
+    setStateArr.forEach((setState, i) => setState(dataArr[i]));
   };
 
   //set root data and DB
   const setRootData = (dataObj, doc) => {
-    setDB(dataObj, doc);
+    //only write to DB if not demo account
+    if (auth.currentUser.uid !== 'ANdnbzxTWvbukWQrTWmlvmcONai1') {
+      setDB(dataObj, doc);
+    }
     switch (doc)  {
       case 'financial':
         setFinData(dataObj);
