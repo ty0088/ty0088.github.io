@@ -4,7 +4,7 @@ import isNumber from 'is-number';
 import ConfirmPopUp from './ConfirmPopUp';
 import updateItemVal from '../Util/updateItemVal';
 
-const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setDataDB, itemsData}) => {
+const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, itemsData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
 
@@ -38,7 +38,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setDataDB, item
                 //update items if editing existing and update DB
                 if (label !== '') {
                     //update items of tax rate isn't newly added
-                    updateItemVal([[label]], newLabel, 'tax-band', setDataDB, itemsData);
+                    updateItemVal([[label]], newLabel, 'tax-band', setRootData, itemsData);
                 }
                 updateTaxDB(tempData);
                 clearError();
