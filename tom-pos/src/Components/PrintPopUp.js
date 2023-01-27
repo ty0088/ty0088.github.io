@@ -1,7 +1,7 @@
 import '../Styles/PrintPopUp.css';
 import React from 'react';
 
-const PrintPopUp = ({setPrintFlag, confirmPrint, receipts, setReceipts, orderObj}) => {
+const PrintPopUp = ({setPrintFlag, confirmPrint, receipts, setReceipts}) => {
 
     const cancelClick = () => {
         setPrintFlag(false);

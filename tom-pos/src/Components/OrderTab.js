@@ -212,7 +212,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
                 </NewWindow>
             }
             {printFlag &&
-                <PrintPopUp setPrintFlag={setPrintFlag} confirmPrint={confirmPrint} receipts={receipts} setReceipts={setReceipts} orderObj={orderObj} />
+                <PrintPopUp setPrintFlag={setPrintFlag} confirmPrint={confirmPrint} receipts={receipts} setReceipts={setReceipts} />
             }
             <div id='order-head'>
                 <span>Order {orderNo}</span>
