@@ -310,7 +310,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                             );  
                         })
                     }
-                    <button type='button' data-input={`mods`} onClick={modOpAdd}>Add Option</button>
+                    <button type='button' data-input={`mods`} onClick={modOpAdd}>Add Mod</button>
                 </div>
                 <div className='mod-list'>
                     {
