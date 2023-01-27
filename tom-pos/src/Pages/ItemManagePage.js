@@ -5,8 +5,10 @@ import { signOutAcc } from '../Util/firebaseAuth';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
 import MenuFilterSort from '../Components/MenuFilterSort';
+import HelpPopUp from '../Components/HelpPopUp';
 
 const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
+    const [helpFlag, setHelpFlag] = useState(false);
     const [tempData, setTempData] = useState({});
     const [sortedItems, setSortedItems] = useState([]);
     const [itemNames, setItemNames] = useState([]);
@@ -26,8 +28,7 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         'price': 0,
         'tax-band': '',
         'tax-rate': '',
-        'print-kitchen': false,
-        'print-customer': true
+        'print-kitchen': false
     };
 
     //call setSortFilter anytime a sort/filter/search key is changed
@@ -135,6 +136,11 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         setRootData(changeData, 'items');
     };
 
+    const helpClick = () => {
+        setHelpFlag(!helpFlag);
+    };
+ 
+
     return (
         <div id='item-container'>
             <div id='item-form'>
@@ -153,7 +159,6 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
                     <span>VAT Band</span>
                     <span>Mods <br/> Label/Price</span>
                     <span>Options <br/> Label/Price</span>
-                    <span>Print Customer</span>
                     <span>Print Kitchen</span>
                 </div>
                 <div id='item-list'>
@@ -167,10 +172,43 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
                 </div>
             </div>
             <div className='nav-footer'>
+                <span className='foot-link link' onClick={helpClick}>Page Help</span>
                 <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
+            {helpFlag &&
+                <HelpPopUp helpClick={helpClick}>
+                    <span id='help-title'>Item Management Page</span>
+                    <p className='help-para'>This page allows you to add and edit items to the POS. Items are required for the POS to function.</p>
+                    <p className='help-para'>To add an item:</p>
+                    <p className='help-para'>1. Click "Add Item". A new item row will appear.</p>
+                    <p className='help-para'>2. Make any neccessary changes to the fields. The name field, price and the VAT band are required, all other 
+                         parameters are optional. If you have no VAT bands, you must add one (VAT Management Page) before adding an item.</p>
+                    <p className='help-para'>3. Click submit to save the item.</p>
+                    <p className='help-para'>To edit (including deleting) an existing item:</p>
+                    <p className='help-para'>1. Click "Edit" on the appropriate existing item.</p>
+                    <p className='help-para'>2. Make any neccessary changes to the fields.</p>
+                    <p className='help-para'>3. Click "Submit" to save the changes or "Cancel" to discard any changes.</p>
+                    <p className='help-para'>4. If you wish to delete the item, click "Delete" and confirm you wish to delete the item. This will permanently delete the item.</p>
+                    <p className='help-para'>Item parameter field info:</p>
+                    <p className='help-para'><b>Name (required):</b> Name of item. The name must be non-blank. This will appear as a button in the POS and so the shorter the name, the more readable it will be in the POS.</p>
+                    <p className='help-para'><b>Sub Menu (optional):</b> This is the sub menu the item belongs to. Assign a sub menu to group this item with other items of the same sub menu.</p>
+                    <p className='help-para'><b>Description (optional):</b> This is a description of the item. This will only on this page.</p>
+                    <p className='help-para'><b>Price (required):</b> This is the price (£) of the item that is inclusive of the VAT/Sales tax. This must be zero (0) or higher.</p>
+                    <p className='help-para'><b>VAT Band (required):</b> This is the VAT band of the item. Select the appropriate VAT band from the drop down list. The VAT bands can be managed in the VAT Management Page.</p>
+                    <p className='help-para'><b>Mods (optional):</b> This lists any optional modifications you want the item to be able to have. Modifications to an item can be selected once
+                         it is added to an order in the POS. Click "Add Mod" to add a new item modification. The first mods input field is its label/name and the next field is any additional price you wish to charge for the mod per unit item.
+                         The additional price may be zero (0) or higher.</p>
+                    <p className='help-para'><b>Options (optional):</b> This lists any additional options you want the item to be able to have. Options for an item can be selected once
+                         it is added to an order in the POS. Click "Add Option" to add a new item option. The first options input field is its label/name and the next field is any additional price you wish to charge for the option per unit item.
+                         The additional price may be zero (0) or higher.</p>
+                    <p className='help-para'><b>Print Customer (optional):</b> If this option is enabled</p>
+                    <p className='help-para'><b>Print Kitchen (optional):</b></p>
+                    <p className='help-para'></p>
+                    
+                </HelpPopUp>
+            }
         </div>
     );
 };

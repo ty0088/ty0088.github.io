@@ -276,7 +276,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 <div className='mod-list'>
                     {tempItem['options'].map((opt, i) => <span key={i}>- {opt} : <span>{formatCurrency(tempItem['options-price'][i])}</span></span>)}
                 </div>
-                <YesNoSpan bool={tempItem['print-customer']} />
                 <YesNoSpan bool={tempItem['print-kitchen']} />
             </div>
         );
@@ -325,9 +324,6 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                         })
                     }
                     <button type='button' data-input={`options`} onClick={modOpAdd}>Add Option</button>
-                </div>
-                <div className='check-box'>
-                    <input type={'checkbox'} data-input={`print-customer`} defaultChecked={tempItem['print-customer']} onChange={handleChange}/>
                 </div>
                 <div className='check-box'>
                     <input type={'checkbox'} data-input={`print-kitchen`} defaultChecked={tempItem['print-kitchen']} onChange={handleChange}/>
