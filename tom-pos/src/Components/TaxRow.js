@@ -55,8 +55,8 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, it
             inputError('label');
             return false;
         }
-        //rate: required and must be a number
-        if (!isNumber(newRate)) {
+        //rate: required and must be a positive number or 0
+        if (!isNumber(newRate) || newRate < 0) {
             inputError('rate');
             return false;
         }
@@ -70,7 +70,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, it
         errInput.classList.add('input-error');
         let errElem = document.createElement('div');
         errElem.classList.add('error-message');
-        errElem.innerText = 'Tax label must be non-blank or already exist, rate must be non-blank and a number';
+        errElem.innerText = 'Tax label must be non-blank or already exist, rate must 0 or larger';
         errInput.closest('.tax-row').after(errElem);
     };
 
