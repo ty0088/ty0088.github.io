@@ -30,7 +30,7 @@ const AmountInputPopUp = ({currInput, setInputFlag, setCashPaid, setCardPaid, di
             //empty value set to 0 and round input value to 2dp
             amountVal = e.target.value !== '' ?  Math.round(parseFloat(e.target.value) * 100 + Number.EPSILON) / 100 : 0;
             if (currInput === 'tip') {
-                rateVal = Math.round((amountVal / preTipTotal) * 10000 + Number.EPSILON) / 100;
+                rateVal = Math.round((amountVal / preTipTotal) * 1000000 + Number.EPSILON) / 10000;
                 document.getElementById('rate-popup-input').value = rateVal;
             }
         } else if (e.target.id === 'rate-popup-input') {
@@ -40,6 +40,9 @@ const AmountInputPopUp = ({currInput, setInputFlag, setCashPaid, setCardPaid, di
                 document.getElementById('amount-popup-input').value = amountVal;
             }
         }
+        console.log(preTipTotal);
+        console.log(amountVal);
+        console.log(rateVal);
         setAmountVal(amountVal);
         setRateVal(rateVal);
     };
