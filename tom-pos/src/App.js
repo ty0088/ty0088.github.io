@@ -15,8 +15,6 @@ import OrderListPage from './Pages/OrderListPage';
 import AccountPage from './Pages/AccountPage';
 import CashUpPage from './Pages/CashUpPage';
 
-//page documentation ---------------------
-
 const App = () => {
   const [finData, setFinData] = useState({});
   const [itemsData, setItemsData] = useState({});
