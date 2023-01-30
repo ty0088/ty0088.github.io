@@ -1,4 +1,5 @@
 import '../Styles/SignUpPage.css'
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { emailCheck, passCheck, validateForm } from '../Util/formVerification';

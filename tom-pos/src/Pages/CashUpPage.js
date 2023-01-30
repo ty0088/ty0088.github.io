@@ -6,12 +6,6 @@ import formatCurrency from '../Util/formatCurrency';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import HelpPopUp from '../Components/HelpPopUp';
 
-//day setting cannot be changed on an opened day. as soon as you click save, the cash up day changes to closed without any changes to day settings ------------
-//on initial render, setCashUpState() called which sets day settings from daily-cash up object if existing cash up exists.
-//this bypasses any changes to the day settings even though the day setting has been changed as the date is still pulled from the db object.
-//possible fixes:
-//1. when day setting is saved, if cash up exists then overwrite those day settings to new one
-
 const CashUpPage = ({finData, ordersData, setRootData}) => {
     const [changeFlag, setChangeFlag] = useState(false);
     const [confirmFlag, setConfirmFlag] = useState(false);
@@ -247,6 +241,7 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         const [result, errMessage] = validateSetTimes();
         if (result) {
             if (cashIndex >= 0) {
+                //if existing cash up for this date, update day settings and cash up with new time
                 const saveData = {
                     ...finData['daily-cash'][cashIndex],
                     'date-start': cashDate,
@@ -258,10 +253,12 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
                 dailyCashArr.splice(cashIndex, 1, saveData);
                 setRootData({...finData, 'daily-cash': dailyCashArr, 'day-settings': {...tempDayData}}, 'financial');
             } else {
+                //else just update day settings
                 setRootData({...finData, 'day-settings': {...tempDayData}}, 'financial');
             }
             setChangeFlag(false);
         } else {
+            //show error if time
             const errorElem = document.createElement('span');
             errorElem.classList.add('cashup-error-message');
             errorElem.innerText = errMessage;
@@ -388,7 +385,7 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
                          the expected cash and card takings, any tips taken, any discounts given and the VAT due for the sales.</p>
                     <p className='help-para bold600'>To cash up:</p>
                     <p className='help-para'>1. Select the day you wish to cash up by clicking the date box labelled "Cash Up Date". The cash up date should be
-                         the date at the time of closing (indicated under "Day Settings" and "End Time").</p>
+                         the date at the time of opening (indicated under "Day Settings" and "Start Time").</p>
                     <p className='help-para'>2. Once the cash and card takings are counted, input the amount of cash taken into the "Actual Cash Takings" box and
                          the amount of card taken into the "Actual Card Takings" box.</p>
                     <p className='help-para'>3. Any differences, whether up (surplus) or down (deficit) will be shown next to "Cash Taking Difference" and "Card Taking Difference".

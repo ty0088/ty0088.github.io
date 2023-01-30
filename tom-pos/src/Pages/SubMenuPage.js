@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import MenuRow from '../Components/MenuRow';
 import updateItemVal from '../Util/updateItemVal';
+import HelpPopUp from '../Components/HelpPopUp';
 
 
 const SubMenuPage = ({menusData, itemsData, setRootData}) => {
+    const [helpFlag, setHelpFlag] = useState(false);
     const [tempData, setTempData] = useState({});
     const [levels, setLevels] = useState([]);
 
@@ -92,6 +94,10 @@ const SubMenuPage = ({menusData, itemsData, setRootData}) => {
         setTempData(addData);
         setLevels(Object.keys(addData).map(string => parseInt(string)));
     };
+
+    const helpClick = () => {
+        setHelpFlag(!helpFlag);
+    };
  
     return (
         <div id='menu-page-container'>
@@ -139,10 +145,32 @@ const SubMenuPage = ({menusData, itemsData, setRootData}) => {
                 <button type='button' className='menuBtn' onClick={addNewLevel}>Add New Level</button>
             </div>
             <div className='nav-footer'>
+                <span className='foot-link link' onClick={helpClick}>Page Help</span>
                 <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
+            {helpFlag &&
+                <HelpPopUp helpClick={helpClick}>
+                    <span id='help-title'>Sub Menu Management Page</span>
+                    <p className='help-para'>This page allows you to add and edit sub menus. Sub menus are assigned to individual
+                         items to allow you to group and categorise items. Sub menus are not neccessary and can be used or not used.</p>
+                    <p className='help-para'>Each sub menu will show up in the POS as a button which allows the user to bring up a grouping of items.</p>
+                    <p className='help-para'>Sub menus belong to a 'level', level 1 being the root level. To create a sub menu, add at least level 1.
+                         A sub menu belonging to a level higher than level 1 has a parent sub menu from the immediate level lower i.e. sub menu on level 2 has a parent
+                         sub menu on level 1 and a sub menu on level 3 has a parent from level 2 and so on. This allows you to create sub menus within sub menus as shallow and deep as you would like.</p>
+                    <p className='help-para'>If no sub menus are used, all items will belong to the root menu. Items can belong to the root menu even
+                         if there are sub menus available. If an item belongs to the root menu, it will show immediately in the POS without any sub menu having
+                         to be selected.</p>
+                    <p className='help-para'>To add a new sub menu:</p>
+                    <p className='help-para'>1. First ensure that the relevant level is present. If no level is present or a higher level is required,
+                         click "Add New Level".</p>
+                    <p className='help-para'>2. Click "Add New menu" in the required level and type in the name of the new sub menu. Now select it's parent sub menu.
+                         Any sub menu in level 1 (root) has no parent and so it's parent is shown as "N/A".</p>
+                    <p className='help-para'>Note that the following names are reserved for the system and so cannot be used as sub menu names:</p>
+                    <p className='help-para'><b> "--Add Menu--",  "Menu",  "N/A"</b></p>
+                </HelpPopUp>
+            }
         </div>
     );
 };

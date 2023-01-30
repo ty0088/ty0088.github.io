@@ -4,9 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import OrderFilterSort from '../Components/OrdersFilterSort';
+import HelpPopUp from '../Components/HelpPopUp';
 
 const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData}) => {
     const [messageFlag, setMessageFlag] = useState(false);
+    const [helpFlag, setHelpFlag] = useState(false);
     const [orderNos, setOrderNos] = useState([]);
     const [delOrder, setDelOrder] = useState('');
     const [filterDate, setFilterDate] = useState('');
@@ -96,6 +98,10 @@ const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData
         setMessageFlag(false);
     };
 
+    const helpClick = () => {
+        setHelpFlag(!helpFlag);
+    };
+
     return (
         <div id='order-list-container'>
             {messageFlag &&
@@ -141,10 +147,19 @@ const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData
                 </div>
             </div>
             <div className='nav-footer'>
+                <span className='foot-link link' onClick={helpClick}>Page Help</span>
                 <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
+            {helpFlag &&
+                <HelpPopUp helpClick={helpClick}>
+                    <span id='help-title'>Order List Page</span>
+                    <p className='help-para'>This page shows all the OPEN or CLOSED orders. The listed orders can be accessed or deleted here.</p>
+                    <p className='help-para'>To open an order, click "Open" and to delete an order, click "Delete" and confirm the delete.</p>
+                    <p className='help-para'>The order list can be sorted and filtered using the top bar.</p>
+                </HelpPopUp>
+            }
         </div>
     );
 };

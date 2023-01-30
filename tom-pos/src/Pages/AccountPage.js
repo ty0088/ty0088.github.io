@@ -5,12 +5,14 @@ import { signOutAcc, updateUserEmail, updateUserPassword, deleteUserAcc, reAuthU
 import { getAuth } from 'firebase/auth';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import AuthenticatePopUp from '../Components/AuthenticatePopUp';
+import HelpPopUp from '../Components/HelpPopUp';
 
 const AccountPage = ({setRootData, userData}) => {
     const [changeFlag, setChangeFlag] = useState(false);
     const [confirmFlag, setConfirmFlag] = useState(false);
     const [discardFlag, setDiscardFlag] = useState(false);
     const [reAuthFlag, setReAuthFlag] = useState(false);
+    const [helpFlag, setHelpFlag] = useState(false);
     const [changeType, setChangeType] = useState('');
     const [tempUserData, setTempUserData] = useState({...userData});
     const [demoState, setDemoState] = useState(getAuth().currentUser.uid === 'ANdnbzxTWvbukWQrTWmlvmcONai1');
@@ -191,6 +193,10 @@ const AccountPage = ({setRootData, userData}) => {
         return errorInputs;
     };
 
+    const helpClick = () => {
+        setHelpFlag(!helpFlag);
+    };
+
     return (
         <div id='account-container'>
             {confirmFlag &&
@@ -205,7 +211,7 @@ const AccountPage = ({setRootData, userData}) => {
                 <AuthenticatePopUp cancelClick={cancelReAuth} changeType={changeType} confirmEmailChange={confirmEmailChange} confirmPassChange={confirmPassChange}
                     confirmAccDelete={confirmAccDelete} reAuthUser={reAuthUser} signOutAcc={signOutAcc} setRootData={setRootData} userData={userData} />
             }
-            <h1>Account Settings</h1>
+            <h1>Account Details</h1>
             <div id='account-form'>
                 <div className='account-form-col'>
                     <h4>User Profile:</h4>
@@ -307,10 +313,24 @@ const AccountPage = ({setRootData, userData}) => {
                 </div>
             </div>
             <div className='nav-footer'>
+                <span className='foot-link link' onClick={helpClick}>Page Help</span>
                 <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
+            {helpFlag &&
+                <HelpPopUp helpClick={helpClick}>
+                    <span id='help-title'>VAT Management Page</span>
+                    <p className='help-para'>This page is used to manage the user and company details. Required fields have an asterisk (*) mark.</p>
+                    <p className='help-para'>To make changes, edit any desired fields and then click "Save All Changes" and confirm save.
+                         To discard all changes made before saving, click "Discard All Changes" and confirm discard.</p>
+                    <p className='help-para'>The Account Email address or Account Password can be changed by clicking the "Change" button next to the Account Email field or Password field and
+                         following the on screen instructions.</p>
+                    <p className='help-para'>You can permanently delete this account and all associated data by clicking "Delete Account" and following the 
+                         the onscreen instructions. This is permanent and all associated data will be lost and cannot be retrieved once deleted.</p>
+                    <p className='help-para'></p>
+                </HelpPopUp>
+            }
         </div>
     );
 };

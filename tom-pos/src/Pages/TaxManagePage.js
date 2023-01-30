@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import TaxRow from '../Components/TaxRow';
 import updateItemVal from '../Util/updateItemVal';
+import HelpPopUp from '../Components/HelpPopUp';
 
 const TaxManagePage = ({taxData, itemsData, setRootData}) => {
+    const [helpFlag, setHelpFlag] = useState(false);
     const [tempData, setTempData] = useState({});
 
     useEffect(() => {
@@ -34,6 +36,10 @@ const TaxManagePage = ({taxData, itemsData, setRootData}) => {
         setTempData({...taxData});
     };
 
+    const helpClick = () => {
+        setHelpFlag(!helpFlag);
+    };
+
     return (
         <div id='tax-page-container'>
             <div id='tax-form'>
@@ -52,12 +58,28 @@ const TaxManagePage = ({taxData, itemsData, setRootData}) => {
                 </div>
             </div>
             <div className='nav-footer'>
+                <span className='foot-link link' onClick={helpClick}>Page Help</span>
                 <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
+            {helpFlag &&
+                <HelpPopUp helpClick={helpClick}>
+                    <span id='help-title'>VAT Management Page</span>
+                    <p className='help-para'>This page is used to add and edit VAT/Sales Tax bands and rates. Items are required to have a VAT band, although the band rate may be zero (0).</p>
+                    <p className='help-para bold600'>To add a new VAT band:</p>
+                    <p className='help-para'>1: Click "Add Tax Rate". This will bring up a new tax band row.</p>
+                    <p className='help-para'>2. Add a band name and set the band rate in percent. The rate can be zero (0).</p>
+                    <p className='help-para'>3. Click "Submit" to save the new VAT band.</p>
+                    <p className='help-para bold600'>To add edit or delete an existing VAT band:</p>
+                    <p className='help-para'>1. Click "Edit" on the VAT band you wish to edit or delete.</p>
+                    <p className='help-para'>2. To edit, make the changes required and click "Submit" to save the changes.</p>
+                    <p className='help-para'>3. To delete, click "Delete" and confirm deletion.</p>
+                    <p className='help-para'></p>
+                </HelpPopUp>
+            }
         </div>
-    );
+);
 };
 
 export default TaxManagePage;
