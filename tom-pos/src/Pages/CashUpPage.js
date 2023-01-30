@@ -4,11 +4,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import formatCurrency from '../Util/formatCurrency';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
+import HelpPopUp from '../Components/HelpPopUp';
+
+//day setting cannot be changed on an opened day. as soon as you click save, the cash up day changes to closed without any changes to day settings ------------
+//on initial render, setCashUpState() called which sets day settings from daily-cash up object if existing cash up exists.
+//this bypasses any changes to the day settings even though the day setting has been changed as the date is still pulled from the db object.
+//possible fixes:
+//1. when day setting is saved, if cash up exists then overwrite those day settings to new one
 
 const CashUpPage = ({finData, ordersData, setRootData}) => {
     const [changeFlag, setChangeFlag] = useState(false);
     const [confirmFlag, setConfirmFlag] = useState(false);
     const [closedFlag, setClosedFlag] = useState(true);
+    const [helpFlag, setHelpFlag] = useState(false);
     const [tempDayData, setTempDayData] = useState({...finData['day-settings']});
     const [cashDate, setCashDate] = useState(new Date(new Date().setHours(0, 0, 0, 0))); //todays date by default
     const [cashUpVals, setCashUpVals] = useState({});
@@ -238,7 +246,20 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         //validate day settings before saving
         const [result, errMessage] = validateSetTimes();
         if (result) {
-            setRootData({...finData, 'day-settings': {...tempDayData}}, 'financial');
+            if (cashIndex >= 0) {
+                const saveData = {
+                    ...finData['daily-cash'][cashIndex],
+                    'date-start': cashDate,
+                    'date-end': tempDayData['end-next-day'] ? new Date(new Date(cashDate).setDate(cashDate.getDate() + 1)) : cashDate,
+                    'time-start': tempDayData['time-start'],
+                    'time-end': tempDayData['time-end'],
+                };
+                let dailyCashArr = [...finData['daily-cash']];
+                dailyCashArr.splice(cashIndex, 1, saveData);
+                setRootData({...finData, 'daily-cash': dailyCashArr, 'day-settings': {...tempDayData}}, 'financial');
+            } else {
+                setRootData({...finData, 'day-settings': {...tempDayData}}, 'financial');
+            }
             setChangeFlag(false);
         } else {
             const errorElem = document.createElement('span');
@@ -273,6 +294,10 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         //reset temp day data
         setTempDayData({...finData['day-settings']});
         setChangeFlag(false);
+    };
+
+    const helpClick = () => {
+        setHelpFlag(!helpFlag);
     };
 
     return (
@@ -351,10 +376,39 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
                 </div>
             </div>
             <div className='nav-footer'>
+                <span className='foot-link link' onClick={helpClick}>Page Help</span>
                 <Link to='/tom-pos/orders' className='foot-link'>Orders</Link>
                 <Link to='/tom-pos/backend' className='foot-link'>Back End</Link>
                 <button type='button' onClick={signOutAcc}>Sign Out</button>
             </div>
+            {helpFlag &&
+                <HelpPopUp helpClick={helpClick}>
+                    <span id='help-title'>Daily Cash Up Page</span>
+                    <p className='help-para'>This page is used to help with daily cash up of the till. It will summarise, for the selected date, the net sales,
+                         the expected cash and card takings, any tips taken, any discounts given and the VAT due for the sales.</p>
+                    <p className='help-para bold600'>To cash up:</p>
+                    <p className='help-para'>1. Select the day you wish to cash up by clicking the date box labelled "Cash Up Date". The cash up date should be
+                         the date at the time of closing (indicated under "Day Settings" and "End Time").</p>
+                    <p className='help-para'>2. Once the cash and card takings are counted, input the amount of cash taken into the "Actual Cash Takings" box and
+                         the amount of card taken into the "Actual Card Takings" box.</p>
+                    <p className='help-para'>3. Any differences, whether up (surplus) or down (deficit) will be shown next to "Cash Taking Difference" and "Card Taking Difference".
+                         If there are any difference, the amount will be shown and you can check you cash and card takings again if required.</p>
+                    <p className='help-para'>4. To submit the cash up values, click "Submit". Once a cash up day is submitted, it will be uneditable unless it is re-opened.</p>
+                    <p className='help-para bold600'>To re-open a cash up day:</p>
+                    <p className='help-para'>1. Click "RE-OPEN". The "RE-OPEN" button will only show if the day has already been submitted and is closed.</p>
+                    <p className='help-para'>2. Re-opened days must be re-submitted as per the cash up instrucrtions or they remain opened.</p>
+                    <p className='help-para bold600'>To change the day Start Time (business open) and End Time (business close):</p>
+                    <p className='help-para'>1. Select the desired Start/opening Time of the business. This should be the time that the till can start accepting sales.</p>
+                    <p className='help-para'>2. Select the desired End/closing Time of the business. This should be the time that the till stops accept sales. The End Time can
+                         be on the next date i.e. go past midnight.</p>
+                    <p className='help-para'>3. To make the End Time the next day from the Start Time, click the "End Next Day" check box, so that it is checked. If this is enabled,
+                         the End Time cannot be more than 24 hours from the Start Time.</p>
+                    <p className='help-para'>4. To remove the End Next Day option and have the Start Time and End Time be on the same day, click the "End Next Day" check box,
+                         so that it is un-checked.</p>
+                    <p className='help-para'>5. Click "Save" to save the changes or "Discard" to discard all changes made. Changes will only be made for un-submitted (open) days.
+                         Submitted (closed) days will retain their Day Settings from their submission.</p>
+                </HelpPopUp>
+            }
         </div>
     );
 };
