@@ -40,6 +40,10 @@
     text-align: justify;
 }
 
+.help-para > .material-symbols-outlined {
+    font-size: 16px;
+}
+
 .help-btn {
     height: 35px;
     width: 100px;

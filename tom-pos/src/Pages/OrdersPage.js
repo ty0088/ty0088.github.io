@@ -90,7 +90,7 @@ const OrdersPage = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
             </div>
             {helpFlag &&
                 <HelpPopUp helpClick={helpClick}>
-                    <span id='help-title'>Orders Help Page</span>
+                    <span id='help-title'>Orders Page</span>
                     <p className='help-para'>This page allows you to navigate to new, current and old orders.</p>
                     <p className='help-para'><b>CURRENT Order:</b> This will be active only if there is a current order. Clicking this will bring up the current order in the POS Page. The current order is the last selected OPEN order, CLOSED orders cannot be current.</p>
                     <p className='help-para'><b>NEW Order:</b> This will start a new order, make it the current order and take you to the new order in the POS Page.</p>

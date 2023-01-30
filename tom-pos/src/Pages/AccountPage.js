@@ -328,7 +328,6 @@ const AccountPage = ({setRootData, userData}) => {
                          following the on screen instructions.</p>
                     <p className='help-para'>You can permanently delete this account and all associated data by clicking "Delete Account" and following the 
                          the onscreen instructions. This is permanent and all associated data will be lost and cannot be retrieved once deleted.</p>
-                    <p className='help-para'></p>
                 </HelpPopUp>
             }
         </div>

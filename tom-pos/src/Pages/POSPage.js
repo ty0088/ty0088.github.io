@@ -1,15 +1,15 @@
 import '../Styles/POSPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { signOutAcc } from '../Util/firebaseAuth';
 import formatCurrency from '../Util/formatCurrency';
 import POSMenu from '../Components/POSMenu';
 import OrderTab from '../Components/OrderTab';
 import AddItemPopUp from '../Components/AddItemPopUp';
+import HelpPopUp from '../Components/HelpPopUp';
 
 const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCurrOrder, userData}) => {
-    const { orderNo } = useParams();
     const [addFlag, setAddFlag] = useState(false);
+    const [helpFlag, setHelpFlag] = useState(false);
     const [orderObj, setOrderObj] = useState({});
     const [newItemID, setNewItemID] = useState('');
     const [lastItemIndex, setLastItemIndex] = useState('');
@@ -27,6 +27,7 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
         'print-kitchen': false,
         'print-customer': false
     };
+    const { orderNo } = useParams();
 
     useEffect(() => {
         if (ordersData) {
@@ -137,6 +138,10 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
         setRootData(deleteData, 'orders');
     };
 
+    const helpClick = () => {
+        setHelpFlag(!helpFlag);
+    };
+
     return (
         <div id='pos-container'>
             {addFlag &&
@@ -147,7 +152,8 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
                 <Link to='/tom-pos/orders' className='pos-nav-link'>ORDERS</Link>
                 <Link to='/tom-pos/open-orders' className='pos-nav-link'>OPEN Orders</Link>
                 <Link to='/tom-pos/backend' className='pos-nav-link'>Back End</Link>
-                <button type='button' onClick={signOutAcc}>Sign Out</button>
+                <span className='pos-nav-link link' onClick={helpClick}>Page Help</span>
+                
             </div>
             {orderObj['status'] === 'OPEN' &&
                 <POSMenu menusData={menusData} itemsData={itemsData} addClick={addClick} />
@@ -170,6 +176,42 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
             <OrderTab orderNo={orderNo} orderObj={orderObj} ordersData={ordersData} itemsData={itemsData} deleteItem={deleteItem}
                 setRootData={setRootData} lastItemIndex={lastItemIndex} setLastItemIndex={setLastItemIndex} getAddPrice={getAddPrice}
                 setCurrOrder={setCurrOrder} userData={userData} />
+            {helpFlag &&
+                <HelpPopUp helpClick={helpClick}>
+                    <span id='help-title'>POS Page</span>
+                    <p className='help-para'>This is the main POS terminal which allows you add/edit items to an order.</p>
+                    <p className='help-para bold600'>To add/Edit an item:</p>
+                    <p className='help-para'>1. Navigate to the desired item through the sub-menus (if any) and click on the item. Sub menu buttons are
+                         highlighted in blue and item buttons are highlighted in green.</p>
+                    <p className='help-para'>2. If the item has any options or modifications, a pop up will appear allowing you to select any mod or option.
+                         A note may also be added. Click "Add Item" to add the item. If the item has no mods or options, the item will be immediately added to
+                         the order when it is clicked.</p>
+                    <p className='help-para'>3. Existing items in the order can be edited/deleted by clicking on the edit icon <span className="material-symbols-outlined">edit_square</span> on the item line in the Order Tab.
+                         This will prompt a pop up which allows the editing of the quantity, mods (if any), options (if any) and notes. The item can also be deleted
+                         from the order by clicking "Delete Item" within the pop up. Click "Save" to save any changes or "Cancel" to discard changes and go back
+                         to the POS terminal.</p>
+                    <p className='help-para bold600'>To edit order properties:</p>
+                    <p className='help-para'>1. Click "EDIT" at the top of the Order Tab. This will prompt a pop up allowing you to change the name of the order, add
+                         a note to the order and set a discount rate.</p>
+                    <p className='help-para'>2. Make any desired changes and click "Save" to save changes or "Cancel" to discard any changes made. If you want a custom discount rate, click 
+                         "Custom" and then input the desired rate into the "custom rate" input box.</p>
+                    <p className='help-para'>3. To delete this order click "Delete" and confirm deletion.</p>
+                    <p className='help-para bold600'>To settle and pay an order:</p>
+                    <p className='help-para'>1. Click "PAY", which will prompt a pop up.</p>
+                    <p className='help-para'>2. Under "Cash Tendered", click the amount that has been tendered or click "Enter" to enter in a custom amount.</p>
+                    <p className='help-para'>3. Under "Card Tendered", click the amount the set amount or click "Enter" to enter in a custom amount.</p>
+                    <p className='help-para'>4. Discounts and Tips can also be entered by clicking their respective % buttons or click "Enter" to enter in a custom amount.
+                         The custom tip amount can be entered as a % or set value (£).</p>
+                    <p className='help-para'>5. Once the "Amount Due" equals zero (£0.00), click "PAY". A kitchen receipt will print if any of the items in the order require
+                         a kitchen receipt.</p>
+                    <p className='help-para'>6. The final pop up will show you any change due to the customer and allow you to start a new order, go to the Orders Page or print a customer receipt.</p>
+                    <p className='help-para bold600'>To manually print an order receipt:</p>
+                    <p className='help-para'>1. Click "PRINT" and select the receipts required. Then click "Print" and following your system print instructions. Click 
+                         "Cancel" if you do not wish to proceed with printing.</p>
+                    <p className='help-para'>Note that when the order is paid for and any outstanding amount is settled, the order will automatically print a kitchen receipt
+                         if an item which requires a kitchen receipt is present in the order.</p>
+                </HelpPopUp>
+            }
         </div>
     );
 };

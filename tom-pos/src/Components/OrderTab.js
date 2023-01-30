@@ -217,7 +217,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
             <div id='order-head'>
                 <span>Order {orderNo}</span>
                 <span>{orderObj['order-name']}</span>
-                <span className="material-symbols-outlined link" onClick={editClick}>edit</span>
+                <span className="link" onClick={editClick}>EDIT</span>
             </div>
             <div id='order-tab-rows'>
                 {orderItems.length > 0 &&
