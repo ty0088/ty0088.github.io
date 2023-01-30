@@ -2,10 +2,9 @@
 
 A repository for my projects :)
 
-My first try at a HTML/JS Project
+My Projects
 
-https://ty0088.github.io/catan_map_generator
-
+https://ty0088.github.io/tom-pos/
 
 
 The Odin Project
@@ -28,9 +27,7 @@ https://ty0088.github.io/tic_tac_toe/
 
 https://ty0088.github.io/restaurant_page/
 
-https://ty0088.github.io/todo/
-
-(https://top-to-do-d45c1.web.app/) for Firebase BaaS version
+https://ty0088.github.io/todo/  (https://top-to-do-d45c1.web.app/) for Firebase BaaS version
 
 https://ty0088.github.io/image_slider/
 
@@ -45,3 +42,7 @@ https://ty0088.github.io/cv_app_func/
 https://ty0088.github.io/memory_game/
 
 https://ty0088.github.io/shopping_cart/
+
+
+My first try at a HTML/JS Project
+https://ty0088.github.io/catan_map_generator
