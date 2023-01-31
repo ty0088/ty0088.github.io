@@ -1,3 +1,4 @@
+//checks whether both email inputs are equal, returning true or false and prompting or removing error classes and text
 const emailCheck = () => {
     if (document.getElementById('email').value !==
         document.getElementById('email-con').value && document.getElementById('email-con').value !== '') {
@@ -13,6 +14,7 @@ const emailCheck = () => {
     }
 };
 
+//checks whether both password inputs are equal, returning true or false and prompting or removing error classes and text
 const passCheck = () => {
     if (document.getElementById('password').value !==
         document.getElementById('pass-con').value && document.getElementById('pass-con').value !== '') {
@@ -28,6 +30,7 @@ const passCheck = () => {
     }
 };
 
+//setting custom valiation for form inputs
 const validateForm = (e) => {
     e.preventDefault();
     const form = document.getElementById('sign-up-form');
