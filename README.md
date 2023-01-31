@@ -2,6 +2,8 @@
 
 A repository for my projects :)
 
+All code available for web apps below - https://github.com/ty0088/ty0088.github.io
+
 My Projects
 
 https://ty0088.github.io/tom-pos/
