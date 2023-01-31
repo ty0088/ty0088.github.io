@@ -4,6 +4,7 @@ import fireApp from './firebaseApp';
 
 const db = getFirestore(fireApp);
 
+//add new user, create user collection and set up user DB documents
 const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     const user = getAuth().currentUser;
     const userData = {
@@ -28,9 +29,8 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
         'tax-ref': '',
         'receipt-message': 'Thank you'
     };
-
     try {
-        await setDoc(doc(db, user.uid, "financial"), {'daily-cash': [], 'day-settings': {'time-start': '00:00', 'time-end': '23:59', 'end-next-day': false}});
+        await setDoc(doc(db, user.uid, "financial"), {'daily-cash': [], 'day-settings': {'time-start': '00:00', 'time-end': '23:59', 'end-next-day': false}}); //default start and end time
         await setDoc(doc(db, user.uid, "items"), {});
         await setDoc(doc(db, user.uid, "orders"), {});
         await setDoc(doc(db, user.uid, "sub-menus"), {});
@@ -41,6 +41,7 @@ const addUser = async (firstName, lastName, compName, email, phoneNo) => {
     }
 };
 
+//Add or overwrite a db document
 const setDB = async (obj, dbDoc) => {
     const user = getAuth().currentUser;
     try {
@@ -50,6 +51,7 @@ const setDB = async (obj, dbDoc) => {
     }
 };
 
+//get all documents from user collection
 const getDBCol = async () => {
     const user = getAuth().currentUser;
     try {
@@ -60,6 +62,7 @@ const getDBCol = async () => {
     }
 };
 
+//delete user collection and all user documents 
 const deleteAllDocs = async () => {
     const user = getAuth().currentUser;
     try {
