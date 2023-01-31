@@ -21,11 +21,12 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
     const [cashIndex, setCashIndex] = useState(-1);
     const navigate = useNavigate();
 
-    //check if cash up day has already been closed
+    //check whether the current selected date already has cash up data and set up the required values
     useEffect(() => {
         setCashUpState(cashDate);
     }, [ordersData, cashDate, finData]);
 
+    //on update of cash up values, calculate the cash difference and card difference
     useEffect(() => {
         setCashDiff(cashTake - cashUpVals['exCashTake']);
         setCardDiff(cardTake - cashUpVals['exCardTake']);
@@ -81,17 +82,23 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         }
     }, [cashDiff, cardDiff]);
     
-    //filter ordersData by day settings
+    //filter orders by selected day settings
     const getfilterOrderNos = () => {
-        const daySettings = finData['day-settings'];
+        const daySettings = {...tempDayData};
         let startDate = new Date(cashDate);
         startDate.setHours(daySettings['time-start'].substr(0,2), daySettings['time-start'].substr(3,2), 0, 0);
         let endDate = new Date(cashDate);
+        //add extra day to date if end time is past midnight 
+        if (daySettings['end-next-day']) {
+            endDate.setDate(endDate.getDate() + 1);
+        }
         endDate.setHours(daySettings['time-end'].substr(0,2), daySettings['time-end'].substr(3,2), 0, 0);
         const filterNos = Object.keys(ordersData).filter(orderNo => {
+            console.log(orderNo);
             const dateData = ordersData[orderNo]['date-closed'];
-            //convert order close date to correct format
+            //convert order close date to correct format, if no closed date set date to 0
             const dateClosed = dateData === '' ? new Date(0) : dateData instanceof Date ? dateData : dateData.toDate();
+            console.log(dateClosed);
             return dateClosed.getTime() >= startDate.getTime() && dateClosed.getTime() <= endDate.getTime();
         });
         return filterNos.sort();
@@ -214,7 +221,7 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
 
     //re-opens a closed cash up, re-calc values
     const reOpenCashUp = () => {
-        calcCashUpVals()
+        calcCashUpVals();
         setClosedFlag(false);
     };
 
@@ -384,8 +391,8 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
                     <p className='help-para'>This page is used to help with daily cash up of the till. It will summarise, for the selected date, the net sales,
                          the expected cash and card takings, any tips taken, any discounts given and the VAT due for the sales.</p>
                     <p className='help-para bold600'>To cash up:</p>
-                    <p className='help-para'>1. Select the day you wish to cash up by clicking the date box labelled "Cash Up Date". The cash up date should be
-                         the date at the time of opening (indicated under "Day Settings" and "Start Time").</p>
+                    <p className='help-para'>1. Select the day you wish to cash up by clicking the date box labelled "Cash Up Date". This should be the day the business opens.
+                         Only orders closed on the selected date between the day Setting "Start Time" and "End Time" (can be +1 day) will be considered for cash up.</p>
                     <p className='help-para'>2. Once the cash and card takings are counted, input the amount of cash taken into the "Actual Cash Takings" box and
                          the amount of card taken into the "Actual Card Takings" box.</p>
                     <p className='help-para'>3. Any differences, whether up (surplus) or down (deficit) will be shown next to "Cash Taking Difference" and "Card Taking Difference".
