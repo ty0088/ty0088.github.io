@@ -10,9 +10,11 @@ My Projects
 
 - A web based POS terminal for the hospitality industry. https://ty0088.github.io/tom-pos/
 
+- My first try at a HTML/JS Project using just google searches to code. https://ty0088.github.io/catan_map_generator
 
 
-The Odin Project
+
+The Odin Project Projects
 
 https://ty0088.github.io/landing_page/
 
@@ -49,8 +51,3 @@ https://ty0088.github.io/cv_app_func/
 https://ty0088.github.io/memory_game/
 
 https://ty0088.github.io/shopping_cart/
-
-
-My first try at a HTML/JS Project
-
-https://ty0088.github.io/catan_map_generator
