@@ -4,9 +4,15 @@ A repository for my projects :)
 
 All code available for web apps below - https://github.com/ty0088/ty0088.github.io
 
+
+
 My Projects
 
+
 https://ty0088.github.io/tom-pos/
+
+- A web based POS terminal for the hospitality industry.
+
 
 
 The Odin Project
@@ -29,7 +35,9 @@ https://ty0088.github.io/tic_tac_toe/
 
 https://ty0088.github.io/restaurant_page/
 
-https://ty0088.github.io/todo/  (https://top-to-do-d45c1.web.app/) for Firebase BaaS version
+https://ty0088.github.io/todo/
+
+(https://top-to-do-d45c1.web.app/) for Firebase BaaS version
 
 https://ty0088.github.io/image_slider/
 
@@ -47,4 +55,5 @@ https://ty0088.github.io/shopping_cart/
 
 
 My first try at a HTML/JS Project
+
 https://ty0088.github.io/catan_map_generator
