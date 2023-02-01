@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/tom-pos/static/css/main.3b019474.css",
-    "main.js": "/tom-pos/static/js/main.fa8591ec.js",
+    "main.js": "/tom-pos/static/js/main.a8966731.js",
     "index.html": "/tom-pos/index.html",
     "main.3b019474.css.map": "/tom-pos/static/css/main.3b019474.css.map",
-    "main.fa8591ec.js.map": "/tom-pos/static/js/main.fa8591ec.js.map"
+    "main.a8966731.js.map": "/tom-pos/static/js/main.a8966731.js.map"
   },
   "entrypoints": [
     "static/css/main.3b019474.css",
-    "static/js/main.fa8591ec.js"
+    "static/js/main.a8966731.js"
   ]
 }
