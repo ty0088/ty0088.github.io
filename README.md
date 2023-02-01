@@ -7,9 +7,8 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
 My Projects
 
-https://ty0088.github.io/tom-pos/
 
-- A web based POS terminal for the hospitality industry.
+- A web based POS terminal for the hospitality industry. https://ty0088.github.io/tom-pos/
 
 
 
