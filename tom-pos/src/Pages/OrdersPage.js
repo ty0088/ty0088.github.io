@@ -31,14 +31,14 @@ const OrdersPage = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
     const [orderNos, setOrderNos] = useState();
     const navigate = useNavigate();
 
-    //initialise data whenever dataObj is changed and is not undefined
+    //set all order nos to array if orders data available
     useEffect(() => {
         if (ordersData) {
             setOrderNos(Object.keys(ordersData).sort());
         }
     }, [ordersData]);
 
-    //set current order state depending if any current order loaded
+    //if current order set, set current order flag to true to activate current order button
     useEffect(() => {
         if (!currOrder) {
             setCurrOrdFlag(false);
@@ -47,21 +47,23 @@ const OrdersPage = ({currOrder, setCurrOrder, ordersData, setRootData}) => {
         }
     }, [currOrder]);
 
-    //CURRENT Order
+    //go to POS terminal with current order
     const currOrderClick = () => {
         navigate(`/tom-pos/pos/${currOrder}`);
     };
 
-    //NEW Order
+    //create a new order
     const newOrderClick = () => {
+        //get next available order no
         const nextOrderNo = getNextOrderNo(orderNos);
         setCurrOrder(nextOrderNo);
-        //create new next newOrderObj and set state and db
+        //create new order obj, set root data then go to POS terminal with new order
         const newData = {...ordersData, [nextOrderNo]: {...newOrderObj, 'order-no': nextOrderNo}};
         setRootData(newData, 'orders');
         navigate(`/tom-pos/pos/${nextOrderNo}`);
     };
 
+    //prompt help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };

@@ -1,6 +1,7 @@
 import '../Styles/HelpPopUp.css';
 import React from 'react';
 
+//renders a help pop up
 const HelpPopUp = ({children, helpClick}) => {
 
     return (

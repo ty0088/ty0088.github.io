@@ -2,6 +2,7 @@ import '../Styles/AddItemPopUp.css';
 import React, { useState } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 
+//This renders a pop up when an item is added with available options and modifications, to allow the user to select any before adding item.
 const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) => {
     const [price, setPrice] = useState(itemData['price']);
     const [mods, setMods] = useState([]);
@@ -18,11 +19,13 @@ const AddItemPopUp = ({itemID, confirmAdd, cancelAdd, itemData, getAddPrice}) =>
         setPrice(itemData['price'] + getAddPrice(itemID, inputMods, inputOpts));
     };
 
+    //add item to root data with selected mods/options and notes
     const addSaveClick = () => {
         const inputNotes = document.getElementById('notes-input').value;
         confirmAdd(itemID, mods, opts, inputNotes);
     };
 
+    //cancel add item
     const addCancelClick = () => {
         cancelAdd();
     };

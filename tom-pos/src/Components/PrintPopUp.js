@@ -1,12 +1,15 @@
 import '../Styles/PrintPopUp.css';
 import React from 'react';
 
+//a pop up for user to select and confirm printing of receipts
 const PrintPopUp = ({setPrintFlag, confirmPrint, receipts, setReceipts}) => {
 
+    //cancel print
     const cancelClick = () => {
         setPrintFlag(false);
     };
 
+    //set receipt print states based on selected check boxes
     const checkHandler = () => {
         const kitchCheck = document.getElementById('print-kitchen-check').checked;
         const custCheck = document.getElementById('print-customer-check').checked;

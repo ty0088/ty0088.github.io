@@ -4,6 +4,7 @@ import isNumber from 'is-number';
 import ConfirmPopUp from './ConfirmPopUp';
 import updateItemVal from '../Util/updateItemVal';
 
+//A row component showing a tax band. These can be edited.
 const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, itemsData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
@@ -19,11 +20,11 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, it
 
     const editClick = () => {
         if (!editFlag) {
-            //edit
+            //on edit, set flag to true and disable all other buttons except tax row being edited
             setEditFlag(true);
             document.querySelectorAll(`#tax-form button:not([data-label='${label}'] button)`).forEach(elem => elem.disabled = true);
         } else {
-            //get and validate inputs
+            //on submit, get and validate inputs
             const newLabel = document.querySelector(`[data-input="label"]`).value.trim();
             const newRate = parseFloat(document.querySelector(`[data-input="rate"]`).value);
             if (checkInputs(newLabel, newRate)) {
@@ -63,6 +64,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, it
         return true;
     };
 
+    //create error elem and append to tax row
     const inputError = (input) => {
         clearError();
         const errInput = document.querySelector(`[data-input='${input}']`);
@@ -74,11 +76,13 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, it
         errInput.closest('.tax-row').after(errElem);
     };
 
+    //clears any error classes or text
     const clearError = () => {
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.input-error').forEach(elem => elem.classList.remove('input-error'));
     };
 
+    //cancel edit action and clear any errors
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
@@ -86,10 +90,12 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, it
         clearError();
     };
 
+    //prompt delete confirmation
     const deleteClick = () => {
         setMessageFlag(true);
     };
 
+    //confirm delete and delete root data
     const confirmDelete = () => {
         document.querySelectorAll(`#tax-form button`).forEach(elem => elem.disabled = false);
         setEditFlag(false);
@@ -98,6 +104,7 @@ const TaxRow = ({data, label, updateTaxDB, deleteTax, cancelAdd, setRootData, it
         clearError();
     };
 
+    //cancel delete on confirmation
     const cancelDelete = () => {
         setMessageFlag(false);
     };

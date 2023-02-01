@@ -4,36 +4,43 @@ import formatCurrency from '../Util/formatCurrency';
 import EditItemPopUp from './EditItemPopUp';
 import ConfirmPopUp from './ConfirmPopUp';
 
+//This component renders an item line within the order tab on the POS terminal. It will show the item qty, name, unit price and an edit item icon
 const OrderRow = ({index, status, itemObj, deleteItem, updateItem, itemsData, getAddPrice}) => {
     const [editItemFlag, setEditItemFlag] = useState(false);
     const [deleteFlag, setDeleteFlag] = useState(false);
     const [itemPrice, setItemPrice] = useState(0);
 
+    
+    //set individual item total price = (unit price + addition price) * qty
     useEffect(() => {
-        //set individual item total price = (unit price + addition price) * qty
         const totalPrice = ((itemObj['unit-price'] + itemObj['add-price']) * itemObj['qty']);
         setItemPrice(totalPrice);
     }, [itemObj])
 
+    //prompt delete item confirmation
     const deleteClick = () => {
         setEditItemFlag(false);
         setDeleteFlag(true);
     };
 
+    //on confirmation, delete item and remove pop up
     const confirmDelete = () => {
         deleteItem(index);
         setDeleteFlag(false);
     };
 
+    //on confirmation, cancel delete and remove pop up
     const cancelDelete = () => {
         setDeleteFlag(false);
         setEditItemFlag(true);
     };
 
+    //prompt edit item pop up
     const itemEditClick = () => {
         setEditItemFlag(true);
     };
 
+    //save order item values
     const saveItemClick = () => {
         //get mods, options, notes, qty inputs and calc additional price
         let inputMods = [];
@@ -44,10 +51,11 @@ const OrderRow = ({index, status, itemObj, deleteItem, updateItem, itemsData, ge
         const itemQty = parseInt(document.getElementById('edit-qty').innerText);
         const addPrice = getAddPrice(itemObj['id'], inputMods, inputOpts);
         setEditItemFlag(false);
-        //update data
+        //update item data in order data
         updateItem({...itemObj, 'add-price': addPrice, 'qty': itemQty, 'mods': inputMods, 'options': inputOpts, 'notes': inputNotes}, index);
     };
 
+    //close item edit pop up
     const cancelItemClick = () => {
         setEditItemFlag(false);
     };

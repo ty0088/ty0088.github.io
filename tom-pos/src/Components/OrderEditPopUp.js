@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConfirmPopUp from './ConfirmPopUp';
 
+//This is the pop up component to edit order details (name, notes and discount).
 const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootData, ordersData, setCurrOrder}) => {
     const [delFlag, setDelFlag] = useState(false);
     const [reOpenFlag, setReOpenFlag] = useState(false);
@@ -12,7 +13,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
     const [custDisc, setcustDisc] = useState(disc === 0 ? '' : disc === 5 ? '' : disc === 10 ? '' : disc);
     const navigate = useNavigate();
 
-    //correct discount button is selected
+    //adds selected class to the appropriate discount button to show its currently selected
     useEffect(() => {
         const discBtnSelect = () => {
             document.querySelectorAll('[data-disc]').forEach(elem => elem.classList.remove('selected'));
@@ -31,6 +32,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
         discBtnSelect();
     }, [disc, custDisc]);
 
+    //save input states to order root data
     const editSaveClick = () => {
         const saveObj = {
             ...orderObj,
@@ -42,20 +44,24 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
         setEditFlag(false);
     };
 
+    //close pop up
     const editCancelClick = () => {
         setEditFlag(false);
     };
 
+    //change order name state to input value
     const nameChange = (e) => {
         const val = e.target.value;
         setOrderName(val)
     };
 
+    //change order note state to input value
     const noteChange = (e) => {
         const val = e.target.value;
         setOrderNotes(val);
     };
 
+    //set discount rate to value clicked or if custom, focus on input
     const discClick = (e) => {
         const clickRate = parseFloat(e.target.getAttribute('data-disc'));
         //if clicking custom rate that is not set, focus on input
@@ -68,12 +74,14 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
         }
     };
 
+    //handler for custom discount rate input
     const discChange = (e) => {
         let changeRate = parseFloat(e.target.value);
-        //changeRate is required to be between 0 and 100
+        //input value is required to be between 0 and 100, otherwise be zero
         changeRate = isNaN(changeRate) ? 0 : changeRate > 100 ? 100 : changeRate < 0 ? 0 : changeRate;
         setcustDisc(changeRate);
         setDisc(changeRate);
+        //change custom button text to show custom rate
         const custElem = document.getElementById('cust-disc-btn');
         custElem.setAttribute('data-disc', changeRate);
         custElem.innerText = `${changeRate} *`;
@@ -84,9 +92,9 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
         setDelFlag(true);
     };
 
+    //on confirmation, delete order from root data and then navigate to Orders Page.
     const confirmDelete = () => {
         setDelFlag(false);
-        //delete item from data and db
         let deleteData = {...ordersData};
         delete deleteData[orderNo];
         setRootData(deleteData, 'orders');
@@ -94,14 +102,17 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
         navigate('/tom-pos/orders');
     };
 
+    //close delete confirmation pop up
     const cancelDelete = () => {
         setDelFlag(false);
     };
 
+    //prompt confirmation pop up
     const reOpenClick = () => {
         setReOpenFlag(true);
     };
 
+    //on confirmation, the status of the current order is set to open
     const confirmReOpen = () => {
         const saveObj = {
             ...orderObj,
@@ -111,6 +122,7 @@ const OrderEditPopUp = ({orderNo, orderObj, setEditFlag, updateOrder, setRootDat
         setEditFlag(false);
     }
 
+    //cancel on confirmation
     const cancelReOpen = () => {
         setReOpenFlag(false);
     }

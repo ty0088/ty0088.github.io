@@ -5,21 +5,25 @@ import MenuList from './MenuList';
 //utility bar to allow user to sort and filter items
 const ItemFilterSort = ({sortBy, setSortBy, dir, setDir, filterMenu, setFilterMenu, addItemClick, setSearchName, menusData}) => {
 
+    //change what item parameter should the list be sorted by
     const changeSortBy = (e) => {
         const sortVal = e.target.value;
         setSortBy(sortVal);
     };
 
+    //filter item by sub menu selected
     const changeFilterBy = (e) => {
         const filterMenu = e.target.value;
         setFilterMenu(filterMenu);
     };
 
+    //filter items by name from an input string
     const searchByName = (e) => {
         const str = e.target.value.trim();
         setSearchName(str);
     };
 
+    //reset sort by and filter parameters to default - sort by item name, filter by all sub menus and no search by name
     const resetFilters = () => {
         setSortBy('item-name');
         setFilterMenu('ALL');

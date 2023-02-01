@@ -18,7 +18,7 @@ const LoginPage = () => {
         });
     };
 
-    //demo account login
+    //demo account login. Account read only in firestore security rules
     const demoLogin = () => {
         signInWithEmailAndPassword(auth, '1@1.com', '123456')
         .catch((error) => {

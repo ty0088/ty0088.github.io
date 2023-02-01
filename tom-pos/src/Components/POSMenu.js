@@ -2,6 +2,7 @@ import '../Styles/POSPage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+//Renders item menu in the POS terminal. Allows the user to navigate and select items in the database
 const POSMenu = ({itemsData, menusData, addClick}) => {
     const [menuFlag, setMenuFlag] = useState(false);
     const [itemFlag, setItemFlag] = useState(false);
@@ -26,7 +27,6 @@ const POSMenu = ({itemsData, menusData, addClick}) => {
             }
             setItems(parentKey, itemsData);
         }
-    // eslint-disable-next-line
     }, []);
 
     //set sub menu to menu/nav link clicked

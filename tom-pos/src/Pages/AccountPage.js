@@ -17,6 +17,7 @@ const AccountPage = ({setRootData, userData}) => {
     const [tempUserData, setTempUserData] = useState({...userData});
     const [demoState, setDemoState] = useState(getAuth().currentUser.uid === 'ANdnbzxTWvbukWQrTWmlvmcONai1');
 
+    //set temp data state with root data
     useEffect(() => {
         setTempUserData({...userData})
     }, [userData]);
@@ -36,6 +37,7 @@ const AccountPage = ({setRootData, userData}) => {
         setTempUserData(changeData);
     };
 
+    //on save, validate inputs. If no errors prompt confirmation
     const saveClick = () => {
         document.querySelectorAll('.acc-error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.acc-error-border').forEach(elem => elem.classList.remove('acc-error-border'));
@@ -56,20 +58,24 @@ const AccountPage = ({setRootData, userData}) => {
         }
     };
 
+    //on confirmation, save data
     const confirmSave = () => {
         setChangeFlag(false);
         setConfirmFlag(false);
         setRootData({...tempUserData}, 'user-data');
     };
 
+    //cancel save on confirmation
     const cancelSave = () => {
         setConfirmFlag(false);
     };
 
+    //on discard, prompt confirmation
     const discardClick = () => {
         setDiscardFlag(true);
     };
 
+    //on confirmation of discard, clear errors and reset temp data with root data
     const confirmDiscard = () => {
         document.querySelectorAll('.acc-error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.acc-error-border').forEach(elem => elem.classList.remove('acc-error-border'));
@@ -78,39 +84,47 @@ const AccountPage = ({setRootData, userData}) => {
         setTempUserData({...userData});
     };
 
+    //cancel discard on confirmation
     const cancelDiscard = () => {
         setDiscardFlag(false);
     };
 
+    //prompt email change pop up
     const changeEmailClick = () => {
         setChangeType('email')
         setReAuthFlag(true);
     };
 
+    //on confirm, update user email account address
     const confirmEmailChange = (newEmail) => {
         updateUserEmail(newEmail);
         setReAuthFlag(false);
     };
 
+    //prompt password change pop up
     const changePassClick = () => {
         setChangeType('password');
         setReAuthFlag(true);
     };
 
+    //on confirm, update user account password
     const confirmPassChange = (newPass) => {
         updateUserPassword(newPass);
         setReAuthFlag(false);
     };
 
+    //prompt delete account pop up
     const deleteAccClick = () => {
         setChangeType('delete');
         setReAuthFlag(true);
     };
 
+    //on confirmation, delete user account
     const confirmAccDelete = () => {
         deleteUserAcc();
     };
 
+    //cancel re-authorisation for account changes
     const cancelReAuth = () => {
         setReAuthFlag(false);
     };
@@ -193,6 +207,7 @@ const AccountPage = ({setRootData, userData}) => {
         return errorInputs;
     };
 
+    //prompt help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };

@@ -2,8 +2,8 @@ import '../Styles/ReceiptTemplate.css';
 import React from 'react';
 import formatCurrency from '../Util/formatCurrency';
 
+//returns a kitchen or customer receipt based on order data
 const ReceiptTemplate = ({receiptType, orderObj, orderItems, itemsData, userData}) => {
-    
     if (receiptType === 'kitchen') {
         return (
             <div id='receipt-container'>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOutAcc } from '../Util/firebaseAuth';
 import { v4 as uuidv4 } from 'uuid';
 import ItemRow from '../Components/ItemRow';
-import MenuFilterSort from '../Components/MenuFilterSort';
+import ItemFilterSort from '../Components/ItemFilterSort';
 import HelpPopUp from '../Components/HelpPopUp';
 
 const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
@@ -34,10 +34,9 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
     //call setSortFilter anytime a sort/filter/search key is changed
     useEffect(() => {
         setSortFilter(tempData);
-    // eslint-disable-next-line
     }, [sortBy, dir, filterMenu, searchName]);
 
-    //update item names for restricted names list and set data for itemsData
+    //update item names for restricted names list and set working data with itemsData
     useEffect(() => {
         const getItemNames = (data) => {
             let nameArr = [];
@@ -48,13 +47,13 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         setData(itemsData);
     }, [itemsData]);
 
-    //set working states with new data
+    //set working data
     const setData = (data) => {
         setTempData({...data});
         setSortFilter(data);
     };
 
-    //if name and sub menu = '' then 
+    //sorts items by item parameter and value
     const sortItemsBy = (data, key, dir) => {
         const itemIDs = Object.keys(data);
         if (itemIDs.length > 1 ) {
@@ -100,7 +99,7 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         return itemIDs;
     };
 
-    //sort data and filter for render
+    //get sorted items and filter by sub menu and then optionally by a item name
     const setSortFilter = (dataObj) => {
         const sortedIDs = sortItemsBy(dataObj, sortBy, dir);
         const filterIDs = filterMenu !== 'ALL' ? sortedIDs.filter(itemID => dataObj[itemID]['sub-menu'] === filterMenu) : [...sortedIDs];
@@ -108,6 +107,7 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         setSortedItems(searchIDs);
     };
 
+    //deletes item from root data
     const deleteItem = (itemID) => {
         let deleteData = {...tempData};
         delete deleteData[itemID];
@@ -115,6 +115,7 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         setRootData(deleteData, 'items');
     };
 
+    //adds new item obj with a unique id to the database
     const addItemClick = () => {
         const itemID = uuidv4();
         const menu = filterMenu === 'ALL' ? '' : filterMenu;
@@ -125,10 +126,12 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         setSortFilter(addData);
     };
 
+    //cancel add item and revert working data with root data
     const cancelAdd = () => {
         setData({...itemsData});
     };
 
+    //update root data item with new item data
     const changeItem = (item) => {
         const itemID = item.itemID;
         const changeData = {...tempData, [itemID]: item};
@@ -136,6 +139,7 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
         setRootData(changeData, 'items');
     };
 
+    //prompt help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };
@@ -145,7 +149,7 @@ const ItemManagePage = ({itemsData, taxData, menusData, setRootData}) => {
             <div id='item-form'>
                 <div id='item-top-bar'>
                     <h1>Item Management</h1>
-                    <MenuFilterSort sortBy={sortBy} setSortBy={setSortBy} dir={dir} setDir={setDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
+                    <ItemFilterSort sortBy={sortBy} setSortBy={setSortBy} dir={dir} setDir={setDir} filterMenu={filterMenu} setFilterMenu={setFilterMenu}
                         addItemClick={addItemClick} setSearchName={setSearchName} menusData={menusData} />
                 </div>
                 <div id='item-header'>

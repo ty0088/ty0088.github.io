@@ -1,5 +1,5 @@
 import React from 'react';
-
+//drop down list of available sub menus
 const MenuList = ({dfMenu, handleChange, allOption, menusData}) => {
     if (Object.keys(menusData).length > 0) {
         let menuArr = [];

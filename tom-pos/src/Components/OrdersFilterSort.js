@@ -1,8 +1,10 @@
 import '../Styles/OrderListPage.css';
 import React from 'react';
 
+//a utility bar for the Order List Page which allows the user to sort and filter the orders
 const OrderFilterSort = ({sortBy, setSortBy, dir, setDir, setFilterDate, setDateType}) => {
 
+    //reset filter settings to default of sorted by date created and no filter
     const resetFilters = () => {
         setSortBy('date-created');
         setFilterDate('');
@@ -13,16 +15,20 @@ const OrderFilterSort = ({sortBy, setSortBy, dir, setDir, setFilterDate, setDate
         document.getElementById('order-filter-date').value = '';
     }
 
+    //change what to sort by
     const changeSortBy = (e) => {
         const sortVal = e.target.value;
         setSortBy(sortVal);
     };
 
+
+    //change what date type to filter by
     const changeDateType = (e) => {
         const typeVal = e.target.value; 
         setDateType(typeVal);
     }
 
+    //change what date to filter by
     const changeDate = (e) => {
         const date = e.target.value;
         setFilterDate(date)

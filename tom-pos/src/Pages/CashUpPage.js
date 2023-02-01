@@ -82,7 +82,7 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         }
     }, [cashDiff, cardDiff]);
     
-    //filter orders by selected day settings
+    //filter orders by selected date and day settings
     const getfilterOrderNos = () => {
         const daySettings = {...tempDayData};
         let startDate = new Date(cashDate);
@@ -167,28 +167,30 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         setCashDate(inputDate);
     };
 
-    //cancelClick
+    //cancel cash up, takes user to backend page
     const cancelClick = () => {
         navigate('/tom-pos/backend');
     };
 
-    //submit 
+    //on submit check if there is a cash or card diff 
     const submitClick = () => {
-        //check if there is a card diff and/or cash diff
         if (cashDiff !== 0 || cardDiff !== 0) {
+            //if diff, then user should confirm submission of cash up
             setConfirmFlag(true);
         } else {
+            //if no diff, submit data and go to backend page
             submitData();
             navigate('/tom-pos/backend');
         }
-        //if diff, confirm to user if they wish to cash up with diff
     };
 
+    //on confirm, cash up data is submitted and user sent to backend page
     const confirmClick = () => {
         submitData();
         navigate('/tom-pos/backend');
     }; 
 
+    //cancel submission at confirmation prompt
     const cancelSubClick = () => {
         setConfirmFlag(false);
     };
@@ -300,6 +302,7 @@ const CashUpPage = ({finData, ordersData, setRootData}) => {
         setChangeFlag(false);
     };
 
+    //prompt help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };

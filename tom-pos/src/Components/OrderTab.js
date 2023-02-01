@@ -9,6 +9,7 @@ import ChangePopUp from './ChangePopUp';
 import ReceiptTemplate from './ReceiptTemplate';
 import PrintPopUp from './PrintPopUp';
 
+//renders the order tab in the POS terminal. This shows the order details, items added and the summary prices 
 const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRootData, setLastItemIndex, lastItemIndex, getAddPrice, setCurrOrder, userData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [payFlag, setPayFlag] = useState(false);
@@ -28,6 +29,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
     const [preTipTotal, setPreTipTotal] = useState(0);
     const [totalAddPrice, setTotalAddPrice] = useState(0);
 
+    //update working data states with root data
     useEffect(() => {
         if (Object.keys(orderObj).length > 0) {
             setOrderItems(orderObj['items']);
@@ -86,10 +88,12 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         updateOrderPrices();
     }, [totalPrice]);
 
+    //prompt order edit pop up
     const editClick = () => {
         setEditFlag(true);
     };
 
+    //updates order's price data and saves to root
     const updateOrderPrices = () => {
         const priceData = {
             ...ordersData,
@@ -106,13 +110,13 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setRootData(priceData, 'orders');
     };
 
-    //updates order with orderNo in ordersData and DB
+    //updates order with order no in root data
     const updateOrder = (orderNo, orderObj) => {
         const updateData = {...ordersData, [orderNo]: orderObj};
         setRootData(updateData, 'orders');
     };
 
-    //update item data within order data items array
+    //updates item data within order data
     const updateItem = (itemObj, index) => {
         let itemsArr = [...ordersData[orderNo]['items']];
         setLastItemIndex(index);
@@ -121,19 +125,21 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setRootData(updateData, 'orders');
     };
 
+    //prompt pay pop up
     const payClick = () => {
         setPayFlag(true);
     };
 
+    //prompt print pop up
     const printClick = () => {
         setPrintFlag(true);
     };
 
+    //on confirmation of print, prompt the appropriate pop ups
     const confirmPrint = () => {
         //receipts state: [kitchen, customer]
         const printKitchen = receipts[0];
         const printCustomer = receipts[1];
-        
         //if printing both receipts or just kitchen receipt, call print kitchen receipt
         if ((printKitchen && printCustomer) || (printKitchen && !printCustomer)) {
             setPrintKitchFlag(true);
@@ -155,6 +161,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         return new Promise(resolve => win.onafterprint = resolve('Receipt Dialog Closed'));
     };
 
+    //wait kitchen print to fulfil promise then close receipt window. Then print customer receipt if required.
     const printKitchReceipt = async (win) => {
         await printDelay(50, win);
         //once print promise is resolved, close receipt pop up window
@@ -174,6 +181,7 @@ const OrderTab = ({orderNo, orderObj, ordersData, itemsData, deleteItem, setRoot
         setPrintFlag(false);
     };
 
+    //wait print to fulfil promise then close receipt window
     const printCustReceipt = async (win) => {
         await printDelay(50, win);
         await printPromise(win).then(message => {

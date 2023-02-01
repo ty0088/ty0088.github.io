@@ -2,6 +2,7 @@ import '../Styles/SubMenuPage.css';
 import React, { useState, useEffect } from 'react';
 import ConfirmPopUp from './ConfirmPopUp';
 
+//This compopent renders each available menu row in the Menu Management Page. 
 const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMenu}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false)
@@ -9,11 +10,10 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
 
     useEffect(() => {
         //initialise parent of sub menu
-        //if top menu then use system parent name 'Menu'
+        //if root menu then use system parent name 'Menu'
         let initParent = menuData[level][menu];
         initParent = initParent === 'Menu' ? 'N/A' : initParent;
         setParent(initParent);
-        // eslint-disable-next-line
     }, [menuData]);
 
     //if new menu being added, set edit to true
@@ -22,18 +22,18 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
             setEditFlag(true);
             document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = true);
         }
-        // eslint-disable-next-line
     }, [menu])
 
+    //edit/submit action
     const editClick = () => {
         if (editFlag) {
+            //if submit, validate new sub menu name then submit changes
             const newMenu = document.getElementById(`menu-input-${id}`).value.trim();
             const newParent = document.getElementById(`menu-list-${id}`).value;
-            //check inputs for validity
+            //check input name doesn't already exist or is restricted
             if (checkEdit(newMenu, menu)) {
                 setEditFlag(false);
                 document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = false);
-                //if valid submit changes
                 submitChange(newMenu, newParent, level, menu, parent);
                 clearError();
             } else {
@@ -41,13 +41,14 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
                 handleError();
             }
         } else {
+            //if edit, set edit flag to change to inputs
             setEditFlag(true);
             document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = true);
         }
     };
 
+    //checks new menu name doesn't already exist, blank or a system reserved string
     const checkEdit = (newMenu, menu) => {
-        //Valid if menu doesn't already exist, blank or a system reserved string
         const upperNewMenu = newMenu.toUpperCase();
         const upperMenu = menu.toUpperCase();
         let restrictedArr = ['MENU', 'N/A', 'ALL', ''];
@@ -58,6 +59,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         return true;
     };
 
+    //cancel edit
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`.menuBtn:not([data-id="${id}"] .menuBtn)`).forEach(elem => elem.disabled = false);
@@ -65,15 +67,17 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         clearError();
     };
 
+    //prompt delete confirmation
     const deleteClick = () => {
-        //pop up confirmation
         setMessageFlag(true);
     }
 
+    //on confirmation, cancel delete
     const cancelDelete= () => {
         setMessageFlag(false);
     }
 
+    //on confirmation, delete menu from root data
     const confirmDelete = () => {
         deleteMenu(menu, level);
         setMessageFlag(false);
@@ -82,6 +86,7 @@ const MenuRow = ({level, menuData, id, menu, cancelEdit, submitChange, deleteMen
         clearError();
     }
 
+    //add error class and add new error text element to errored input
     const handleError = () => {
         clearError();
         const errInput = document.getElementById(`menu-input-${id}`);

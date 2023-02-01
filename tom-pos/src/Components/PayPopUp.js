@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 import AmountInputPopUp from './AmountInputPopUp';
 
+//Pop up with order summary prices and allows user to enter the cash/card tendered, change the discount and tip and confirm pay of order
 const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, updateOrder, tipRate, preTipTotal, setPayFlag, setCurrOrder, setChangeFlag}) => {
     const [inputFlag, setInputFlag] = useState(false);
     const [amountDue, setAmountDue] = useState(totalPrice);
@@ -40,14 +41,17 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
         setCardAmount(totalPrice - cashPaid);
     }, [totalPrice, cashPaid, cardPaid]);
 
+    //sets amount of cash tendered
     const cashClick = (amount) => {
         setCashPaid(amount);
     };
 
+    //sets amount of card tendered
     const cardClick = (amount) => {
         setCardPaid(amount);
     };
 
+    //sets the discount rate and updates order data
     const discRateClick = (rate) => {
         const saveObj = {
             ...orderObj,
@@ -56,6 +60,7 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
         updateOrder(orderObj['order-no'], saveObj);
     };
 
+    //sets the tip rate and updates order data
     const tipRateClick = (rate) => {
         const saveObj = {
             ...orderObj,
@@ -64,11 +69,13 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
         updateOrder(orderObj['order-no'], saveObj);
     };
 
+    //prompts pop up allow user to enter a custom amount for different inputs
     const custInputClick = (input) => {
         setInputFlag(true);
         setCurrInput(input);
     };
 
+    //close order and update order price values if amount due equals zero otherwise highlight amount still due
     const payClick = () => {
         //close order if amount due < 0 and order has items
         if (amountDue === 0 && orderObj['items'].length > 0) {
@@ -90,6 +97,7 @@ const PayPopUp = ({orderObj, totalPrice, discRate, discAmount, tipAmount, update
         } 
     };
 
+    //close pay pop up
     const backClick = () => {
         setPayFlag(false);
     }; 

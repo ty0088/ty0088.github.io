@@ -1,13 +1,15 @@
 import '../Styles/AuthenticatePopUp.css';
 import React from 'react';
 
+//This renders a pop up allowing the user to re-authenticate their creditals to allow change of email or password
 const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirmPassChange, confirmAccDelete, reAuthUser, signOutAcc, setRootData, userData}) => {
 
+    //confirm change of email or password or deletion of account
     const saveClick = async () => {
         //remove any previous error messages/borders
         document.querySelectorAll('.auth-error-message').forEach(elem => elem.remove());
         document.querySelectorAll('.auth-error-border').forEach(elem => elem.classList.remove('auth-error-border'));
-        //validate email - regex and input1 and input2 are the same
+        //validate inputs - regex and input1 and input2 must be equal
         const input1 = document.getElementById('auth-input1').value;
         const input2 = document.getElementById('auth-input2').value;
         const errorElem = document.createElement('span');
@@ -18,6 +20,7 @@ const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirm
             const currPass = document.getElementById('auth-pass-input').value;
             const result = await reAuthUser(currPass);
             if (result) {
+                //if user reauthenticates successfully then change email/pass or delete acc
                 if (changeType === 'email') {
                     await confirmEmailChange(input1);
                     setRootData({...userData, 'account-email': input1}, 'user-data');
@@ -44,6 +47,7 @@ const AuthenticatePopUp = ({cancelClick, changeType, confirmEmailChange, confirm
         }
     };
 
+    //checks that inpu1 and input2 match. If input is email, format (a.a@a.a) is also checked by regex
     const checkInputs = (input1, input2) => {
         let errMessage = '';
         let result = false;

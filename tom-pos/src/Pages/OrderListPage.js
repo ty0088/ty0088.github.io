@@ -17,11 +17,12 @@ const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData
     const [dir, setDir] = useState(true);
     const navigate = useNavigate();
 
+    //filter and sort orders data if the sort by, filter by, date and date type states change
     useEffect(() => {
         setFilterSort(ordersData);
     }, [sortBy, dir, filterDate, dateType]);
 
-    //Sort an array of order numbers by -
+    //Sort an array of order numbers by chosen parameter
     const sortOrderNoBy = (ordersObj, sortBy, dir) => {
         let sortOrderArr = Object.keys(ordersObj);
         if (sortOrderArr.length > 1) {
@@ -40,6 +41,7 @@ const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData
         return sortOrderArr;
     };
 
+    //Filter orders by order status (open or closed) then optionally filter by date created or date closed
     const setFilterSort = (ordersObj) => {
         const sortedOrderNos =  sortOrderNoBy(ordersObj, sortBy, dir);
         //filter by status order depending on which order list (open/closed) is being viewed
@@ -64,7 +66,7 @@ const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData
         setOrderNos(dateFilteredNos);
     };
 
-    //open order in POS
+    //open selected order in POS terminal
     const openClick = (e) => {
         const orderNo = e.target.closest('[data-no]').getAttribute('data-no');
         //only set as current order if status is OPEN
@@ -81,9 +83,9 @@ const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData
         setDelOrder(orderNo);
     };
 
+    //confirm delete and delete item from data and db
     const confirmDelete = () => {
         setMessageFlag(false);
-        //delete item from data and db
         let deleteData = {...ordersData};
         delete deleteData[delOrder];
         setFilterSort(deleteData);
@@ -94,10 +96,12 @@ const OrderListPage = ({status, currOrder, setCurrOrder, ordersData, setRootData
         }
     };
 
+    //cancel delete on confirmation
     const cancelDelete = () => {
         setMessageFlag(false);
     };
 
+    //prompt help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };

@@ -8,7 +8,7 @@ import { addUser } from '../Util/firebaseDB';
 const SignUpPage = () => {
     const auth = getAuth();
 
-    //submit form, validate inputs then create firebase user and signs out
+    //submit form - validate inputs then create firebase user and signs out to allow new data to load on re-login
     const submitForm = (e) => {
         const firstName = document.getElementById('first-name').value;
         const lastName = document.getElementById('last-name').value;
@@ -17,7 +17,7 @@ const SignUpPage = () => {
         const phoneNo = document.getElementById('phone-num').value;
         const password = document.getElementById('password').value;
         
-        //validate inputs then submit to firebase
+        //validate inputs then submit to firebase or throw error if not successful
         if (validateForm(e)) {
             createUserWithEmailAndPassword(auth, email, password)
             .then( async (userCredential) => {

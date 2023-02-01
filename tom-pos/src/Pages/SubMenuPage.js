@@ -12,25 +12,28 @@ const SubMenuPage = ({menusData, itemsData, setRootData}) => {
     const [tempData, setTempData] = useState({});
     const [levels, setLevels] = useState([]);
 
+    //set temp data with root data and get all levels from root data
     useEffect(() => {
         setTempData({...menusData});
         setLevels(Object.keys(menusData).map(string => parseInt(string)));
     }, [menusData])
 
+    //adds new menu to level
     const clickNewMenu = (e) => {
         const menuLevel = e.target.parentNode.getAttribute('data-level');
         const addMenu = {...tempData, [menuLevel]: {...tempData[menuLevel], '': ''}};
         setTempData(addMenu);
     };
 
+    //cancel edit - set levels and temp data back to root data
     const cancelEdit = () => {
-        //set levels and temp data to original data if edit is cancelled
         setLevels(Object.keys(menusData).map(string => parseInt(string)));
         setTempData({...menusData});
     };
 
+    //submit changes
     const submitChange = (newMenu, newParent, level, prevMenu) => {
-        //if top level, set parent to "Menu" for db use
+        //if root level, set parent to "Menu" for db use
         newParent = newParent === 'N/A' ? 'Menu' : newParent;
         //Add new menu/parent data or edit parent value
         let editData = {...tempData, [level]: {...tempData[level], [newMenu]: newParent}};
@@ -88,6 +91,7 @@ const SubMenuPage = ({menusData, itemsData, setRootData}) => {
         }    
     };
 
+    //adds new level to menu data
     const addNewLevel = () => {
         const nextLevel = Object.keys(tempData).length;
         let addData = {...tempData, [nextLevel]: {}};
@@ -95,6 +99,7 @@ const SubMenuPage = ({menusData, itemsData, setRootData}) => {
         setLevels(Object.keys(addData).map(string => parseInt(string)));
     };
 
+    //prompt help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };

@@ -6,6 +6,7 @@ import TaxList from './TaxList';
 import ConfirmPopUp from './ConfirmPopUp';
 import formatCurrency from '../Util/formatCurrency';
 
+//This renders for each available item an item row in the Item Management page. Each row shows the item details and can be edited.
 const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, taxData, menusData}) => {
     const [editFlag, setEditFlag] = useState(false);
     const [messageFlag, setMessageFlag] = useState(false);
@@ -21,10 +22,10 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         setTempItem({...itemObj});
     }, [itemObj]);
 
+    //edit/submit action
     const editClick = () => {
         if (editFlag) {
-            //submit edit
-            //input validation
+            //submit edit - validate inputs then submit or prompt error
             const [result, input, errMessage] = checkInputs(tempItem);
             if (result) {
                 //reset flags and buttons and set changed item and update db
@@ -37,7 +38,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
                 handleError(input, errMessage);
             }
         } else {
-            //edit item
+            //edit item - change item row from read only mode to edit mode and set working data
             setEditFlag(true);
             document.querySelectorAll(`#item-form button:not([data-id='${itemObj['itemID']}'] button)`).forEach(elem => elem.disabled = true);
             document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = true);
@@ -45,17 +46,19 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         }
     }
 
+    //cancel changes - change from edit mode to read only mode
     const cancelClick = () => {
         setEditFlag(false);
         document.querySelectorAll(`#item-form button`).forEach(elem => elem.disabled = false);
         document.querySelectorAll(`select, input`).forEach(elem => elem.disabled = false);
-        //reset tempItem
+        //reset working data to root data
         setTempItem({...itemObj});
         cancelAdd();
     }
 
+    //onChange handler for inputs
     const handleChange = (e) => {
-        //get input and value of change event
+        //get input and value of onChange event
         let [input, value] = getInputValue(e);
         //clear any previous error messages
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
@@ -167,6 +170,8 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         return [result, lastInput, errMessage];
     };
 
+
+    //adds error class and error message to given input
     const handleError = (input, message) => {
         //clear any previous error messages
         document.querySelectorAll('.error-message').forEach(elem => elem.remove());
@@ -185,6 +190,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         document.querySelector(`.item-row[data-id='${itemID}']`).appendChild(errElem);
     };
 
+    //checks if name of item already exists, ignores case
     const isNameRepeat = (newName) => {
         const upperName = newName.toUpperCase();
         const nameList = itemNames.map(name => name.toUpperCase());
@@ -235,14 +241,17 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         }
     };
 
+    //prompt delete confirmation
     const deleteClick = () => {
         setMessageFlag(true);
     };
 
+    //cancel delete on confirmation
     const cancelDelete = () => {
         setMessageFlag(false);
     };
 
+    //delete confirmed, delete item from root data
     const confirmDelete = (e) => {
         const itemID = e.target.closest('[data-id]').getAttribute('data-id');
         setEditFlag(false);
@@ -252,6 +261,7 @@ const ItemRow = ({itemObj, index, deleteItem, changeItem, cancelAdd, itemNames, 
         deleteItem(itemID);
     };
 
+    //returns a yes or no span element depending on given boolean
     const YesNoSpan = ({bool}) => {
         if (bool) {
             return <span>Yes</span>;

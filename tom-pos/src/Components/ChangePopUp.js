@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import formatCurrency from '../Util/formatCurrency';
 import getNextOrderNo from '../Util/getNextOrderNo';
 
+//This renders a pop up showing the user any change due and allows user to navigate to another order and print a customer receipt
 const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChangeFlag, setPrintKitchFlag, setPrintCustFlag}) => {
     const newOrderObj = {
         'order-no': '',
@@ -43,11 +44,10 @@ const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChange
         }
     }, []);
     
-    //NEW Order
+    //creates a new order, set new root data and navigate to POS terminal with new order
     const newOrderClick = () => {
         const nextOrderNo = getNextOrderNo(orderNos);
         setCurrOrder(nextOrderNo);
-        //create new next orderObj and set state and db
         let newData = {...ordersData, [nextOrderNo]: {...newOrderObj, 'order-no': nextOrderNo}};
         setRootData(newData, 'orders');
         setChangeFlag(false);
@@ -55,10 +55,12 @@ const ChangePopUp = ({ordersData, orderObj, setCurrOrder, setRootData, setChange
         navigate(`/tom-pos/pos/${nextOrderNo}`);
     };
 
+    //navigate to Orders Page
     const orderClick = () => {
         navigate('/tom-pos/orders');
     };
 
+    //prompt customer receipt for printing
     const printCustReceipt = () => {
         setPrintCustFlag(true);
     };

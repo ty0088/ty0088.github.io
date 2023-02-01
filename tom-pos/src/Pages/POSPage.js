@@ -29,12 +29,14 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
     };
     const { orderNo } = useParams();
 
+    //if there is orders data set as temp data
     useEffect(() => {
         if (ordersData) {
             setOrderObj(ordersData[orderNo]);
         }
     }, [ordersData, orderNo]);
 
+    //add new item to order
     const addClick = (itemID) => {
         //if item has mods/options available, call pop up, else just add item
         setNewItemID(itemID);
@@ -45,15 +47,18 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
         }
     };
 
+    //confirm add item and add item to order
     const confirmAdd = (id, mods, opts, notes) => {
         setAddFlag(false);
         addItem(id, mods, opts, notes);
     };
 
+    //cancel adding item
     const cancelAdd = () => {
         setAddFlag(false);
     };
 
+    //get additional price of any selected mods or options
     const getAddPrice = (id, mods, opts) => {
         const modsSum = mods.reduce((sum, currMod) => {
             const modIndex = itemsData[id]['mods'].indexOf(currMod);
@@ -69,6 +74,7 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
     //add item to Order
     const addItem = (id, mods, opts, notes) => {
         let orderData = {};
+        //check whether item already exists or is new
         const [result, itemIndex] = isItemRepeat(id, mods, opts, notes);
         const addPrice = getAddPrice(id, mods, opts);
         if (!result) {
@@ -94,14 +100,16 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
             setLastItemIndex(itemIndex);
         }
         setOrderObj(orderData);
+        //set root data
         const addData = {...ordersData, [orderNo]: orderData};
         setRootData(addData, 'orders');
     };
 
+    //checks whether added item already exists in the order or is new
     const isItemRepeat= (id, mods, opts, notes) => {
         const existingItems = [...orderObj['items']];
         let result = false;
-        let index = 0;
+        let index = -1;
         //For each existing item check if IDs, mods, options and notes all match. If all matches, return true and index of matching item
         result = existingItems.some((item, itemIndex) => {
             if (item['id'] === id) {
@@ -138,6 +146,7 @@ const POSPage = ({ordersData, itemsData, menusData, taxData, setRootData, setCur
         setRootData(deleteData, 'orders');
     };
 
+    //prompts help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };

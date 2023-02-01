@@ -2,6 +2,7 @@ import '../Styles/EditItemPopUp.css';
 import React, { useState, useEffect } from 'react';
 import formatCurrency from '../Util/formatCurrency';
 
+//This renders a pop up to allow user to edit/delete an item that has been added to an order
 const EditItemPopUp = ({orderItemObj, itemData, deleteClick, saveItemClick, cancelItemClick, getAddPrice}) => {
     const [qty, setQty] = useState(orderItemObj['qty']);
     const [mods, setMods] = useState(orderItemObj['mods']);
@@ -25,10 +26,12 @@ const EditItemPopUp = ({orderItemObj, itemData, deleteClick, saveItemClick, canc
         setOpts(inputOpts);
     };
 
+    //add 1 to current item qty
     const addQty = () => {
         setQty(qty + 1);
     };
 
+    //subtracts 1 from item qty with minimum qty being 1. User needs click delete button to remove item
     const minusQty = () => {
         const minQty = qty - 1 < 1 ? 1 : qty - 1;
         setQty(minQty);

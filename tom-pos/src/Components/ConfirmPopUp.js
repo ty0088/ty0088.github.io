@@ -1,6 +1,7 @@
 import '../Styles/ConfirmPopUp.css';
 import React from 'react';
 
+//This renders a pop up so that a user can confirm or cancel an action
 const ConfirmPopUp = ({name, cancelClick, confirmClick, message1, message2}) => {
     return (
         <div id='confirm-popup-container'>

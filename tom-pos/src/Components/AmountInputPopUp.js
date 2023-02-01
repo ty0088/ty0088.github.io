@@ -1,10 +1,12 @@
 import '../Styles/AmountInputPopUp.css';
 import React, { useState } from 'react';
 
+//This renders a pop up allowing the user to input a custom value for cash/card/discount/tip on the Pay Pop Up
 const AmountInputPopUp = ({currInput, setInputFlag, setCashPaid, setCardPaid, discRateClick, tipRateClick, preTipTotal}) => {
     const [amountVal, setAmountVal] = useState(0);
     const [rateVal, setRateVal] = useState(0);
 
+    //set appropriate state with input value
     const saveClick = () => {
         if (currInput === 'cash') {
             setCashPaid(amountVal);
@@ -19,10 +21,12 @@ const AmountInputPopUp = ({currInput, setInputFlag, setCashPaid, setCardPaid, di
         setInputFlag(false);
     };
 
+    //close pop up
     const cancelClick = () => {
         setInputFlag(false);
     };
 
+    //onChange handler for inputs which sets and calculates amount/rate
     const handleChange = (e) => {
         let amountVal = 0;
         let rateVal = 0;

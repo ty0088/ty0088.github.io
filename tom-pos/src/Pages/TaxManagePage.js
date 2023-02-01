@@ -10,15 +10,18 @@ const TaxManagePage = ({taxData, itemsData, setRootData}) => {
     const [helpFlag, setHelpFlag] = useState(false);
     const [tempData, setTempData] = useState({});
 
+    //copy tax data as temp data
     useEffect(() => {
         setTempData({...taxData});
     }, [taxData])
 
+    //updates root tax data
     const updateTaxDB = (taxObj) => {
         setTempData(taxObj);
         setRootData(taxObj, 'tax-bands'); 
     };
 
+    //deletes tax band from root data and removes tax band from any associated items
     const deleteTax = (label) => {
         let deleteData = {...tempData};
         delete deleteData[label];
@@ -27,15 +30,18 @@ const TaxManagePage = ({taxData, itemsData, setRootData}) => {
         updateItemVal([[label]], '', 'tax-band', setRootData, itemsData);
     };
 
+    //add a new tax band to temp data
     const addTaxClick = () => {
         const addData = {...tempData, '': 0};
         setTempData(addData);
     };
 
+    //cancerl adding new tax band, revert all data to root data
     const cancelAdd = () => {
         setTempData({...taxData});
     };
 
+    //prompt help page
     const helpClick = () => {
         setHelpFlag(!helpFlag);
     };

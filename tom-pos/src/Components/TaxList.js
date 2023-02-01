@@ -1,5 +1,6 @@
 import React from 'react';
 
+//return a drop down list of tax bands or empty list
 const TaxList = ({itemID, taxBand, handleChange, taxData}) => {
     if (Object.keys(taxData).length > 0) {
         return (
