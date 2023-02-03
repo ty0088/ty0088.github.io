@@ -7,11 +7,9 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
 My Projects
 
+1. A web based POS terminal for the hospitality industry (uses Firebase) https://ty0088.github.io/tom-pos/
 
-- A web based POS terminal for the hospitality industry. https://ty0088.github.io/tom-pos/
-
-- My first try at a HTML/JS Project using just google searches to code. https://ty0088.github.io/catan_map_generator
-
+2. My first try at a HTML/JS Project using just google searches to code, prior to TOP. https://ty0088.github.io/catan_map_generator
 
 
 The Odin Project Projects
