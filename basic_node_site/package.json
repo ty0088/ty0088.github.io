@@ -1,0 +1,14 @@
+{
+  "name": "basic_node_site",
+  "version": "2.0.0",
+  "description": "Basic node site using express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ty0088",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
