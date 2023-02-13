@@ -52,4 +52,4 @@ https://ty0088.github.io/memory_game/
 
 https://ty0088.github.io/shopping_cart/
 
-https://basic-node-site.ty0088.repl.co/  (This is a basic website using node.js)
+https://basic-node-site.ty0088.repl.co/  (This is a basic website using the Express framework (node.js))
