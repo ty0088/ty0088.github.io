@@ -17,6 +17,7 @@ My Projects
 
 The Odin Project Projects
 
+https://mini-message-board.ty0088.repl.co/
 
 https://ty0088.github.io/todo/ OR https://top-to-do-d45c1.web.app/ for Firebase BaaS version
 
