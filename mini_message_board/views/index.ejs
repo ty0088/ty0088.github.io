@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <h2>Messages</h3>
+    <h4><a href="/new">New Message</a></h4>
+    <% messages.forEach(function(message){ %>
+      <div class="message-container">
+        <div class="message-info-bar">
+          <span>User: <%= message.user %></span>
+          <span>Date added: <%= message.added.toLocaleString('en-GB', { timeZone: 'UTC' }) %></span>
+        </div>
+        <p class="message-text"><%= message.text %></p>
+      </div>
+    <% }); %>
+  </body>
+</html>
