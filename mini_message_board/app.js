@@ -19,6 +19,7 @@ async function main() {
 const indexRouter = require('./routes/index');
 
 const app = express();
+const port = process.env.PORT || 8080;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,6 +47,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
 });
 
 module.exports = app;
