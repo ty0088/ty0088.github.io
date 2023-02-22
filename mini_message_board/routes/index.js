@@ -30,9 +30,4 @@ router.post('/new', function(req, res, next) {
   res.redirect('/');
 });
 
-// 404 Handler
-router.get('*', function(req, res){
-  res.status(404).render('error');
-});
-
 module.exports = router;
