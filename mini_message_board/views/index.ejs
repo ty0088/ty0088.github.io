@@ -8,14 +8,14 @@
     <h1><%= title %></h1>
     <h2>Messages</h3>
     <h4><a href="/new">New Message</a></h4>
-    <% messages.forEach(function(message){ %>
+    <% for(let i = 0; i < messages.length; i++) { %>
       <div class="message-container">
         <div class="message-info-bar">
-          <span>User: <%= message.user %></span>
-          <span>Date added: <%= message.added.toLocaleString('en-GB', { timeZone: 'UTC' }) %></span>
+          <span>User: <%= messages[i].user %></span>
+          <span>Date added: <%= messages[i].added.toLocaleString('en-GB', { timeZone: 'UTC' }) %></span>
         </div>
-        <p class="message-text"><%= message.text %></p>
+        <p class="message-text"><%= messages[i].text %></p>
       </div>
-    <% }); %>
+    <% } %>
   </body>
 </html>
