@@ -16,8 +16,6 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
 <strong>The Odin Project Projects</strong>
 <ul>
-  <li><a href="https://ty0088.github.io/todo/">To Do App</a> - Stores data locally - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/todo">Github Code</a></li>
-
   <li><a href="https://top-to-do-d45c1.web.app/">To Do App</a> - Uses Firebase to store data. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/todo-Firebase">Github Code</a></li>
 
   <li><a href="https://ty0088.github.io/memory_game/">Memory Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/memory_game">Github Code</a></li>
