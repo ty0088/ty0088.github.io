@@ -9,7 +9,7 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 <strong>My Projects</strong>
 <ol>
   <li><a href="https://ty0088.github.io/tom-pos/">Tom POS</a> - A web based POS terminal app for the hospitality industry (uses Firebase).  - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tom-pos">Github Code</a></li>
-  <li><a href="https://ty0088.github.io/catan_map_generator">Catan Map Generator</a> - My first try at a HTML/JS Project prior to TOP, which generates the map for a game of Catan. Titles and tile values are dynamically generated and balanced. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/catan_map_generator">Github Code</a></li>
+  <li><a href="https://ty0088.github.io/catan_map_generator">Catan Map Generator</a> - My first try at a HTML/JS Project prior to TOP, which generates the map for a game of Catan. Tile type and tile values are dynamically generated and balanced. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/catan_map_generator">Github Code</a></li>
 </ol>
 
 <hr>
@@ -26,9 +26,9 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
   
   <li><a href="https://ty0088.github.io/calculator/">Calculator App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/calculator">Github Code</a></li>
   
-  <li><a href="https://express-local-library.ty0088.repl.co/">Express Local Library</a> - MDN Express Local Library Tutorial (uses MongoDB) - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/express-locallibrary">Github Code</a></li>
+  <li><a href="https://express-local-library.ty0088.repl.co/">Express Local Library</a> - MDN Express Local Library Tutorial (uses MongoDB), website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/express-locallibrary">Github Code</a></li>
 
-  <li><a href="https://mini-message-board.ty0088.repl.co/">Mini Message Board</a> - A basic message board using Express and MongoDB - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/mini_message_board">Github Code</a></li>
+  <li><a href="https://mini-message-board.ty0088.repl.co/">Mini Message Board</a> - A basic message board using Express and MongoDB, website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/mini_message_board">Github Code</a></li>
 
   <li><a href="https://ty0088.github.io/weather_app/">Weather App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/weather_app">Github Code</a></li>
 
@@ -52,5 +52,5 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
   <li><a href="https://ty0088.github.io/cv_app_func/">CV App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/cv_app_func">Github Code</a></li>
 
-  <li><a href="https://basic-node-site.ty0088.repl.co/">Basic Node Website</a> - This is a basic website using the Express framework - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/basic_node_site">Github Code</a></li>
+  <li><a href="https://basic-node-site.ty0088.repl.co/">Basic Node Website</a> - This is a basic website using the Express framework, website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/basic_node_site">Github Code</a></li>
 </ul>
