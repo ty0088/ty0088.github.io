@@ -21,3 +21,5 @@ tom-pos/public/static/js/main.a8966731.js.map
 mini_message_board/node_modules/
 mini_message_board/.env
 express-locallibrary/.env
+inventory_app/.env
+inventory_app/node_modules/
