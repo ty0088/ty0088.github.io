@@ -1,2 +1,3 @@
-# remote_theme: pages-themes/minimal@v0.2.0
-theme: minima
+remote_theme: pages-themes/minimal@v0.2.0
+title: ty0088 Github Pages
+description: A repository of my projects
