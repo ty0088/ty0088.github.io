@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main-container">
+      <h1><%= title %></h1>
+      <nav>
+        <a href="/categories">All Categories</a>
+        <a href="/items">All Items</a>
+        <a href="/">Add Category</a>
+        <a href="/">Add Item</a>
+      </nav>
+      <div class="content-container">
+        <div class="category-name-row">
+          <h2><%= category.name %></h2>
+          <p><strong>/ </strong> <%= category.description %></p>
+        </div>
+        <div>
+          <h4>Items (<a href=<%= `${category.url}?sortItem=` + (sortItem === 1 ? '-1' : '1') %>>sort:<%= (sortItem === 1 ? 'a-z' : 'z-a') %></a>):</h4>
+          <table>
+            <tr>
+              <th>#</th>
+              <th>Item Name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Qty in stock</th>
+            </tr>
+            <% if (category_items.length > 0) { %>
+              <% category_items.forEach((item, i) => { %>
+                <tr>
+                  <th><%= i + 1 %>. </th>
+                  <th><a href=<%= item.url %>><%= item.name %></a></th>
+                  <th><%= item.description %></th>
+                  <th><%= item.price %></th>
+                  <th><%= item.qty %></th>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <p>This category has no items, please add one.</p>
+            <% } %>
+            </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -13,22 +13,33 @@
     <div class="main-container">
       <h1><%= title %></h1>
       <nav>
+        <a href="/categories">All Categories</a>
+        <a href="/items">All Items</a>
         <a href="/">Add Category</a>
         <a href="/">Add Item</a>
       </nav>
       <div class="content-container">
-        <h3>Categories: </h3>
-        <ul>
+        <h2>Categories (<a href=<%= '/categories?sort=' + (sort === 1 ? '-1' : '1') %>>sort:<%= (sort === 1 ? 'a-z' : 'z-a') %></a>):</h2>
+        <table>
+          <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th>Unique Items</th>
+            <th>Total Stock Qty</th>
+          </tr>
           <% if (categories.length > 0) { %>
-            <% for(category of categories) { %>
-              <li>
-                <a href=<%= category.url %>><%= category.name %></a> - Unique item qty: <%= item_counts[category._id] %>, total stock qty: <%= stock_counts[category._id] %>
-              </li>
-            <% } %>
+            <%  categories.forEach((category, i) => { %>
+              <tr>
+                <th><%= i + 1 %>.</th>
+                <th><a href=<%= category.url %>><%= category.name %></a></th>
+                <th><%= item_counts[category._id] %></th>
+                <th><%= stock_counts[category._id] %></th>
+              </tr>
+            <% }) %>
           <% } else { %>
-            <li>There are no categories, please add one.</li>
+            <p>There are no categories, please add one.<p>
           <% } %>
-        </ul>
+        </table>
       </div>
     </div>
   </body>

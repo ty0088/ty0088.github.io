@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 // Require controller modules.
-const category_controller = require('../controllers/categoryController')
+const category_controller = require('../controllers/categoryController');
+const item_controller = require('../controllers/itemController');
 
 /* GET home page - redirect. */
 router.get('/', function(req, res, next) {
@@ -10,9 +11,6 @@ router.get('/', function(req, res, next) {
 });
 
 //Category routes
-//GET: home page which displays a list of existing categories links
-router.get('/categories', category_controller.index);
-
 //GET: create category form
 router.get('/category/create', );
 
@@ -32,7 +30,10 @@ router.get('/category/:id/delete', );
 router.post('/category/:id/delete', );
 
 //GET: category details
-router.get('/category/:id', );
+router.get('/category/:id', category_controller.category_detail);
+
+//GET: home page which displays a list of existing categories links
+router.get('/categories', category_controller.category_list);
 
 
 //item routes
@@ -58,6 +59,6 @@ router.post('/item/:id/delete', );
 router.get('/item/:id', );
 
 //GET: display list of all items
-router.get('/items', );
+router.get('/items', item_controller.item_list);
 
 module.exports = router;
