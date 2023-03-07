@@ -38,10 +38,10 @@ router.get('/categories', category_controller.category_list);
 
 //item routes
 //GET: create item form
-router.get('/item/create', );
+router.get('/item/create', item_controller.item_create_get);
 
 //POST: submit create item form
-router.post('/item/create', );
+router.post('/item/create', item_controller.item_create_post);
 
 //GET: update item form
 router.get('/item/:id/update', );
@@ -56,7 +56,7 @@ router.get('/item/:id/delete', );
 router.post('/item/:id/delete', );
 
 //GET: item details
-router.get('/item/:id', );
+router.get('/item/:id', item_controller.item_detail);
 
 //GET: display list of all items
 router.get('/items', item_controller.item_list);

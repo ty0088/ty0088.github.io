@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main-container">
+        <h1><%= title %></h1>
+        <nav>
+          <a href="/categories">All Categories</a>
+          <a href="/items">All Items</a>
+          <a href="/category/create">Add Category</a>
+          <a href="/item/create">Add Item</a>
+        </nav>
+        <div class="content-container">
+          <h3>Item form:</h3>
+          <form action="" method="post" class="input-form">
+            <div class="form-row">
+              <label class="form-label" for="item_name">Name: </label>
+              <input type="text" class="form-text-input" id="item_name" name="item_name" placeholder="Item name" required value=<%= (typeof currItem == "undefined" ? "" : currItem.name) %>>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="item_description">Description: </label>
+              <input type="text" class="form-text-input" id="item_description" name="item_description" placeholder="Short item description" value=<%= (typeof currItem == "undefined" ? "" : currItem.description) %>>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="item_category">Category: </label>
+              <select name="item_category" id="item_category" required>
+                <option value="" disabled <%= (typeof currItem != "undefined" ? "" : "selected") %>>Select category</option>
+                <% for (category of categories) { %>
+                  <% if (typeof currItem != "undefined") { %>
+                   <option value=<%= category._id %> <%= (category._id.toString() === currItem.category._id.toString() ? "selected" : "") %>><%= category.name %></option>
+                  <% } else { %>
+                    <option value=<%= category._id %>><%= category.name %></option>
+                  <% } %>
+                <% } %>
+              </select>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="item_price">Price (£): </label>
+              <input type="number" class="form-text-input" id="item_price" name="item_price" min="0" step="any" required value=<%= (typeof currItem == "undefined" ? "0" : parseFloat(currItem.price.slice(1))) %>>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="item_qty">Qty in stock: </label>
+              <input type="number" class="form-text-input" id="item_qty" name="item_qty" min="0" step="1" required value=<%= (typeof currItem == "undefined" ? "0" : currItem.qty) %>>
+            </div>
+            <div class="form-row">
+              <button type="submit">Submit</button>
+              <button type="button">Cancel</button>
+            </div>
+          </form>
+          <% if (typeof errors != "undefined") { %>
+            <ul>
+                <% for (const error of errors) { %>
+                    <li><%= error.msg %></li>
+                <% } %>
+            </ul>
+          <% } %>
+        </div>
+    </div>
+  </body>
+</html>

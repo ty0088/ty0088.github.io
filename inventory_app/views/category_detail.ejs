@@ -15,16 +15,15 @@
       <nav>
         <a href="/categories">All Categories</a>
         <a href="/items">All Items</a>
-        <a href="/">Add Category</a>
-        <a href="/">Add Item</a>
+        <a href="/category/create">Add Category</a>
+        <a href="/item/create">Add Item</a>
       </nav>
       <div class="content-container">
-        <div class="category-name-row">
-          <h2><%= category.name %></h2>
-          <p><strong>/ </strong> <%= category.description %></p>
-        </div>
+        <h2><%= category.name %></h2>
+        <p><strong>Description: </strong><%= category.description %></p>
+        <hr>
         <div>
-          <h4>Items (<a href=<%= `${category.url}?sortItem=` + (sortItem === 1 ? '-1' : '1') %>>sort:<%= (sortItem === 1 ? 'a-z' : 'z-a') %></a>):</h4>
+          <h4>Items in this category (<a href=<%= `${category.url}?sortItem=` + (sortItem === 1 ? '-1' : '1') %>>sort:<%= (sortItem === 1 ? 'a-z' : 'z-a') %></a>):</h4>
           <table>
             <tr>
               <th>#</th>

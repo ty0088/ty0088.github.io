@@ -15,21 +15,21 @@
       <nav>
         <a href="/categories">All Categories</a>
         <a href="/items">All Items</a>
-        <a href="/">Add Category</a>
-        <a href="/">Add Item</a>
+        <a href="/category/create">Add Category</a>
+        <a href="/item/create">Add Item</a>
       </nav>
       <div class="content-container">
-        <h3>Items:</h3>
+        <h2>Items:</h2>
         <div class="sort-filter-bar">
           <div>
             Sort by:
-            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=name' %>>Name</a>
-            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=category' %>>Category</a>
-            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=price' %>>Price</a>
+            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=name' %>>Name</a> /
+            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=category' %>>Category</a> /
+            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=price' %>>Price</a> /
             <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=qty' %>>Qty</a>
           </div>
           <div>
-            Order: <a href=<%= '/items?sort=' + (sort === 1 ? '-1' : '1') + '&sortBy=' + sortBy %>><%= (sort === 1 ? 'asc' : 'dsc') %></a>
+            Sort order: <a href=<%= '/items?sort=' + (sort === 1 ? '-1' : '1') + '&sortBy=' + sortBy %>><%= (sort === 1 ? 'asc' : 'dsc') %></a>
           </div>
         </div>
         <table>
@@ -42,18 +42,18 @@
             <th>Qty in stock</th>
           </tr>
           <% if (item_list.length > 0) { %>
-              <% item_list.forEach((item, i) => { %>
-                <tr>
-                  <th><%= i + 1 %>.</th>
-                  <th><a href=<%= item.url %>><%= item.name %></a></th>
-                  <th><%= item.description %></th>
-                  <th><a href=<%= item.category.url %>><%= item.category.name %></a></th>
-                  <th><%= item.price %></th>
-                  <th><%= item.qty %></th>
-                </tr>
-              <% }) %>
+            <% item_list.forEach((item, i) => { %>
+              <tr>
+                <th><%= i + 1 %>.</th>
+                <th><a href=<%= item.url %>><%= item.name %></a></th>
+                <th><%= item.description %></th>
+                <th><a href=<%= item.category.url %>><%= item.category.name %></a></th>
+                <th><%= item.price %></th>
+                <th><%= item.qty %></th>
+              </tr>
+            <% }) %>
           <% } else { %>
-              <p>There are no items, please add one.</p>
+            <p>There are no items, please add one.</p>
           <% } %>
         </table>
       </div>

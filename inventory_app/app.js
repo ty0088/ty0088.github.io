@@ -32,6 +32,7 @@ app.use(compression());
 app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// route handler
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler

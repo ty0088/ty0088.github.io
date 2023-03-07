@@ -19,13 +19,13 @@ h1 {
 }
 
 h2, h3, h4 {
-  margin: 0;
+  margin: 10px 0 10px 0;
   padding: 0;
 }
 
 p {
-  margin: 0;
-  padding: 0;
+  margin: 10px 0 10px 0;
+  padding: 0px;
 }
 
 nav {
@@ -47,13 +47,6 @@ a:hover {
   margin: 0 10px 10px 10px;
 }
 
-.category-name-row {
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-  margin-bottom: 15px;
-}
-
 table {
   margin: 5px 0 5px 0;
 }
@@ -68,10 +61,27 @@ th {
 }
 
 .sort-filter-bar {
-  height: 30px;
+  margin: 10px 0 10px 0;
   display: flex;
   align-items: center;
   column-gap: 25px;
+  font-size: 0.9em;
+}
+
+.form-row {
+  display: flex;
+  column-gap: 10px;
+  margin: 10px 0 10px 0;
+}
+
+.form-label {
+  height: 1.5em;
+  width: 6.25em;
+}
+
+.form-text-input {
+  height: 1.5em;
+  width: 20em;
 }
 
 
