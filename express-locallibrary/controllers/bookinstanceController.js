@@ -113,7 +113,7 @@ exports.bookinstance_create_post = [
 
 
 // Display BookInstance delete form on GET.
-exports.bookinstance_delete_get = (req, res) => {
+exports.bookinstance_delete_get = (req, res, next) => {
   async.parallel(
     {
       bookInstance(callback) {
@@ -138,7 +138,7 @@ exports.bookinstance_delete_get = (req, res) => {
 };
 
 // Handle BookInstance delete on POST.
-exports.bookinstance_delete_post = (req, res) => {
+exports.bookinstance_delete_post = (req, res, next) => {
   async.parallel(
     {
       bookInstance(callback) {
@@ -162,7 +162,7 @@ exports.bookinstance_delete_post = (req, res) => {
 };
 
 // Display BookInstance update form on GET.
-exports.bookinstance_update_get = (req, res) => {
+exports.bookinstance_update_get = (req, res, next) => {
   async.parallel(
     {
       bookinstance(callback) {

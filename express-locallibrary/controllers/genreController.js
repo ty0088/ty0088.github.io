@@ -51,7 +51,7 @@ exports.genre_detail = (req, res, next) => {
 };
 
 // Display Genre create form on GET.
-exports.genre_create_get = (req, res, next) => {
+exports.genre_create_get = (req, res) => {
   res.render("genre_form", { title: "Create Genre" });
 };
 
@@ -102,7 +102,7 @@ exports.genre_create_post = [
 ];
 
 // Display Genre delete form on GET.
-exports.genre_delete_get = (req, res) => {
+exports.genre_delete_get = (req, res, next) => {
   async.parallel(
     {
       genre(callback) {
@@ -131,7 +131,7 @@ exports.genre_delete_get = (req, res) => {
 };
 
 // Handle Genre delete on POST.
-exports.genre_delete_post = (req, res) => {
+exports.genre_delete_post = (req, res, next) => {
   async.parallel(
     {
       genre(callback) {
@@ -168,7 +168,7 @@ exports.genre_delete_post = (req, res) => {
 };
 
 // Display Genre update form on GET.
-exports.genre_update_get = (req, res) => {
+exports.genre_update_get = (req, res, next) => {
   // Get genre and books for form.
   async.parallel(
     {

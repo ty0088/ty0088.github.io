@@ -226,7 +226,7 @@ exports.book_delete_get = (req, res, next) => {
 };
 
 // Handle book delete on POST.
-exports.book_delete_post = (req, res) => {
+exports.book_delete_post = (req, res, next) => {
   async.parallel(
     {
       book(callback) {
