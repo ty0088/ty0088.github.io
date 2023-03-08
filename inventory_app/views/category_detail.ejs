@@ -16,23 +16,23 @@
         <a href="/categories">All Categories</a>
         <a href="/items">All Items</a>
         <a href="/category/create">Add Category</a>
-        <a href="/item/create">Add Item</a>
+        <a href=<%= `/item/create/${category._id}` %>>Add Item</a>
       </nav>
       <div class="content-container">
         <h2><%= category.name %></h2>
         <p><strong>Description: </strong><%= category.description %></p>
         <hr>
         <div>
-          <h4>Items in this category (<a href=<%= `${category.url}?sortItem=` + (sortItem === 1 ? '-1' : '1') %>>sort:<%= (sortItem === 1 ? 'a-z' : 'z-a') %></a>):</h4>
-          <table>
-            <tr>
-              <th>#</th>
-              <th>Item Name</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Qty in stock</th>
-            </tr>
-            <% if (category_items.length > 0) { %>
+          <% if (category_items.length > 0) { %>
+            <h4>Items in this category (<a href=<%= `${category.url}?sortItem=` + (sortItem === 1 ? '-1' : '1') %>>sort:<%= (sortItem === 1 ? 'a-z' : 'z-a') %></a>):</h4>
+            <table>
+              <tr>
+                <th>#</th>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Qty in stock</th>
+              </tr>
               <% category_items.forEach((item, i) => { %>
                 <tr>
                   <th><%= i + 1 %>. </th>
@@ -42,10 +42,13 @@
                   <th><%= item.qty %></th>
                 </tr>
               <% }) %>
-            <% } else { %>
-              <p>This category has no items, please add one.</p>
-            <% } %>
             </table>
+          <% } else { %>
+            <p>This category has no items, please <a href=<%= `/item/create/${category._id}` %>>add an item</a></p>
+          <% } %>
+          <hr>
+          <p><a href=<%= `${category.url}/update` %>>Update category</a></p>
+          <p><a href=<%= `${category.url}/delete` %>>Delete category</a></p>
         </div>
       </div>
     </div>

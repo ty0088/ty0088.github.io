@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main-container">
+        <h1><%= title %></h1>
+        <nav>
+          <a href="/categories">All Categories</a>
+          <a href="/items">All Items</a>
+          <a href="/category/create">Add Category</a>
+          <a href="/item/create">Add Item</a>
+        </nav>
+        <div class="content-container">
+            <h3>Category: <%= category.name %></h3>
+            <% if (category_items.length) { %>
+                <p><strong>The following items are associated with this category.</strong></p>
+                <p>Please delete the associated items or change each item's category before deleting this category</p>
+                <table>
+                    <tr>
+                      <th>#</th>
+                      <th>Item Name</th>
+                    </tr>   
+                    <% category_items.forEach((item, i) => { %>
+                        <tr>
+                          <th><%= i + 1 %>. </th>
+                          <th><a href=<%= item.url %>><%= item.name %></a></th>
+                        </tr>
+                    <% }) %>
+                </table>
+            <% } else { %>
+                <p><strong>Please confirm you wish to permanently delete the following category:</strong></p>
+                <p><strong>Category: <%= category.name %></strong></p>
+                <p><strong>Description: </strong><%= category.description %></p>
+                <form action="" method="post">
+                    <input id="category_id" class="form-control" type="hidden" name="category_id" required value=<%= category._id %>>
+                    <button type="submit">Delete</button>
+                    <button type="button" onclick=<%= goToUrl %>>Cancel</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+    <script src="/javascripts/goToUrl.js"></script>
+  </body>
+</html>

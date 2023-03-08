@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main-container">
+        <h1><%= title %></h1>
+        <nav>
+          <a href="/categories">All Categories</a>
+          <a href="/items">All Items</a>
+          <a href="/category/create">Add Category</a>
+          <a href="/item/create">Add Item</a>
+        </nav>
+        <div class="content-container">
+          <h3>Category form:</h3>
+          <form action="" method="post" class="input-form">
+            <div class="form-row">
+              <label class="form-label" for="category_name">Name: </label>
+              <input type="text" class="form-text-input" id="category_name" name="category_name" placeholder="Category name" required value=<%- (typeof currCategory == "undefined" ? "" : `"${currCategory.name}"`) %>>
+            </div>            
+            <div class="form-row">
+                <label class="form-label" for="category_description">Description: </label>
+                <input type="text" class="form-text-input" id="category_description" name="category_description" placeholder="Category description" value=<%- (typeof currCategory == "undefined" ? "" : `"${currCategory.description}"`) %>>
+            </div>
+            <div class="form-row">
+              <button type="submit">Submit</button>
+              <button type="button" onclick=<%= goToUrl %>>Cancel</button>
+            </div>
+          </form>
+          <% if (typeof errors != "undefined") { %>
+            <ul>
+                <% for (const error of errors) { %>
+                    <li><%= error.msg %></li>
+                <% } %>
+            </ul>
+          <% } %>
+        </div>
+    </div>
+    <script src="/javascripts/goToUrl.js"></script>
+  </body>
+</html>

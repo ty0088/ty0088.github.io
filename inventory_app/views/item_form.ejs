@@ -23,11 +23,11 @@
           <form action="" method="post" class="input-form">
             <div class="form-row">
               <label class="form-label" for="item_name">Name: </label>
-              <input type="text" class="form-text-input" id="item_name" name="item_name" placeholder="Item name" required value=<%= (typeof currItem == "undefined" ? "" : currItem.name) %>>
+              <input type="text" class="form-text-input" id="item_name" name="item_name" placeholder="Item name" required value=<%- (typeof currItem == "undefined" ? "" : `"${currItem.name}"`) %>>
             </div>
             <div class="form-row">
               <label class="form-label" for="item_description">Description: </label>
-              <input type="text" class="form-text-input" id="item_description" name="item_description" placeholder="Short item description" value=<%= (typeof currItem == "undefined" ? "" : currItem.description) %>>
+              <input type="text" class="form-text-input" id="item_description" name="item_description" placeholder="Short item description" value=<%- (typeof currItem == "undefined" ? "" : `"${currItem.description}"`) %>>
             </div>
             <div class="form-row">
               <label class="form-label" for="item_category">Category: </label>
@@ -37,7 +37,7 @@
                   <% if (typeof currItem != "undefined") { %>
                    <option value=<%= category._id %> <%= (category._id.toString() === currItem.category._id.toString() ? "selected" : "") %>><%= category.name %></option>
                   <% } else { %>
-                    <option value=<%= category._id %>><%= category.name %></option>
+                    <option value=<%= category._id %> <%= (select_category_id === category._id.toString() ? "selected" : "") %>><%= category.name %></option>
                   <% } %>
                 <% } %>
               </select>
@@ -52,7 +52,7 @@
             </div>
             <div class="form-row">
               <button type="submit">Submit</button>
-              <button type="button">Cancel</button>
+              <button type="button" onclick=<%= goToUrl %>>Cancel</button>
             </div>
           </form>
           <% if (typeof errors != "undefined") { %>
@@ -64,5 +64,6 @@
           <% } %>
         </div>
     </div>
+    <script src="/javascripts/goToUrl.js"></script>
   </body>
 </html>

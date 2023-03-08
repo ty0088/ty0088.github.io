@@ -20,28 +20,28 @@
       </nav>
       <div class="content-container">
         <h2>Items:</h2>
-        <div class="sort-filter-bar">
-          <div>
-            Sort by:
-            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=name' %>>Name</a> /
-            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=category' %>>Category</a> /
-            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=price' %>>Price</a> /
-            <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=qty' %>>Qty</a>
+        <% if (item_list.length > 0) { %>
+          <div class="sort-filter-bar">
+            <div>
+              Sort by:
+              <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=name' %>>Name</a> /
+              <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=category' %>>Category</a> /
+              <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=price' %>>Price</a> /
+              <a href=<%= '/items?sort=' + sort.toString() + '&sortBy=qty' %>>Qty</a>
+            </div>
+            <div>
+              Sort order: <a href=<%= '/items?sort=' + (sort === 1 ? '-1' : '1') + '&sortBy=' + sortBy %>><%= (sort === 1 ? 'asc' : 'dsc') %></a>
+            </div>
           </div>
-          <div>
-            Sort order: <a href=<%= '/items?sort=' + (sort === 1 ? '-1' : '1') + '&sortBy=' + sortBy %>><%= (sort === 1 ? 'asc' : 'dsc') %></a>
-          </div>
-        </div>
-        <table>
-          <tr>
-            <th>#</th>
-            <th>Item Name</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Qty in stock</th>
-          </tr>
-          <% if (item_list.length > 0) { %>
+          <table>
+            <tr>
+              <th>#</th>
+              <th>Item Name</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Qty in stock</th>
+            </tr>
             <% item_list.forEach((item, i) => { %>
               <tr>
                 <th><%= i + 1 %>.</th>
@@ -52,10 +52,10 @@
                 <th><%= item.qty %></th>
               </tr>
             <% }) %>
-          <% } else { %>
-            <p>There are no items, please add one.</p>
-          <% } %>
-        </table>
+          </table>
+        <% } else { %>
+          <p>There are no items, please add one.</p>
+        <% } %>
       </div>
     </div>
   </body>

@@ -12,22 +12,22 @@ router.get('/', function(req, res, next) {
 
 //Category routes
 //GET: create category form
-router.get('/category/create', );
+router.get('/category/create', category_controller.category_create_get);
 
 //POST: submit create category form
-router.post('/category/create', );
+router.post('/category/create', category_controller.category_create_post);
 
 //GET: update category form
-router.get('/category/:id/update', );
+router.get('/category/:id/update', category_controller.category_update_get);
 
 //POST: submit update category form
-router.post('/category/:id/update', );
+router.post('/category/:id/update', category_controller.category_update_post);
 
 //GET: delete category
-router.get('/category/:id/delete', );
+router.get('/category/:id/delete', category_controller.category_delete_get);
 
 //POST: delete category
-router.post('/category/:id/delete', );
+router.post('/category/:id/delete', category_controller.category_delete_post);
 
 //GET: category details
 router.get('/category/:id', category_controller.category_detail);
@@ -36,24 +36,30 @@ router.get('/category/:id', category_controller.category_detail);
 router.get('/categories', category_controller.category_list);
 
 
-//item routes
-//GET: create item form
+// item routes
+//GET: create item form with category param
+router.get('/item/create/:category_id', item_controller.item_create_get);
+
+// //GET: create item form
 router.get('/item/create', item_controller.item_create_get);
+
+//POST: submit create item form with category param
+router.post('/item/create/:category_id', item_controller.item_create_post);
 
 //POST: submit create item form
 router.post('/item/create', item_controller.item_create_post);
 
 //GET: update item form
-router.get('/item/:id/update', );
+router.get('/item/:id/update', item_controller.item_update_get);
 
 //POST: submit update item form
-router.post('/item/:id/update', );
+router.post('/item/:id/update', item_controller.item_update_post);
 
 //GET: delete item
-router.get('/item/:id/delete', );
+router.get('/item/:id/delete', item_controller.item_delete_get);
 
 //POST: delete item
-router.post('/item/:id/delete', );
+router.post('/item/:id/delete', item_controller.item_delete_post);
 
 //GET: item details
 router.get('/item/:id', item_controller.item_detail);
