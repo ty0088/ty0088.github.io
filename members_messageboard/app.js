@@ -6,16 +6,27 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const compression = require('compression');
 const helmet = require('helmet');
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const mongoose = require("mongoose");
 
 // Set up mongoose connection
-const mongoose = require("mongoose");
-const mongoDB = process.env.DB_CONN;
+(async () => {
+  try {
+    const dbConn = await mongoose.connect( process.env.DB_CONN, { useUnifiedTopology: true, useNewUrlParser: true });
+    console.log(`MongoDB Connected: ${dbConn.connection.host}`);
+  } 
+  catch (error) {
+    console.log(error);
+    //direct to no connection error page? ---------------------------------
+  }
+})();
 
-main().catch(err => console.log(err));
-async function main() {
-  await mongoose.connect(mongoDB);
-};
+//import models
+const User = require('./models/user');
 
+//import routes
 const indexRouter = require('./routes/index');
 
 const app = express();
@@ -31,6 +42,53 @@ app.use(cookieParser());
 app.use(compression());
 app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//set up passport module
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
+
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return done(null, false, { message: "Incorrect username" });
+      }
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
+          // passwords match! log user in
+          return done(null, user);
+        } else {
+          // passwords do not match!
+          return done(null, false, { message: "Incorrect password" });
+        }
+      });
+    } catch (error) {
+      return done(error);
+    }
+  })
+);
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async function(id, done) {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
+
+//set local variable for current user
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.use('/', indexRouter);
 
