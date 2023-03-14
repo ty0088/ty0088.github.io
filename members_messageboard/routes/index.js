@@ -29,6 +29,10 @@ router.get('/message/create', );
 //POST: create message form
 router.post('/message/create', );
 
+//GET: reply to message ----------
+
+//POST: reply to message ----------
+
 //GET: update message form
 router.get('/message/:id/update', );
 
@@ -65,6 +69,6 @@ router.get('/user/:id/delete', );
 router.post('/user/:id/delete', );
 
 //GET: user details
-router.get('/user/:id', );
+router.get('/user/:id', authController.user_detail);
 
 module.exports = router;
