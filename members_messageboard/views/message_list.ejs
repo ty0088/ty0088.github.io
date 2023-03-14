@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <h1><%= title %></h1>
+        <nav>
+            <% if (currentUser) { %>
+                <a href="/log-out">Log Out</a>
+            <% } else { %>
+                <a href="/log-in">Log In</a>
+            <% } %>
+        </nav>
+        <div class="content-container">
+            <% if (messages.length > 0) { %>
+                <% for (const message of messages) { %>
+                    <div>
+                        <div>
+                            <span>User: <%= currentUser ? message.user.username : 'Log in to see who posted this.' %></span>
+                            <span>Date added: <%= message.addDate.toLocaleString() %></span>
+                        </div>
+                        <p><%= message.text %></p>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <p>There are currently no posts. Be the first to post!</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
