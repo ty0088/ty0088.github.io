@@ -4,6 +4,7 @@ const router = express.Router();
 // Require controller modules.
 const authController = require('../controllers/authenticationController');
 const messageController = require('../controllers/messageController');
+const userController = require('../controllers/userController');
 
 //GET: home page - redirect
 router.get('/', function(req, res, next) {
@@ -46,10 +47,10 @@ router.get('/messages', messageController.message_list);
 
 //user routes
 //GET: create user form
-router.get('/user/create', );
+router.get('/user/create', authController.signup_get);
 
 //POST: create user form
-router.post('/user/create', );
+router.post('/user/create', authController.signup_post);
 
 //GET: update user form
 router.get('/user/:id/update', );
