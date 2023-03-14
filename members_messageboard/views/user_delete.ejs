@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <h1><%= title %></h1>
+        <nav>
+            <a href="/">Home</a>
+            <% if (currentUser) { %>
+                <a href="/log-out">Log Out</a>
+            <% } else { %>
+                <a href="/log-in">Log In</a>
+            <% } %>
+        </nav>
+        <div class="content-container">
+            <p>
+                Are you sure you wish to delete this account permanently?
+                <br>
+                Your account details will be deleted, however your posts will remain (without any associated user).
+            </p>
+            <form action="" method="post">
+                <input type="hidden" name="userId" required value=<%= currentUser._id %>>
+                <button type="submit">Delete</button>
+                <button type="button" onclick=<%= goToUrl %>>Cancel</button>
+            </form>
+        </div>
+    </div>
+    <script src="/javascripts/goToUrl.js"></script>
+</body>
+</html>
