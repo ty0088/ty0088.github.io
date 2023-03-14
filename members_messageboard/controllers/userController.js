@@ -105,7 +105,6 @@ exports.signup_post = [
                 }
             }
         } catch (error) {
-            console.log(error);
             next(error);
         };
     }
@@ -148,7 +147,6 @@ exports.user_update_get = async (req, res, next) => {
             });
         }
     } catch (error) {
-        console.log(error);
         next(error);
     }
 };
@@ -228,8 +226,50 @@ exports.user_update_post = [
                 }
             }
         } catch (error) {
-            console.log(error);
             next(error);
         };
     }
 ];
+
+//render user delete page on GET
+exports.user_delete_get = (req, res, next) => {
+    //check that request id is same as logged in user id
+    if (req.params.id != req.user._id) {
+        //request id and user id does not match, throw error
+        const err = new Error("Unauthorised request - Requested id does not match user id");
+        err.status = 401;
+        return next(err);
+    }
+    //if ids match, render user delete page
+    res.render('user_delete', {
+        title: 'Messageboard - Delete User Account',
+        goToUrl: `goToUrl("/user/${req.params.id}")`
+    });
+};
+
+//handle user delete on POST
+exports.user_delete_post = async (req, res, next) => {
+    try {
+        //check that request id is same as logged in user id
+        if (req.params.id != req.user._id) {
+            //request id and user id does not match, throw error
+            const err = new Error("Unauthorised request - Requested id does not match user id");
+            err.status = 401;
+            return next(err);
+        }
+        //query db for user
+        const user = await User.findById(req.params.id);
+        //check if user was found
+        if (user == null) {
+            //if no user found, return error
+            const err = new Error("User not found");
+            err.status = 404;
+            return next(err);
+        }
+        //if user found, delete from db
+        await user.deleteOne({ _id: req.body.userId });
+        res.redirect('/');
+    } catch (error) {
+        next(error);
+    }
+};
