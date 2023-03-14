@@ -2,7 +2,7 @@ const passport = require("passport");
 
 //render log in form
 exports.log_in_get = (req, res, next) => {
-    res.render('login_form', {title: 'Message Board - Log in'});
+    res.render('login_form', {title: 'Messageboard - Log in'});
 }
 
 //authenticate user on log in
