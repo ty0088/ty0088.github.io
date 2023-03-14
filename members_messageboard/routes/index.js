@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 // Require controller modules.
-const authenticationController = require('../controllers/authenticationController');
+const authController = require('../controllers/authenticationController');
+const messageController = require('../controllers/messageController');
 
 //GET: home page - redirect
 router.get('/', function(req, res, next) {
@@ -11,13 +12,13 @@ router.get('/', function(req, res, next) {
 
 //log in/out routes
 //GET: log in form
-router.get('/log-in', authenticationController.log_in_get);
+router.get('/log-in', authController.log_in_get);
 
 //POST: log in form
-router.post('/log-in', authenticationController.log_in_post);
+router.post('/log-in', authController.log_in_post);
 
 //POST: log out form
-router.get('/log-out', authenticationController.log_out);
+router.get('/log-out', authController.log_out);
 
 
 //message routes
@@ -40,7 +41,7 @@ router.get('/message/:id/delete', );
 router.post('/message/:id/delete', );
 
 //GET: home page which displays all messages posted
-router.get('/messages', );
+router.get('/messages', messageController.message_list);
 
 
 //user routes
