@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 // Require controller modules.
-const authController = require('../controllers/authenticationController');
 const messageController = require('../controllers/messageController');
 const userController = require('../controllers/userController');
 
@@ -13,13 +12,13 @@ router.get('/', function(req, res, next) {
 
 //log in/out routes
 //GET: log in form
-router.get('/log-in', authController.log_in_get);
+router.get('/log-in', userController.log_in_get);
 
 //POST: log in form
-router.post('/log-in', authController.log_in_post);
+router.post('/log-in', userController.log_in_post);
 
-//POST: log out form
-router.get('/log-out', authController.log_out);
+//GET: log out form
+router.get('/log-out', userController.log_out);
 
 
 //message routes
@@ -51,16 +50,16 @@ router.get('/messages', messageController.message_list);
 
 //user routes
 //GET: create user form
-router.get('/user/create', authController.signup_get);
+router.get('/user/create', userController.signup_get);
 
 //POST: create user form
-router.post('/user/create', authController.signup_post);
+router.post('/user/create', userController.signup_post);
 
 //GET: update user form
-router.get('/user/:id/update', );
+router.get('/user/:id/update', userController.user_update_get);
 
 //POST: update user form
-router.post('/user/:id/update', );
+router.post('/user/:id/update', userController.user_update_post);
 
 //GET: delete user
 router.get('/user/:id/delete', );
@@ -69,6 +68,6 @@ router.get('/user/:id/delete', );
 router.post('/user/:id/delete', );
 
 //GET: user details
-router.get('/user/:id', authController.user_detail);
+router.get('/user/:id', userController.user_detail);
 
 module.exports = router;
