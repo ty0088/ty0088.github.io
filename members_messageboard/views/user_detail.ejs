@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <h1><%= title %></h1>
+        <nav>
+            <a href="/">Home</a>
+            <% if (currentUser) { %>
+                <a href="/log-out">Log Out</a>
+            <% } else { %>
+                <a href="/log-in">Log In</a>
+            <% } %>
+        </nav>
+        <div class="content-container">
+            <% if (typeof currentUser != 'undefined' && (currentUser._id.toString() === reqId.toString())) { %>
+                <p><strong>Username: </strong><%= currentUser.username %></p>
+                <p><strong>First name: </strong><%= currentUser.firstName %></p>
+                <p><strong>Last name: </strong><%= currentUser.lastName %></p>
+                <p><strong>Join date: </strong><%= currentUser.joinDate.toLocaleDateString() %></p>
+                <p><strong>Membership status: </strong><%= currentUser.membershipStatus %></p>
+                <div>
+                    <a href="">Update account details</a>
+                    <a href="">Delete account</a>
+                </div>
+                <h3>Your posts: </h3>
+                <% if (userMessages.length > 0) { %>
+                    <% for (message of userMessages) { %>
+                        <div>
+                            <span>Date posted: <%= message.addDate.toLocaleString(), message.addDate.toLocaleTimeString() %></span>
+                            <span><%= message.text %></span>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p>You have no posts.</p>
+                <% } %>
+            <% } else { %>
+                <p>You are not authorised to view this page.</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
