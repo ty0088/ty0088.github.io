@@ -29,8 +29,8 @@
                 <p><strong>Join date: </strong><%= currentUser.joinDate.toLocaleDateString() %></p>
                 <p><strong>Membership status: </strong><%= currentUser.membershipStatus %></p>
                 <div>
-                    <a href="">Update account details</a>
-                    <a href="">Delete account</a>
+                    <a href=<%= `/user/${currentUser._id}/update` %>>Update user details</a>
+                    <a href=<%= `/user/${currentUser._id}/delete` %>>Delete user account</a>
                 </div>
                 <h3>Your posts: </h3>
                 <% if (userMessages.length > 0) { %>
