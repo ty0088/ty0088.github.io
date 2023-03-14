@@ -38,14 +38,14 @@ exports.signup_get = (req, res, next) => {
 //submit user to db on POST
 exports.signup_post = [
     //sanitise and validate inputs
-    body('username', 'A username is required and must be no longer than 10 characters')
+    body('username', 'A username is required and must be no longer than 10 characters.')
         .trim()
         .isLength({ min: 1, max: 10 })
         .escape(),
     body('password', 'A password is required and must be between 8 and 12 characters long.')
         .trim()
         .isLength({ min: 8, max: 12 }),
-    body('passwordConfirm', 'The submitted passwords must match')
+    body('passwordConfirm', 'The submitted passwords must match.')
         .exists()
         .custom((val, { req }) => req.body.password === val),
     body('firstName', 'Your first name is required.')
@@ -162,14 +162,14 @@ exports.user_update_get = async (req, res, next) => {
 //submit changes to user on POST
 exports.user_update_post = [
     //sanitise and validate inputs
-    body('username', 'A username is required and must be no longer than 10 characters')
+    body('username', 'A username is required and must be no longer than 10 characters.')
         .trim()
         .isLength({ min: 1, max: 10 })
         .escape(),
     body('password', 'A password is required and must be between 8 and 12 characters long.')
         .optional({ checkFalsy: true })
         .isLength({ min: 8, max: 12 }),
-    body('passwordConfirm', 'The submitted passwords must match')
+    body('passwordConfirm', 'The submitted passwords must match.')
         .if((val, {req}) => req.body.password)
         .custom((val, { req }) => req.body.password === val),
     body('firstName', 'Your first name is required.')
