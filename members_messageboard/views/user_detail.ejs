@@ -31,7 +31,7 @@
             <% if (userMessages.length > 0) { %>
                 <% for (message of userMessages) { %>
                     <div>
-                        <span>Date posted: <%= message.addDate.toLocaleString(), message.addDate.toLocaleTimeString() %></span>
+                        <span>Date posted: <%= message.postDate.toLocaleString(), message.postDate.toLocaleTimeString() %></span>
                         <span><%= message.text %></span>
                     </div>
                 <% } %>

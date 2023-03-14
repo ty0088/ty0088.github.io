@@ -123,7 +123,7 @@ exports.user_detail = async (req, res, next) => {
         return next(err);
     }
     //find messages by this user
-    const userMessages = await Message.find({ user: req.params.id }).sort({ addDate: -1 });
+    const userMessages = await Message.find({ user: req.params.id }).sort({ postDate: -1 });
     res.render('user_detail', {
         title: `Message Board - My Account`,
         userMessages
