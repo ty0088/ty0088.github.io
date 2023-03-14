@@ -62,10 +62,10 @@ router.get('/user/:id/update', userController.user_update_get);
 router.post('/user/:id/update', userController.user_update_post);
 
 //GET: delete user
-router.get('/user/:id/delete', );
+router.get('/user/:id/delete', userController.user_delete_get);
 
 //POST: delete user
-router.post('/user/:id/delete', );
+router.post('/user/:id/delete', userController.user_delete_post);
 
 //GET: user details
 router.get('/user/:id', userController.user_detail);
