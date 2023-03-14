@@ -43,13 +43,16 @@ exports.signup_post = [
         .isLength({ min: 1, max: 10 })
         .escape(),
     body('password', 'A password is required and must be between 8 and 12 characters long.')
+        .trim()
         .isLength({ min: 8, max: 12 }),
     body('passwordConfirm', 'The submitted passwords must match')
         .exists()
         .custom((val, { req }) => req.body.password === val),
     body('firstName', 'Your first name is required.')
+        .trim()
         .notEmpty(),
     body('lastName', 'Your last name is required.')
+        .trim()
         .notEmpty(),
         
     //process request after validation and sanitisation.
