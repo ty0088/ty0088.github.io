@@ -170,6 +170,7 @@ exports.user_update_post = [
         .optional({ checkFalsy: true })
         .isLength({ min: 8, max: 12 }),
     body('passwordConfirm', 'The submitted passwords must match.')
+        //if password has been filled in then check that it matches
         .if((val, {req}) => req.body.password)
         .custom((val, { req }) => req.body.password === val),
     body('firstName', 'Your first name is required.')
