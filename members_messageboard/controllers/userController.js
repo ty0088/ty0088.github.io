@@ -11,7 +11,7 @@ exports.log_in_get = (req, res, next) => {
     res.render('login_form', {title: 'Messageboard - Log In'});
 }
 
-//authenticate user on log in on GET
+//authenticate user on log in on POST
 exports.log_in_post = passport.authenticate('local', {
     successRedirect: '/messages',
     failureRedirect: '/log-in'
