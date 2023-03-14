@@ -23,10 +23,10 @@ router.get('/log-out', userController.log_out);
 
 //message routes
 //GET: create message form
-router.get('/message/create', );
+router.get('/message/create', messageController.message_create_get);
 
 //POST: create message form
-router.post('/message/create', );
+router.post('/message/create', messageController.message_create_post);
 
 //GET: reply to message ----------
 
