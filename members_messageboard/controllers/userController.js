@@ -112,11 +112,17 @@ exports.signup_post = [
 
 //render user detail page
 exports.user_detail = async (req, res, next) => {
+    //check that user is logged in and request id is same as logged in user id
+    if (req.user && (req.params.id != req.user._id)) {
+        //request id and user id does not match, throw error
+        const err = new Error("Unauthorised request - Requested id does not match user id");
+        err.status = 401;
+        return next(err);
+    }
     //find messages by this user
     const userMessages = await Message.find({ user: req.params.id }).sort({ addDate: -1 });
     res.render('user_detail', {
         title: `Message Board - My Account`,
-        reqId: req.params.id,
         userMessages
     });
 };
@@ -124,8 +130,8 @@ exports.user_detail = async (req, res, next) => {
 //render user update form on GET
 exports.user_update_get = async (req, res, next) => {
     try {
-        //check that request id is same as logged in user id
-        if (req.params.id != req.user._id) {
+        //check that user is logged in and request id is same as logged in user id
+        if (req.user && (req.params.id != req.user._id)) {
             //request id and user id does not match, throw error
             const err = new Error("Unauthorised request - Requested id does not match user id");
             err.status = 401;
@@ -142,7 +148,6 @@ exports.user_update_get = async (req, res, next) => {
             res.render('user_form', {
                 title: 'Messageboard - Update User Details',
                 goToUrl: `goToUrl("/user/${req.params.id}")`,
-                reqId: req.params.id,
                 currUser: user
             });
         }
@@ -188,7 +193,6 @@ exports.user_update_post = [
                     title: 'Messageboard - Sign Up',
                     goToUrl: `goToUrl("/user/${req.params.id}")`,
                     currUser: user,
-                    reqId: req.params.id,
                     errors: errors.array()
                 });
             } else {
@@ -233,8 +237,8 @@ exports.user_update_post = [
 
 //render user delete page on GET
 exports.user_delete_get = (req, res, next) => {
-    //check that request id is same as logged in user id
-    if (req.params.id != req.user._id) {
+    //check that user is logged in and request id is same as logged in user id
+    if (req.user && (req.params.id != req.user._id)) {
         //request id and user id does not match, throw error
         const err = new Error("Unauthorised request - Requested id does not match user id");
         err.status = 401;
@@ -250,8 +254,8 @@ exports.user_delete_get = (req, res, next) => {
 //handle user delete on POST
 exports.user_delete_post = async (req, res, next) => {
     try {
-        //check that request id is same as logged in user id
-        if (req.params.id != req.user._id) {
+        //check that user is logged in and request id is same as logged in user id
+        if (req.user && (req.params.id != req.user._id)) {
             //request id and user id does not match, throw error
             const err = new Error("Unauthorised request - Requested id does not match user id");
             err.status = 401;
