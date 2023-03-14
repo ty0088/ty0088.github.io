@@ -2,13 +2,12 @@ const async = require('async');
 const { body, validationResult } = require('express-validator');
 
 //import models
-// const User = require('../models/user'); -----------delete
 const Message = require('../models/message');
 
 //render all messages page on GET
 exports.message_list = async (req, res, next) => {
     try {
-        const messages = await Message.find({}).populate('user');
+        const messages = await Message.find({}).populate('user').sort({ postDate: -1 });
         //render message list page
         res.render('message_list', {
             title: 'Message Board',
