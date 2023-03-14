@@ -1,8 +1,10 @@
 const passport = require("passport");
 const bcrypt = require('bcryptjs');
-
-const User = require('../models/user');
 const { body, validationResult } = require("express-validator");
+
+//import models
+const User = require('../models/user');
+const Message = require('../models/message')
 
 //render log in form
 exports.log_in_get = (req, res, next) => {
@@ -109,3 +111,14 @@ exports.signup_post = [
         };
     }
 ];
+
+//render user detail page
+exports.user_detail = async (req, res, next) => {
+    //find messages by this user
+    const userMessages = await Message.find({ user: req.params.id }).sort({ addDate: 1 });
+    res.render('user_detail', {
+        title: `Message Board - My Account`,
+        reqId: req.params.id,
+        userMessages
+    });
+};
