@@ -17,7 +17,7 @@
             <a href="/">Home</a>
         </nav>
         <div class="content-container">
-            <% if (typeof currentUser != 'undefined' && (currentUser._id.toString() === reqId.toString())) { %>
+            <% if (typeof currentUser != 'undefined') { %>
                 <p>Please change any of the information below and submit to update.</p>
             <% } else { %>
                 <p>Please enter all of the information required below and then submit to sign up.</p>
@@ -31,7 +31,7 @@
                 <div class="input-row">
                     <label for="password" class="input-label">Password: </label>
                     <input type="password" id="password" class="input-input" name="password" minlength="8" maxlength="12" <%= (typeof currentUser != 'undefined' ? "" : "required") %>>
-                    <% if (typeof currentUser != 'undefined' && (currentUser._id.toString() === reqId.toString())) { %>
+                    <% if (typeof currentUser != 'undefined') { %>
                         <span class="input-tip">(only required if you wish to change your password, else keep empty)</span>
                     <% } else { %>
                         <span class="input-tip">(is required and must be contain between 8 to 12 characters)</span>
@@ -40,7 +40,7 @@
                 <div class="input-row">
                     <label for="passwordConfirm" class="input-label">Confirm Password: </label>
                     <input type="password" id="passwordConfirm" class="input-input" name="passwordConfirm" minlength="8" <%= (typeof currentUser != 'undefined' ? "" : "required") %>>
-                    <% if (typeof currentUser != 'undefined' && (currentUser._id.toString() === reqId.toString())) { %>
+                    <% if (typeof currentUser != 'undefined') { %>
                         <span class="input-tip">(only required if you wish to change your password, else keep empty)</span>
                     <% } else { %>
                         <span class="input-tip">(must match previously entered password)</span>

@@ -15,36 +15,28 @@
         <h1><%= title %></h1>
         <nav>
             <a href="/">Home</a>
-            <% if (currentUser) { %>
-                <a href="/log-out">Log Out</a>
-            <% } else { %>
-                <a href="/log-in">Log In</a>
-            <% } %>
+            <a href="/log-out">Log Out</a>
         </nav>
         <div class="content-container">
-            <% if (typeof currentUser != 'undefined' && (currentUser._id.toString() === reqId.toString())) { %>
-                <p><strong>Username: </strong><%= currentUser.username %></p>
-                <p><strong>First name: </strong><%= currentUser.firstName %></p>
-                <p><strong>Last name: </strong><%= currentUser.lastName %></p>
-                <p><strong>Join date: </strong><%= currentUser.joinDate.toLocaleDateString() %></p>
-                <p><strong>Membership status: </strong><%= currentUser.membershipStatus %></p>
-                <div>
-                    <a href=<%= `/user/${currentUser._id}/update` %>>Update user details</a>
-                    <a href=<%= `/user/${currentUser._id}/delete` %>>Delete user account</a>
-                </div>
-                <h3>Your posts: </h3>
-                <% if (userMessages.length > 0) { %>
-                    <% for (message of userMessages) { %>
-                        <div>
-                            <span>Date posted: <%= message.addDate.toLocaleString(), message.addDate.toLocaleTimeString() %></span>
-                            <span><%= message.text %></span>
-                        </div>
-                    <% } %>
-                <% } else { %>
-                    <p>You have no posts.</p>
+            <p><strong>Username: </strong><%= currentUser.username %></p>
+            <p><strong>First name: </strong><%= currentUser.firstName %></p>
+            <p><strong>Last name: </strong><%= currentUser.lastName %></p>
+            <p><strong>Join date: </strong><%= currentUser.joinDate.toLocaleDateString() %></p>
+            <p><strong>Membership status: </strong><%= currentUser.membershipStatus %></p>
+            <div>
+                <a href=<%= `/user/${currentUser._id}/update` %>>Update user details</a>
+                <a href=<%= `/user/${currentUser._id}/delete` %>>Delete user account</a>
+            </div>
+            <h3>Your posts: </h3>
+            <% if (userMessages.length > 0) { %>
+                <% for (message of userMessages) { %>
+                    <div>
+                        <span>Date posted: <%= message.addDate.toLocaleString(), message.addDate.toLocaleTimeString() %></span>
+                        <span><%= message.text %></span>
+                    </div>
                 <% } %>
             <% } else { %>
-                <p>You are not authorised to view this page.</p>
+                <p>You have no posts.</p>
             <% } %>
         </div>
     </div>
