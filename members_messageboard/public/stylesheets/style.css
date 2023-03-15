@@ -5,14 +5,20 @@ body {
   padding: 0;
 }
 
+p { 
+  margin: 5px 0;
+}
+
 .content-container {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .input-row {
   display: grid;
   grid-template-columns: 150px 200px minmax(150px, auto);
-  margin: 5px 0 5px 0;
+  margin: 5px 0;
 }
 
 .input-label {
@@ -37,4 +43,17 @@ body {
 .message-form {
   display: flex;
   flex-direction: column;
+}
+
+.message-row {
+  margin: 3px 0;
+  padding: 5px 0;
+  border: 1px solid rgb(200, 200, 200);
+}
+
+.message-header {
+  display: flex;
+  border: 1px solid rgb(200, 200, 200);
+  font-size: 0.8em;
+  margin: -6px -1px 0 -1px;
 }
