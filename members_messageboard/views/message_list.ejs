@@ -25,10 +25,16 @@
             <a href="/message/create">Create New Post</a>
             <% if (messages.length > 0) { %>
                 <% for (const message of messages) { %>
-                    <div>
-                        <div>
-                            <span><%= currentUser ? `${message.user.username} (${message.user.membershipStatus})` : 'Log in to see who posted this.' %></span>
-                            <span>Date posted: <%= message.postDate.toLocaleString() %></span>
+                    <div class="message-row">
+                        <div class="message-header">
+                            <% if (currentUser) { %>
+                                <span>
+                                    <a href=<%= message.user.url %>><%= message.user.username %></a><%= ` (${message.user.membershipStatus})` %>
+                                    - Date posted: <%= message.postDate.toLocaleString() %>
+                                </span>                     
+                            <% } else { %>
+                                <span>Log in to see who posted this and when.</span>
+                            <% } %>
                         </div>
                         <p><%= message.text %></p>
                     </div>
