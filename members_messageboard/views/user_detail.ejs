@@ -15,28 +15,36 @@
         <h1><%= title %></h1>
         <nav>
             <a href="/">Home</a>
-            <a href="/log-out">Log Out</a>
+            <%- currentUser ? '<a href="/log-out">Log Out</a>' : "" %>
         </nav>
         <div class="content-container">
-            <p><strong>Username: </strong><%= currentUser.username %></p>
-            <p><strong>First name: </strong><%= currentUser.firstName %></p>
-            <p><strong>Last name: </strong><%= currentUser.lastName %></p>
-            <p><strong>Join date: </strong><%= currentUser.joinDate.toLocaleDateString() %></p>
-            <p><strong>Membership status: </strong><%= currentUser.membershipStatus %></p>
-            <div>
-                <a href=<%= `/user/${currentUser._id}/update` %>>Update user details</a>
-                <a href=<%= `/user/${currentUser._id}/delete` %>>Delete user account</a>
-            </div>
-            <h3>Your posts: </h3>
-            <% if (userMessages.length > 0) { %>
-                <% for (message of userMessages) { %>
+            <% if (currentUser) { %>
+                <p><strong>Username: </strong><%= reqUser.username %></p>
+                <p><strong>Join date: </strong><%= reqUser.joinDate.toLocaleDateString() %></p>
+                <p><strong>Membership status: </strong><%= reqUser.membershipStatus %></p>
+                <% if (currentUser._id.toString() == reqId) { %>
+                    <p><strong>First name: </strong><%= reqUser.firstName %></p>
+                    <p><strong>Last name: </strong><%= reqUser.lastName %></p>
                     <div>
-                        <span>Date posted: <%= message.postDate.toLocaleString(), message.postDate.toLocaleTimeString() %></span>
-                        <span><%= message.text %></span>
-                    </div>
+                        <a href=<%= `/user/${reqUser._id}/update` %>>Update user details</a>
+                        <a href=<%= `/user/${reqUser._id}/delete` %>>Delete user account</a>
+                    </div>                 
+                <% } %>
+                <h3>User posts (<%= userMessages.length %>): </h3>
+                <% if (userMessages.length > 0) { %>
+                    <% for (message of userMessages) { %>
+                        <div class="message-row">
+                            <div class="message-header">
+                                <span>Date posted: <%= message.postDate.toLocaleString() %></span>
+                            </div>
+                            <p><%= message.text %></p>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p>There are no posts for this user.</p>
                 <% } %>
             <% } else { %>
-                <p>You have no posts.</p>
+                <p>Please <a href="/log-in">log in</a> to view this page.</p>
             <% } %>
         </div>
     </div>

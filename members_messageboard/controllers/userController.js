@@ -1,6 +1,7 @@
 const passport = require("passport");
 const bcrypt = require('bcryptjs');
 const { body, validationResult } = require("express-validator");
+const async = require('async');
 
 //import models
 const User = require('../models/user');
@@ -115,19 +116,21 @@ exports.signup_post = [
 
 //render user detail page
 exports.user_detail = async (req, res, next) => {
-    //check that user is logged in and request id is same as logged in user id
-    if (req.user && (req.params.id != req.user._id)) {
-        //request id and user id does not match, throw error
-        const err = new Error("Unauthorised request - Requested id does not match user id");
-        err.status = 401;
-        return next(err);
+    try {
+        //query db for user and messages by this user (sort by post date)
+        const results = await async.parallel({
+            userMessages: async () => Message.find({ user: req.params.id }).sort({ postDate: -1 }),
+            reqUser: async () => User.findById(req.params.id)
+        });
+        res.render('user_detail', {
+            title: `Message Board - User Details`,
+            reqId: req.params.id,
+            userMessages: results.userMessages,
+            reqUser: results.reqUser
+        });
+    } catch (error) {
+        next(error);
     }
-    //find messages by this user
-    const userMessages = await Message.find({ user: req.params.id }).sort({ postDate: -1 });
-    res.render('user_detail', {
-        title: `Message Board - My Account`,
-        userMessages
-    });
 };
 
 //render user update form on GET
