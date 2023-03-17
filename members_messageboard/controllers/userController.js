@@ -9,14 +9,31 @@ const Message = require('../models/message')
 
 //render log in form on GET
 exports.log_in_get = (req, res, next) => {
-    res.render('login_form', {title: 'Messageboard - Log In'});
+    //check req for any stored error message
+    if (req.session.messages) {
+        //if there is a message, store error message, 
+        //then clear req.session.message so that it does not continue to build error messages
+        const sessionMessage = req.session.messages[0];
+        req.session.messages = undefined;
+        //render log in page with latest error message
+        res.render('login_form', {
+            title: 'Messageboard - Log In',
+            errors: [{ msg: sessionMessage }]
+        });
+    } else {
+        //if no errors and render log in page
+        res.render('login_form', {
+            title: 'Messageboard - Log In'
+        });
+    }
+
 }
 
 //authenticate user on log in on POST
-//no error messages on log in failure -----------------------------
 exports.log_in_post = passport.authenticate('local', {
     successRedirect: '/messages',
-    failureRedirect: '/log-in'
+    failureRedirect: '/log-in',
+    failureMessage: true
 });
 
 
