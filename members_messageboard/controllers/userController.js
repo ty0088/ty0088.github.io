@@ -156,6 +156,7 @@ exports.user_detail = async (req, res, next) => {
 //render user update form on GET
 exports.user_update_get = async (req, res, next) => {
     try {
+        //verify user has sufficient privileges to do this action
         //check that user is logged in and request id is same as logged in user id
         if (!req.user || (req.params.id != req.user._id)) {
             //request id and user id does not match, throw error
@@ -204,6 +205,7 @@ exports.user_update_post = [
     //process request after validation and sanitisation.
     async (req, res, next) => {
         try {
+            //verify user has sufficient privileges to do this action
             //check that user is logged in and request id is same as logged in user id
             if (!req.user || (req.params.id != req.user._id)) {
                 //request id and user id does not match, throw error
@@ -211,14 +213,15 @@ exports.user_update_post = [
                 err.status = 401;
                 return next(err);
             }
-            //extract the validation errors from a request.
+            //user has suffcient privileges
+            //extract the validation errors from a request
             const errors = validationResult(req);
             //create a new user object without passwords
             const user = new User({
+                _id: req.user._id,
                 username: req.body.username,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
-                _id: req.user._id
             });
             //check if there are errors present
             if (!errors.isEmpty()) {
@@ -230,7 +233,7 @@ exports.user_update_post = [
                     errors: errors.array()
                 });
             } else {
-                //check if username already exists
+                //no errors then check if username already exists
                 const nameRepeatCheck = await User.findOne({ username: { $regex : new RegExp(req.body.username, "i")}, _id: { $ne: req.params.id } });
                 if (nameRepeatCheck != null) {
                     //if item name already exists re-render form with error
@@ -245,9 +248,9 @@ exports.user_update_post = [
                         errors: [err]
                     });
                 } else {
-                    //no errors, check if user attempted to change password
+                    //no errors and name is unique, check if user attempted to change password
                     if (req.body.password) {
-                        //if password is changed, hash password and update user
+                        //if password is changed, hash password and update user along with new password
                         bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
                             if (error) {
                                 return next(error);
@@ -257,7 +260,7 @@ exports.user_update_post = [
                             res.redirect(user.url);
                         });
                     } else {
-                        //if no password input, just update user in db and redirect to user
+                        //if no password input, update user (with same password) in db and redirect to user
                         await User.findByIdAndUpdate(req.user._id, user, {});
                         res.redirect(user.url);
                     }
