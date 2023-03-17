@@ -61,7 +61,7 @@ passport.use(
     try {
       const user = await User.findOne({ username: username });
       if (!user) {
-        return done(null, false, { message: "Username and/or password is incorrect, please try again" });
+        return done(null, false, { message: "Username and/or password is incorrect, please try again." });
       }
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
@@ -74,7 +74,7 @@ passport.use(
           return done(null, user);
         } else {
           // passwords do not match!
-          return done(null, false, { message: "Username and/or password is incorrect, please try again" });
+          return done(null, false, { message: "Username and/or password is incorrect, please try again." });
         }
       });
     } catch (error) {
