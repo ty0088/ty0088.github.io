@@ -50,6 +50,7 @@
                             <% } %>
                         </div>
                         <p><%= message.text %></p>
+                        <%- currentUser && message.lastEditDate != null ? `<p class="edit-note">Last edited: ${message.lastEditDate.toLocaleString()} by ${message.lastEditBy.username} (${message.lastEditBy.membershipStatus})</p>` : "" %>
                         <% if (currentUser && (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || currentUser.membershipStatus == 'Mod'))) { %>
                             <div class="message-footer">
                                 <a href=<%= `/message/${message._id}/update` %>>Edit</a>
