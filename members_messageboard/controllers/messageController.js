@@ -41,8 +41,7 @@ exports.message_create_post = [
     body('messageText', 'A message is required to post and cannot exceed 1000 characters.')
         .trim()
         .notEmpty()
-        .isLength({ max: 1000 })
-        .escape(),
+        .isLength({ max: 1000 }),
     //process request after validation and sanitisation.
     async (req, res, next) => {
         try {
@@ -124,9 +123,7 @@ exports.message_update_post = [
     body('messageText', 'A message is required to post and cannot exceed 1000 characters.')
         .trim()
         .notEmpty()
-        .isLength({ max: 1000 })
-        .escape(),
-
+        .isLength({ max: 1000 }),
     //process request after validation and sanitisation.
     async (req, res, next) => {
         //verify user has sufficient privileges to do this action
