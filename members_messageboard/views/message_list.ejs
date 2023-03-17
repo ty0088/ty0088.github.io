@@ -23,14 +23,26 @@
             <% } %>
         </nav>
         <div class="content-container">
-            <a href="/message/create">Create New Post</a>
+            <% if (currentUser) { %>
+                <a href="/message/create">Post New Message</a>
+            <% } else { %>
+                <p>Log in or sign up to post a message.</p>
+            <% } %>
             <% if (messages.length > 0) { %>
                 <% for (const message of messages) { %>
-                    <div class="message-row">
+                    <% const messageUserId = message.user == null ? "0" : message.user._id %>
+                    <div class=<%- (currentUser && currentUser._id.toString() === messageUserId.toString()) ? "'message-row user'" : "message-row" %>>
                         <div class="message-header">
                             <% if (currentUser) { %>
                                 <span>
-                                    <a href=<%= message.user.url %>><%= message.user.username %></a><%= ` (${message.user.membershipStatus})` %>
+                                    <%- (currentUser._id.toString() === messageUserId.toString() ? "<strong>You: </strong>" : "") %>
+                                    <% if (message.user != null) { %>
+                                        <%= message.user.membershipStatus == "Admin" || message.user.membershipStatus == "Mod" ? `[${message.user.membershipStatus}]` : "" %>
+                                        <a href=<%= message.user.url %>><%= message.user.username %></a>
+                                        <%= message.user.membershipStatus != "Admin" && message.user.membershipStatus != "Mod" ? `(${message.user.membershipStatus})` : "" %>
+                                    <% } else { %>
+                                        [user deleted]
+                                    <% } %>
                                     - Date posted: <%= message.postDate.toLocaleString() %>
                                 </span>                     
                             <% } else { %>
@@ -38,6 +50,12 @@
                             <% } %>
                         </div>
                         <p><%= message.text %></p>
+                        <% if (currentUser && (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || currentUser.membershipStatus == 'Mod'))) { %>
+                            <div class="message-footer">
+                                <a href=<%= `/message/${message._id}/update` %>>Edit</a>
+                                <a href=<%= `/message/${message._id}/delete` %>>Delete</a>
+                            </div>
+                        <% } %>
                     </div>
                 <% } %>
             <% } else { %>
