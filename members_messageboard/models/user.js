@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     membershipStatus: { 
         type: String,
         required: true,
-        enum: ["Member", "Banned", "Deleted", "Admin", "Mod"],
+        enum: ["Member", "Banned", "Admin", "Mod"],
         default: "Member"
     }
 });
