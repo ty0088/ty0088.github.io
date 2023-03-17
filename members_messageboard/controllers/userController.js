@@ -13,10 +13,12 @@ exports.log_in_get = (req, res, next) => {
 }
 
 //authenticate user on log in on POST
+//no error messages on log in failure -----------------------------
 exports.log_in_post = passport.authenticate('local', {
     successRedirect: '/messages',
     failureRedirect: '/log-in'
 });
+
 
 //log user out on GET
 exports.log_out = (req, res, next) => {
@@ -39,9 +41,10 @@ exports.signup_get = (req, res, next) => {
 //submit user to db on POST
 exports.signup_post = [
     //sanitise and validate inputs
-    body('username', 'A username is required and must be no longer than 10 characters.')
+    body('username')
         .trim()
-        .isLength({ min: 1, max: 10 })
+        .isLength({ min: 1, max: 20 }).withMessage('A username is required and must be no longer than 20 characters.')
+        .not().matches(/(\[.*?\])/).withMessage('Username cannot contain characters wrapped in square brackets i.e. [Username].')
         .escape(),
     body('password', 'A password is required and must be between 8 and 12 characters long.')
         .trim()
@@ -92,7 +95,7 @@ exports.signup_post = [
                         errors: [err]
                     });
                 } else {
-                    //no errors, hash password and save user to db and redirect to home
+                    //no errors, hash password and save user to db and redirect to log in page
                     bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
                         try {
                             if (error) {
@@ -100,7 +103,7 @@ exports.signup_post = [
                             }
                             user.password = hashedPassword,
                             await user.save();
-                            res.redirect('/log-in');
+                            res.render('login_form', {title: 'Messageboard - Success! Log In'});
                         } catch (error) {
                             console.log(error);
                             next(error);
@@ -139,7 +142,7 @@ exports.user_update_get = async (req, res, next) => {
         //check that user is logged in and request id is same as logged in user id
         if (req.user && (req.params.id != req.user._id)) {
             //request id and user id does not match, throw error
-            const err = new Error("Unauthorised request - Requested id does not match user id");
+            let err = new Error("Unauthorised request - Requested id does not match user id");
             err.status = 401;
             return next(err);
         }
@@ -165,9 +168,9 @@ exports.user_update_get = async (req, res, next) => {
 //submit changes to user on POST
 exports.user_update_post = [
     //sanitise and validate inputs
-    body('username', 'A username is required and must be no longer than 10 characters.')
+    body('username', 'A username is required and must be no longer than 20 characters.')
         .trim()
-        .isLength({ min: 1, max: 10 })
+        .isLength({ min: 1, max: 20 })
         .escape(),
     body('password', 'A password is required and must be between 8 and 12 characters long.')
         .optional({ checkFalsy: true })
@@ -268,17 +271,29 @@ exports.user_delete_post = async (req, res, next) => {
             err.status = 401;
             return next(err);
         }
-        //query db for user
-        const user = await User.findById(req.params.id);
+        //query db for user and user messages
+        const results = await async.parallel({
+            user: async () => User.findById(req.params.id),
+            userMessages: async () => Message.find({ user: req.params.id }),
+        });
         //check if user was found
-        if (user == null) {
+        console.log(results);
+        if (results.user == null) {
             //if no user found, return error
             const err = new Error("User not found");
             err.status = 404;
             return next(err);
         }
+        //check if any user messsages found
+        if (results.userMessages != null) {
+            //messages found, edit each message user id to "0"
+            results.userMessages.forEach(async (message) => {
+                message.user = null;
+                await Message.findByIdAndUpdate(message._id, message, {});
+            });
+        }
         //if user found, delete from db
-        await user.deleteOne({ _id: req.body.userId });
+        await results.user.deleteOne({ _id: req.body.userId });
         res.redirect('/');
     } catch (error) {
         next(error);
