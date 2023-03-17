@@ -18,6 +18,7 @@
             <%- currentUser ? '<a href="/log-out">Log Out</a>' : "" %>
         </nav>
         <div class="content-container">
+            <h3>User Details:</h3>
             <% if (currentUser) { %>
                 <p><strong>Username: </strong><%= reqUser.username %></p>
                 <p><strong>Join date: </strong><%= reqUser.joinDate.toLocaleDateString() %></p>
@@ -28,7 +29,7 @@
                     <div>
                         <a href=<%= `/user/${reqUser._id}/update` %>>Update user details</a>
                         <a href=<%= `/user/${reqUser._id}/delete` %>>Delete user account</a>
-                    </div>                 
+                    </div>         
                 <% } %>
                 <h3>User posts (<%= userMessages.length %>): </h3>
                 <% if (userMessages.length > 0) { %>
@@ -38,6 +39,12 @@
                                 <span>Date posted: <%= message.postDate.toLocaleString() %></span>
                             </div>
                             <p><%= message.text %></p>
+                            <% if (currentUser._id.toString() == message.user._id.toString() || (currentUser.membershipStatus == 'Admin' || currentUser.membershipStatus == 'Mod')) { %>
+                                <div class="message-footer">
+                                    <a href=<%= `/message/${message._id}/update` %>>Edit</a>
+                                    <a href=<%= `/message/${message._id}/delete` %>>Delete</a>
+                                </div>
+                            <% } %>
                         </div>
                     <% } %>
                 <% } else { %>
