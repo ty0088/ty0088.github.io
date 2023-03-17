@@ -126,3 +126,8 @@ input, textarea {
     font-size: 1em;
   }
 }
+
+.edit-note {
+  font-size: 0.8em;
+  font-style: italic;
+}
