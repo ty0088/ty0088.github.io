@@ -157,9 +157,9 @@ exports.user_detail = async (req, res, next) => {
 exports.user_update_get = async (req, res, next) => {
     try {
         //check that user is logged in and request id is same as logged in user id
-        if (req.user && (req.params.id != req.user._id)) {
+        if (!req.user || (req.params.id != req.user._id)) {
             //request id and user id does not match, throw error
-            let err = new Error("Unauthorised request - Requested id does not match user id");
+            let err = new Error("Unauthorised request - Insufficient privileges");
             err.status = 401;
             return next(err);
         }
@@ -204,6 +204,13 @@ exports.user_update_post = [
     //process request after validation and sanitisation.
     async (req, res, next) => {
         try {
+            //check that user is logged in and request id is same as logged in user id
+            if (!req.user || (req.params.id != req.user._id)) {
+                //request id and user id does not match, throw error
+                let err = new Error("Unauthorised request - Insufficient privileges");
+                err.status = 401;
+                return next(err);
+            }
             //extract the validation errors from a request.
             const errors = validationResult(req);
             //create a new user object without passwords
