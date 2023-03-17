@@ -65,7 +65,12 @@ passport.use(
       }
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
-          // passwords match! log user in
+          // passwords match! check if user is bannded
+          if (user.membershipStatus == 'Banned') {
+            //user is banned, log in fail and message
+            return done(null, false, { message: "User is banned... Uh-oh" });
+          }
+          //user is not banned, so log user in
           return done(null, user);
         } else {
           // passwords do not match!
