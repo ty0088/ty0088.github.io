@@ -25,12 +25,12 @@
             <form action="" method="post">
                 <div class="input-row">
                     <label for="username" class="input-label">Username: </label>
-                    <input type="text" id="username" class="input-input" name="username" placeholder="username" maxlength="20" required value=<%= (typeof currUser == "undefined" ? "" : currUser.username) %>>
+                    <input type="text" id="username" class="input-input" name="username" placeholder="username" maxlength="20" required value=<%- (typeof currUser == "undefined" ? "" : `"${currUser.username}"`) %>>
                     <span class="input-tip">(is required and must be no more than 10 characters long)</span>
                 </div>
                 <div class="input-row">
                     <label for="password" class="input-label">Password: </label>
-                    <input type="password" id="password" class="input-input" name="password" minlength="8" maxlength="12" <%= (typeof currentUser != 'undefined' ? "" : "required") %>>
+                    <input type="password" id="password" class="input-input" name="password" minlength="8" maxlength="12" <%- (typeof currentUser != 'undefined' ? "" : "required") %>>
                     <% if (typeof currentUser != 'undefined') { %>
                         <span class="input-tip">(only required if you wish to change your password, else keep empty)</span>
                     <% } else { %>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="input-row">
                     <label for="passwordConfirm" class="input-label">Confirm Password: </label>
-                    <input type="password" id="passwordConfirm" class="input-input" name="passwordConfirm" minlength="8" <%= (typeof currentUser != 'undefined' ? "" : "required") %>>
+                    <input type="password" id="passwordConfirm" class="input-input" name="passwordConfirm" minlength="8" <%- (typeof currentUser != 'undefined' ? "" : "required") %>>
                     <% if (typeof currentUser != 'undefined') { %>
                         <span class="input-tip">(only required if you wish to change your password, else keep empty)</span>
                     <% } else { %>
@@ -48,12 +48,12 @@
                 </div>
                 <div class="input-row">
                     <label for="firstName" class="input-label">First Name: </label>
-                    <input type="text" id="firstName" class="input-input" name="firstName" required value=<%= (typeof currUser == "undefined" ? "" : currUser.firstName) %>>
+                    <input type="text" id="firstName" class="input-input" name="firstName" required value=<%- (typeof currUser == "undefined" ? "" : `"${currUser.firstName}"`) %>>
                     <span class="input-tip">(is required)</span>
                 </div>
                 <div class="input-row">
                     <label for="lastName" class="input-label">Last Name: </label>
-                    <input type="text" id="lastName" class="input-input" name="lastName" required value=<%= (typeof currUser == "undefined" ? "" : currUser.lastName) %>>
+                    <input type="text" id="lastName" class="input-input" name="lastName" required value=<%- (typeof currUser == "undefined" ? "" : `"${currUser.lastName}"`) %>>
                     <span class="input-tip">(is required)</span>
                 </div>
                 <div class="input-btns">
