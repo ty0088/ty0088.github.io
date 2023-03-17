@@ -33,10 +33,10 @@ router.post('/message/create', messageController.message_create_post);
 //POST: reply to message ----------
 
 //GET: update message form
-router.get('/message/:id/update', );
+router.get('/message/:id/update', messageController.message_update_get);
 
 //POST: update message form
-router.post('/message/:id/update', );
+router.post('/message/:id/update', messageController.message_update_post);
 
 //GET: delete message
 router.get('/message/:id/delete', );
