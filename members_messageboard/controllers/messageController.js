@@ -7,12 +7,31 @@ const Message = require('../models/message');
 //render all messages page on GET
 exports.message_list = async (req, res, next) => {
     try {
-        const messages = await Message.find({}).populate('user').sort({ postDate: -1 });
-        //render message list page
-        res.render('message_list', {
-            title: 'Message Board',
-            messages: messages
-        });
+        //check if user is banned
+        if (req.user && req.user.membershipStatus === 'Banned') {
+            //user is banned, so log user out and render with error -----------
+            req.logout(err => {
+                if (err) {
+                    return next(err);
+                }
+                //render log in form with error message
+                let newErr = new Error("Unauthorised request - User is banned.");
+                newErr.msg = 'This user account has been banned.'
+                newErr.status = 401;
+                res.render('login_form', {
+                    title: 'Messageboard - Log In',
+                    errors: [newErr]
+                });
+            });
+        } else {
+            //user is not banned, so render all messages page
+            const messages = await Message.find({}).populate('user').sort({ postDate: -1 });
+            //render message list page
+            res.render('message_list', {
+                title: 'Message Board',
+                messages: messages
+            });
+        }
     } catch (error) {
         //pass on any errors
         return next(error);
@@ -64,3 +83,12 @@ exports.message_create_post = [
         }
     }
 ];
+
+//render update form on GET
+exports.message_update_get = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        next(error);
+    }
+};
