@@ -3,6 +3,7 @@ const { body, validationResult } = require('express-validator');
 
 //import models
 const Message = require('../models/message');
+const user = require('../models/user');
 
 //render all messages page on GET
 exports.message_list = async (req, res, next) => {
@@ -161,3 +162,71 @@ exports.message_update_post = [
 
     }
 ];
+
+//render message delete page on GET
+exports.message_delete_get = async (req, res, next) => {
+    try {
+        //query db for message and check for results
+        const message = await Message.findById(req.params.id).populate('user');
+        if (message == null) {
+            //if no message found, return error
+            const err = new Error("Message not found");
+            err.status = 404;
+            return next(err);
+        }
+        //message found, check user has sufficient privilege to delete message
+        if (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && message.user.membershipStatus != 'Admin')) {
+            //user is admin/mod, render delete page (mod cannot delete admin messages)
+            res.render('message_delete', {
+                title: 'Messageboard - Delete User Account',
+                reqId: req.params.id,
+                goToUrl: 'goToUrl("/messages")'
+            });
+        } else if (req.user && (req.user._id.toString() == message.user._id.toString())) {
+            //user is message owner, render delete page
+            res.render('message_delete', {
+                title: 'Messageboard - Delete User Account',
+                reqId: req.params.id,
+                goToUrl: 'goToUrl("/messages")'
+            });
+        } else {
+            //user is not logged in or is not message owner
+            const err = new Error("Unauthorised request - Insufficient privileges");
+            err.status = 401;
+            return next(err);
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+//handle message delete on POST
+exports.message_delete_post = async (req, res, next) => {
+    try {
+        //query db for message and check for results
+        const message = await Message.findById(req.params.id).populate('user');
+        if (message == null) {
+            //if no message found, return error
+            const err = new Error("Message not found");
+            err.status = 404;
+            return next(err);
+        }
+        //message found, check user has sufficient privilege to delete message
+        if (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && message.user.membershipStatus != 'Admin')) {
+            //user is admin/mod, delete message (mod cannot delete admin messages)
+            await Message.deleteOne({ _id: req.params.id });
+            res.redirect('/');
+        } else if (req.user && (req.user._id.toString() == message.user._id.toString())) {
+            //user is message owner, delete message
+            await Message.deleteOne({ _id: req.params.id });
+            res.redirect('/');
+        } else {
+            //user is not logged in or is not message owner
+            const err = new Error("Unauthorised request - Insufficient privileges");
+            err.status = 401;
+            return next(err);
+        }
+    } catch (error) {
+        next(error);
+    }
+};
