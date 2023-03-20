@@ -277,7 +277,7 @@ exports.user_delete_get = (req, res, next) => {
     //check that user is logged in and request id is same as logged in user id
     if (req.user && (req.params.id != req.user._id)) {
         //request id and user id does not match, throw error
-        const err = new Error("Unauthorised request - Requested id does not match user id");
+        const err = new Error("Unauthorised request - Insufficient privileges");
         err.status = 401;
         return next(err);
     }
@@ -294,7 +294,7 @@ exports.user_delete_post = async (req, res, next) => {
         //check that user is logged in and request id is same as logged in user id
         if (req.user && (req.params.id != req.user._id)) {
             //request id and user id does not match, throw error
-            const err = new Error("Unauthorised request - Requested id does not match user id");
+            const err = new Error("Unauthorised request - Insufficient privileges");
             err.status = 401;
             return next(err);
         }
