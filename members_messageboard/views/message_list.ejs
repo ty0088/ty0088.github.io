@@ -51,7 +51,8 @@
                         </div>
                         <p><%= message.text %></p>
                         <%- currentUser && message.lastEditDate != null ? `<p class="edit-note">Last edited: ${message.lastEditDate.toLocaleString()} by ${message.lastEditBy.username} (${message.lastEditBy.membershipStatus})</p>` : "" %>
-                        <% if (currentUser && (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || currentUser.membershipStatus == 'Mod'))) { %>
+                        <% const messageMemberStatus = message.user == null ? "" : message.user.membershipStatus %>
+                        <% if (currentUser && (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || (currentUser.membershipStatus == 'Mod' && messageMemberStatus != 'Admin')))) { %>
                             <div class="message-footer">
                                 <a href=<%= `/message/${message._id}/update` %>>Edit</a>
                                 <a href=<%= `/message/${message._id}/delete` %>>Delete</a>
