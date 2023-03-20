@@ -39,10 +39,10 @@ router.get('/message/:id/update', messageController.message_update_get);
 router.post('/message/:id/update', messageController.message_update_post);
 
 //GET: delete message
-router.get('/message/:id/delete', );
+router.get('/message/:id/delete', messageController.message_delete_get);
 
 //POST: delete message
-router.post('/message/:id/delete', );
+router.post('/message/:id/delete', messageController.message_delete_post);
 
 //GET: home page which displays all messages posted
 router.get('/messages', messageController.message_list);
