@@ -91,10 +91,10 @@ exports.message_update_get = async (req, res, next) => {
             err.status = 404;
             return next(err);
         }
+        //message found, set a temp membership status variable which is equal to message user membership status otherwise set to blank
+        const messageMembership = message.user ? message.user.membershipStatus : '';
         //verify user has sufficient privileges to do this action
-        console.log(req.user.membershipStatus);
-        console.log(message.user.membershipStatus);
-        if (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && message.user.membershipStatus != 'Admin')) {
+        if (req.user && (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && messageMembership != 'Admin'))) {
             //admin/mod privileges (but mod cannot edit admin)
             res.render('message_form', {
                 title: 'Message Board - New Post',
@@ -137,8 +137,10 @@ exports.message_update_post = [
             err.status = 404;
             return next(err);
         }
+        //message found, set a temp membership status variable which is equal to message user membership status otherwise set to blank
+        const messageMembership = message.user ? message.user.membershipStatus : '';
         //verify user has sufficient privileges to do this action
-        if (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && message.user.membershipStatus != 'Admin')) {
+        if (req.user && (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && messageMembership != 'Admin'))) {
             //admin/mod privileges (but mod cannot edit admin)
             if (message.user.membershipStatus == 'Admin')
             message.lastEditDate = new Date();
@@ -174,8 +176,10 @@ exports.message_delete_get = async (req, res, next) => {
             err.status = 404;
             return next(err);
         }
-        //message found, check user has sufficient privilege to delete message
-        if (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && message.user.membershipStatus != 'Admin')) {
+        //message found, set a temp membership status variable which is equal to message user membership status otherwise set to blank
+        const messageMembership = message.user ? message.user.membershipStatus : '';
+        //check user has sufficient privilege to delete message
+        if (req.user && (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && messageMembership != 'Admin'))) {
             //user is admin/mod, render delete page (mod cannot delete admin messages)
             res.render('message_delete', {
                 title: 'Messageboard - Delete User Account',
@@ -211,8 +215,10 @@ exports.message_delete_post = async (req, res, next) => {
             err.status = 404;
             return next(err);
         }
-        //message found, check user has sufficient privilege to delete message
-        if (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && message.user.membershipStatus != 'Admin')) {
+        //message found, set a temp membership status variable which is equal to message user membership status otherwise set to blank
+        const messageMembership = message.user ? message.user.membershipStatus : '';
+        // check user has sufficient privilege to delete message
+        if (req.user && (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && messageMembership != 'Admin'))) {
             //user is admin/mod, delete message (mod cannot delete admin messages)
             await Message.deleteOne({ _id: req.params.id });
             res.redirect('/');
