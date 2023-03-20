@@ -275,7 +275,7 @@ exports.user_update_post = [
 //render user delete page on GET
 exports.user_delete_get = (req, res, next) => {
     //check that user is logged in and request id is same as logged in user id
-    if (req.user && (req.params.id != req.user._id)) {
+    if (!req.user || (req.params.id != req.user._id)) {
         //request id and user id does not match, throw error
         const err = new Error("Unauthorised request - Insufficient privileges");
         err.status = 401;
@@ -292,7 +292,7 @@ exports.user_delete_get = (req, res, next) => {
 exports.user_delete_post = async (req, res, next) => {
     try {
         //check that user is logged in and request id is same as logged in user id
-        if (req.user && (req.params.id != req.user._id)) {
+        if (!req.user || (req.params.id != req.user._id)) {
             //request id and user id does not match, throw error
             const err = new Error("Unauthorised request - Insufficient privileges");
             err.status = 401;
@@ -304,7 +304,6 @@ exports.user_delete_post = async (req, res, next) => {
             userMessages: async () => Message.find({ user: req.params.id }),
         });
         //check if user was found
-        console.log(results);
         if (results.user == null) {
             //if no user found, return error
             const err = new Error("User not found");
