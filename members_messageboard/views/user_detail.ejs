@@ -39,7 +39,9 @@
                                 <span>Date posted: <%= message.postDate.toLocaleString() %></span>
                             </div>
                             <p><%= message.text %></p>
-                            <% if (currentUser._id.toString() == message.user._id.toString() || (currentUser.membershipStatus == 'Admin' || currentUser.membershipStatus == 'Mod')) { %>
+                            <% const messageUserId = message.user == null ? "0" : message.user._id %>
+                            <% const messageMemberStatus = message.user == null ? "" : message.user.membershipStatus %>
+                            <% if (currentUser && (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || (currentUser.membershipStatus == 'Mod' && messageMemberStatus != 'Admin')))) { %>
                                 <div class="message-footer">
                                     <a href=<%= `/message/${message._id}/update` %>>Edit</a>
                                     <a href=<%= `/message/${message._id}/delete` %>>Delete</a>
