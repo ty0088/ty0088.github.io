@@ -4,10 +4,12 @@ const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    postDate: { type: Date, default: Date.now },
-    lastEditDate: { type: Date, default: null },
+    text: { type: String, required: true },
+    postDate: { type: Date, default: Date.now, required: true },
+    lastEditDate: { type: Date },
     lastEditBy: { type: Schema.Types.ObjectId, ref: "User" },
-    text: { type: String, required: true }
+    replies: [{ type: Schema.Types.ObjectId, ref: "Message" }],
+    isReply: { type: Boolean, default: false, required: true }
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
