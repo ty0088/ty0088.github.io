@@ -28,10 +28,6 @@ router.get('/message/create', messageController.message_create_get);
 //POST: create message form
 router.post('/message/create', messageController.message_create_post);
 
-//GET: reply to message ----------
-
-//POST: reply to message ----------
-
 //GET: update message form
 router.get('/message/:id/update', messageController.message_update_get);
 
@@ -43,6 +39,12 @@ router.get('/message/:id/delete', messageController.message_delete_get);
 
 //POST: delete message
 router.post('/message/:id/delete', messageController.message_delete_post);
+
+//GET: reply to message
+router.get('/message/:id/reply', messageController.message_reply_get);
+
+//POST: reply to message
+router.post('/message/:id/reply', messageController.message_reply_post);
 
 //GET: home page which displays all messages posted
 router.get('/messages', messageController.message_list);
