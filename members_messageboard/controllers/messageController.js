@@ -3,7 +3,6 @@ const { body, validationResult } = require('express-validator');
 
 //import models
 const Message = require('../models/message');
-const user = require('../models/user');
 
 //render all messages page on GET
 exports.message_list = async (req, res, next) => {
