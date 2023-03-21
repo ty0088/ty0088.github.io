@@ -139,7 +139,7 @@ exports.user_detail = async (req, res, next) => {
     try {
         //query db for user and messages by this user (sort by post date)
         const results = await async.parallel({
-            userMessages: async () => Message.find({ user: req.params.id }).sort({ postDate: -1 }),
+            userMessages: async () => Message.find({ user: req.params.id }).populate('user lastEditBy').sort({ postDate: -1 }),
             reqUser: async () => User.findById(req.params.id)
         });
         res.render('user_detail', {
