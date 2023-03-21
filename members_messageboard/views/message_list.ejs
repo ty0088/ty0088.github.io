@@ -99,6 +99,12 @@
                 <p>There are currently no posts. Be the first to post!</p>
             <% } %>
         </div>
+        <footer>
+            Pages:&nbsp;
+            <% for( let i = 1; i <= totalPages; i++ ) { %>
+                <%- i == currPage ? `<strong>${i}</strong>` : `<a href="/messages/${i}">${i}</a>` %><%- i < totalPages ? ",&nbsp;" : "." %> 
+            <% } %>
+        </footer>
     </div>
 </body>
 </html>

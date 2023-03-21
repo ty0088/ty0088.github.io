@@ -47,6 +47,9 @@ router.get('/message/:id/reply', messageController.message_reply_get);
 router.post('/message/:id/reply', messageController.message_reply_post);
 
 //GET: home page which displays all messages posted
+router.get('/messages/:page', messageController.message_list);
+
+//GET: home page which displays all messages posted
 router.get('/messages', messageController.message_list);
 
 

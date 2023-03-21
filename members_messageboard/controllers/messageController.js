@@ -8,12 +8,19 @@ const user = require('../models/user');
 //render all messages page on GET
 exports.message_list = async (req, res, next) => {
     try {
+        //query db for total count of messages and work out how many pages consisting of 10 main messages i.e. not replies
+        const mainMessageCount = await Message.countDocuments({ $or:[{isReply: undefined}, {isReply: false}] });
+        const totalPages = Math.ceil(mainMessageCount / 10);
+        const currPage = req.params.page == undefined ? 1 : parseInt(req.params.page);
+        const skipAmount = (currPage - 1) * 10;
         //query db for all messages except those that are a reply
-        const messages = await Message.find({}).populate('user lastEditBy').populate({ path: 'replies', populate: { path: 'user' }}).sort({ postDate: -1 });
+        const messages = await Message.find({ $or:[{isReply: undefined}, {isReply: false}] }).populate('user lastEditBy').populate({ path: 'replies', populate: { path: 'user' }}).sort({ postDate: -1 }).limit(10).skip(skipAmount);
         //render message list page
         res.render('message_list', {
             title: 'Message Board',
-            messages
+            messages,
+            currPage,
+            totalPages,
         });
     } catch (error) {
         //pass on any errors
