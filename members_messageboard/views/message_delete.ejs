@@ -18,9 +18,28 @@
             <a href="/log-out">Log Out</a>
         </nav>
         <div class="content-container">
-            <p>
-                Are you sure you wish to delete this message permanently?
-            </p>
+            <p>Are you sure you want to delete this message?</p>
+            <% if (message.replies.length > 0) { %>
+                <p>Replies will not be deleted.</p>
+            <% } %>
+            <div class="message-row">
+                <div class="message-header">
+                    <span>
+                        <% const messageUserId = message.user == null ? "0" : message.user._id %>
+                        <%- (currentUser._id.toString() === messageUserId.toString() ? "<strong>You: </strong>" : "") %>
+                        <% if (message.user != null) { %>
+                            <%= message.user.membershipStatus == "Admin" || message.user.membershipStatus == "Mod" ? `[${message.user.membershipStatus}]` : "" %>
+                            <a href=<%= message.user.url %>><%= message.user.username %></a>
+                            <%= message.user.membershipStatus != "Admin" && message.user.membershipStatus != "Mod" ? `(${message.user.membershipStatus})` : "" %>
+                        <% } else { %>
+                            [user deleted]
+                        <% } %>
+                        - Date posted: <%= message.postDate.toLocaleString() %>
+                    </span> 
+                </div>
+                <p><%= message.text %></p>
+                <%- currentUser && message.lastEditDate != null ? `<p class="edit-note">Last edited: ${message.lastEditDate.toLocaleString()} by ${message.lastEditBy.username} (${message.lastEditBy.membershipStatus})</p>` : "" %>
+            </div>
             <form action="" method="post">
                 <input type="hidden" name="messageId" required value=<%= reqId %>>
                 <button type="submit">Delete</button>
