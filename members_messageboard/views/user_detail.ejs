@@ -36,6 +36,7 @@
                     <% for (message of userMessages) { %>
                         <div class="message-row">
                             <div class="message-header">
+                                <%- message.isReply ? "<strong>REPLY -&nbsp;</strong>" : "" %>
                                 <span>Date posted: <%= message.postDate.toLocaleString() %></span>
                             </div>
                             <p><%= message.text %></p>
