@@ -8,11 +8,12 @@ const user = require('../models/user');
 //render all messages page on GET
 exports.message_list = async (req, res, next) => {
     try {
-        const messages = await Message.find({}).populate('user lastEditBy').sort({ postDate: -1 });
+        //query db for all messages except those that are a reply
+        const messages = await Message.find({}).populate('user lastEditBy').populate({ path: 'replies', populate: { path: 'user' }}).sort({ postDate: -1 });
         //render message list page
         res.render('message_list', {
             title: 'Message Board',
-            messages: messages
+            messages
         });
     } catch (error) {
         //pass on any errors
@@ -142,7 +143,6 @@ exports.message_update_post = [
         //verify user has sufficient privileges to do this action
         if (req.user && (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && messageMembership != 'Admin'))) {
             //admin/mod privileges (but mod cannot edit admin)
-            if (message.user.membershipStatus == 'Admin')
             message.lastEditDate = new Date();
             message.text = req.body.messageText;
             message.lastEditBy = req.user;
@@ -151,6 +151,7 @@ exports.message_update_post = [
         } else if (req.user && (message.user._id.toString() == req.user._id)) {
             //user is logged in and message belongs to req user
             message.lastEditDate = new Date();
+            console.log(message.lastEditDate);
             message.text = req.body.messageText;
             message.lastEditBy = req.user;
             await Message.findByIdAndUpdate(req.params.id, message, {});
@@ -169,7 +170,7 @@ exports.message_update_post = [
 exports.message_delete_get = async (req, res, next) => {
     try {
         //query db for message and check for results
-        const message = await Message.findById(req.params.id).populate('user');
+        const message = await Message.findById(req.params.id).populate('user lastEditBy');
         if (message == null) {
             //if no message found, return error
             const err = new Error("Message not found");
@@ -182,16 +183,18 @@ exports.message_delete_get = async (req, res, next) => {
         if (req.user && (req.user.membershipStatus == 'Admin' || (req.user.membershipStatus == 'Mod' && messageMembership != 'Admin'))) {
             //user is admin/mod, render delete page (mod cannot delete admin messages)
             res.render('message_delete', {
-                title: 'Messageboard - Delete User Account',
+                title: 'Messageboard - Delete Message',
                 reqId: req.params.id,
-                goToUrl: 'goToUrl("/messages")'
+                goToUrl: 'goToUrl("/messages")',
+                message
             });
         } else if (req.user && (req.user._id.toString() == message.user._id.toString())) {
             //user is message owner, render delete page
             res.render('message_delete', {
-                title: 'Messageboard - Delete User Account',
+                title: 'Messageboard - Delete Message',
                 reqId: req.params.id,
-                goToUrl: 'goToUrl("/messages")'
+                goToUrl: 'goToUrl("/messages")',
+                message
             });
         } else {
             //user is not logged in or is not message owner
@@ -236,3 +239,100 @@ exports.message_delete_post = async (req, res, next) => {
         next(error);
     }
 };
+
+//render message reply form on GET
+exports.message_reply_get = async (req, res, next) => {
+    try {
+        //check user is logged in
+        if (req.user) {
+            //query db for message to reply to
+            const message = await Message.findById(req.params.id).populate('user lastEditBy');
+            if (message == null) {
+                //if no message found, return error
+                const err = new Error("Message not found");
+                err.status = 404;
+                return next(err);
+            }
+            //check whether user is trying to reply to a reply
+            if (message.isReply) {
+                //user is trying to reply to a reply, throw error
+                let err = new Error("Forbidden - Cannot reply to a reply message");
+                err.status = 405;
+                return next(err);
+            } else {
+                //user replying to main message, render reply form
+                res.render('message_reply_form', {
+                    title: 'Message Board - Reply to Post',
+                    message,
+                    goToUrl: 'goToUrl("/")'
+                });
+            }
+        } else {
+            //no user, throw error
+            let err = new Error("Unauthorised request - Insufficient privileges");
+            err.status = 401;
+            return next(err);
+        }
+    } catch (error) {
+        next(error);
+    }
+
+};
+
+//handle reply message on POST
+exports.message_reply_post = [
+    //sanitise and validate input
+    body('messageText', 'A message is required to post and cannot exceed 1000 characters.')
+        .trim()
+        .notEmpty()
+        .isLength({ max: 1000 }),
+    //process request after validation and sanitisation.
+    async (req, res, next) => {
+        try {
+            //check user is logged in, otherwise throw error
+            if (!req.user) {
+                let err = new Error("Unauthorised request - Insufficient privileges");
+                err.status = 401;
+                return next(err);
+            }
+            //query db for message user is replying to
+            const messageToReply = await Message.findById(req.params.id);
+            //check whether user is trying to reply to a reply
+            if (messageToReply.isReply) {
+                //user is trying to reply to a reply, throw error
+                let err = new Error("Forbidden - Cannot reply to a reply message");
+                err.status = 405;
+                return next(err);
+            }
+            //extract the validation errors from a request.
+            const errors = validationResult(req);
+            //create a new message object
+            const replyMessage = new Message({
+                user: req.user,
+                text: req.body.messageText,
+                isReply: true
+            });
+            //check if there are errors present
+            if (!errors.isEmpty()) {
+                //if there are errors render message form again with errors and any previously entered data
+                res.render('message_form', {
+                    title: 'Message Board - New Post',
+                    goToUrl: 'goToUrl("/")',
+                    currMessage: replyMessage,
+                    errors: errors.array()
+                });
+            } else {
+                // if no errors, find message user is replying to and add current message to found message
+                //then save found and current message to db and redirect to home
+                messageToReply.replies = [...messageToReply.replies, replyMessage];
+                await async.parallel([
+                    async () => replyMessage.save(),
+                    async () => messageToReply.save()
+                ]);
+                res.redirect('/');
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
+];
