@@ -20,7 +20,6 @@ const bcrypt = require('bcryptjs');
   } 
   catch (error) {
     console.log(error);
-    //direct to no connection error page? ---------------------------------
   }
 })();
 

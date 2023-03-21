@@ -157,7 +157,6 @@ exports.message_update_post = [
         } else if (req.user && (message.user._id.toString() == req.user._id)) {
             //user is logged in and message belongs to req user
             message.lastEditDate = new Date();
-            console.log(message.lastEditDate);
             message.text = req.body.messageText;
             message.lastEditBy = req.user;
             await Message.findByIdAndUpdate(req.params.id, message, {});
