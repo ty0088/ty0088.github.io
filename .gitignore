@@ -11,5 +11,5 @@ mini_message_board/.env
 express-locallibrary/.env
 inventory_app/.env
 inventory_app/node_modules/
-members_messageboard/.env
-members_messageboard/node_modules/
+members_message_board/.env
+members_message_board/node_modules/
