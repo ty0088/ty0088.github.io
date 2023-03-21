@@ -81,6 +81,7 @@ input, textarea {
 .message-row.reply {
   margin-top: -6px;
   margin-left: 15px;
+  font-size: 0.9em;
 }
 
 .message-header {
