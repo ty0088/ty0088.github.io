@@ -39,6 +39,7 @@
                                 <span>Date posted: <%= message.postDate.toLocaleString() %></span>
                             </div>
                             <p><%= message.text %></p>
+                            <%- currentUser && message.lastEditDate != null ? `<p class="edit-note">Last edited: ${message.lastEditDate.toLocaleString()} by ${message.lastEditBy.username} (${message.lastEditBy.membershipStatus})</p>` : "" %>
                             <% const messageUserId = message.user == null ? "0" : message.user._id %>
                             <% const messageMemberStatus = message.user == null ? "" : message.user.membershipStatus %>
                             <% if (currentUser && (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || (currentUser.membershipStatus == 'Mod' && messageMemberStatus != 'Admin')))) { %>
