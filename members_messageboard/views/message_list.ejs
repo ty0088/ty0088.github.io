@@ -30,35 +30,70 @@
             <% } %>
             <% if (messages.length > 0) { %>
                 <% for (const message of messages) { %>
-                    <% const messageUserId = message.user == null ? "0" : message.user._id %>
-                    <div class=<%- (currentUser && currentUser._id.toString() === messageUserId.toString()) ? "'message-row user'" : "message-row" %>>
-                        <div class="message-header">
+                    <% if (!message.isReply) { %>
+                        <% const messageUserId = message.user == null ? "0" : message.user._id %>
+                        <div class=<%- (currentUser && currentUser._id.toString() === messageUserId.toString()) ? "'message-row user'" : "message-row" %> <%= `data-id=${message._id.toString()}` %>>
+                            <div class="message-header">
+                                <% if (currentUser) { %>
+                                    <span>
+                                        <%- (currentUser._id.toString() === messageUserId.toString() ? "<strong>You: </strong>" : "") %>
+                                        <% if (message.user != null) { %>
+                                            <%= message.user.membershipStatus == "Admin" || message.user.membershipStatus == "Mod" ? `[${message.user.membershipStatus}]` : "" %>
+                                            <a href=<%= message.user.url %>><%= message.user.username %></a>
+                                            <%= message.user.membershipStatus != "Admin" && message.user.membershipStatus != "Mod" ? `(${message.user.membershipStatus})` : "" %>
+                                        <% } else { %>
+                                            [user deleted]
+                                        <% } %>
+                                        - Date posted: <%= message.postDate.toLocaleString() %>
+                                    </span>                     
+                                <% } else { %>
+                                    <span>Log in to see who and when posted this and any replies.</span>
+                                <% } %>
+                            </div>
+                            <p><%= message.text %></p>
+                            <%- currentUser && message.lastEditDate ? `<p class="edit-note">Last edited: ${message.lastEditDate.toLocaleString()} by ${message.lastEditBy.username} (${message.lastEditBy.membershipStatus})</p>` : "" %>
                             <% if (currentUser) { %>
-                                <span>
-                                    <%- (currentUser._id.toString() === messageUserId.toString() ? "<strong>You: </strong>" : "") %>
-                                    <% if (message.user != null) { %>
-                                        <%= message.user.membershipStatus == "Admin" || message.user.membershipStatus == "Mod" ? `[${message.user.membershipStatus}]` : "" %>
-                                        <a href=<%= message.user.url %>><%= message.user.username %></a>
-                                        <%= message.user.membershipStatus != "Admin" && message.user.membershipStatus != "Mod" ? `(${message.user.membershipStatus})` : "" %>
-                                    <% } else { %>
-                                        [user deleted]
+                                <div class="message-footer">
+                                    <a href=<%= `/message/${message._id}/reply` %>>Reply</a>
+                                    <% const messageMemberStatus = message.user == null ? "" : message.user.membershipStatus %>
+                                    <% if (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || (currentUser.membershipStatus == 'Mod' && messageMemberStatus != 'Admin'))) { %>
+                                        <a href=<%= `/message/${message._id}/update` %>>Edit</a>
+                                        <a href=<%= `/message/${message._id}/delete` %>>Delete</a>
                                     <% } %>
-                                    - Date posted: <%= message.postDate.toLocaleString() %>
-                                </span>                     
-                            <% } else { %>
-                                <span>Log in to see who posted this and when.</span>
+                                </div>
                             <% } %>
                         </div>
-                        <p><%= message.text %></p>
-                        <%- currentUser && message.lastEditDate != null ? `<p class="edit-note">Last edited: ${message.lastEditDate.toLocaleString()} by ${message.lastEditBy.username} (${message.lastEditBy.membershipStatus})</p>` : "" %>
-                        <% const messageMemberStatus = message.user == null ? "" : message.user.membershipStatus %>
-                        <% if (currentUser && (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || (currentUser.membershipStatus == 'Mod' && messageMemberStatus != 'Admin')))) { %>
-                            <div class="message-footer">
-                                <a href=<%= `/message/${message._id}/update` %>>Edit</a>
-                                <a href=<%= `/message/${message._id}/delete` %>>Delete</a>
-                            </div>
+                        <% if (currentUser && message.replies.length > 0) { %>
+                            <% for (reply of message.replies) { %>
+                                <% const messageUserId = reply.user == null ? "0" : reply.user._id %>
+                                <div class=<%- currentUser._id.toString() === messageUserId.toString() ? "'message-row user reply'" : "'message-row reply'" %>>
+                                    <div class="message-header">
+                                        <span>
+                                            <strong>REPLY - </strong>
+                                            <%- currentUser._id.toString() === messageUserId.toString() ? "<strong>You: </strong>" : "" %>
+                                            <% if (reply.user != null) { %>
+                                                <%= reply.user.membershipStatus == "Admin" || reply.user.membershipStatus == "Mod" ? `[${reply.user.membershipStatus}]` : "" %>
+                                                <a href=<%= reply.user.url %>><%= reply.user.username %></a>
+                                                <%= reply.user.membershipStatus != "Admin" && reply.user.membershipStatus != "Mod" ? `(${reply.user.membershipStatus})` : "" %>
+                                            <% } else { %>
+                                                [user deleted]
+                                            <% } %>
+                                            - Date posted: <%= reply.postDate.toLocaleString() %>
+                                        </span>
+                                    </div>
+                                    <p><%= reply.text %></p>
+                                    <%- currentUser && reply.lastEditDate ? `<p class="edit-note">Last edited: ${reply.lastEditDate.toLocaleString()} by ${reply.lastEditBy.username} (${reply.lastEditBy.membershipStatus})</p>` : "" %>
+                                    <div class="message-footer">
+                                        <% const messageMemberStatus = reply.user == null ? "" : reply.user.membershipStatus %>
+                                        <% if (currentUser._id.toString() === messageUserId.toString() || (currentUser.membershipStatus == 'Admin' || (currentUser.membershipStatus == 'Mod' && messageMemberStatus != 'Admin'))) { %>
+                                            <a href=<%= `/message/${reply._id}/update` %>>Edit</a>
+                                            <a href=<%= `/message/${reply._id}/delete` %>>Delete</a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% } %>
                         <% } %>
-                    </div>
+                    <% } %>
                 <% } %>
             <% } else { %>
                 <p>There are currently no posts. Be the first to post!</p>
