@@ -51,6 +51,12 @@
                             <% } %>
                         </div>
                     <% } %>
+                    <footer>
+                        Pages:&nbsp;
+                        <% for( let i = 1; i <= totalPages; i++ ) { %>
+                            <%- i == currPage ? `<strong>${i}</strong>` : `<a href="/user/${reqId}/${i}">${i}</a>` %><%- i < totalPages ? ",&nbsp;" : "." %> 
+                        <% } %>
+                    </footer>
                 <% } else { %>
                     <p>There are no posts for this user.</p>
                 <% } %>

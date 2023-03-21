@@ -46,10 +46,10 @@ router.get('/message/:id/reply', messageController.message_reply_get);
 //POST: reply to message
 router.post('/message/:id/reply', messageController.message_reply_post);
 
-//GET: home page which displays all messages posted
+//GET: home page which displays 10 results of a certain page
 router.get('/messages/:page', messageController.message_list);
 
-//GET: home page which displays all messages posted
+//GET: home page which displays first 10 results
 router.get('/messages', messageController.message_list);
 
 
@@ -71,6 +71,9 @@ router.get('/user/:id/delete', userController.user_delete_get);
 
 //POST: delete user
 router.post('/user/:id/delete', userController.user_delete_post);
+
+//GET: user details showing page of user messages
+router.get('/user/:id/:page', userController.user_detail);
 
 //GET: user details
 router.get('/user/:id', userController.user_detail);

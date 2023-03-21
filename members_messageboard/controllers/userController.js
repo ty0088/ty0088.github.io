@@ -137,16 +137,28 @@ exports.signup_post = [
 //render user detail page
 exports.user_detail = async (req, res, next) => {
     try {
+        //query db for count of user messages
+        const messageCount = await Message.countDocuments({ user: req.params.id });
+        console.log(messageCount);
+        //calculate total pages required for user messages based on 10 per page
+        const totalPages = Math.ceil(messageCount / 10);
+        console.log(totalPages);
+        const currPage = req.params.page == undefined ? 1 : parseInt(req.params.page);
+        console.log(currPage);
+        const skipAmount = (currPage - 1) * 10;
+        console.log(skipAmount);
         //query db for user and messages by this user (sort by post date)
         const results = await async.parallel({
-            userMessages: async () => Message.find({ user: req.params.id }).populate('user lastEditBy').sort({ postDate: -1 }),
+            userMessages: async () => Message.find({ user: req.params.id }).populate('user lastEditBy').sort({ postDate: -1 }).limit(10).skip(skipAmount),
             reqUser: async () => User.findById(req.params.id)
         });
         res.render('user_detail', {
             title: `Message Board - User Details`,
             reqId: req.params.id,
             userMessages: results.userMessages,
-            reqUser: results.reqUser
+            reqUser: results.reqUser,
+            currPage,
+            totalPages
         });
     } catch (error) {
         next(error);
