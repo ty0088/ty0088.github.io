@@ -13,3 +13,5 @@ inventory_app/.env
 inventory_app/node_modules/
 members_message_board/.env
 members_message_board/node_modules/
+blog_api/.env
+blog_api/node_modules/
