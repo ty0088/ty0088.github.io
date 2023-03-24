@@ -28,7 +28,7 @@ passport.use(new LocalStrategy(
                 return cb(null, user, { message: 'Logged In Successfully' });
             } else {
                 // passwords do not match!
-                return cb(null, false, { message: "Username and/or password is incorrect, please try again." });
+                return cb(null, false, { message: "Email and/or password is incorrect, please try again." });
             }
         } catch (error) {
             return cb(error);
@@ -45,12 +45,11 @@ passport.use(new JWTStrategy(
     },
     async (jwtPayload, cb) => {
         try {
-            const user = await User.findById(jwtPayload._id);
+            const user = await User.findById(jwtPayload.user_id);
             if (user) {
-                return cb(null, user);
-            } else {
-                return done(null, false, { message: 'Unauthorised' });
+                return cb(null, jwtPayload);
             }
+            return cb(null, false);
         } catch (error) {
             return cb(error, false)
         }
