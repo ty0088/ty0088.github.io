@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const BlogSchema = new Schema({
+const PostSchema = new Schema({
     text: { type: String, required: true },
     tite: { type: String, maxLength: 30 },
     private: { type: Boolean, default: false },
@@ -11,8 +11,8 @@ const BlogSchema = new Schema({
 });
 
 // Virtual URL
-BlogSchema.virtual("url").get(function () {
+PostSchema.virtual("url").get(function () {
     return `/user/${this._id}`;
 });
 
-module.exports = mongoose.model('Blog', BlogSchema);
+module.exports = mongoose.model('Post', PostSchema);
