@@ -1,12 +1,12 @@
 require('dotenv').config();
 const { body, validationResult } = require("express-validator");
-const async = require('async'); // -------------------
 const jwt = require('jsonwebtoken');
 const passport = require("passport");
 const bcrypt = require('bcryptjs');
 
 //import user model
 const User = require('../models/user');
+const user = require('../models/user');
 
 //log user in on POST
 exports.log_in_post = (req, res, next) => {
@@ -38,7 +38,7 @@ exports.sign_up_post = [
         .escape()
         .custom(value => { //check whether display_name already exists in db
             return new Promise((resolve, reject) => {
-                User.findOne({ display_name:  value})
+                User.findOne({ display_name:  { $regex : new RegExp(value, "i")}})
                     .then(nameExists => {
                         if (nameExists !== null) {
                             reject(new Error('Display name already exists.'));
@@ -68,7 +68,7 @@ exports.sign_up_post = [
         .trim()
         .isLength({ min: 8, max: 18 }),
     body('passwordConfirm', 'The submitted passwords must match.')
-        .custom((val, { req }) => req.body.password === val),
+        .custom((value, { req }) => req.body.password === value),
     //process request after validation and sanitisation.
     async (req, res, next) => {
         try {
@@ -105,7 +105,7 @@ exports.sign_up_post = [
     },
 ];
 
-//get user details on GET
+//get user details on GET - protected
 exports.user_detail_get = (req, res, next) => {
     //authenticate user token
     passport.authenticate('jwt', { session: false }, async (err, token, info) => {
@@ -113,9 +113,7 @@ exports.user_detail_get = (req, res, next) => {
             if (err || !token) {
                 //if error or no token, then send error
                 console.log(info);
-                return res.status(400).json({
-                    message: '400 - Bad Request'
-                });
+                return res.status(info.status).json({ message: info.message });
             }
             //user token verified, query db for requested user's id
             const queryUser = await User.findById(req.params.id);
@@ -151,3 +149,157 @@ exports.user_detail_get = (req, res, next) => {
 
     })(req, res);
 };
+
+//update user up on PUT - protected
+exports.user_update_put = [
+    //authenticate user token and check token owner id and request id are the same
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, token, info) => {
+            //if error or no token, then send error
+            if (err || !token) {
+                console.log(info);
+                return res.status(400).json({ message: '400 - Bad Request' });
+            }
+            //if token id does not match requested id
+            if (token.user_id != req.params.id) {
+                return res.status(400).json({ message: '401 - Not Authorised' });
+            }
+            //token matches, attach token to req and continue
+            req.token = token;
+            next();
+        })(req, res);
+    },
+    //sanitise and validate inputs - all optional
+    body('display_name', 'Display name is required and must be no longer than 30 characters.')
+        .optional({ checkFalsy: true })
+        .trim()
+        .isLength({ max: 20 })
+        .escape()
+        .custom((value, { req }) => { //check whether display_name already exists in db and is not users own
+            return new Promise((resolve, reject) => {
+                User.findOne({ display_name:  { $regex : new RegExp(value, "i")}, _id: { $ne: req.params.id } })
+                    .then(nameExists => {
+                        if (nameExists !== null) {
+                            reject(new Error('Display name already exists.'));
+                        } else {
+                            resolve(true);
+                        }
+                    });
+            });
+        }),
+    body('email', 'Email is required and in an email format')
+        .optional({ checkFalsy: true })
+        .normalizeEmail()
+        .isEmail()
+        .escape()
+        .custom((value, { req }) => { //check whether email already exists in db and is not users own
+            return new Promise((resolve, reject) => {
+                User.findOne({ email:  value, _id: { $ne: req.params.id } })
+                    .then(emailExists => {
+                        if (emailExists !== null) {
+                            reject(new Error('Email already exists.'));
+                        } else {
+                            resolve(true);
+                        }
+                    });
+            });
+        }),
+    body('password', 'Password is required and must be between 8 and 18 characters long.')
+        .optional({ checkFalsy: true })
+        .trim()
+        .isLength({ min: 8, max: 18 }),
+    body('passwordConfirm', 'The submitted passwords must match.')
+        .custom((value, { req }) => req.body.password === value),
+    //process request after validation and sanitisation.
+    async (req, res, next) => {
+        try {
+            //extract the validation errors from a request
+            const errors = validationResult(req);
+            //check if there are errors present
+            if (!errors.isEmpty()) {
+                //error(s), send status and errors
+                res.status(400).json({ message: "400 - Bad Request", errors: errors.array() });
+            } else {
+                //no errors, create an update object containing only details provided by user
+                const updateVals = {};
+                if (req.body.display_name) {
+                    updateVals.display_name = req.body.display_name;
+                } else if (req.body.email) {
+                    updateVals.email = req.body.email;
+                } else if (req.body.password) {
+                    //if new password entered, hash new password
+                    bcrypt.hash(req.body.password, 10, (error, hashedPassword) => {
+                        if (error) {
+                            return next(error);
+                        }
+                        updateVals.password = hashedPassword;
+                    });
+                }
+                const updatedUser = await User.findByIdAndUpdate(req.params.id, updateVals, { returnDocument: 'after' })
+                res.json({
+                    display_name: updatedUser.display_name,
+                    email: updatedUser.email,
+                    join_date: updatedUser.join_date,
+                    user_type: updatedUser.user_type
+                });
+            };
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    },
+];
+
+//handle user delete on DELETE
+exports.user_delete = [
+    //authenticate user token and check token owner id and request id are the same
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, token, info) => {
+            //if error or no token, then send error
+            if (err || !token) {
+                console.log(info);
+                return res.status(400).json({ message: '400 - Bad Request' });
+            }
+            //if token id does not match requested id
+            if (token.user_id != req.params.id) {
+                return res.status(400).json({ message: '401 - Not Authorised' });
+            }
+            //token matches, attach token to req and continue
+            req.token = token;
+            next();
+        })(req, res);
+    },
+    //sanitise and validate input password
+    body('password', 'Password is required and must be between 8 and 18 characters long.')
+        .trim()
+        .isLength({ min: 8, max: 18 }),
+    body('passwordConfirm', 'The submitted passwords must match.')
+        .custom((value, { req }) => req.body.password === value),
+    //process request after validation and sanitisation.
+    async (req, res, next) => {
+        try {
+            //extract the validation errors from a request
+            const errors = validationResult(req);
+            //check if there are errors present
+            if (!errors.isEmpty()) {
+                //error(s), send status and errors
+                res.status(400).json({ message: "400 - Bad Request", errors: errors.array() });
+            } else {
+                //no errors, validate input password
+                const user = await User.findById(req.params.id);
+                const result = await bcrypt.compare(req.body.password, user.password);
+                if (result) {
+                    // passwords match, delete user
+                    await User.deleteOne({ _id: req.params.id });
+                    res.json({ message: "User deleted"})
+                } else {
+                    // passwords do not match! send error
+                    res.status(401).json({ message: "401 - Not Authorised" });
+                }
+            };
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    },
+];
