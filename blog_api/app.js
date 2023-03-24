@@ -1,4 +1,5 @@
 require('dotenv').config()
+const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
 const mongoose = require('mongoose');
@@ -30,11 +31,15 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRoute);
 
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
 // error handler
 app.use(function(err, req, res, next) {
     // render the error page
-    res.status(err.status || 500);
-    res.json(err);
-  });
+    res.status(err.status || 500).json({ status: err.status || 500, message: err.message });
+});
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
