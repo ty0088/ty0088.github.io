@@ -6,8 +6,9 @@ const mongoose = require('mongoose');
 require('./passport');
 
 const userRoute = require('./routes/user');
-const port = process.env.PORT || 3000;
+const postRoute = require('./routes/post');
 
+const port = process.env.PORT || 3000;
 const app = express();
 
 // Set up mongoose connection
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRoute);
+app.use('/post', postRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
