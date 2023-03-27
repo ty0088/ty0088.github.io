@@ -7,8 +7,8 @@ const userController = require('../controllers/userController')
 //POST Log in
 router.post('/log-in', userController.log_in_post);
 
-//POST Sign up
-router.post('/sign-up', userController.sign_up_post);
+//POST Create new user
+router.post('/create', userController.sign_up_post);
 
 //PUT Update user - protected
 router.put('/:id/update', userController.user_update_put);
