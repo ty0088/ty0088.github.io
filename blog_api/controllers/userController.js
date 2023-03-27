@@ -98,13 +98,13 @@ exports.sign_up_post = [
                         await user.save();
                         res.status(201).json({ message: "201 - User Created" })
                     } catch (error) {
-                        next(error);
+                        return next(error);
                     }
                 });
             }
         } catch (error) {
             console.log(error);
-            next(error);
+            return next(error);
         }
     },
 ];
@@ -154,7 +154,7 @@ exports.user_detail_get = (req, res, next) => {
             res.json(userDetails);
         } catch (error) {
             console.log(error);
-            next(error);
+            return next(error);
         }
 
     })(req, res);
@@ -269,7 +269,7 @@ exports.user_update_put = [
             };
         } catch (error) {
             console.log(error);
-            next(error);
+            return next(error);
         }
     },
 ];
@@ -343,7 +343,7 @@ exports.user_delete = [
             };
         } catch (error) {
             console.log(error);
-            next(error);
+            return next(error);
         }
     },
 ];
