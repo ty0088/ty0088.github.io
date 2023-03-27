@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs');
 
 //import user model
 const User = require('../models/user');
-const user = require('../models/user');
 
 //log user in on POST
 exports.log_in_post = (req, res, next) => {
@@ -23,7 +22,7 @@ exports.log_in_post = (req, res, next) => {
                 res.send(err);
             }
             // generate a signed son web token with the contents of user object and return it in the response
-            const token = jwt.sign({ user_id: user._id.toString() }, process.env.SESSION_SECRET, { expiresIn: '24h' });
+            const token = jwt.sign({ user_id: user._id.toString() }, process.env.SESSION_SECRET, { expiresIn: '1h' });
             return res.json({ message: "Auth Passed", userId: user._id, token });
         });
     })(req, res);
