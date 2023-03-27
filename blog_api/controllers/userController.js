@@ -113,7 +113,7 @@ exports.user_detail_get = (req, res, next) => {
             if (err || !token) {
                 //if error or no token, then send error
                 console.log(info);
-                return res.status(info.status).json({ message: info.message });
+                return res.status(401).json({ message: info.message });
             }
             //user token verified, query db for requested user's id
             const queryUser = await User.findById(req.params.id);
