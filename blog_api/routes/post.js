@@ -17,6 +17,6 @@ router.delete('/:id/delete', );
 router.get('/:id', );
 
 //GET list of blog posts (limit to 10)
-router.get('/', );
+router.get('/', postController.post_list_get);
 
 module.exports = router;

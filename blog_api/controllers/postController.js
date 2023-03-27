@@ -56,7 +56,7 @@ exports.create_post_post = [
             //extract the validation errors from a request.
             const errors = validationResult(req);
             const post = new Post({
-                user: req.token.id,
+                user: req.token.user_id,
                 text: req.body.post_text,
                 title: req.body.post_title,
                 private: req.body.post_private,
@@ -75,7 +75,54 @@ exports.create_post_post = [
             })
         } catch (error) {
             console.log(error);
-            next(error);
+            return next(error);
         }
     }
 ];
+
+//return latest 10 blogs
+exports.post_list_get = [
+    //authenticate user token if any
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, token, info) => {
+            //if token, attach it to req
+            console.log(token);
+            if (token) {
+                req.token = token;
+            }
+            next();
+        })(req, res);
+    },
+    async (req, res, next) => {
+        try {
+            //set option values for paginate plugin
+            const options = {
+                page: req.query.page || 1, //page value from query parameter or start from 1
+                limit: 10,
+                sort: { post_date: -1 },
+                populate: {
+                    path: 'user',
+                    select: '_id display_name user_type',
+                },
+                collation: {
+                locale: 'en',
+                },
+            };
+            //set query for public posts and any of users own private posts
+            const query = {
+                $or: [
+                    { private: false },
+                    {$and: [
+                        { private: true },
+                        { user: req.token.user_id },
+                    ]},
+                ],
+            }
+            const results = await Post.paginate(query, options);
+            res.json(results);
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+    },
+]
