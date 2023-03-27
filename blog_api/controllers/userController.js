@@ -11,18 +11,21 @@ const User = require('../models/user');
 exports.log_in_post = (req, res, next) => {
     passport.authenticate('local', {session: false}, (err, user, info) => {
         if (err || !user) {
-            return res.status(400).json({
-                message: '400 - There was an issue logging in',
-                err,
-                info
+            return res.status(401).json({ 
+                error: [
+                    {
+                        msg: '401 - Unauthorized',
+                    },
+                ],
+                message: info.message,
             });
         }
         req.login(user, {session: false}, (err) => {
             if (err) {
                 res.send(err);
             }
-            // generate a signed son web token with the contents of user object and return it in the response
-            const token = jwt.sign({ user_id: user._id.toString() }, process.env.SESSION_SECRET, { expiresIn: '1h' });
+            //generate a signed json web token with the user id and type and return it in the response
+            const token = jwt.sign({ user_id: user._id.toString(), user_type: user.user_type }, process.env.SESSION_SECRET, { expiresIn: '1h' });
             return res.json({ message: "Auth Passed", userId: user._id, token });
         });
     })(req, res);
@@ -81,7 +84,14 @@ exports.sign_up_post = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
-                res.status(400).json({ message: "400 - Bad Request", errors: errors.array() });
+                res.status(400).json({ 
+                    error: [
+                        {
+                            msg: '400 - Bad Request',
+                        },
+                    ],
+                    errors: errors.array(),
+                });
             } else {
                 //no errors, hash password and save user to db and send succcess message
                 bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
@@ -111,8 +121,14 @@ exports.user_detail_get = (req, res, next) => {
         try {
             if (err || !token) {
                 //if error or no token, then send error
-                console.log(info);
-                return res.status(401).json({ message: info.message });
+                return res.status(401).json({ 
+                    error: [
+                        {
+                            msg: '401 - Unauthorized',
+                        },
+                    ],
+                    message: info.message,
+                });
             }
             //user token verified, query db for requested user's id
             const queryUser = await User.findById(req.params.id);
@@ -156,12 +172,24 @@ exports.user_update_put = [
         passport.authenticate('jwt', { session: false }, (err, token, info) => {
             //if error or no token, then send error
             if (err || !token) {
-                console.log(info);
-                return res.status(400).json({ message: '400 - Bad Request' });
+                return res.status(401).json({ 
+                    error: [
+                        {
+                            msg: '401 - Unauthorized',
+                        },
+                    ],
+                    message: info.message,
+                });;
             }
             //if token id does not match requested id
             if (token.user_id != req.params.id) {
-                return res.status(400).json({ message: '401 - Not Authorised' });
+                return res.status(403).json({ 
+                    error: [
+                        {
+                            msg: '401 - Forbidden',
+                        },
+                    ],
+                });;
             }
             //token matches, attach token to req and continue
             req.token = token;
@@ -217,7 +245,14 @@ exports.user_update_put = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
-                res.status(400).json({ message: "400 - Bad Request", errors: errors.array() });
+                res.status(400).json({ 
+                    error: [
+                        {
+                            msg: '400 - Bad Request',
+                        },
+                    ],
+                    errors: errors.array(),
+                });
             } else {
                 //no errors, create an update object containing only details provided by user
                 const updateVals = {};
@@ -256,12 +291,24 @@ exports.user_delete = [
         passport.authenticate('jwt', { session: false }, (err, token, info) => {
             //if error or no token, then send error
             if (err || !token) {
-                console.log(info);
-                return res.status(400).json({ message: '400 - Bad Request' });
+                return res.status(401).json({ 
+                    error: [
+                        {
+                            msg: '401 - Unauthorized',
+                        },
+                    ],
+                    message: info.message,
+                });
             }
             //if token id does not match requested id
             if (token.user_id != req.params.id) {
-                return res.status(400).json({ message: '401 - Not Authorised' });
+                return res.status(403).json({ 
+                    error: [
+                        {
+                            msg: '403 - Forbidden',
+                        },
+                    ],
+                });
             }
             //token matches, attach token to req and continue
             req.token = token;
@@ -282,7 +329,14 @@ exports.user_delete = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
-                res.status(400).json({ message: "400 - Bad Request", errors: errors.array() });
+                res.status(400).json({ 
+                    error: [
+                        {
+                            msg: '400 - Bad Request',
+                        },
+                    ],
+                    errors: errors.array(),
+                });
             } else {
                 //no errors, validate input password
                 const user = await User.findById(req.params.id);
@@ -293,7 +347,13 @@ exports.user_delete = [
                     res.json({ message: "User deleted"})
                 } else {
                     // passwords do not match! send error
-                    res.status(401).json({ message: "401 - Not Authorised" });
+                    res.status(401).json({ 
+                        error: [
+                            {
+                                msg: '401 - Unauthorized',
+                            },
+                        ],
+                    });
                 }
             };
         } catch (error) {
