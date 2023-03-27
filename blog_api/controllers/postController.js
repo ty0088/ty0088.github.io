@@ -80,18 +80,17 @@ exports.create_post_post = [
     }
 ];
 
-//return latest 10 blogs
+//return blog post list (10 per page)
 exports.post_list_get = [
     //authenticate user token if any
     (req, res, next) => {
         passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if token, attach it to req
-            console.log(token);
+            //if there is a valid token, attach it to req
             if (token) {
                 req.token = token;
             }
             next();
-        })(req, res);
+        })(req, res, next);
     },
     async (req, res, next) => {
         try {
@@ -99,13 +98,13 @@ exports.post_list_get = [
             const options = {
                 page: req.query.page || 1, //page value from query parameter or start from 1
                 limit: 10,
-                sort: { post_date: -1 },
+                sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
                 populate: {
                     path: 'user',
                     select: '_id display_name user_type',
                 },
                 collation: {
-                locale: 'en',
+                    locale: 'en',
                 },
             };
             //set query for public posts and any of users own private posts
