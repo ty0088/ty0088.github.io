@@ -25,7 +25,7 @@ exports.log_in_post = (req, res, next) => {
                 res.send(err);
             }
             //generate a signed json web token with the user id and type and return it in the response
-            const token = jwt.sign({ user_id: user._id.toString(), user_type: user.user_type }, process.env.SESSION_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ user_id: user._id.toString(), user_type: user.user_type }, process.env.SESSION_SECRET, { expiresIn: '10h' });
             return res.json({ message: "Auth Passed", userId: user._id, token });
         });
     })(req, res);
@@ -84,12 +84,7 @@ exports.sign_up_post = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
-                res.status(400).json({ 
-                    error: [
-                        {
-                            msg: '400 - Bad Request',
-                        },
-                    ],
+                res.status(400).json({
                     errors: errors.array(),
                 });
             } else {
@@ -246,15 +241,10 @@ exports.user_update_put = [
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
                 res.status(400).json({ 
-                    error: [
-                        {
-                            msg: '400 - Bad Request',
-                        },
-                    ],
                     errors: errors.array(),
                 });
             } else {
-                //no errors, create an update object containing only details provided by user
+                //no errors, create an update object containing only inputs provided by user
                 const updateVals = {};
                 if (req.body.display_name) {
                     updateVals.display_name = req.body.display_name;
@@ -329,12 +319,7 @@ exports.user_delete = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
-                res.status(400).json({ 
-                    error: [
-                        {
-                            msg: '400 - Bad Request',
-                        },
-                    ],
+                res.status(400).json({
                     errors: errors.array(),
                 });
             } else {
