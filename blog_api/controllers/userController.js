@@ -261,8 +261,9 @@ exports.user_update_put = [
                         updateVals.password = hashedPassword;
                     });
                 }
-                const updatedUser = await User.findByIdAndUpdate(req.params.id, updateVals, { returnDocument: 'after' })
+                const updatedUser = await User.findByIdAndUpdate(req.params.id, updateVals, { returnDocument: 'after' });
                 res.json({
+                    msg: 'User updated successfully',
                     display_name: updatedUser.display_name,
                     email: updatedUser.email,
                     join_date: updatedUser.join_date,
