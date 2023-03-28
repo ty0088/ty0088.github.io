@@ -11,14 +11,10 @@ const User = require('../models/user');
 exports.log_in_post = (req, res, next) => {
     passport.authenticate('local', {session: false}, (err, user, info) => {
         if (err || !user) {
-            return res.status(401).json({ 
-                error: [
-                    {
-                        msg: '401 - Unauthorized',
-                    },
-                ],
-                message: info.message,
-            });
+            const err = new Error("Unauthorized");
+            err.status = 401;
+            err.info = info;
+            return next(err);
         }
         req.login(user, {session: false}, (err) => {
             if (err) {
@@ -96,7 +92,7 @@ exports.sign_up_post = [
                         }
                         user.password = hashedPassword,
                         await user.save();
-                        res.status(201).json({ message: "201 - User Created" })
+                        res.json({ message: "201 - User Created" })
                     } catch (error) {
                         return next(error);
                     }
@@ -116,14 +112,10 @@ exports.user_detail_get = (req, res, next) => {
         try {
             if (err || !token) {
                 //if error or no token, then send error
-                return res.status(401).json({ 
-                    error: [
-                        {
-                            msg: '401 - Unauthorized',
-                        },
-                    ],
-                    message: info.message,
-                });
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                err.info = info;
+                return next(err);
             }
             //user token verified, query db for requested user's id
             const queryUser = await User.findById(req.params.id);
@@ -167,24 +159,17 @@ exports.user_update_put = [
         passport.authenticate('jwt', { session: false }, (err, token, info) => {
             //if error or no token, then send error
             if (err || !token) {
-                return res.status(401).json({ 
-                    error: [
-                        {
-                            msg: '401 - Unauthorized',
-                        },
-                    ],
-                    message: info.message,
-                });;
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                err.info = info;
+                return next(err);
             }
             //if token id does not match requested id
             if (token.user_id != req.params.id) {
-                return res.status(403).json({ 
-                    error: [
-                        {
-                            msg: '401 - Forbidden',
-                        },
-                    ],
-                });;
+                const err = new Error("Forbidden");
+                err.status = 403;
+                err.info = info;
+                return next(err);
             }
             //token matches, attach token to req and continue
             req.token = token;
@@ -284,24 +269,17 @@ exports.user_delete = [
         passport.authenticate('jwt', { session: false }, (err, token, info) => {
             //if error or no token, then send error
             if (err || !token) {
-                return res.status(401).json({ 
-                    error: [
-                        {
-                            msg: '401 - Unauthorized',
-                        },
-                    ],
-                    message: info.message,
-                });
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                err.info = info;
+                return next(err);
             }
             //if token id does not match requested id
             if (token.user_id != req.params.id) {
-                return res.status(403).json({ 
-                    error: [
-                        {
-                            msg: '403 - Forbidden',
-                        },
-                    ],
-                });
+                const err = new Error("Forbidden");
+                err.status = 403;
+                err.info = info;
+                return next(err);
             }
             //token matches, attach token to req and continue
             req.token = token;
@@ -326,8 +304,15 @@ exports.user_delete = [
                     errors: errors.array(),
                 });
             } else {
-                //no errors, validate input password
+                //no errors, query db for user
                 const user = await User.findById(req.params.id);
+                if (message == null) {
+                    //if no user found, return error
+                    const err = new Error("User not found");
+                    err.status = 404;
+                    return next(err);
+                }
+                //validate input password
                 const result = await bcrypt.compare(req.body.password, user.password);
                 if (result) {
                     // passwords match, delete user
@@ -335,13 +320,10 @@ exports.user_delete = [
                     res.json({ message: "User deleted"})
                 } else {
                     // passwords do not match! send error
-                    res.status(401).json({ 
-                        error: [
-                            {
-                                msg: '401 - Unauthorized',
-                            },
-                        ],
-                    });
+                    const err = new Error("Unauthorized");
+                    err.status = 401;
+                    err.info = info;
+                    return next(err);
                 }
             };
         } catch (error) {
