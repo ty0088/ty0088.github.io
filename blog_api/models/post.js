@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
     text: { type: String, required: true },
-    tite: { type: String, maxLength: 30 },
+    title: { type: String, maxLength: 30 },
     private: { type: Boolean, default: false, required: true },
     post_date: { type: Date, default: Date.now, required: true },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
