@@ -113,21 +113,26 @@ exports.post_list_get = [
             };
             //set query filter, if no token query only public posts
             //if there is a token include user's own private posts
-            const query = req.token ?
+            const query = req.token && req.token.user_type === 'Admin' ?
+                //user is admin, return all public and private posts
+                { } : 
+                //else if blog user, return all public and user's own private posts
+                req.token ?
                 {
                     $or: [
                         { private: false },
-                        {$and: [
+                        { $and: [
                             { private: true },
                             { user: req.token.user_id },
-                        ]},
+                        ] },
                     ],
                 } :
+                //if no user, only return public posts
                 {
-                    private: false
+                    private: false,
                 };
             const results = await Post.paginate(query, options);
-            res.json(results);
+            res.json(results);  
         } catch (error) {
             console.log(error);
             return next(error);
