@@ -41,7 +41,8 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
     // render the error page
-    res.status(err.status || 500).json({ status: err.status || 500, message: err.message, info: err.info.message });
+    const errorInfo = err.info ? err.info.message : 'none';
+    res.status(err.status || 500).json({ status: err.status || 500, message: err.message, info: errorInfo });
 });
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
