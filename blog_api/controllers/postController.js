@@ -14,15 +14,10 @@ exports.post_create_post = [
         passport.authenticate('jwt', { session: false }, (err, token, info) => {
             //if error or no token, send error
             if (err || !token) {
-                console.log(info);
-                return res.status(400).json({ 
-                    error: [
-                        {
-                            msg: '400 - Bad Request',
-                        },
-                    ],
-                    info,
-                });
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                err.info = info;
+                return next(err);
             }
             //if user is not an Author or Admin, send error
             if (token.user_type === 'Author' || token.user_type === 'Admin') {
@@ -30,13 +25,10 @@ exports.post_create_post = [
                 req.token = token;
                 next();
             } else {
-                return res.status(401).json({ 
-                    error: [
-                        {
-                            msg: '401 - Not Authorised',
-                        },
-                    ],
-                });
+                const err = new Error("Forbidden");
+                err.status = 403;
+                err.info = info;
+                return next(err);
             }
         })(req, res);
     },
@@ -147,14 +139,10 @@ exports.post_update_put = [
         passport.authenticate('jwt', { session: false }, (err, token, info) => {
             //if error or no token, then send error
             if (err || !token) {
-                return res.status(401).json({ 
-                    error: [
-                        {
-                            msg: '401 - Unauthorized',
-                        },
-                    ],
-                    message: info.message,
-                });;
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                err.info = info;
+                return next(err);
             }
             //token verified, attach token to req and continue
             req.token = token;
@@ -220,6 +208,7 @@ exports.post_update_put = [
                     //update lastEditDate and lastEditBy
                     updateVals.lastEditDate = new Date();
                     updateVals.lastEditBy = results.user;
+                    //update post in db
                     const updatedPost = await Post.findByIdAndUpdate(req.params.id, updateVals, { returnDocument: 'after' })
                     res.json({
                         msg: 'Post updated successfully',
@@ -241,4 +230,49 @@ exports.post_update_put = [
             return next(error);
         }
     },
+];
+
+//handle post delete on DELETE
+exports.post_delete = [
+    //authenticate user token
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, token, info) => {
+            //if error or no token, then send error
+            if (err || !token) {
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                err.info = info;
+                return next(err);
+            }
+            //token verified, attach token to req and continue
+            req.token = token;
+            next();
+        })(req, res);
+    },
+    async (req, res, next) => {
+        try {
+            //query db for post
+            const post = await Post.findById(req.params.id).populate('user');
+            if (post === null) {
+                //if no post found, return error
+                const err = new Error("Post not found");
+                err.status = 404;
+                return next(err);
+            }
+            //if post belongs to req user or user is admin, delete post
+            if (req.token.user_type === 'Admin' || (req.token.user_id === post.user._id.toString())) {
+                await Post.deleteOne({ _id: req.params.id });
+                res.json({ message: 'Post deleted' });
+            } else {
+                //if not blog post owner or admin, return error
+                const err = new Error("Forbidden");
+                err.status = 403;
+                return next(err);
+            }
+
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+    }
 ];
