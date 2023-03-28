@@ -11,7 +11,7 @@ router.post('/create', postController.post_create_post);
 router.put('/:id/update', postController.post_update_put);
 
 //DELETE delete blog post - protected
-router.delete('/:id/delete', );
+router.delete('/:id/delete', postController.post_delete);
 
 //GET retrieve blog post and comments - protected
 router.get('/:id', );
