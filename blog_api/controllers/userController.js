@@ -248,9 +248,11 @@ exports.user_update_put = [
                 const updateVals = {};
                 if (req.body.display_name) {
                     updateVals.display_name = req.body.display_name;
-                } else if (req.body.email) {
+                }
+                if (req.body.email) {
                     updateVals.email = req.body.email;
-                } else if (req.body.password) {
+                }
+                if (req.body.password) {
                     //if new password entered, hash new password
                     bcrypt.hash(req.body.password, 10, (error, hashedPassword) => {
                         if (error) {
