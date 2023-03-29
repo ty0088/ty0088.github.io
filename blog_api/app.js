@@ -8,6 +8,7 @@ require('./passport');
 
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
+const commentRoute = require('./routes/comment');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -34,6 +35,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRoute);
 app.use('/post', postRoute);
+app.use('/post', commentRoute); // comment routes - '/post/:postId/comment'
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
