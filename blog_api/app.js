@@ -2,6 +2,7 @@ require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 require('./passport');
 
@@ -25,6 +26,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(helmet());
 
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to Blog API' });
