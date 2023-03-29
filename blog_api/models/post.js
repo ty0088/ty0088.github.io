@@ -24,7 +24,7 @@ PostSchema.plugin(mongoosePaginate);
 
 // Virtual URL
 PostSchema.virtual("url").get(function () {
-    return `/user/${this._id}`;
+    return `/post/${this._id}`;
 });
 
 module.exports = mongoose.model('Post', PostSchema);
