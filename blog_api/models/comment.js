@@ -9,9 +9,4 @@ const CommentSchema = new Schema({
     post: { type: Schema.Types.ObjectId, ref: "Blog", required: true },
 });
 
-// Virtual URL
-CommentSchema.virtual("url").get(function () {
-    return `/user/${this._id}`;
-});
-
 module.exports = mongoose.model('Comment', CommentSchema);
