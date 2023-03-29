@@ -7,8 +7,8 @@ const commentController = require('../controllers/commentController');
 //POST create new comment for blog post - protected
 router.post('/:postId/comment/create', commentController.comment_create_post);
 
-// //PUT update comment - protected
-// router.put('/:commentId/update', commentController);
+//PUT update comment - protected
+router.put('/:postId/comment/:commentId/update', commentController.comment_update_put);
 
 // //DELETE delete blog post - protected
 // router.delete('/:commentId/delete', commentController);
