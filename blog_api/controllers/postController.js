@@ -183,32 +183,26 @@ exports.post_update_put = [
                     err.status = 404;
                     return next(err);
                 }
-                //verify user is allowed to edit the post
+                //check user is post owner or admin to edit post
                 if (req.token.user_type === 'Admin' || (req.token.user_id === post.user._id.toString())) {
-                    //allow admin or blog post owner to edit
-                    //initialise object with any user updates
-                    const updateVals = {};
+                    //set any changes to post
                     if (req.body.post_text) {
-                        updateVals.text = req.body.post_text;
+                        post.text = req.body.post_text;
                     }
                     if (req.body.post_title) {
-                        updateVals.title = req.body.post_title;
+                        post.title = req.body.post_title;
                     }
                     if (req.body.private) {
-                        updateVals.private = req.body.private;
+                        post.private = req.body.private;
                     }
                     //update lastEditDate and lastEditBy
-                    updateVals.lastEditDate = new Date();
-                    updateVals.lastEditBy = req.token.user_id;
+                    post.lastEditDate = new Date();
+                    post.lastEditBy = req.token.user_id;
                     //update post in db
-                    const updatedPost = await Post.findByIdAndUpdate(req.params.id, updateVals, { returnDocument: 'after' })
+                    await post.save();
                     res.json({
                         msg: 'Post updated successfully',
-                        text: updatedPost.text,
-                        title: updatedPost.title,
-                        private: updatedPost.private,
-                        lastEditDate: updatedPost.lastEditDate,
-                        lastEditBy: updatedPost.lastEditBy,
+                        post,
                     });
                 } else {
                     //else return error

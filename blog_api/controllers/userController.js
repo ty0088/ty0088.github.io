@@ -234,33 +234,30 @@ exports.user_update_put = [
                 res.status(400).json({ 
                     errors: errors.array(),
                 });
-            } else {
-                //no errors, create an update object containing only inputs provided by user
-                const updateVals = {};
-                if (req.body.display_name) {
-                    updateVals.display_name = req.body.display_name;
-                }
-                if (req.body.email) {
-                    updateVals.email = req.body.email;
-                }
-                if (req.body.password) {
-                    //if new password entered, hash new password
-                    bcrypt.hash(req.body.password, 10, (error, hashedPassword) => {
-                        if (error) {
-                            return next(error);
-                        }
-                        updateVals.password = hashedPassword;
-                    });
-                }
-                const updatedUser = await User.findByIdAndUpdate(req.params.id, updateVals, { returnDocument: 'after' });
-                res.json({
-                    msg: 'User updated successfully',
-                    display_name: updatedUser.display_name,
-                    email: updatedUser.email,
-                    join_date: updatedUser.join_date,
-                    user_type: updatedUser.user_type
+            }
+            //no errors, query db for user
+            const user = await User.findById(req.params.id);
+            //set any changes to user
+            if (req.body.display_name) {
+                user.display_name = req.body.display_name;
+            }
+            if (req.body.email) {
+                user.email = req.body.email;
+            }
+            if (req.body.password) {
+                //if new password entered, hash new password
+                bcrypt.hash(req.body.password, 10, (error, hashedPassword) => {
+                    if (error) {
+                        return next(error);
+                    }
+                    updateVals.password = hashedPassword;
                 });
-            };
+            }
+            await user.save();
+            res.json({
+                msg: 'User updated successfully',
+                user,
+            });
         } catch (error) {
             console.log(error);
             return next(error);
