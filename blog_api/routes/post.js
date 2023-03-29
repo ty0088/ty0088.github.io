@@ -14,7 +14,7 @@ router.put('/:id/update', postController.post_update_put);
 router.delete('/:id/delete', postController.post_delete);
 
 //GET retrieve blog post and comments - protected
-router.get('/:id', );
+router.get('/:id', postController.post_detail_get);
 
 //GET list of blog posts
 router.get('/', postController.post_list_get);
