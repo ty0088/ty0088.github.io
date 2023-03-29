@@ -174,26 +174,17 @@ exports.post_update_put = [
                     errors: errors.array(),
                 });
             } else {
-                //no validation errors, query db for user and post
-                const results = await async.parallel({
-                    user: async () => User.findById(req.token.user_id),
-                    post: async () => Post.findById(req.params.id).populate('user', '_id'),
-                });
+                //no validation errors, query db for post
+                const post = await Post.findById(req.params.id).populate('user', '_id');
                 //check if results were returned
-                if (results.post === null) {
+                if (post === null) {
                     //if post not found, return error
                     const err = new Error("Post not found");
                     err.status = 404;
                     return next(err);
                 }
-                if (results.user === null) {
-                    //if user not found, return error
-                    const err = new Error("User not found");
-                    err.status = 404;
-                    return next(err);
-                }
                 //verify user is allowed to edit the post
-                if (req.token.user_type === 'Admin' || (req.token.user_id === results.post.user._id.toString())) {
+                if (req.token.user_type === 'Admin' || (req.token.user_id === post.user._id.toString())) {
                     //allow admin or blog post owner to edit
                     //initialise object with any user updates
                     const updateVals = {};
@@ -208,7 +199,7 @@ exports.post_update_put = [
                     }
                     //update lastEditDate and lastEditBy
                     updateVals.lastEditDate = new Date();
-                    updateVals.lastEditBy = results.user;
+                    updateVals.lastEditBy = req.token.user_id;
                     //update post in db
                     const updatedPost = await Post.findByIdAndUpdate(req.params.id, updateVals, { returnDocument: 'after' })
                     res.json({
