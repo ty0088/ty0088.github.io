@@ -299,7 +299,7 @@ exports.post_detail_get = [
             //query db for post and any related comments
             const results = await async.parallel({
                 post: async () => Post.findById(req.params.id).populate('user', '_id display_name'),
-                comments: async () => Comment.find({ post: req.params.id }).populate('user', '_id display_name'),
+                comments: async () => Comment.find({ post: req.params.id }).populate('user', '_id display_name').sort({ post_date: 1 }),
             });
             //check if post was found
             if (results.post == null) {
