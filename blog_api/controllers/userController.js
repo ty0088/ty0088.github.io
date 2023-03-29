@@ -106,20 +106,27 @@ exports.sign_up_post = [
 ];
 
 //get user details on GET - protected
-exports.user_detail_get = (req, res, next) => {
+exports.user_detail_get = [
     //authenticate user token
-    passport.authenticate('jwt', { session: false }, async (err, token, info) => {
-        try {
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, token, info) => {
+            //if error or no token, then send error
             if (err || !token) {
-                //if error or no token, then send error
                 const err = new Error("Unauthorized");
                 err.status = 401;
                 err.info = info;
                 return next(err);
             }
-            //user token verified, query db for requested user's id
-            const queryUser = await User.findById(req.params.id);
-            if (!queryUser) {
+            //token verified, attach token to req and continue
+            req.token = token;
+            next();
+        })(req, res, next);
+    },
+    async (req, res, next) => {
+        try {
+            //query db for user
+            const user = await User.findById(req.params.id);
+            if (user === null) {
                 //if requested user not found, return error
                 const err = new Error("Requested user not found");
                 err.status = 404;
@@ -127,30 +134,29 @@ exports.user_detail_get = (req, res, next) => {
             }
             //requested user found, check if user is requesting their own details or someone elses
             let userDetails = {};
-            if (token.user_id === req.params.id) {
-                //user requesting own details, send all user detail
+            if (req.token.user_id === req.params.id || req.token.user_type === 'Admin') {
+                //user requesting own details or admin, send all user detail
                 userDetails = {
-                    display_name: queryUser.display_name,
-                    email: queryUser.email,
-                    join_date: queryUser.join_date,
-                    user_type: queryUser.user_type
+                    display_name: user.display_name,
+                    email: user.email,
+                    join_date: user.join_date,
+                    user_type: user.user_type
                 };
             } else {
                 //user is requesting someone elses details, send reduced detail
                 userDetails = {
-                    display_name: queryUser.display_name,
-                    join_date: queryUser.join_date,
-                    user_type: queryUser.user_type
+                    display_name: user.display_name,
+                    join_date: user.join_date,
+                    user_type: user.user_type
                 };
             }
             res.json(userDetails);
         } catch (error) {
             console.log(error);
-            return next(error);
+            return next(error);            
         }
-
-    })(req, res);
-};
+    },
+];
 
 //update user up on PUT - protected
 exports.user_update_put = [
