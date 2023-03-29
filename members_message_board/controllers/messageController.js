@@ -134,7 +134,15 @@ exports.message_update_post = [
         .isLength({ max: 1000 }),
     //process request after validation and sanitisation.
     async (req, res, next) => {
-        //verify user has sufficient privileges to do this action
+        //extract the validation errors from a request.
+        const errors = validationResult(req);
+        //check if there are errors present
+        if (!errors.isEmpty()) {
+            //if errors, return error
+            res.status(400).json({
+                errors: errors.array(),
+            });
+        }
         //query db for specific message
         const message = await Message.findById(req.params.id);
         //check if message was found
