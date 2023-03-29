@@ -14,7 +14,6 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: "User", 
         required: function() {
-            console.log(this.lastEditDate);
             return this.lastEditDate;
         }
     },
