@@ -3,9 +3,10 @@ const { body, validationResult } = require('express-validator');
 const passport = require('passport');
 const async = require('async');
 
-//import post model
+//import models
 const Post = require('../models/post');
 const User = require('../models/user');
+const Comment = require('../models/comment');
 
 //create new blog post on POST - protected
 exports.post_create_post = [
@@ -247,7 +248,7 @@ exports.post_delete = [
             //token verified, attach token to req and continue
             req.token = token;
             next();
-        })(req, res);
+        })(req, res, next);
     },
     async (req, res, next) => {
         try {
@@ -269,10 +270,49 @@ exports.post_delete = [
                 err.status = 403;
                 return next(err);
             }
-
         } catch (error) {
             console.log(error);
             return next(error);
         }
-    }
+    },
+];
+
+//return blog post details and any comments
+exports.post_detail_get = [
+    //authenticate user token
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, token, info) => {
+            //if error or no token, then send error
+            if (err || !token) {
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                err.info = info;
+                return next(err);
+            }
+            //token verified, attach token to req and continue
+            req.token = token;
+            next();
+        })(req, res);
+    },
+    async (req, res, next) => {
+        try {
+            //query db for post and any related comments
+            const results = await async.parallel({
+                post: async () => Post.findById(req.params.id).populate('user', '_id display_name'),
+                comments: async () => Comment.find({ post: req.params.id }).populate('user', '_id display_name'),
+            });
+            //check if post was found
+            if (results.post == null) {
+                //if post not found, return error
+                const err = new Error("Post not found");
+                err.status = 404;
+                return next(err);
+            }
+            //if post belongs to req user or user is admin, delete post
+            res.json(results);
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+    },
 ];
