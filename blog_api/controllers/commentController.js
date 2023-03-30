@@ -1,13 +1,9 @@
 require('dotenv').config();
 const { body, validationResult } = require('express-validator');
 const passport = require('passport');
-const async = require('async');
 
-//import models
-const Post = require('../models/post');
-const User = require('../models/user');
+//import model
 const Comment = require('../models/comment');
-const post = require('../models/post');
 
 //create new comment on POST - protected
 exports.comment_create_post = [
