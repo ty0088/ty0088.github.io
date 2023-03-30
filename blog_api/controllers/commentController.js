@@ -24,7 +24,7 @@ exports.comment_create_post = [
             //create new comment obj
             const comment = new Comment({
                 text: req.body.comment_text,
-                user: req.token.user_id,
+                user: req.user.user_id,
                 post: req.params.postId,
             });
             //check if there are errors present
@@ -49,20 +49,7 @@ exports.comment_create_post = [
 //update comment on PUT - protected
 exports.comment_update_put = [
     //authenticate user token
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                err.info = info;
-                return next(err);
-            }
-            //token verified, attach token to req and continue
-            req.token = token;
-            next();
-        })(req, res);
-    },
+    passport.authenticate('jwt', { session: false }),
     //sanitise and validate input
     body('comment_text', 'Comment text must be at least 1 character long and no more than 1000 characters')
         .trim()
@@ -88,11 +75,11 @@ exports.comment_update_put = [
                 return next(err);
             }
             //check if user is comment owner or admin
-            if (req.token.user_type === 'Admin' || (req.token.user_id === comment.user._id.toString())) {
+            if (req.user.user_type === 'Admin' || (req.user.user_id === comment.user._id.toString())) {
                 //user is owner or admin, update comment
                 comment.text = req.body.comment_text;
                 comment.lastEditDate = new Date();
-                comment.lastEditBy = req.token.user_id;
+                comment.lastEditBy = req.user.user_id;
                 await comment.save();
                 res.json({
                     msg: 'Comment updated successfully',
