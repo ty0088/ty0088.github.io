@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const userController = require('../controllers/userController')
+const userController = require('../controllers/userController');
+const authController = require('../controllers/authController');
 
 //user routes
 //POST Log in
-router.post('/log-in', userController.log_in_post);
+router.post('/log-in', authController.log_in_post);
 
 //POST Create new user
 router.post('/create', userController.sign_up_post);
