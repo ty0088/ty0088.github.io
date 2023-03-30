@@ -86,20 +86,7 @@ exports.sign_up_post = [
 //get user details on GET - protected
 exports.user_detail_get = [
     //authenticate user token
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                err.info = info;
-                return next(err);
-            }
-            //token verified, attach token to req and continue
-            req.token = token;
-            next();
-        })(req, res, next);
-    },
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
             //query db for user
@@ -112,7 +99,7 @@ exports.user_detail_get = [
             }
             //requested user found, check if user is requesting their own details or someone elses
             let userDetails = {};
-            if (req.token.user_id === req.params.id || req.token.user_type === 'Admin') {
+            if (req.user.user_id === req.params.id || req.user.user_type === 'Admin') {
                 //user requesting own details or admin, send all user detail
                 userDetails = {
                     display_name: user.display_name,
@@ -138,25 +125,23 @@ exports.user_detail_get = [
 
 //update user up on PUT - protected
 exports.user_update_put = [
-    //authenticate user token and check token owner id and request id are the same
+    //authenticate user token and confirm user prior to any validation/santisation
     (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
+        passport.authenticate('jwt', { session: false }, (err, user) => {
+            //if error or no user, then send error
+            if (err || !user) {
                 const err = new Error("Unauthorized");
                 err.status = 401;
-                err.info = info;
                 return next(err);
             }
-            //if token id does not match requested id
-            if (token.user_id != req.params.id) {
+            //check logged in user is requesting to update their own detail
+            if (user.user_id != req.params.id) {
                 const err = new Error("Forbidden");
                 err.status = 403;
-                err.info = info;
                 return next(err);
             }
-            //token matches, attach token to req and continue
-            req.token = token;
+            //user is updating their own details, attach user to req
+            req.user = user;
             next();
         })(req, res);
     },
@@ -245,25 +230,22 @@ exports.user_update_put = [
 
 //handle user delete on DELETE
 exports.user_delete = [
-    //authenticate user token and check token owner id and request id are the same
+    //authenticate user token and confirm user prior to any validation/santisation
     (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
+        passport.authenticate('jwt', { session: false }, (err, user) => {
+            //if error or no user, then send error
+            if (err || !user) {
                 const err = new Error("Unauthorized");
                 err.status = 401;
-                err.info = info;
                 return next(err);
             }
-            //if token id does not match requested id
-            if (token.user_id != req.params.id) {
+            //check logged in user is requesting to update their own detail
+            if (user.user_id != req.params.id) {
                 const err = new Error("Forbidden");
                 err.status = 403;
-                err.info = info;
                 return next(err);
             }
-            //token matches, attach token to req and continue
-            req.token = token;
+            //user is updating their own details, continue
             next();
         })(req, res);
     },
@@ -284,29 +266,27 @@ exports.user_delete = [
                 res.status(400).json({
                     errors: errors.array(),
                 });
+            }
+            //no errors, query db for user
+            const user = await User.findById(req.params.id);
+            if (user == null) {
+                //if no user found, return error
+                const err = new Error("User not found");
+                err.status = 404;
+                return next(err);
+            }
+            //validate input password
+            const result = await bcrypt.compare(req.body.password, user.password);
+            if (result) {
+                //passwords match, delete user
+                await User.deleteOne({ _id: req.params.id });
+                res.json({ message: "User deleted"})
             } else {
-                //no errors, query db for user
-                const user = await User.findById(req.params.id);
-                if (message == null) {
-                    //if no user found, return error
-                    const err = new Error("User not found");
-                    err.status = 404;
-                    return next(err);
-                }
-                //validate input password
-                const result = await bcrypt.compare(req.body.password, user.password);
-                if (result) {
-                    // passwords match, delete user
-                    await User.deleteOne({ _id: req.params.id });
-                    res.json({ message: "User deleted"})
-                } else {
-                    // passwords do not match! send error
-                    const err = new Error("Unauthorized");
-                    err.status = 401;
-                    err.info = info;
-                    return next(err);
-                }
-            };
+                //passwords do not match! return error
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                return next(err);
+            }
         } catch (error) {
             console.log(error);
             return next(error);
