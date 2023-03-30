@@ -97,3 +97,35 @@ exports.comment_update_put = [
         }
     },
 ];
+
+//handle comment delete on POST
+exports.comment_delete = [
+    //authenticate user token
+    passport.authenticate('jwt', { session: false }),
+    async (req, res, next) => {
+        try {
+            //query db for comment
+            const comment = await Comment.findById(req.params.commentId)
+            if (comment === null) {
+                //if no comment found, return error
+                const err = new Error("Comment not found");
+                err.status = 404;
+                return next(err);
+            }
+            //if comment belongs to req user or user is admin, delete comment
+            if (req.user.user_type === 'Admin' || (req.user.user_id === comment.user._id.toString())) {
+                await Comment.deleteOne({ _id: req.params.commentId });
+                res.json({ message: 'Comment deleted' });
+            } else {
+                //if not comment owner or admin, return error
+                const err = new Error("Forbidden");
+                err.status = 403;
+                return next(err);
+            }
+
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+    },
+];

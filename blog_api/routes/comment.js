@@ -10,13 +10,7 @@ router.post('/:postId/comment/create', commentController.comment_create_post);
 //PUT update comment - protected
 router.put('/:postId/comment/:commentId/update', commentController.comment_update_put);
 
-// //DELETE delete blog post - protected
-// router.delete('/:commentId/delete', commentController);
-
-// //GET retrieve blog post and comments - protected
-// router.get('/:commentId', commentController);
-
-// //GET list of blog posts
-// router.get('/', commentController);
+//DELETE delete blog post - protected
+router.delete('/:postId/comment/:commentId/delete', commentController.comment_delete);
 
 module.exports = router;
