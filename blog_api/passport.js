@@ -49,9 +49,9 @@ passport.use(new JWTStrategy(
             if (user) {
                 return cb(null, jwtPayload);
             }
-            return cb(null, false, { status: 401, message: '401 - Not Authorised'});
+            return cb(null, false);
         } catch (error) {
-            return cb(error, false, { status: 500, message: '500 - Something went wrong'})
+            return cb(error, false)
         }
     },
 ));
