@@ -61,21 +61,20 @@ exports.sign_up_post = [
                 res.status(400).json({
                     errors: errors.array(),
                 });
-            } else {
-                //no errors, hash password and save user to db and send succcess message
-                bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
-                    try {
-                        if (error) {
-                            return next(error);
-                        }
-                        user.password = hashedPassword,
-                        await user.save();
-                        res.json({ message: "201 - User Created" })
-                    } catch (error) {
+            }
+            //no errors, hash password and save user to db and send succcess message
+            bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
+                try {
+                    if (error) {
                         return next(error);
                     }
-                });
-            }
+                    user.password = hashedPassword,
+                    await user.save();
+                    res.json({ message: "201 - User Created" })
+                } catch (error) {
+                    return next(error);
+                }
+            });
         } catch (error) {
             console.log(error);
             return next(error);
@@ -134,13 +133,13 @@ exports.user_update_put = [
                 err.status = 401;
                 return next(err);
             }
-            //check logged in user is requesting to update their own detail
+            //if user id does not match requested id
             if (user.user_id != req.params.id) {
                 const err = new Error("Forbidden");
                 err.status = 403;
                 return next(err);
             }
-            //user is updating their own details, attach user to req
+            //user matches, attach user to req and continue
             req.user = user;
             next();
         })(req, res);
@@ -239,13 +238,14 @@ exports.user_delete = [
                 err.status = 401;
                 return next(err);
             }
-            //check logged in user is requesting to update their own detail
+            //if user id does not match requested id
             if (user.user_id != req.params.id) {
                 const err = new Error("Forbidden");
                 err.status = 403;
                 return next(err);
             }
-            //user is updating their own details, continue
+            //user matches, attach user to req and continue
+            req.user = user;
             next();
         })(req, res);
     },
@@ -278,13 +278,14 @@ exports.user_delete = [
             //validate input password
             const result = await bcrypt.compare(req.body.password, user.password);
             if (result) {
-                //passwords match, delete user
+                // passwords match, delete user
                 await User.deleteOne({ _id: req.params.id });
                 res.json({ message: "User deleted"})
             } else {
-                //passwords do not match! return error
+                // passwords do not match! send error
                 const err = new Error("Unauthorized");
                 err.status = 401;
+                err.info = info;
                 return next(err);
             }
         } catch (error) {
