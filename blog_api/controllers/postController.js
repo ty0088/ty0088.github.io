@@ -10,25 +10,23 @@ const Comment = require('../models/comment');
 
 //create new blog post on POST - protected
 exports.post_create_post = [
-    //authenticate user token and check token owner id and request id are the same
+    //authenticate user token and confirm user prior to any validation/santisation
     (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
+        passport.authenticate('jwt', { session: false }, (err, user) => {
             //if error or no token, send error
-            if (err || !token) {
+            if (err || !user) {
                 const err = new Error("Unauthorized");
                 err.status = 401;
-                err.info = info;
                 return next(err);
             }
             //if user is not an Author or Admin, send error
-            if (token.user_type === 'Author' || token.user_type === 'Admin') {
-            //token authenticated and user is correct type
-                req.token = token;
+            if (user.user_type === 'Author' || user.user_type === 'Admin') {
+            //user is appropriate type
+                req.user = user;
                 next();
             } else {
                 const err = new Error("Forbidden");
                 err.status = 403;
-                err.info = info;
                 return next(err);
             }
         })(req, res);
@@ -50,7 +48,7 @@ exports.post_create_post = [
             //extract the validation errors from a request.
             const errors = validationResult(req);
             const post = new Post({
-                user: req.token.user_id,
+                user: req.user.user_id,
                 text: req.body.post_text,
                 title: req.body.post_title,
                 private: req.body.post_private,
@@ -76,16 +74,8 @@ exports.post_create_post = [
 
 //return blog post list (10 per page, default ?page=1)
 exports.post_list_get = [
-    //authenticate user token if any
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if there is a valid token, attach it to req
-            if (token) {
-                req.token = token;
-            }
-            next();
-        })(req, res, next);
-    },
+    //authenticate user token
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
             //set option values for paginate plugin
@@ -94,7 +84,7 @@ exports.post_list_get = [
                 page: req.query.page || 1, //page value from query parameter or start from 1
                 limit: 10,
                 sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
-                populate: req.token ?  //populate user id and user type if valid token is present
+                populate: req.user ?  //populate user id and user type if user is logged in
                     {
                         path: 'user',
                         select: '_id display_name user_type',
@@ -104,19 +94,19 @@ exports.post_list_get = [
                     locale: 'en',
                 },
             };
-            //set query filter, if no token query only public posts
-            //if there is a token include user's own private posts
-            const query = req.token && req.token.user_type === 'Admin' ?
+            //set query filter, if no user query only public posts
+            //if there is a user include user's own private posts
+            const query = req.user && req.user.user_type === 'Admin' ?
                 //user is admin, return all public and private posts
                 { } : 
                 //else if blog user, return all public and user's own private posts
-                req.token ?
+                req.user ?
                 {
                     $or: [
                         { private: false },
                         { $and: [
                             { private: true },
-                            { user: req.token.user_id },
+                            { user: req.user.user_id },
                         ] },
                     ],
                 } :
@@ -136,20 +126,7 @@ exports.post_list_get = [
 //update blog post on PUT
 exports.post_update_put = [
     //authenticate user token
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                err.info = info;
-                return next(err);
-            }
-            //token verified, attach token to req and continue
-            req.token = token;
-            next();
-        })(req, res);
-    },
+    passport.authenticate('jwt', { session: false }),
     //sanitise and validate inputs - optional
     body('post_text', 'Post text is required and be at least 10 characters long')
         .optional({ checkFalsy: true })
@@ -173,43 +150,42 @@ exports.post_update_put = [
                 res.status(400).json({ 
                     errors: errors.array(),
                 });
+            }
+            //no validation errors, query db for post
+            const post = await Post.findById(req.params.id).populate('user', '_id');
+            //check if results were returned
+            if (post === null) {
+                //if post not found, return error
+                const err = new Error("Post not found");
+                err.status = 404;
+                return next(err);
+            }
+            //check user is post owner or admin to edit post
+            if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
+                //set any changes to post
+                if (req.body.post_text) {
+                    post.text = req.body.post_text;
+                }
+                if (req.body.post_title) {
+                    post.title = req.body.post_title;
+                }
+                if (req.body.private) {
+                    post.private = req.body.private;
+                }
+                //update lastEditDate and lastEditBy
+                post.lastEditDate = new Date();
+                post.lastEditBy = req.user.user_id;
+                //update post in db
+                await post.save();
+                res.json({
+                    msg: 'Post updated successfully',
+                    post,
+                });
             } else {
-                //no validation errors, query db for post
-                const post = await Post.findById(req.params.id).populate('user', '_id');
-                //check if results were returned
-                if (post === null) {
-                    //if post not found, return error
-                    const err = new Error("Post not found");
-                    err.status = 404;
-                    return next(err);
-                }
-                //check user is post owner or admin to edit post
-                if (req.token.user_type === 'Admin' || (req.token.user_id === post.user._id.toString())) {
-                    //set any changes to post
-                    if (req.body.post_text) {
-                        post.text = req.body.post_text;
-                    }
-                    if (req.body.post_title) {
-                        post.title = req.body.post_title;
-                    }
-                    if (req.body.private) {
-                        post.private = req.body.private;
-                    }
-                    //update lastEditDate and lastEditBy
-                    post.lastEditDate = new Date();
-                    post.lastEditBy = req.token.user_id;
-                    //update post in db
-                    await post.save();
-                    res.json({
-                        msg: 'Post updated successfully',
-                        post,
-                    });
-                } else {
-                    //else return error
-                    let err = new Error("Forbidden");
-                    err.status = 403;
-                    return next(err);
-                }
+                //else return error
+                let err = new Error("Forbidden");
+                err.status = 403;
+                return next(err);
             }
         } catch (error) {
             console.log(error);
@@ -221,20 +197,7 @@ exports.post_update_put = [
 //handle post delete on DELETE
 exports.post_delete = [
     //authenticate user token
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                err.info = info;
-                return next(err);
-            }
-            //token verified, attach token to req and continue
-            req.token = token;
-            next();
-        })(req, res, next);
-    },
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
             //query db for post
@@ -246,7 +209,7 @@ exports.post_delete = [
                 return next(err);
             }
             //if post belongs to req user or user is admin, delete post
-            if (req.token.user_type === 'Admin' || (req.token.user_id === post.user._id.toString())) {
+            if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
                 await Post.deleteOne({ _id: req.params.id });
                 res.json({ message: 'Post deleted' });
             } else {
@@ -265,20 +228,7 @@ exports.post_delete = [
 //return blog post details and any comments
 exports.post_detail_get = [
     //authenticate user token
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                err.info = info;
-                return next(err);
-            }
-            //token verified, attach token to req and continue
-            req.token = token;
-            next();
-        })(req, res);
-    },
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
             //query db for post and any related comments
