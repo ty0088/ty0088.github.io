@@ -12,20 +12,7 @@ const post = require('../models/post');
 //create new comment on POST - protected
 exports.comment_create_post = [
     //authenticate user token
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, token, info) => {
-            //if error or no token, then send error
-            if (err || !token) {
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                err.info = info;
-                return next(err);
-            }
-            //token verified, attach token to req and continue
-            req.token = token;
-            next();
-        })(req, res);
-    },
+    passport.authenticate('jwt', { session: false }),
     //sanitise and validate input
     body('comment_text', 'Comment text must be at least 1 character long and no more than 1000 characters')
         .trim()
