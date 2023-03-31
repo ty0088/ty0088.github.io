@@ -73,8 +73,22 @@ exports.post_create_post = [
 
 //return blog post list (10 per page, default ?page=1)
 exports.post_list_get = [
-    //authenticate user token
-    passport.authenticate('jwt', { session: false }),
+    //authenticate user token if any
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            //if auth error, return error
+            if (err) {
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                return next(err);
+            }
+            //if user token valid then set user to req
+            if (user) {
+                req.user = user;
+            }
+            next();
+        })(req, res, next);
+    },
     async (req, res, next) => {
         try {
             //set option values for paginate plugin
