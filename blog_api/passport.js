@@ -2,7 +2,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
 const bcrypt = require('bcryptjs');
 
 const User = require('./models/user');
@@ -36,11 +35,20 @@ passport.use(new LocalStrategy(
     },
 ));
 
+const cookieExtractor = (req) => {
+    //extract token from cookie
+    let jwt = null;
+    if (req && req.cookies) {
+        jwt = req.cookies['token'];
+    }
+    return jwt;
+}
+
 
 passport.use(new JWTStrategy(
     {
         //options
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        jwtFromRequest: cookieExtractor,
         secretOrKey : process.env.SESSION_SECRET,
     },
     async (jwtPayload, cb) => {

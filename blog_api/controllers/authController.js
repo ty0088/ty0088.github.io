@@ -17,7 +17,9 @@ exports.log_in_post = (req, res, next) => {
             }
             //generate a signed json web token with the user id and type and return it in the response
             const token = jwt.sign({ user_id: user._id.toString(), user_type: user.user_type }, process.env.SESSION_SECRET, { expiresIn: process.env.NODE_ENV === 'development' ? '30 days' : '10h' });
-            return res.json({ message: "Auth Passed", userId: user._id, token });
+            //save token to http only cookie and return success message
+            res.cookie('token', token, { httpOnly: true });
+            return res.json({ message: "Log in successful", userId: user._id, token });
         });
     })(req, res);
 };
