@@ -97,12 +97,16 @@ exports.post_list_get = [
                 page: req.query.page || 1, //page value from query parameter or start from 1
                 limit: 10,
                 sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
-                populate: req.user ?  //populate user id and user type if user is logged in
-                    {
-                        path: 'user',
-                        select: '_id display_name user_type',
-                    } :
-                    '',
+                populate: req.user ?  {
+                    //populate user if a user is logged in
+                    path: 'user',
+                    select: '_id display_name user_type',
+                } : '',
+                populate: req.user ?  {
+                    //populate lastEditBy if a user is logged in
+                    path: 'lastEditBy',
+                    select: '_id display_name user_type',
+                } : '',
                 collation: {
                     locale: 'en',
                 },
@@ -111,10 +115,9 @@ exports.post_list_get = [
             //if there is a user include user's own private posts
             const query = req.user && req.user.user_type === 'Admin' ?
                 //user is admin, return all public and private posts
-                { } : 
+                {} : 
                 //else if blog user, return all public and user's own private posts
-                req.user ?
-                {
+                req.user ? {
                     $or: [
                         { private: false },
                         { $and: [
@@ -122,9 +125,8 @@ exports.post_list_get = [
                             { user: req.user.user_id },
                         ] },
                     ],
-                } :
+                } : {
                 //if no user, only return public posts
-                {
                     private: false,
                 };
             const results = await Post.paginate(query, options);
