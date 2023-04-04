@@ -37,11 +37,11 @@ passport.use(new LocalStrategy(
 
 const cookieExtractor = (req) => {
     //extract token from cookie
-    let jwt = null;
+    let token = null;
     if (req && req.cookies) {
-        jwt = req.cookies['token'];
+        token = req.cookies['jwt'];
     }
-    return jwt;
+    return token;
 }
 
 
