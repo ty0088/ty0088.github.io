@@ -60,9 +60,10 @@ exports.user_authenticate_GET = [
             if (!req.user) {
                 //if no user, send null data
                 res.json({ user: null });
+            } else {
+                //user validated, send user data
+                res.json({ user: req.user });
             }
-            //user validated, send user data
-            res.json({ user: req.user });
         } catch (error) {
             console.log(error);
             return next(error);
