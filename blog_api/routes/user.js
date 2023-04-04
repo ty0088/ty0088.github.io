@@ -8,6 +8,12 @@ const authController = require('../controllers/authController');
 //POST Log in
 router.post('/log-in', authController.log_in_post);
 
+//POST Log out
+router.post('/log-out', authController.user_log_out_post)
+
+//GET Authenticate user
+router.get('/me', authController.user_authenticate_GET);
+
 //POST Create new user
 router.post('/create', userController.sign_up_post);
 
