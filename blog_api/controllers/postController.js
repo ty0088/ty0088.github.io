@@ -93,24 +93,38 @@ exports.post_list_get = [
         try {
             //set option values for paginate plugin
             let options = {}
-            options = {
+            if (req.user) {
+                //if user req then populate post user and last edit by 
+                options = {
+                    page: req.query.page || 1, //page value from query parameter or start from 1
+                    limit: 10,
+                    sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
+                    populate: [{
+                            //populate lastEditBy if a user is logged in
+                            path: 'lastEditBy',
+                            select: '_id display_name user_type',
+                        },
+                        {
+                            //populate user if a user is logged in
+                            path: 'user',
+                            select: '_id display_name user_type',
+                    }],
+                    collation: {
+                        locale: 'en',
+                    },
+                };
+            } else {
+                //if no user, do not populate
+                options = {
                 page: req.query.page || 1, //page value from query parameter or start from 1
                 limit: 10,
                 sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
-                populate: req.user ?  {
-                    //populate user if a user is logged in
-                    path: 'user',
-                    select: '_id display_name user_type',
-                } : '',
-                populate: req.user ?  {
-                    //populate lastEditBy if a user is logged in
-                    path: 'lastEditBy',
-                    select: '_id display_name user_type',
-                } : '',
                 collation: {
                     locale: 'en',
                 },
             };
+            }
+            
             //set query filter, if no user query only public posts
             //if there is a user include user's own private posts
             const query = req.user && req.user.user_type === 'Admin' ?
