@@ -23,6 +23,10 @@ a:hover, nav > button:hover {
     font-weight: bold;
 }
 
+h3 {
+    margin-bottom: 5px;
+}
+
 #main-container{
     margin: 0;
     padding: 0;
