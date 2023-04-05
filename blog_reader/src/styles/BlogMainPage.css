@@ -1,0 +1,18 @@
+.post-row {
+    border: 1px solid black;
+    padding: 0 1em 0 1em;
+}
+
+.post-info {
+    font-size: 0.8em;
+}
+
+.post-text {
+    margin: 1em 0 1em 0;
+}
+
+.post-footer {
+    display: flex;
+    font-size: 0.8em;
+    margin-bottom: 1em;
+}
