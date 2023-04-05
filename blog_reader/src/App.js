@@ -17,10 +17,10 @@ function App() {
         <Route path='/blog_reader' element={<BlogMainPage />}/>
         <Route path='/blog_reader/create-post' element={<PostFormPage action={'create'}/>}/>
         <Route path='/blog_reader/update-post' element={<PostFormPage action={'update'}/>}/>
-        <Route path='/blog_reader/post' element={<PostDetailPage />}/>
+        <Route path='/blog_reader/post/:postId' element={<PostDetailPage />}/>
         <Route path='/blog_reader/sign-up' element={<SignUpPage />}/>
         <Route path='/blog_reader/log-in' element={<LogInPage />}/>
-        <Route path='/blog_reader/user' element={<UserDetailPage />}/>
+        <Route path='/blog_reader/user/:userId' element={<UserDetailPage />}/>
       </Routes>
     </div>
   );
