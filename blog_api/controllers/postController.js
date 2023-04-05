@@ -108,7 +108,11 @@ exports.post_list_get = [
                             //populate user if a user is logged in
                             path: 'user',
                             select: '_id display_name user_type',
-                    }],
+                        },
+                        {
+                            path: 'commentCount',
+                        }
+                    ],
                     collation: {
                         locale: 'en',
                     },
