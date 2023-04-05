@@ -1,3 +1,4 @@
+import '../styles/BlogMainPage.css'
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -56,11 +57,33 @@ const BlogMainPage = () => {
                 {postList.length > 0 &&
                     postList.map((post, i) => {
                         return (
-                            <div key={i}>
-                                <h3>{post.title}</h3>
-                                <p>{post.text}</p>
-                                {typeof post.lastEditBy == 'object' &&
-                                    <p>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</p>
+                            <div key={i} className='post-row'>
+                                {!user &&
+                                    <h3>{post.title}</h3>
+                                }
+                                {user &&
+                                    <h3><Link to={`/blog_reader/post/${post._id}`}>{post.title}</Link></h3>
+                                }
+                                <div className='post-info'>
+                                    {user &&
+                                        <span>
+                                            <a href={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</a>,&nbsp;
+                                        </span>
+                                    }
+                                        Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                                </div>
+                                <div className='post-text'>
+                                    {post.text}
+                                </div>
+                                {user &&
+                                    <div className='post-footer'>
+                                        <span>
+                                            <a href={`/blog_reader/post/${post._id}`}>Comments</a> ({post.commentCount})
+                                        </span>
+                                        {typeof post.lastEditBy == 'object' &&
+                                            <span>&nbsp;- Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</span>
+                                        }
+                                    </div>
                                 }
                             </div>
                         );
