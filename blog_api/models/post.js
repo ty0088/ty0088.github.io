@@ -16,14 +16,23 @@ const PostSchema = new Schema({
         required: function() {
             return this.lastEditDate;
         }
-    },
-});
+    }},
+    { toJSON: { virtuals: true } }, 
+);
 
 PostSchema.plugin(mongoosePaginate);
 
 // Virtual URL
 PostSchema.virtual("url").get(function () {
     return `/post/${this._id}`;
+});
+
+PostSchema.virtual('commentCount', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'post',
+    justOne: false,
+    count: true,
 });
 
 module.exports = mongoose.model('Post', PostSchema);
