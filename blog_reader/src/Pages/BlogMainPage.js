@@ -45,14 +45,17 @@ const BlogMainPage = () => {
     return (
         <div>
             <h1>The Blog Spot</h1>
-            <nav>
-                {!user &&
+            {!user &&
+                <nav>
                     <Link to='/blog_reader/log-in'>Log In</Link>
-                }
-                {user &&
+                </nav>
+            }
+            {user &&
+                <nav>
+                    <Link to={`/blog_reader/user/${user._id}`}>My Account ({user.display_name})</Link>
                     <button type='button' onClick={logOut}>Log Out</button>
-                }
-            </nav>
+                </nav>
+            }
             <div>
                 {postList.length > 0 &&
                     postList.map((post, i) => {
@@ -70,7 +73,7 @@ const BlogMainPage = () => {
                                             <a href={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</a>,&nbsp;
                                         </span>
                                     }
-                                        Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                                    Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
                                 </div>
                                 <div className='post-text'>
                                     {post.text}
@@ -81,7 +84,7 @@ const BlogMainPage = () => {
                                             <a href={`/blog_reader/post/${post._id}`}>Comments</a> ({post.commentCount})
                                         </span>
                                         {typeof post.lastEditBy == 'object' &&
-                                            <span>&nbsp;- Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</span>
+                                            <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
                                         }
                                     </div>
                                 }
