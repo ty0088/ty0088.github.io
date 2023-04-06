@@ -7,6 +7,91 @@ const async = require('async');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 
+//return blog post list (10 per page, default ?page=1)
+exports.post_list_get = [
+    //authenticate user token if any
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            //if auth error, return error
+            if (err) {
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                return next(err);
+            }
+            //if user token valid then set user to req
+            if (user) {
+                req.user = user;
+            }
+            next();
+        })(req, res, next);
+    },
+    async (req, res, next) => {
+        try {
+            //set option values for paginate plugin
+            let options = {}
+            if (req.user) {
+                //if user req then populate post user and last edit by 
+                options = {
+                    page: req.query.page || 1, //page value from query parameter or start from 1
+                    limit: req.query.limit || 5,
+                    sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
+                    populate: [{
+                            //populate lastEditBy if a user is logged in
+                            path: 'lastEditBy',
+                            select: '_id display_name user_type',
+                        },
+                        {
+                            //populate user if a user is logged in
+                            path: 'user',
+                            select: '_id display_name user_type',
+                        },
+                        {
+                            path: 'commentCount',
+                        }
+                    ],
+                    collation: {
+                        locale: 'en',
+                    },
+                };
+            } else {
+                //if no user, do not populate
+                options = {
+                page: req.query.page || 1, //page value from query parameter or start from 1
+                limit: req.query.limit || 5,
+                sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
+                collation: {
+                    locale: 'en',
+                },
+            };
+            }
+            
+            //set query filter, if no user query only public posts
+            //if there is a user include user's own private posts
+            const query = req.user && req.user.user_type === 'Admin' ?
+                //user is admin, return all public and private posts
+                {} : 
+                //else if blog user, return all public and user's own private posts
+                req.user ? {
+                    $or: [
+                        { private: false },
+                        { $and: [
+                            { private: true },
+                            { user: req.user.user_id },
+                        ] },
+                    ],
+                } : {
+                //if no user, only return public posts
+                    private: false,
+                };
+            const results = await Post.paginate(query, options);
+            res.json(results);  
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+    },
+];
+
 //create new blog post on POST - protected
 exports.post_create_post = [
     //authenticate user token and confirm user prior to any validation/santisation
@@ -69,91 +154,6 @@ exports.post_create_post = [
             return next(error);
         }
     }
-];
-
-//return blog post list (10 per page, default ?page=1)
-exports.post_list_get = [
-    //authenticate user token if any
-    (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, user, info) => {
-            //if auth error, return error
-            if (err) {
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                return next(err);
-            }
-            //if user token valid then set user to req
-            if (user) {
-                req.user = user;
-            }
-            next();
-        })(req, res, next);
-    },
-    async (req, res, next) => {
-        try {
-            //set option values for paginate plugin
-            let options = {}
-            if (req.user) {
-                //if user req then populate post user and last edit by 
-                options = {
-                    page: req.query.page || 1, //page value from query parameter or start from 1
-                    limit: 10,
-                    sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
-                    populate: [{
-                            //populate lastEditBy if a user is logged in
-                            path: 'lastEditBy',
-                            select: '_id display_name user_type',
-                        },
-                        {
-                            //populate user if a user is logged in
-                            path: 'user',
-                            select: '_id display_name user_type',
-                        },
-                        {
-                            path: 'commentCount',
-                        }
-                    ],
-                    collation: {
-                        locale: 'en',
-                    },
-                };
-            } else {
-                //if no user, do not populate
-                options = {
-                page: req.query.page || 1, //page value from query parameter or start from 1
-                limit: 10,
-                sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
-                collation: {
-                    locale: 'en',
-                },
-            };
-            }
-            
-            //set query filter, if no user query only public posts
-            //if there is a user include user's own private posts
-            const query = req.user && req.user.user_type === 'Admin' ?
-                //user is admin, return all public and private posts
-                {} : 
-                //else if blog user, return all public and user's own private posts
-                req.user ? {
-                    $or: [
-                        { private: false },
-                        { $and: [
-                            { private: true },
-                            { user: req.user.user_id },
-                        ] },
-                    ],
-                } : {
-                //if no user, only return public posts
-                    private: false,
-                };
-            const results = await Post.paginate(query, options);
-            res.json(results);  
-        } catch (error) {
-            console.log(error);
-            return next(error);
-        }
-    },
 ];
 
 //update blog post on PUT
