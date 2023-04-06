@@ -1,18 +1,31 @@
 import '../styles/BlogMainPage.css'
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import fetchUserToken from '../javascript/fetchUserToken';
 import logOut from '../javascript/logOut';
 import PostRow from '../components/PostRow';
+import PageControl from '../components/pageControl';
+import PageNavSpan from '../components/PageNavSpan';
 
 const BlogMainPage = () => {
     const [postList, setPostList] = useState([]);
     const [paginateInfo, setPaginateInfo] = useState({});
     const [user, setUser] = useState(null);
+    const [pageNum, setPageNum] = useState(null);
+    const [sortOrd, setSortOrd] = useState(null);
+    const [limitVal, setLimitVal] = useState(null);
+    const [searchParams] = useSearchParams();
 
-    //on initial render, check if user is logged in, then get blog post list from api
+    //on initial render, get query string values, check if user is logged in, then get blog post list from api
     useEffect(() => {
+        //get query string values if any
+        const getQueryVals = () => {
+            setPageNum(searchParams.get('page') || '');
+            setSortOrd(searchParams.get('sortOrd') || '');
+            setLimitVal(searchParams.get('limit') || '');   
+        };
+
         //get user token (if any) and get blog list
         const fetchData = async () => {
             try {
@@ -40,6 +53,8 @@ const BlogMainPage = () => {
                 //set error state to render to page----------- ??
             }
         };
+
+        getQueryVals();
         fetchData();
     }, []);
 
@@ -57,12 +72,16 @@ const BlogMainPage = () => {
                     <button type='button' onClick={logOut}>Log Out</button>
                 </nav>
             }
+            <PageControl paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
             {postList.length > 0 &&
                 postList.map((post, i) => {
                     return (
                         <PostRow key={i} user={user} post={post}  />
                     );
                 })
+            }
+            {postList.length > 0 &&
+                <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
             }
             {postList.length === 0 &&
                 <p>There are no posts to show :(</p>
