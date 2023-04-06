@@ -9,7 +9,7 @@ a, a:hover, a:visited, a:active {
 }
 
 nav > button {
-    background: none;
+    background: none!important;
     border: none;
     padding: 0!important;
     font-family: 'Oswald', sans-serif;
@@ -23,12 +23,18 @@ a:hover, nav > button:hover {
     font-weight: bold;
 }
 
-h3 {
-    margin-bottom: 5px;
+h1, h3 {
+    margin-bottom: 0.25em;
+}
+
+nav {
+    margin: 0 0 0.5em 0;
+    display: flex;
+    column-gap: 0.5em;
 }
 
 #main-container{
-    margin: 0;
+    margin: 0 0.5em 0 0.5em;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Oswald', sans-serif;
