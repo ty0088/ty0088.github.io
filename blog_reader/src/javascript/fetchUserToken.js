@@ -1,5 +1,5 @@
 //fetch user data from api using cookie token
-const fetchUser = async () => {
+const fetchUserToken = async () => {
     try {
         const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/me`, { credentials: "include" });
         const userData = await response.json();
@@ -9,4 +9,4 @@ const fetchUser = async () => {
     }
 };
 
-export default fetchUser;
+export default fetchUserToken;
