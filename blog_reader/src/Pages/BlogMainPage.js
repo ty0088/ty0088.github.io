@@ -2,8 +2,9 @@ import '../styles/BlogMainPage.css'
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import fetchUser from '../javascript/fetchUser';
+import fetchUserToken from '../javascript/fetchUserToken';
 import logOut from '../javascript/logOut';
+import PostRow from '../components/PostRow';
 
 const BlogMainPage = () => {
     const [postList, setPostList] = useState([]);
@@ -12,14 +13,14 @@ const BlogMainPage = () => {
 
     //on initial render, check if user is logged in, then get blog post list from api
     useEffect(() => {
-        //get user credentials if any and get blog list
-        const fetchAuthBlogList = async () => {
+        //get user token (if any) and get blog list
+        const fetchData = async () => {
             try {
-                //request user
-                const userData = await fetchUser();
+                //fetch user token data from api
+                const userData = await fetchUserToken();
                 setUser(userData.user);
-                //request blog list and include our credentials (cookie)
-                const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post`, { credentials: "include" });
+                //request blog list from api
+                const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post${window.location.search}`, { credentials: "include" });
                 const responseData = await response.json();
                 //once response is returned, set the post list and paginate data to state
                 setPostList(responseData.docs);
@@ -39,11 +40,11 @@ const BlogMainPage = () => {
                 //set error state to render to page----------- ??
             }
         };
-        fetchAuthBlogList();
+        fetchData();
     }, []);
 
     return (
-        <div>
+        <div id='main-container'>
             <h1>The Blog Spot</h1>
             {!user &&
                 <nav>
@@ -52,47 +53,20 @@ const BlogMainPage = () => {
             }
             {user &&
                 <nav>
-                    <Link to={`/blog_reader/user/${user._id}`}>My Account ({user.display_name})</Link>
+                    <Link to={`/blog_reader/user/${user.user_id}`}>My Account ({user.display_name})</Link>
                     <button type='button' onClick={logOut}>Log Out</button>
                 </nav>
             }
-            <div>
-                {postList.length > 0 &&
-                    postList.map((post, i) => {
-                        return (
-                            <div key={i} className='post-row'>
-                                {!user &&
-                                    <h3>{post.title}</h3>
-                                }
-                                {user &&
-                                    <h3><Link to={`/blog_reader/post/${post._id}`}>{post.title}</Link></h3>
-                                }
-                                <div className='post-info'>
-                                    {user &&
-                                        <span>
-                                            <a href={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</a>,&nbsp;
-                                        </span>
-                                    }
-                                    Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
-                                </div>
-                                <div className='post-text'>
-                                    {post.text}
-                                </div>
-                                {user &&
-                                    <div className='post-footer'>
-                                        <span>
-                                            <a href={`/blog_reader/post/${post._id}`}>Comments</a> ({post.commentCount})
-                                        </span>
-                                        {typeof post.lastEditBy == 'object' &&
-                                            <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
-                                        }
-                                    </div>
-                                }
-                            </div>
-                        );
-                    })
-                }
-            </div>
+            {postList.length > 0 &&
+                postList.map((post, i) => {
+                    return (
+                        <PostRow key={i} user={user} post={post}  />
+                    );
+                })
+            }
+            {postList.length === 0 &&
+                <p>There are no posts to show :(</p>
+            }
         </div>
     );
 };
