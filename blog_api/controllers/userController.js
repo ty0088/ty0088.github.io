@@ -1,9 +1,73 @@
 const { body, validationResult } = require("express-validator");
 const passport = require("passport");
 const bcrypt = require('bcryptjs');
+const async = require('async');
 
-//import user model
+//import models
 const User = require('../models/user');
+const Post = require('../models/post');
+const Comment = require('../models/comment');
+
+//get user details on GET - protected
+exports.user_detail_get = [
+    //authenticate user token
+    passport.authenticate('jwt', { session: false }),
+    async (req, res, next) => {
+        try {
+            //db query for specified user, user's posts (include private post if specified user is logged in user) and user's comments
+            const userPostQuery = {
+                user: req.params.id,
+                $or: [
+                    { private: false },
+                    { $and: [
+                        { private: true },
+                        { user: req.user.user_id },
+                    ] },
+                ],
+            }
+            const results = await async.parallel({
+                user: async () => User.findById(req.params.id),
+                userPosts: async () => Post.find(userPostQuery).sort({ post_date: -1 }),
+                userComments: async () => Comment.find({ user: req.params.id }).sort({ post_date: -1 }).populate('post', 'title'),
+            });
+            // //query db for user
+            // const user = await User.findById(req.params.id);
+            if (results.user === null) {
+                //if requested user not found, return error
+                const err = new Error("Requested user not found");
+                err.status = 404;
+                return next(err);
+            }
+            //requested user found, check if user is requesting their own details or someone elses
+            let userDetails = {};
+            if (req.user.user_id === req.params.id || req.user.user_type === 'Admin') {
+                //user requesting own details or admin, send all user detail
+                userDetails = {
+                    display_name: results.user.display_name,
+                    email: results.user.email,
+                    join_date: results.user.join_date,
+                    user_type: results.user.user_type
+                };
+            } else {
+                //user is requesting someone elses details, send reduced detail
+                userDetails = {
+                    display_name: results.user.display_name,
+                    join_date: results.user.join_date,
+                    user_type: results.user.user_type
+                };
+            }
+            //send query results
+            res.json({
+                userDetails,
+                userPosts: results.userPosts,
+                userComments: results.userComments, 
+            });
+        } catch (error) {
+            console.log(error);
+            return next(error);            
+        }
+    },
+];
 
 //sign user up on POST
 exports.sign_up_post = [
@@ -78,46 +142,6 @@ exports.sign_up_post = [
         } catch (error) {
             console.log(error);
             return next(error);
-        }
-    },
-];
-
-//get user details on GET - protected
-exports.user_detail_get = [
-    //authenticate user token
-    passport.authenticate('jwt', { session: false }),
-    async (req, res, next) => {
-        try {
-            //query db for user
-            const user = await User.findById(req.params.id);
-            if (user === null) {
-                //if requested user not found, return error
-                const err = new Error("Requested user not found");
-                err.status = 404;
-                return next(err);
-            }
-            //requested user found, check if user is requesting their own details or someone elses
-            let userDetails = {};
-            if (req.user.user_id === req.params.id || req.user.user_type === 'Admin') {
-                //user requesting own details or admin, send all user detail
-                userDetails = {
-                    display_name: user.display_name,
-                    email: user.email,
-                    join_date: user.join_date,
-                    user_type: user.user_type
-                };
-            } else {
-                //user is requesting someone elses details, send reduced detail
-                userDetails = {
-                    display_name: user.display_name,
-                    join_date: user.join_date,
-                    user_type: user.user_type
-                };
-            }
-            res.json(userDetails);
-        } catch (error) {
-            console.log(error);
-            return next(error);            
         }
     },
 ];
