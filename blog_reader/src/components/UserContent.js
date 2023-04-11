@@ -33,6 +33,9 @@ const UserContent = ({ userType, userPosts, userComments }) => {
                             <li key={i}>
                                 <Link to={`/blog_reader/post/${post._id}`}>{post.title}</Link>
                                 &nbsp;&nbsp;-&nbsp;&nbsp;({new Date(post.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})
+                                {post.private &&
+                                    <span>&nbsp;&nbsp;-&nbsp;&nbsp;Private Post</span>
+                                }
                             </li>
                         );
                     })
