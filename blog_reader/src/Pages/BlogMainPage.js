@@ -56,6 +56,7 @@ const BlogMainPage = () => {
 
         getQueryVals();
         fetchData();
+    // eslint-disable-next-line
     }, []);
 
     return (
