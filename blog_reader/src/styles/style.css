@@ -8,7 +8,7 @@ a, a:hover, a:visited, a:active {
     text-decoration: underline;
 }
 
-nav > button {
+.button-link {
     background: none!important;
     border: none;
     padding: 0!important;
