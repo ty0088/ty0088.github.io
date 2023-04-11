@@ -3,7 +3,7 @@ import React from 'react';
 
 import PageNavSpan from './PageNavSpan';
 
-const PageControl = ({ paginateInfo, pageNum, sortOrd, limitVal }) => {
+const PageNavRow = ({ paginateInfo, pageNum, sortOrd, limitVal }) => {
 
     return (
         <div className='post-info'>
@@ -15,4 +15,4 @@ const PageControl = ({ paginateInfo, pageNum, sortOrd, limitVal }) => {
         </div>
     );
 };
-export default PageControl;
+export default PageNavRow;

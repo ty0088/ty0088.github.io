@@ -5,7 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import fetchUserToken from '../javascript/fetchUserToken';
 import logOut from '../javascript/logOut';
 import PostRow from '../components/PostRow';
-import PageControl from '../components/pageControl';
+import PageNavRow from '../components/PageNavRow';
 import PageNavSpan from '../components/PageNavSpan';
 
 const BlogMainPage = () => {
@@ -69,10 +69,10 @@ const BlogMainPage = () => {
             {user &&
                 <nav>
                     <Link to={`/blog_reader/user/${user.user_id}`}>My Account ({user.display_name})</Link>
-                    <button type='button' onClick={logOut}>Log Out</button>
+                    <button className='button-link' type='button' onClick={logOut}>Log Out</button>
                 </nav>
             }
-            <PageControl paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
+            <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
             {postList.length > 0 &&
                 postList.map((post, i) => {
                     return (
