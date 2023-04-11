@@ -1,0 +1,9 @@
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-content-container {
+    display: flex;
+    flex-direction: column;
+}
