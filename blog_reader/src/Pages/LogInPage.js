@@ -1,3 +1,4 @@
+import '../styles/formPages.css'
 import React, { useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
@@ -46,20 +47,23 @@ const LogInPage = () => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot</h1>
-            <h3>Log In</h3>
+            <p>Please log in:</p>
             <form action='' method=''>
-                <div>
+                <div className='input-row login'>
                     <label htmlFor='email'>Email: </label>
-                    <input type='email' id='input-email' name='email'/>
+                    <input type='email' id='input-email' name='email' required />
                 </div>
-                <div>
+                <div className='input-row login'>
                     <label htmlFor='password'>Password: </label>
-                    <input type='password' id='input-password' name='password'/>
+                    <input type='password' id='input-password' name='password' required />
                 </div>
-                <button className='button-link' type='submit'>Log In</button>
-                <Link to='/blog_reader'>Cancel</Link>
-                <Link to='/blog_reader/sign-up'>Sign Up</Link>
+                <div className='button-container login'>
+                    <button className='button-link' type='submit'>Log In</button>
+                    <Link className='button-link' to='/blog_reader'>Cancel</Link>
+                </div>
+
             </form>
+            <p>Not yet signed up? Click <Link to='/blog_reader/sign-up'>here</Link>.</p>
         </div>
     );
 };
