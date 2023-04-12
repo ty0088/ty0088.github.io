@@ -78,7 +78,7 @@ exports.sign_up_post = [
         .escape()
         .custom(value => { //check whether display_name already exists in db
             return new Promise((resolve, reject) => {
-                User.findOne({ display_name:  { $regex : new RegExp(value, "i")}})
+                User.findOne({ display_name:  { $regex : '^' + value + '$', $options: "i"}})
                     .then(nameExists => {
                         if (nameExists !== null) {
                             reject(new Error('Display name already exists.'));
@@ -177,7 +177,7 @@ exports.user_update_put = [
         .escape()
         .custom((value, { req }) => { //check whether display_name already exists in db and is not users own
             return new Promise((resolve, reject) => {
-                User.findOne({ display_name:  { $regex : new RegExp(value, "i")}, _id: { $ne: req.params.id } })
+                User.findOne({ display_name:  { $regex : '^' + value + '$', $options: "i"}, _id: { $ne: req.params.id } })
                     .then(nameExists => {
                         if (nameExists !== null) {
                             reject(new Error('Display name already exists.'));
