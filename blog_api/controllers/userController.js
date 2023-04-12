@@ -222,9 +222,22 @@ exports.user_update_put = [
                     errors: errors.array(),
                 });
             }
-            //no errors, query db for user
-            const user = await User.findById(req.params.id);
-            //set any changes to user
+            //re-auth user by verifying current password before updating
+            const user = await User.findById(req.user.user_id);
+            if (user === null) {
+                //if no user found, return error
+                const err = new Error("User not found");
+                err.status = 404;
+                return next(err);
+            }
+            const passResult = await bcrypt.compare(req.body.currPassword, user.password);
+            if (!passResult) {
+                //if password re auth fails, send 401 error
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                return next(err);
+            }
+            //user re auth passed, set any changes to user
             if (req.body.display_name) {
                 user.display_name = req.body.display_name;
             }
@@ -240,6 +253,7 @@ exports.user_update_put = [
                     updateVals.password = hashedPassword;
                 });
             }
+            //update db
             await user.save();
             res.json({
                 msg: 'User updated successfully',
