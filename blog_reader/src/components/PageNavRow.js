@@ -4,7 +4,7 @@ import React from 'react';
 import PageNavSpan from './PageNavSpan';
 
 const PageNavRow = ({ paginateInfo, pageNum, sortOrd, limitVal }) => {
-
+    //Page navigation with sort by newest or oldest and query result limit
     return (
         <div className='post-info'>
             <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} />
