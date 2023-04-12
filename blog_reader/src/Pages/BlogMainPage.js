@@ -65,6 +65,7 @@ const BlogMainPage = () => {
             {!user &&
                 <nav>
                     <Link to='/blog_reader/log-in'>Log In</Link>
+                    <Link to='/blog_reader/sign-up'>Sign Up</Link>
                 </nav>
             }
             {user &&
@@ -75,14 +76,14 @@ const BlogMainPage = () => {
             }
             <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
             {postList.length > 0 &&
-                postList.map((post, i) => {
-                    return (
-                        <PostRow key={i} user={user} post={post}  />
-                    );
-                })
-            }
-            {postList.length > 0 &&
-                <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
+                <> 
+                    {postList.map((post, i) => {
+                        return (
+                            <PostRow key={i} user={user} post={post}  />
+                        );
+                    })}
+                    <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
+                </>
             }
             {postList.length === 0 &&
                 <p>There are no posts to show :(</p>
