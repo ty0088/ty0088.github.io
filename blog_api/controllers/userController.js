@@ -122,7 +122,6 @@ exports.sign_up_post = [
             });
             //check if there are errors present
             if (!errors.isEmpty()) {
-                console.log(errors);
                 //error(s), send status and errors
                 return res.status(400).json({
                     errors: errors.array(),
@@ -131,7 +130,6 @@ exports.sign_up_post = [
             //no errors, hash password and save user to db and send succcess message
             bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
                 try {
-                    console.log('!');
                     if (error) {
                         return next(error);
                     }
