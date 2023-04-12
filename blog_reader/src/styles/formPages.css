@@ -1,0 +1,29 @@
+.input-row {
+    display: grid;
+    text-align: end;
+    align-items: center;
+}
+
+.input-row.user {
+    grid-template-columns: 7em 10em;
+}
+
+.input-row.login {
+    grid-template-columns: 3.5em 10em;
+}
+
+.input-row > input {
+    margin-left: 1em;
+}
+
+.button-container {
+    margin: 0.5em 0 0 0;
+}
+
+.button-container.user {
+    margin-left: 7.5em;
+}
+
+.button-container.login {
+    margin-left: 4em;
+}
