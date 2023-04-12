@@ -13,7 +13,7 @@ exports.log_in_post = (req, res, next) => {
         }
         req.login(user, {session: false}, (err) => {
             if (err) {
-                res.send(err);
+                return res.send(err);
             }
             //generate a signed json web token with the user data
             const payload = { 
@@ -59,10 +59,10 @@ exports.user_authenticate_GET = [
             //check for user validation
             if (!req.user) {
                 //if no user, send null data
-                res.json({ user: null });
+                return res.json({ user: null });
             } else {
                 //user validated, send user data
-                res.json({ user: req.user });
+                return res.json({ user: req.user });
             }
         } catch (error) {
             console.log(error);

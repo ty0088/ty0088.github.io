@@ -107,7 +107,7 @@ exports.post_create_post = [
             if (user.user_type === 'Author' || user.user_type === 'Admin') {
             //user is appropriate type
                 req.user = user;
-                next();
+                return next();
             } else {
                 const err = new Error("Forbidden");
                 err.status = 403;
@@ -140,7 +140,7 @@ exports.post_create_post = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //if errors, return error
-                res.status(400).json({
+                return res.status(400).json({
                     errors: errors.array(),
                 });
             }
@@ -180,7 +180,7 @@ exports.post_update_put = [
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 //if errors, send status and errors
-                res.status(400).json({ 
+                return res.status(400).json({ 
                     errors: errors.array(),
                 });
             }
@@ -210,7 +210,7 @@ exports.post_update_put = [
                 post.lastEditBy = req.user.user_id;
                 //update post in db
                 await post.save();
-                res.json({
+                return res.json({
                     msg: 'Post updated successfully',
                     post,
                 });
@@ -244,7 +244,7 @@ exports.post_delete = [
             //if post belongs to req user or user is admin, delete post
             if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
                 await Post.deleteOne({ _id: req.params.id });
-                res.json({ message: 'Post deleted' });
+                return res.json({ message: 'Post deleted' });
             } else {
                 //if not blog post owner or admin, return error
                 const err = new Error("Forbidden");

@@ -26,7 +26,7 @@ exports.comment_create_post = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //if errors, return error
-                res.status(400).json({
+                return res.status(400).json({
                     errors: errors.array(),
                 });
             }
@@ -57,7 +57,7 @@ exports.comment_update_put = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //if errors, return error
-                res.status(400).json({
+                return res.status(400).json({
                     errors: errors.array(),
                 });
             }
@@ -77,7 +77,7 @@ exports.comment_update_put = [
                 comment.lastEditDate = new Date();
                 comment.lastEditBy = req.user.user_id;
                 await comment.save();
-                res.json({
+                return res.json({
                     msg: 'Comment updated successfully',
                     comment,
                 });
@@ -111,7 +111,7 @@ exports.comment_delete = [
             //if comment belongs to req user or user is admin, delete comment
             if (req.user.user_type === 'Admin' || (req.user.user_id === comment.user._id.toString())) {
                 await Comment.deleteOne({ _id: req.params.commentId });
-                res.json({ message: 'Comment deleted' });
+                return res.json({ message: 'Comment deleted' });
             } else {
                 //if not comment owner or admin, return error
                 const err = new Error("Forbidden");

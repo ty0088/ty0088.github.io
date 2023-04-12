@@ -122,14 +122,16 @@ exports.sign_up_post = [
             });
             //check if there are errors present
             if (!errors.isEmpty()) {
+                console.log(errors);
                 //error(s), send status and errors
-                res.status(400).json({
+                return res.status(400).json({
                     errors: errors.array(),
                 });
             }
             //no errors, hash password and save user to db and send succcess message
             bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
                 try {
+                    console.log('!');
                     if (error) {
                         return next(error);
                     }
@@ -218,7 +220,7 @@ exports.user_update_put = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
-                res.status(400).json({ 
+                return res.status(400).json({ 
                     errors: errors.array(),
                 });
             }
@@ -302,7 +304,7 @@ exports.user_delete = [
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
-                res.status(400).json({
+                return res.status(400).json({
                     errors: errors.array(),
                 });
             }
@@ -319,7 +321,7 @@ exports.user_delete = [
             if (result) {
                 // passwords match, delete user
                 await User.deleteOne({ _id: req.params.id });
-                res.json({ message: "User deleted"})
+                return res.json({ message: "User deleted"})
             } else {
                 // passwords do not match! send error
                 const err = new Error("Unauthorized");
