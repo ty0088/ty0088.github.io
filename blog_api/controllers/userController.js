@@ -118,6 +118,7 @@ exports.sign_up_post = [
             const user = new User({
                     display_name: req.body.display_name,
                     email: req.body.email,
+                    user_type: req.body.user_type,
             });
             //check if there are errors present
             if (!errors.isEmpty()) {
