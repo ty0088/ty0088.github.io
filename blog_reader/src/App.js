@@ -1,4 +1,4 @@
-import './styles/style.css'
+import './styles/style.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import PostDetailPage from './Pages/PostDetailPage';
 import PostFormPage from './Pages/PostFormPage';
 import UserFormPage from './Pages/UserFormPage';
 import UserDetailPage from './Pages/UserDetailPage';
+import NotFoundPage from './Pages/NotFoundPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path='/blog_reader/sign-up' element={<UserFormPage action={'create'} />} />
       <Route path='/blog_reader/user/:userId/update' element={<UserFormPage action={'update'} />} />
       <Route path='/blog_reader/user/:userId' element={<UserDetailPage />} />
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
 }
