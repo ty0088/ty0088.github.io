@@ -44,8 +44,8 @@ const UserDetailPage = () => {
             <div id='main-container'>
                 <h1>The Blog Spot</h1>
                 <nav>
-                    <Link to='/blog_reader'>Blog Posts</Link>
-                    <Link to={`/blog_reader/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
+                    <Link className='button-link' to='/blog_reader'>Blog Posts</Link>
+                    <Link className='button-link' to={`/blog_reader/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
                     <button className='button-link' type='button' onClick={logOut}>Log Out</button>
                 </nav>
                 <div className='user-details'>

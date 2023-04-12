@@ -64,13 +64,13 @@ const BlogMainPage = () => {
             <h1>The Blog Spot</h1>
             {!user &&
                 <nav>
-                    <Link to='/blog_reader/log-in'>Log In</Link>
-                    <Link to='/blog_reader/sign-up'>Sign Up</Link>
+                    <Link className='button-link' to='/blog_reader/log-in'>Log In</Link>
+                    <Link className='button-link' to='/blog_reader/sign-up'>Sign Up</Link>
                 </nav>
             }
             {user &&
                 <nav>
-                    <Link to={`/blog_reader/user/${user.user_id}`}>My Account ({user.display_name})</Link>
+                    <Link className='button-link' to={`/blog_reader/user/${user.user_id}`}>My Account ({user.display_name})</Link>
                     <button className='button-link' type='button' onClick={logOut}>Log Out</button>
                 </nav>
             }

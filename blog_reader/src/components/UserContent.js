@@ -48,7 +48,7 @@ const UserContent = ({ userType, userPosts, userComments }) => {
     } else {
         return (
             <ol className='user-content-container'>
-                <span><button className='button-link' type='button' onClick={toggleContent}>User Blog Posts</button> / <strong>User Comments</strong></span>
+                <span><button className='button-link' type='button' onClick={toggleContent}>User Blog Posts</button>/ <strong>User Comments</strong></span>
                 {userComments.length > 0 &&
                     userComments.map((comment, i) => {
                         return (
