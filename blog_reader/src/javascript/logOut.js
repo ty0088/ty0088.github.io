@@ -5,7 +5,6 @@ const logOut = async () => {
         window.location.href = '/blog_reader';
     } catch (error) {
         console.log(error);
-        //error handling -----------------?
     }
 };
 
