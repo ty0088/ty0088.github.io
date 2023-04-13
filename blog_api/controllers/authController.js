@@ -6,14 +6,14 @@ const passport = require("passport");
 exports.log_in_post = (req, res, next) => {
     passport.authenticate('local', {session: false}, (err, user, info) => {
         if (err || !user) {
-            const err = new Error("Unauthorized");
-            err.status = 401;
-            err.info = info;
-            return next(err);
+            const error = new Error("Unauthorized");
+            error.status = 401;
+            error.message = info.message;
+            return next(error);
         }
         req.login(user, {session: false}, (err) => {
             if (err) {
-                return res.send(err);
+                return next(err);
             }
             //generate a signed json web token with the user data
             const payload = { 
