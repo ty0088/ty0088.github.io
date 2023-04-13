@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import fetchUserToken from '../javascript/fetchUserToken';
+import UserForm from '../components/UserForm';
 
 const UserFormPage = ({ action }) => {
     const [user, setUser] = useState({
@@ -10,29 +11,30 @@ const UserFormPage = ({ action }) => {
         email: '',
         user_type: 'Reader',
     });
-    const [errorData, setErrorData] = useState(null);
+    const [errorData, setErrorData] = useState([]);
+    const [formFlag, setFormFlag] = useState(true);
+    const [userAuthFlag, setUserAuthFlag] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        //function to get user token and check user action is appropriate
+        //function to get user token if any and check user action is appropriate
         const fetchData = async () => {
             try {
                 const userData = await fetchUserToken();
                 if (userData.user !== null && action === 'create') {
-                    //if user logged in and action is 'create', tell user to log out first
-                    //--------------------------------------
-
+                    //if user logged in and action is 'create', set states to tell user to log out first
+                    setFormFlag(false);
+                    setUserAuthFlag(true);
                 } else if (userData.user !== null && action === 'update') {
                     //if user is logged in and action is 'update', set user state with user token data
                     setUser(userData.user);
                 } else if (userData.user === null && action === 'update') {
-                    //if user is not logged in and action is 'update', tell user to log in first
-                    //--------------------------------------
-
+                    //if user is not logged in and action is 'update', set states to tell user to log in first
+                    setFormFlag(false);
+                    setUserAuthFlag(false);
                 }
             } catch (error) {
                 console.log(error);
-                //render error --------------------
             }
         };
         fetchData();
@@ -101,56 +103,28 @@ const UserFormPage = ({ action }) => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot</h1>
-            {action === 'create' &&
-                <p>Use the form below to sign up as a blog Reader. To sign up as an blog Author, please go to...</p>
+            {formFlag &&
+                <UserForm action={action} user={user} errorData={errorData} />
             }
-            {action === 'update' &&
-                <p>Use the form below to update your details. Please re-enter your current password to make any changes.</p>
+            {(!formFlag && userAuthFlag) &&
+                <div>
+                    <p>You are trying to sign up as a new user but you are already logged in. </p>
+                    <p>Please try one of the links below: </p>
+                    <ul>
+                        <li><Link to='/blog_reader'>Home - Blog Posts</Link></li>
+                        <li><Link to='/blog_reader/log-out'>Log Out</Link></li>
+                    </ul>
+                </div>
             }
-            <form action='' method=''>
-                {action === 'update' &&
-                    <div className='input-row user'>
-                        <label htmlFor='password'>Current Password: </label>
-                        <input type='password' id='input-curr-password' name='currPassword' required />
-                        <span className='input-hint'> (required)</span>
-                    </div>
-                }
-                <div className='input-row user'>
-                    <label htmlFor='display_name'>Display Name: </label>
-                    <input type='text' id='input-display-name' name='display_name' maxLength={20} defaultValue={user.display_name} required={action === 'create' ? true : false} />
-                    {action === 'create' && <span className='input-hint'> (required)</span>}
+            {(!formFlag && !userAuthFlag) &&
+                <div>
+                    <p>You are trying to update your details but you are not logged in. </p>
+                    <p>Please try one of the links below: </p>
+                    <ul>
+                        <li><Link to='/blog_reader'>Home - Blog Posts</Link></li>
+                        <li><Link to='/blog_reader/log-in'>Log In</Link></li>
+                    </ul>
                 </div>
-                <div className='input-row user'>
-                    <label htmlFor='email'>Email: </label>
-                    <input type='email' id='input-email' name='email' defaultValue={user.email} required={action === 'create' ? true : false} />
-                    {action === 'create' && <span className='input-hint'> (required)</span>}
-                </div>
-                <div className='input-row user'>
-                    <label htmlFor='password'>Password: </label>
-                    <input type='password' id='input-password' name='password' required={action === 'create' ? true : false} />
-                    {action === 'create' && <span className='input-hint'> (required and must be between 8 and 18 characters long)</span>}
-                </div>
-                <div className='input-row user'>
-                    <label htmlFor='passwordConfirm'>Confirm Password: </label>
-                    <input type='password' id='input-password-confirm' name='passwordConfirm' required={action === 'create' ? true : false} />
-                    {action === 'create' && <span className='input-hint'> (required and must be between 8 and 18 characters long)</span>}
-                </div>
-                <ul>
-                    {errorData.length > 0 &&
-                        errorData.map((error, i) => {
-                            return (
-                                <li key={i} className='error-message'>{error.msg}</li>
-                            );
-                        })
-                    }
-                </ul>
-                <div className='button-container user'>
-                    <button className='button-link' type='submit'>{action === 'create' ? 'Sign Up' : 'Update'}</button>
-                    <Link className='button-link' to='/blog_reader'>Cancel</Link>     
-                </div>
-            </form>
-            {action === 'create' &&
-                <p>Already a user? Click <Link to='/blog_reader/log-in'>here</Link> to log in.</p>
             }
         </div> 
     );
