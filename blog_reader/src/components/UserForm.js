@@ -39,7 +39,7 @@ const UserForm = ({ action, user, errorData }) => {
                 {action === 'create' && <span className='input-hint'> (required and must be between 8 and 18 characters long)</span>}
             </div>
             <ul>
-                {errorData.length > 0 &&
+                {errorData &&
                     errorData.map((error, i) => {
                         return (
                             <li key={i} className='error-message'>{error.msg}</li>
