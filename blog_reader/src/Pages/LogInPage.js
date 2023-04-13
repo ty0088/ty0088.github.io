@@ -2,9 +2,25 @@ import '../styles/formPages.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
+import fetchUserToken from '../javascript/fetchUserToken';
+import logOut from '../javascript/logOut';
+
 const LogInPage = () => {
     const [errorData, setErrorData] = useState(null);
     const navigate = useNavigate();
+
+    //function to log a user out if they are already logged in
+    const logCurrUserOut = async () => {
+        try {
+            const { user } = await fetchUserToken();
+            if (user) {
+                //if there is a user token, call api to log out (remove token)
+                await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     //function to request log in to api
     const userLogIn = async (e) => {
@@ -41,19 +57,17 @@ const LogInPage = () => {
     };
     
     useEffect(() => {
+        //if current user, log them out
+        logCurrUserOut();
         //attach log in submit event listener
         document.addEventListener('submit', userLogIn);
-
         //attach event listener to inputs, so that on input change, errors are cleared
         document.getElementById('input-email').addEventListener('input', clearError);
         document.getElementById('input-password').addEventListener('input', clearError);
-
-        //clean up 
-        //input event listeners will be cleared when elements removed
+        //clean up eventlisteners (element attached event listeners will be cleared when elements are removed)
         return () => {
             document.removeEventListener('submit', userLogIn);
         };
-
     // eslint-disable-next-line
     }, []);
 
