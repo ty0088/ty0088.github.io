@@ -16,81 +16,107 @@ const UserFormPage = ({ action }) => {
     const [userAuthFlag, setUserAuthFlag] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        //function to get user token if any and check user action is appropriate
-        const fetchData = async () => {
-            try {
-                const userData = await fetchUserToken();
-                if (userData.user !== null && action === 'create') {
-                    //if user logged in and action is 'create', set states to tell user to log out first
-                    setFormFlag(false);
-                    setUserAuthFlag(true);
-                } else if (userData.user !== null && action === 'update') {
-                    //if user is logged in and action is 'update', set user state with user token data
-                    setUser(userData.user);
-                } else if (userData.user === null && action === 'update') {
-                    //if user is not logged in and action is 'update', set states to tell user to log in first
-                    setFormFlag(false);
-                    setUserAuthFlag(false);
-                }
-            } catch (error) {
-                console.log(error);
+    //function to get user token if any and check user action is appropriate
+    const fetchData = async () => {
+        try {
+            const userData = await fetchUserToken();
+            if (userData.user !== null && action === 'create') {
+                //if user logged in and action is 'create', set states to tell user to log out first
+                setFormFlag(false);
+                setUserAuthFlag(true);
+            } else if (userData.user !== null && action === 'update') {
+                //if user is logged in and action is 'update', set user state with user token data
+                setUser(userData.user);
+            } else if (userData.user === null && action === 'update') {
+                //if user is not logged in and action is 'update', set states to tell user to log in first
+                setFormFlag(false);
+                setUserAuthFlag(false);
             }
-        };
-        fetchData();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
+    //function to submit new user to api
+    const submitNewUser = async (e) => {
+        e.preventDefault();
+        try {
+            //get user inputs
+            const display_name = document.getElementById('input-display-name').value;
+            const email = document.getElementById('input-email').value;
+            const password = document.getElementById('input-password').value;
+            const passwordConfirm = document.getElementById('input-password-confirm').value;
+            //request new user from api
+            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ display_name, email, password, passwordConfirm }),
+            });
+            //if successful response, redirect to home page
+            if (response.status === 200) {
+                alert('User successfully created, please continue and log in.')
+                navigate("/blog_reader/log-in");
+            } else {
+                //if not successful response, set error data for rendering
+                const responseData = await response.json();
+                setErrorData(responseData.errors);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //function to submit user update to api
+    const submitUserUpdate = async (e) => {
+        e.preventDefault();
+        try {
+            //get user inputs
+            const currPassword = document.getElementById('input-curr-password').value;
+            const display_name = document.getElementById('input-display-name').value;
+            const email = document.getElementById('input-email').value;
+            const password = document.getElementById('input-password').value;
+            const passwordConfirm = document.getElementById('input-password-confirm').value;
+            //request new user from api
+            console.log(`${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`);
+            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ currPassword, display_name, email, password, passwordConfirm }),
+            });
+            //if successful response, redirect to home page
+            if (response.status === 200) {
+                alert('User successfully created, please continue and log in.')
+                navigate("/blog_reader/log-in");
+            } else {
+                //if not successful response, set error data for rendering
+                const responseData = await response.json();
+                setErrorData(responseData.errors);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        //fetch user token if any and set flags depending on user and action
+        fetchData();
         //attach relevant submit event listener and call back depending on action
         if (action === 'create') {
-            //call back to submit new user to api
-            const submitNewUser = async (e) => {
-                e.preventDefault();
-                try {
-                    //get user inputs
-                    const display_name = document.getElementById('input-display-name').value;
-                    const email = document.getElementById('input-email').value;
-                    const password = document.getElementById('input-password').value;
-                    const passwordConfirm = document.getElementById('input-password-confirm').value;
-                    //request new user from api
-                    const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ display_name, email, password, passwordConfirm }),
-                    });
-                    //if successful response, redirect to home page
-                    if (response.status === 200) {
-                        alert('User successfully created, please continue and log in.')
-                        navigate("/blog_reader/log-in");
-                    } else {
-                        //if not successful response, set error data for rendering
-                        const responseData = await response.json();
-                        setErrorData(responseData.errors);
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-            //attach submit event listener
+            //attach submit new user event listener on 'create' action
             document.addEventListener('submit', submitNewUser);
             //clean up
             return () => {
                 document.removeEventListener('submit', submitNewUser);
             };
-        } 
-        else if (action === 'update') {
-            //if update page, submit updated user details 
-            const submitUserUpdate = async (e) => {
-                e.preventDefault();
-                try {
-                    //------------------------------
-                } catch (error) {
-                    console.log(error);
-                    //render error --------------------
-                }
-            };
-            //attach submit event listener
+        } else if (action === 'update') {
+            //attach submit user update event listener on 'update' action
             document.addEventListener('submit', submitUserUpdate);
             //clean up
             return () => {
