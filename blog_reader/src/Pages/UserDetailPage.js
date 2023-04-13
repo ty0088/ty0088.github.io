@@ -33,7 +33,6 @@ const UserDetailPage = () => {
             fetchData();
         } catch (error) {
             console.log(error);
-            //set error state to render to page----------- ??
         }
     }, [userId]);
 
@@ -51,11 +50,12 @@ const UserDetailPage = () => {
                 <div className='user-details'>
                     <h3>User Details</h3>
                     <span><b>User Name: </b>{userData.display_name}</span>
-                    {(currUser.user_id === userId) &&
+                    {currUser.user_id === userId &&
                         <span><b>Email: </b>{userData.email}</span>
                     }
                     <span><b>Join Date: </b>{new Date(userData.join_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })}</span>
                     <span><b>User Type: </b>{userData.user_type}</span>
+                    <Link to={`/blog_reader/user/${userId}/update`}>Update my details</Link>
                 </div>
                 <UserContent userType={userData.user_type} userPosts={postData} userComments={commentData} />
             </div>
