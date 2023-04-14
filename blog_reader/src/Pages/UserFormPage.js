@@ -80,7 +80,6 @@ const UserFormPage = ({ action }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            console.log(`${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`);
             const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
                 method: 'PUT',
                 credentials: 'include',
