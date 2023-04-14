@@ -1,5 +1,5 @@
 import './styles/style.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 //import react pages and components
@@ -10,18 +10,22 @@ import PostFormPage from './Pages/PostFormPage';
 import UserFormPage from './Pages/UserFormPage';
 import UserDetailPage from './Pages/UserDetailPage';
 import NotFoundPage from './Pages/NotFoundPage';
+import RequestLogInPage from './Pages/RequestLogInPage';
 
 function App() {
+  const [scrollComFlag, setScrollComFlag] = useState(false);
+
   return (
     <Routes>
-      <Route path='/blog_reader' element={<BlogMainPage />} />
+      <Route path='/blog_reader' element={<BlogMainPage setScrollComFlag={setScrollComFlag} />} />
       <Route path='/blog_reader/create-post' element={<PostFormPage action={'create'} />} />
       <Route path='/blog_reader/update-post' element={<PostFormPage action={'update'} />} />
-      <Route path='/blog_reader/post/:postId' element={<PostDetailPage />} />
+      <Route path='/blog_reader/post/:postId' element={<PostDetailPage scrollComFlag={scrollComFlag} setScrollComFlag={setScrollComFlag} />} />
       <Route path='/blog_reader/log-in' element={<LogInPage />}/>
       <Route path='/blog_reader/sign-up' element={<UserFormPage action={'create'} />} />
       <Route path='/blog_reader/user/:userId/update' element={<UserFormPage action={'update'} />} />
       <Route path='/blog_reader/user/:userId' element={<UserDetailPage />} />
+      <Route path='/blog_reader/request-log-in' element={<RequestLogInPage />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
