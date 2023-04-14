@@ -1,8 +1,15 @@
 import '../styles/BlogMainPage.css'
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const PostRow = ({ user, post }) => {
+const PostRow = ({ user, post, setScrollComFlag }) => {
+    const navigate = useNavigate();
+
+    //go to post detail page and call to scroll to comment section
+    const commentClick = () => {
+        navigate(`/blog_reader/post/${post._id}`);
+        setScrollComFlag(true);
+    };
 
     return (
         <div className='post-row'>
@@ -17,7 +24,7 @@ const PostRow = ({ user, post }) => {
             {user &&
                 <div className='post-footer'>
                     <span>
-                        <a href={`/blog_reader/post/${post._id}`}>Comments</a> ({post.commentCount})
+                        <button className='button-link' type='button' onClick={commentClick}>Comments</button>({post.commentCount})
                     </span>
                     {typeof post.lastEditBy == 'object' &&
                         <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>

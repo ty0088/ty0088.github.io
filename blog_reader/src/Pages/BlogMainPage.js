@@ -8,7 +8,7 @@ import PostRow from '../components/PostRow';
 import PageNavRow from '../components/PageNavRow';
 import PageNavSpan from '../components/PageNavSpan';
 
-const BlogMainPage = () => {
+const BlogMainPage = ({ setScrollComFlag }) => {
     const [postList, setPostList] = useState([]);
     const [paginateInfo, setPaginateInfo] = useState({});
     const [user, setUser] = useState(null);
@@ -19,6 +19,9 @@ const BlogMainPage = () => {
 
     //on initial render, get query string values, check if user is logged in, then get blog post list from api
     useEffect(() => {
+        //set scroll to comment flag to false (reset to default behavior)
+        setScrollComFlag(false);
+
         //get query string values if any
         const getQueryVals = () => {
             setPageNum(searchParams.get('page') || '');
@@ -50,7 +53,6 @@ const BlogMainPage = () => {
                 });
             } catch (error) {
                 console.log(error);
-                //set error state to render to page----------- ??
             }
         };
 
@@ -79,7 +81,7 @@ const BlogMainPage = () => {
                 <> 
                     {postList.map((post, i) => {
                         return (
-                            <PostRow key={i} user={user} post={post}  />
+                            <PostRow key={i} user={user} post={post} setScrollComFlag={setScrollComFlag}  />
                         );
                     })}
                     <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
