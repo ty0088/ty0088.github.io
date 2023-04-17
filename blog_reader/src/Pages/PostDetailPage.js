@@ -11,7 +11,8 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag }) => {
     const [currUser, setCurrUser] = useState({});
     const [postData, setPostData] = useState({});
     const [commentData, setCommentData] = useState([]);
-    const [newCommentFlag, setNewCommentFlag] = useState(false);
+    const [editCommentId, setEditCommentId] = useState(null);
+    const [newComFlag, setNewComFlag] = useState(false);
     const [scrollNewComFlag, setScrollNewComFlag] = useState(false);
     const { postId } = useParams();
     const navigate = useNavigate();
@@ -54,9 +55,10 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag }) => {
         }        
     }, [commentData, scrollComFlag]);
 
-    //function to render comment add new comment form
+    //function to render comment add new comment form and close any other forms open
     const addCommentClick = () => {
-        setNewCommentFlag(true);
+        setNewComFlag(true);
+        setEditCommentId(null);
     };
 
     return (
@@ -85,13 +87,13 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag }) => {
                 }
             </div>
             <div id='comment-container'>
-                {!newCommentFlag &&
+                {!newComFlag &&
                     <button type='button' className='button-link' onClick={addCommentClick}>Add New Comment</button>
                 }
-                {newCommentFlag &&
-                    <CommentForm setNewCommentFlag={setNewCommentFlag} postId={postId} fetchData={fetchData} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag} />
+                {newComFlag &&
+                    <CommentForm postId={postId} commentText={null} fetchData={fetchData} setNewComFlag={setNewComFlag} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag} editCommentId={editCommentId} setEditCommentId={setEditCommentId} />
                 }
-                <CommentList commentData={commentData} scrollNewComFlag={scrollNewComFlag}/>
+                <CommentList currUser={currUser} commentData={commentData} scrollNewComFlag={scrollNewComFlag} postId={postId} fetchData={fetchData} setNewComFlag={setNewComFlag} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag}  editCommentId={editCommentId} setEditCommentId={setEditCommentId} />
             </div>
         </div>
     );
