@@ -19,7 +19,7 @@ const CommentList = ({ currUser, commentData, scrollNewComFlag, postId, fetchDat
                     } else {
                         //else render a comment row
                         return (
-                            <CommentRow key={i} currUser={currUser} comment={comment} scrollNewComFlag={scrollNewComFlag} setEditCommentId={setEditCommentId} setNewComFlag={setNewComFlag} />
+                            <CommentRow key={i} postId={postId} fetchData={fetchData} currUser={currUser} comment={comment} scrollNewComFlag={scrollNewComFlag} setEditCommentId={setEditCommentId} setNewComFlag={setNewComFlag} />
                         );
                     }
                 })
