@@ -12,7 +12,6 @@ const CommentList = ({ currUser, commentData, scrollNewComFlag, postId, fetchDat
                 commentData.map((comment, i) => {   
                     if (editCommentId === comment._id) {
                         //if comment is set to edit, render comment form
-                        console.log(comment.text);
                         return (
                             <CommentForm key={i} postId={postId} commentText={comment.text} fetchData={fetchData} setNewComFlag={setNewComFlag} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag} editCommentId={editCommentId} setEditCommentId={setEditCommentId} />
                         );
