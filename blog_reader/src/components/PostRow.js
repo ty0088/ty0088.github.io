@@ -31,6 +31,9 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
                     }
                 </div>
             }
+            {!user &&
+                <p className='post-info'>Log in to see who posted this and to see and make comments!</p>
+            }
         </div>
     );
 };
