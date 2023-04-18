@@ -7,12 +7,12 @@ import fetchUserToken from '../javascript/fetchUserToken';
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
 
-const PostDetailPage = ({ scrollComFlag, setScrollComFlag }) => {
+const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
     const [currUser, setCurrUser] = useState({});
     const [postData, setPostData] = useState({});
     const [commentData, setCommentData] = useState([]);
-    const [editCommentId, setEditCommentId] = useState(null);
     const [newComFlag, setNewComFlag] = useState(false);
+    const [editCommentId, setEditCommentId] = useState(null);
     const [scrollNewComFlag, setScrollNewComFlag] = useState(false);
     const { postId } = useParams();
     const navigate = useNavigate();
@@ -49,11 +49,15 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag }) => {
     }, [postId]);
 
     useEffect(() => {
-        //scroll to comment section if called
+        //scroll to start of comment section or to specified comment if called
         if (scrollComFlag) {
             document.getElementById('comment-container').scrollIntoView({ behavior: "smooth", block: "start" });
-        }        
-    }, [commentData, scrollComFlag]);
+        }
+        const commentElem = document.querySelector(`[data-commentid="${scrollComId}"]`);
+        if (commentElem !== null) {
+            document.querySelector(`[data-commentid="${scrollComId}"]`).scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+    }, [commentData, scrollComFlag, scrollComId]);
 
     //function to render comment add new comment form and close any other forms open
     const addCommentClick = () => {

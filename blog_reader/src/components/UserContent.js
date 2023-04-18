@@ -1,9 +1,16 @@
 import '../styles/UserDetailPage.css'
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const UserContent = ({ userType, userPosts, userComments }) => {
+const UserContent = ({ userType, userPosts, userComments, setScrollComId }) => {
     const [contentType, setContentType] = useState('posts');
+    const navigate = useNavigate();
+
+    //reset scroll to comment state on initial render
+    useEffect(() => {
+        setScrollComId(null);
+    // eslint-disable-next-line
+    }, []);
 
     //set content type depening on user type
     useEffect(() => {
@@ -21,6 +28,12 @@ const UserContent = ({ userType, userPosts, userComments }) => {
         } else {
             setContentType('posts');
         }
+    };
+
+    //go to post and scroll to relevant comment
+    const commentPostClick = (postId, commentId) => {
+        setScrollComId(commentId);
+        navigate(`/blog_reader/post/${postId}`)
     };
 
     if (contentType === 'posts') {
@@ -55,7 +68,8 @@ const UserContent = ({ userType, userPosts, userComments }) => {
                             <li key={i}>
                                 {comment.text}
                                 &nbsp;&nbsp;-&nbsp;&nbsp;({new Date(comment.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})
-                                &nbsp;&nbsp;-&nbsp;&nbsp;Post: <Link to={`/blog_reader/post/${comment.post._id}`}>{comment.post.title}</Link>
+                                {/* &nbsp;&nbsp;-&nbsp;&nbsp;Post: <Link to={`/blog_reader/post/${comment.post._id}`}>{comment.post.title}</Link> */}
+                                &nbsp;&nbsp;-&nbsp;&nbsp;Post: <button type='button' className='button-link' onClick={() => commentPostClick(comment.post._id, comment._id)}>{comment.post.title}</button>
                             </li>
                         );
                     })

@@ -6,7 +6,7 @@ import fetchUserToken from '../javascript/fetchUserToken';
 import logOut from '../javascript/logOut';
 import UserContent from '../components/UserContent';
 
-const UserDetailPage = () => {
+const UserDetailPage = ({ setScrollComId }) => {
     const [currUser, setCurrUser] = useState(null);
     const [userData, setUserData] = useState({});
     const [postData, setPostData] = useState({});
@@ -59,7 +59,7 @@ const UserDetailPage = () => {
                         </>
                     }
                 </div>
-                <UserContent userType={userData.user_type} userPosts={postData} userComments={commentData} />
+                <UserContent userType={userData.user_type} userPosts={postData} userComments={commentData} setScrollComId={setScrollComId} />
             </div>
         );
     } else {
