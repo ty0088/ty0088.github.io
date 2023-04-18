@@ -18,7 +18,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/blog_reader' element={<BlogMainPage setScrollComFlag={setScrollComFlag} />} />
+      <Route path='/blog_reader' element={<BlogMainPage setScrollComFlag={setScrollComFlag} setScrollComId={setScrollComId} />} />
       <Route path='/blog_reader/create-post' element={<PostFormPage action={'create'} />} />
       <Route path='/blog_reader/update-post' element={<PostFormPage action={'update'} />} />
       <Route path='/blog_reader/post/:postId' element={<PostDetailPage scrollComFlag={scrollComFlag} setScrollComFlag={setScrollComFlag} scrollComId={scrollComId} />} />
