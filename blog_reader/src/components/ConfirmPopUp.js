@@ -5,11 +5,11 @@ import React from 'react';
 const ConfirmPopUp = ({name, cancelClick, confirmClick, message1, message2}) => {
     return (
         <div id='confirm-popup-container'>
-            <div id='confirm-popup'>
-                <span id='confirm-message1'>{message1}</span>
-                <span className='bold800'>{name}</span>
-                <span id='confirm-message2'>{message2}</span>
-                <div>
+            <div className='confirm-popup'>
+                <span className='confirm-message1'>{message1}</span>
+                <span><strong>{name}</strong></span>
+                <span className='confirm-message2'>{message2}</span>
+                <div className='popup-btn-container'>
                     <button type='button' className='button-link' onClick={confirmClick}>Confirm</button>
                     <button type='button' className='button-link' onClick={cancelClick}>Cancel</button>
                 </div> 
