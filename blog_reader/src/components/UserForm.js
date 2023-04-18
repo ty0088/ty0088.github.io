@@ -1,8 +1,10 @@
 import '../styles/formPages.css'
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const UserForm = ({ action, user, errorData }) => {
+    const navigate = useNavigate();
+
     return (
         <form action='' method=''>
             {action === 'create' &&
@@ -49,7 +51,7 @@ const UserForm = ({ action, user, errorData }) => {
             </ul>
             <div className='button-container user'>
                 <button className='button-link' type='submit'>{action === 'create' ? 'Sign Up' : 'Update'}</button>
-                <Link className='button-link' to='/blog_reader'>Cancel</Link>     
+                <button type='button' className='button-link' onClick={() => navigate(-1)}>Cancel</button>    
             </div>
             {action === 'create' &&
                 <p>Already a user? Click <Link to='/blog_reader/log-in'>here</Link> to log in.</p>
