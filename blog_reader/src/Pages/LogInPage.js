@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
 import fetchUserToken from '../javascript/fetchUserToken';
-import logOut from '../javascript/logOut';
 
 const LogInPage = () => {
     const [errorData, setErrorData] = useState(null);
