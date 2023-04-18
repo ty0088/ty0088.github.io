@@ -299,6 +299,7 @@ exports.user_delete = [
         try {
             //extract the validation errors from a request
             const errors = validationResult(req);
+            console.log(errors);
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
@@ -317,18 +318,16 @@ exports.user_delete = [
             //validate input password
             const result = await bcrypt.compare(req.body.password, user.password);
             if (result) {
-                // passwords match, delete user
+                // password correct, delete user from db
                 await User.deleteOne({ _id: req.params.id });
                 return res.json({ message: "User deleted"})
             } else {
-                // passwords do not match! send error
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                err.info = info;
-                return next(err);
+                // password not correct! return error message
+                return res.status(401).json({
+                    errors: [{  msg: 'Password incorrect. Please try again.' }]
+                });
             }
         } catch (error) {
-            console.log(error);
             return next(error);
         }
     },
