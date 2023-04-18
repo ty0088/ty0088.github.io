@@ -30,6 +30,7 @@ p {
 nav {
     margin: 0 0 0.5em 0;
     display: flex;
+    column-gap: 0.5em;
 }
 
 #main-container{
@@ -47,7 +48,8 @@ nav {
     text-decoration: underline;
     cursor: pointer;
     font-size: inherit;
-    margin: 0 0.5em 0 0;
+    margin: 0 0 0 0;
+    text-align: left;
 }
 
 a:hover, .button-link:hover {

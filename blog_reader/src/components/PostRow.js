@@ -24,10 +24,10 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
             {user &&
                 <div className='post-footer'>
                     <span>
-                        <button className='button-link' type='button' onClick={commentClick}>Comments</button>({post.commentCount})
+                        <button className='button-link' type='button' onClick={commentClick}>Comments ({post.commentCount})</button>
                     </span>
                     {typeof post.lastEditBy == 'object' &&
-                        <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
+                        <span>- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
                     }
                 </div>
             }
