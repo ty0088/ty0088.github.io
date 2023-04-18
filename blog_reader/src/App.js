@@ -16,10 +16,6 @@ function App() {
   const [scrollComFlag, setScrollComFlag] = useState(false);
   const [scrollComId, setScrollComId] = useState(null);
 
-  useEffect(() => {
-      console.log(scrollComId);
-  }, [scrollComId]);
-
   return (
     <Routes>
       <Route path='/blog_reader' element={<BlogMainPage setScrollComFlag={setScrollComFlag} />} />
