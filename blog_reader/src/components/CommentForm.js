@@ -87,8 +87,10 @@ const CommentForm = ({ postId, commentText, fetchData, setNewComFlag, setScrollN
                     })
                 }
             </ul>
-            <button type='submit' className='button-link' onClick={submitComment}>Submit Comment</button>
-            <button type='button' className='button-link' onClick={cancelClick}>Cancel</button>
+            <div className='button-container'>
+                <button type='submit' className='button-link' onClick={submitComment}>Submit Comment</button>
+                <button type='button' className='button-link' onClick={cancelClick}>Cancel</button>
+            </div>
         </form>
     );
 };

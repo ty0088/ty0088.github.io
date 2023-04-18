@@ -24,16 +24,14 @@
 
 .button-container {
     margin: 0.5em 0 0 0;
+    display: flex;
+    column-gap: 1em;
 }
 
 .button-container.user {
     margin-left: 7.5em;
-    display: flex;
-    column-gap: 1em;
 }
 
 .button-container.login {
     margin-left: 4em;
-    display: flex;
-    column-gap: 1em;
 }
