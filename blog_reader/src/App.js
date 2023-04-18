@@ -1,5 +1,5 @@
 import './styles/style.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 //import react pages and components
