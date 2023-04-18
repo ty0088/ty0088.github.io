@@ -56,10 +56,10 @@ const CommentRow = ({ postId, fetchData, currUser, comment, scrollNewComFlag, se
     };
 
     return (
-        <div className='comment-row' ref={ref}>
+        <div className='comment-row' ref={ref} data-commentid={comment._id}>
             <p>{comment.text}</p>
             <div className='comment-info'>
-                {comment.user ? `${comment.user.display_name} [${comment.user.user_type}] ` : '(User not found) '}
+                {comment.user ? <a href={`/blog_reader/user/${comment.user._id}`}>{comment.user.display_name} [{comment.user.user_type}]</a> : '(User not found) '}
                 - Posted on: {new Date(comment.post_date).toLocaleString()}
                 {comment.lastEditBy &&
                     <span> - <i>Last edited: {new Date(comment.lastEditDate).toLocaleString()} by {comment.lastEditBy.display_name} ({comment.lastEditBy.user_type})</i></span>
