@@ -1,9 +1,149 @@
 import '../styles/formPages.css'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const UserForm = ({ action, user, errorData }) => {
+import fetchUserToken from '../javascript/fetchUserToken';
+
+const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFlag }) => {
+
+    const [user, setUser] = useState({});
     const navigate = useNavigate();
+
+    
+    //function to fetch user token if any and set flags depending on user and action
+    const fetchData = async () => {
+        try {
+            const userData = await fetchUserToken();
+            console.log(userData);
+            if (userData.user !== null && action === 'create') {
+                //if user logged in and action is 'create', set states to tell user to log out first
+                setFormFlag(false);
+                setUserAuthFlag(true);
+            } else if (userData.user !== null && action === 'update') {
+                //if user is logged in and action is 'update', set user state with user token data
+                setUser(userData.user);
+            } else if (userData.user === null && action === 'update') {
+                //if user is not logged in and action is 'update', set states to tell user to log in first
+                setFormFlag(false);
+                setUserAuthFlag(false);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //on intial render call fetchData;
+    useEffect(() => {
+        fetchData();
+    // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        //attach relevant submit event listener and call back depending on action
+        if (action === 'create') {
+            //attach submit new user event listener on 'create' action
+            document.addEventListener('submit', submitNewUser);
+            //clean up
+            return () => {
+                document.removeEventListener('submit', submitNewUser);
+            };
+        } else if (action === 'update') {
+            //attach submit user update event listener on 'update' action
+            document.addEventListener('submit', submitUserUpdate);
+            //clean up
+            return () => {
+                document.removeEventListener('submit', submitUserUpdate);
+            };
+        }
+    // eslint-disable-next-line
+    }, [action, user]);
+
+    //function to submit new user to api
+    const submitNewUser = async (e) => {
+        e.preventDefault();
+        try {
+            //get user inputs
+            const display_name = document.getElementById('input-display-name').value;
+            const email = document.getElementById('input-email').value;
+            const password = document.getElementById('input-password').value;
+            const passwordConfirm = document.getElementById('input-password-confirm').value;
+            //request new user from api
+            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ display_name, email, password, passwordConfirm }),
+            });
+            //if successful response, refresh data and redirect to user page
+            if (response.status === 200) {
+                fetchData();
+                alert('User successfully created, please continue and log in.')
+                navigate("/blog_reader/log-in");
+            } else {
+                //if not successful response, set error data for rendering
+                const responseData = await response.json();
+                setErrorData(responseData.errors);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //function to submit user update to api
+    const submitUserUpdate = async (e) => {
+        e.preventDefault();
+        try {
+            //get user inputs
+            const currPassword = document.getElementById('input-curr-password').value;
+            const display_name = document.getElementById('input-display-name').value;
+            const email = document.getElementById('input-email').value;
+            const password = document.getElementById('input-password').value;
+            const passwordConfirm = document.getElementById('input-password-confirm').value;
+            //request new user from api
+            console.log(user);
+            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ currPassword, display_name, email, password, passwordConfirm }),
+            });
+            //if successful response, re log in to refresh token.
+            if (response.status === 200) {
+                alert('User successfully updated!')
+                //log user out to remove current token
+                await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+                //log in to get new token
+                const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password: currPassword }),
+                });
+                if (response.status === 200) {
+                    //if successful response, redirect to home page
+                    navigate(`/blog_Reader/user/${user.user_id}`);
+                } else {
+                    //if not successful response, set error data for rendering
+                    const responseData = await response.json();
+                    setErrorData(responseData.error);
+                }
+            } else {
+                //if not successful response, set error data for rendering
+                const responseData = await response.json();
+                setErrorData(responseData.errors);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <form action='' method=''>
@@ -51,7 +191,7 @@ const UserForm = ({ action, user, errorData }) => {
             </ul>
             <div className='button-container user'>
                 <button className='button-link' type='submit'>{action === 'create' ? 'Sign Up' : 'Update'}</button>
-                <button type='button' className='button-link' onClick={() => navigate(-1)}>Cancel</button>    
+                <button type='button' className='button-link' onClick={() => navigate(-1)}>Cancel</button>
             </div>
             {action === 'create' &&
                 <p>Already a user? Click <Link to='/blog_reader/log-in'>here</Link> to log in.</p>
