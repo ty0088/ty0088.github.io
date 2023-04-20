@@ -1,44 +1,9 @@
 import '../Styles/formPages.css'
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import fetchUserToken from '../Javascript/fetchUserToken';
-
-//api fetch request to include user_type: 'Author' --------------------------------
-
-const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFlag }) => {
-
-    const [user, setUser] = useState({});
+const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
     const navigate = useNavigate();
-
-    
-    //function to fetch user token if any and set flags depending on user and action
-    const fetchData = async () => {
-        try {
-            const userData = await fetchUserToken();
-            console.log(userData);
-            if (userData.user !== null && action === 'create') {
-                //if user logged in and action is 'create', set states to tell user to log out first
-                setFormFlag(false);
-                setUserAuthFlag(true);
-            } else if (userData.user !== null && action === 'update') {
-                //if user is logged in and action is 'update', set user state with user token data
-                setUser(userData.user);
-            } else if (userData.user === null && action === 'update') {
-                //if user is not logged in and action is 'update', set states to tell user to log in first
-                setFormFlag(false);
-                setUserAuthFlag(false);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    //on intial render call fetchData;
-    useEffect(() => {
-        fetchData();
-    // eslint-disable-next-line
-    }, []);
 
     useEffect(() => {
         //attach relevant submit event listener and call back depending on action
@@ -69,20 +34,26 @@ const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFla
             const email = document.getElementById('input-email').value;
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
-            //request new user from api
+            //request new author user from api
             const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ display_name, email, password, passwordConfirm }),
+                body: JSON.stringify({
+                    display_name,
+                    email,
+                    password,
+                    passwordConfirm,
+                    user_type: 'Author',
+                }),
             });
             //if successful response, refresh data and redirect to user page
             if (response.status === 200) {
                 fetchData();
-                alert('User successfully created, please continue and log in.')
-                navigate("/blog_reader/log-in");  //---------------------------------------------------------------
+                alert('Author successfully created, please continue and log in.')
+                navigate("/blog_author/log-in");
             } else {
                 //if not successful response, set error data for rendering
                 const responseData = await response.json();
@@ -116,7 +87,7 @@ const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFla
             });
             //if successful response, re log in to refresh token.
             if (response.status === 200) {
-                alert('User successfully updated!')
+                alert('Author successfully updated!')
                 //log user out to remove current token
                 await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
                 //log in to get new token
@@ -131,7 +102,7 @@ const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFla
                 });
                 if (response.status === 200) {
                     //if successful response, redirect to home page
-                    navigate(`/blog_Reader/user/${user.user_id}`);  //---------------------------------------------------------
+                    navigate(`/blog_author/user/${user.user_id}`);
                 } else {
                     //if not successful response, set error data for rendering
                     const responseData = await response.json();
@@ -150,7 +121,7 @@ const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFla
     return (
         <form action='' method=''>
             {action === 'create' &&
-                <p>Use the form below to sign up as a blog Reader. To sign up as an blog Author, please go to...</p>
+                <p>Use the form below to sign up as a blog <strong>Author</strong>. To sign up as an blog Reader, please click <a href={process.env.REACT_APP_BLOG_READER_URL}>here</a>.</p>
             }
             {action === 'update' &&
                 <p>Use the form below to update your details. Please re-enter your current password to make any changes.</p>
@@ -196,7 +167,7 @@ const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFla
                 <button type='button' className='button-link' onClick={() => navigate(-1)}>Cancel</button>
             </div>
             {action === 'create' &&
-                <p>Already a user? Click <Link to='/blog_reader/log-in'>here</Link> to log in.</p>
+                <p>Already a user? Click <Link to='/blog_author/log-in'>here</Link> to log in.</p>
             }
         </form>
     );
