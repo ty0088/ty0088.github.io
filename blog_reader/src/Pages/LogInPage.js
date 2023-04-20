@@ -92,6 +92,7 @@ const LogInPage = () => {
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_reader/sign-up'>here</Link>.</p>
+            <p>Are you a blog author? Click <button type='button' className='button-link' onClick={() => window.location.replace(process.env.REACT_APP_BLOG_READER_URL)}>here</button> to go to the authors' site.</p>
         </div>
     );
 };
