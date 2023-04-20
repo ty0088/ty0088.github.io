@@ -32,7 +32,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:8000");
+  const allowedOrigins = ['http://localhost:8000', 'http://localhost:8001'];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+       res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
   res.header('Access-Control-Allow-Credentials', true);
   res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
