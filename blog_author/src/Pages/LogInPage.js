@@ -8,6 +8,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import fetchUserToken from '../Javascript/fetchUserToken';
 import logCurrUserOut from '../Javascript/logCurrUserOut';
+import redirectReader from '../Javascript/redirectReader';
 
 const LogInPage = () => {
     const [errorData, setErrorData] = useState(null);
@@ -50,11 +51,9 @@ const LogInPage = () => {
                 if (userData.user.user_type === 'Author' || userData.user.user_type === 'Admin') {
                     //if user is author/admin navigate to home page
                     navigate("/blog_author");
-                } else {
-                    //if user is reader, redirect to blog reader home page
-                    alert("You are a blog reader, redirecting you to the readers' site!");
-                    window.location.replace(process.env.REACT_APP_BLOG_READER_URL);
-                }
+                }   
+                //if user is reader, redirect to blog reader site
+                redirectReader(userData.user);
             } else {
                 //if not successful response, set error data for rendering
                 const responseData = await response.json();
