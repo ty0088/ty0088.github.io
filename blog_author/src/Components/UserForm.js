@@ -46,7 +46,6 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
                     email,
                     password,
                     passwordConfirm,
-                    user_type: 'Author',
                 }),
             });
             //if successful response, refresh data and redirect to user page

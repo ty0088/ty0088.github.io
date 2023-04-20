@@ -118,7 +118,7 @@ exports.sign_up_post = [
             const user = new User({
                     display_name: req.body.display_name,
                     email: req.body.email,
-                    user_type: req.body.user_type,
+                    user_type: (req.get('Referer') === process.env.BLOG_AUTHOR_URL ? 'Author' : 'Reader'), //sign ups from author site default user to Author and reader site to Reader
             });
             //check if there are errors present
             if (!errors.isEmpty()) {
