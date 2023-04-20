@@ -1,42 +1,9 @@
 import '../styles/formPages.css'
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import fetchUserToken from '../javascript/fetchUserToken';
-
-const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFlag }) => {
-
-    const [user, setUser] = useState({});
+const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
     const navigate = useNavigate();
-
-    
-    //function to fetch user token if any and set flags depending on user and action
-    const fetchData = async () => {
-        try {
-            const userData = await fetchUserToken();
-            console.log(userData);
-            if (userData.user !== null && action === 'create') {
-                //if user logged in and action is 'create', set states to tell user to log out first
-                setFormFlag(false);
-                setUserAuthFlag(true);
-            } else if (userData.user !== null && action === 'update') {
-                //if user is logged in and action is 'update', set user state with user token data
-                setUser(userData.user);
-            } else if (userData.user === null && action === 'update') {
-                //if user is not logged in and action is 'update', set states to tell user to log in first
-                setFormFlag(false);
-                setUserAuthFlag(false);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    //on intial render call fetchData;
-    useEffect(() => {
-        fetchData();
-    // eslint-disable-next-line
-    }, []);
 
     useEffect(() => {
         //attach relevant submit event listener and call back depending on action
@@ -148,7 +115,7 @@ const UserForm = ({ action, errorData, setErrorData, setFormFlag, setUserAuthFla
     return (
         <form action='' method=''>
             {action === 'create' &&
-                <p>Use the form below to sign up as a blog Reader. To sign up as an blog Author, please go to...</p>
+                <p>Use the form below to sign up as a blog <strong>Reader</strong>. To sign up as an blog Author, please click <a href={process.env.REACT_APP_BLOG_AUTHOR_URL}>here</a>.</p>
             }
             {action === 'update' &&
                 <p>Use the form below to update your details. Please re-enter your current password to make any changes.</p>
