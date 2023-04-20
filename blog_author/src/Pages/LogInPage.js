@@ -2,10 +2,6 @@ import '../Styles/formPages.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
-//check on log in that returned token contains user_type === author / admin -----------------------
-//if reader logs in, they should be redirected to reader site ----------------------------------
-//alternative link for readers log in ----------------------------------
-
 import fetchUserToken from '../Javascript/fetchUserToken';
 import logCurrUserOut from '../Javascript/logCurrUserOut';
 import redirectReader from '../Javascript/redirectReader';
@@ -87,7 +83,6 @@ const LogInPage = () => {
                 }
                 <div className='button-container login'>
                     <button className='button-link' type='submit'>Log In</button>
-                    <Link className='button-link' to='/blog_author'>Cancel</Link>
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
