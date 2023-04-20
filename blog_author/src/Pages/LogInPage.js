@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 //alternative link for readers log in ----------------------------------
 
 import fetchUserToken from '../Javascript/fetchUserToken';
+import logCurrUserOut from '../Javascript/logCurrUserOut';
 
 const LogInPage = () => {
     const [errorData, setErrorData] = useState(null);
@@ -26,19 +27,6 @@ const LogInPage = () => {
         };
     // eslint-disable-next-line
     }, []);
-
-    //function to log a user out if they are already logged in
-    const logCurrUserOut = async () => {
-        try {
-            const { user } = await fetchUserToken();
-            if (user) {
-                //if there is a user token, call api to log out (remove token)
-                await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     //function to request log in to api
     const userLogIn = async (e) => {
@@ -104,8 +92,7 @@ const LogInPage = () => {
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
-            <p>Are you a blog reader? Click <button type='button' className='button-link' onClick={() => window.location.replace(process.env.REACT_APP_BLOG_READER_URL)}>here</button> to go to the readers' site.</p>
-            <Link  />
+            <p>Are you a blog reader? Click <a href={process.env.REACT_APP_BLOG_READER_URL}>here</a> to go to the readers' site.</p>
         </div>
     );
 };
