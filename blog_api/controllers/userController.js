@@ -69,6 +69,59 @@ exports.user_detail_get = [
     },
 ];
 
+//returns users own posts
+exports.user_post_list_get = [
+    //authenticate user token and check token id and request id matches
+    (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user) => {
+            //if error or no user, then send error
+            if (err || !user) {
+                const err = new Error("Unauthorized");
+                err.status = 401;
+                return next(err);
+            }
+            //if user id does not match requested id
+            if (user.user_id != req.params.id) {
+                const err = new Error("Forbidden");
+                err.status = 403;
+                return next(err);
+            }
+            //user matches, attach user to req and continue
+            req.user = user;
+            next();
+        })(req, res);
+    },
+    async (req, res, next) => {
+        try {
+            //set paginate and populate options
+            const options = {
+                page: req.query.page || 1, //page value from query parameter or start from 1
+                limit: req.query.limit || 5,
+                sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
+                populate: [{
+                        path: 'lastEditBy',
+                        select: '_id display_name user_type',
+                    },
+                    {
+                        path: 'commentCount',
+                    }
+                ],
+                collation: {
+                    locale: 'en',
+                },
+            };
+            //set query for posts related to user
+            const query = { user: req.user.user_id };
+            //query db
+            const results = await Post.paginate(query, options);
+            res.json(results);
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+    },
+]
+
 //sign user up on POST
 exports.sign_up_post = [
     //sanitise and validate inputs
