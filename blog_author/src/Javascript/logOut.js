@@ -2,7 +2,7 @@
 const logOut = async () => {
     try {
         await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
-        window.location.href = '/blog_reader'; //-----------------------------------------------------------------------------------------
+        window.location.href = '/blog_author';
     } catch (error) {
         console.log(error);
     }
