@@ -68,7 +68,6 @@ const UserContent = ({ userType, userPosts, userComments, setScrollComId }) => {
                             <li key={i}>
                                 {comment.text}
                                 &nbsp;&nbsp;-&nbsp;&nbsp;({new Date(comment.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})
-                                {/* &nbsp;&nbsp;-&nbsp;&nbsp;Post: <Link to={`/blog_reader/post/${comment.post._id}`}>{comment.post.title}</Link> */}
                                 &nbsp;&nbsp;-&nbsp;&nbsp;Post: <button type='button' className='button-link' onClick={() => commentPostClick(comment.post._id, comment._id)}>{comment.post.title}</button>
                             </li>
                         );
