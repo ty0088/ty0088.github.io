@@ -8,6 +8,7 @@ import DashboardPage from './Pages/DashBoardPage';
 import LogInPage from './Pages/LogInPage';
 import UserFormPage from './Pages/UserFormPage'
 import NotFoundPage from './Pages/NotFoundPage';
+import UserDetailPage from './Pages/UserDetailPage';
 
 function App() {
   const [currUser, setCurrUser] = useState();
@@ -55,7 +56,7 @@ function App() {
         <Route path='/blog_author' element={<DashboardPage currUser={currUser} />} />
         <Route path='/blog_author/log-in' element={<LogInPage />} />
         <Route path='/blog_author/sign-up' element={<UserFormPage action={'create'} />} />
-        <Route path='/blog_author/user/:id'  />
+        <Route path='/blog_author/user/:userId' element={<UserDetailPage currUser={currUser} />} />
         <Route path='/blog_author/user/:id/update' element={<UserFormPage action={'update'} />} />
         <Route path='*' element={<NotFoundPage />} />
     </Routes>
