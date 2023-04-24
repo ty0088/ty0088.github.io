@@ -53,8 +53,11 @@ const DashboardPage = ({ currUser }) => {
             }
         };
 
-        getQueryVals();
-        fetchData();
+        //if there is an verified user, fetch post data from db
+        if (currUser) {
+            getQueryVals();
+            fetchData();
+        }
 
     // eslint-disable-next-line
     }, [currUser]);
