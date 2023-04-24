@@ -86,7 +86,7 @@ const LogInPage = () => {
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
-            <p>Are you a blog reader? Click <a href={process.env.REACT_APP_BLOG_READER_URL}>here</a> to go to the readers' site.</p>
+            <p>Are you a blog reader? Click <Link to={process.env.REACT_APP_BLOG_READER_URL}>here</Link> to go to the readers' site.</p>
         </div>
     );
 };

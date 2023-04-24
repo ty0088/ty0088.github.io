@@ -120,7 +120,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
     return (
         <form action='' method=''>
             {action === 'create' &&
-                <p>Use the form below to sign up as a blog <strong>Author</strong>. To sign up as an blog Reader, please click <a href={process.env.REACT_APP_BLOG_READER_URL}>here</a>.</p>
+                <p>Use the form below to sign up as a blog <strong>Author</strong>. To sign up as an blog Reader, please click <Link to={process.env.REACT_APP_BLOG_READER_URL}>here</Link>.</p>
             }
             {action === 'update' &&
                 <p>Use the form below to update your details. Please re-enter your current password to make any changes.</p>
