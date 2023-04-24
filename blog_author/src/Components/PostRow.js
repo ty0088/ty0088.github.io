@@ -5,10 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 const PostRow = ({ post }) => {
     const navigate = useNavigate();
 
-    //go to post detail page -----------------------------------------
+    //go to post detail page
     const commentClick = () => {
-        navigate(`/blog_author/post/${post._id}`); //-----------------------------------------
-        //scroll to comment section ? ------------------------------
+        navigate(`/blog_author/post/${post._id}`);
+        //scroll to comment section ------------------------------ ??
     };
 
     return (
@@ -19,11 +19,23 @@ const PostRow = ({ post }) => {
             </div>
             <div className='post-text'>{post.text}</div>
             <div className='post-footer'>
-                <span>
-                    <button className='button-link' type='button' onClick={commentClick}>Comments ({post.commentCount})</button>
-                </span>
+                {post.private &&
+                    <>
+                        <span><strong>Private</strong></span>&nbsp;
+                        (<button type='button' className='button-link'>Make Public</button>)&nbsp;-&nbsp;
+                    </>
+                }
+                {!post.private &&
+                    <>
+                        <span><strong>Public</strong></span>&nbsp;
+                        (<button type='button' className='button-link'>Make Private</button>)&nbsp;-&nbsp;
+                    </>
+                }
+                <button type='button' className='button-link'>EDIT</button>&nbsp;-&nbsp;
+                <button type='button' className='button-link'>DELETE</button>&nbsp;-&nbsp;
+                <button type='button' className='button-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
                 {typeof post.lastEditBy == 'object' &&
-                    <span>- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
+                    <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
                 }
             </div>
         </div>
