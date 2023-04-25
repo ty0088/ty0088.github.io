@@ -6,6 +6,7 @@
 
 .post-info {
     font-size: 0.75em;
+    margin-bottom: 0.5em;
 }
 
 .post-text {
@@ -15,5 +16,5 @@
 .post-footer {
     display: flex;
     font-size: 0.75em;
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
 }
