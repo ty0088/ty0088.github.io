@@ -2,7 +2,7 @@ import '../Styles/DashboardPage.css';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const PostListRow = ({ post }) => {
+const PostListRow = ({ post, privatePublicClick }) => {
     const navigate = useNavigate();
 
     //go to post detail page
@@ -20,14 +20,14 @@ const PostListRow = ({ post }) => {
             <div className='post-info'>
                 {post.private &&
                     <>
-                        <button type='button' className='button-link'>Make Public</button>&nbsp;
+                        <button type='button' className='button-link' onClick={() => privatePublicClick(post._id)}>Make Public</button>&nbsp;
                         / <span><strong>This post is Private</strong></span>
                     </>
                 }
                 {!post.private &&
                     <>
                         <span><strong>This post is Public</strong></span>&nbsp;
-                        / <button type='button' className='button-link'>Make Private</button>
+                        / <button type='button' className='button-link' onClick={() => privatePublicClick(post._id)}>Make Private</button>
                     </>
                 }
             </div>
