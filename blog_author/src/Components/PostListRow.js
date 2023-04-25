@@ -2,7 +2,7 @@ import '../Styles/DashboardPage.css';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const PostListRow = ({ post, privatePublicClick }) => {
+const PostListRow = ({ post, postPrivacyClick, deletePostClick }) => {
     const navigate = useNavigate();
 
     //go to post detail page
@@ -20,20 +20,20 @@ const PostListRow = ({ post, privatePublicClick }) => {
             <div className='post-info'>
                 {post.private &&
                     <>
-                        <button type='button' className='button-link' onClick={() => privatePublicClick(post._id)}>Make Public</button>&nbsp;
+                        <button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Public</button>&nbsp;
                         / <span><strong>This post is Private</strong></span>
                     </>
                 }
                 {!post.private &&
                     <>
                         <span><strong>This post is Public</strong></span>&nbsp;
-                        / <button type='button' className='button-link' onClick={() => privatePublicClick(post._id)}>Make Private</button>
+                        / <button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Private</button>
                     </>
                 }
             </div>
             <div className='post-footer'>
                 <button type='button' className='button-link'>EDIT</button>&nbsp;-&nbsp;
-                <button type='button' className='button-link'>DELETE</button>&nbsp;-&nbsp;
+                <button type='button' className='button-link' onClick={() => deletePostClick(post._id)}>DELETE</button>&nbsp;-&nbsp;
                 <button type='button' className='button-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
                 {typeof post.lastEditBy == 'object' &&
                     <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>

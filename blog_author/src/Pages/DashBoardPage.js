@@ -17,7 +17,8 @@ const DashboardPage = ({ currUser }) => {
     const [limitVal, setLimitVal] = useState(null);
     const [clickId, setClickId] = useState(null);
     const [listViewFlag, setListViewFlag] = useState(true);
-    const [popUpFlag, setPopUpFlag] = useState(false);
+    const [privacyPopUpFlag, setPrivacyPopUpFlag] = useState(false);
+    const [deletePopUpFlag, setDeletePopUpFlag] = useState(false);
     const [searchParams] = useSearchParams();
 
     //fetch user's posts
@@ -63,11 +64,12 @@ const DashboardPage = ({ currUser }) => {
     };
 
     //prompt confirmation to make post private/public
-    const privatePublicClick = (postId) => {
+    const postPrivacyClick = (postId) => {
         setClickId(postId);
-        setPopUpFlag(true);
+        setPrivacyPopUpFlag(true);
     };
 
+    //confirm change of post privacy
     const confirmPrivatePublic = async () => {
         //submit request to change post private status from api
         try {
@@ -84,17 +86,51 @@ const DashboardPage = ({ currUser }) => {
             });
             if (response.status === 200) {
                 fetchData();
+            } else {
+                alert('Something went wrong, try again...');
             }
             setClickId(null);
-            setPopUpFlag(false);
+            setPrivacyPopUpFlag(false);
         } catch (error) {
             console.log(error);
         }
     };
 
+    //cancel post privacy change
     const cancelPrivatePublic = () => {
         setClickId(null);
-        setPopUpFlag(false);
+        setPrivacyPopUpFlag(false);
+    };
+
+    //prompt confirmation to delete post
+    const deletePostClick = (postId) => {
+        setClickId(postId);
+        setDeletePopUpFlag(true);
+    };
+
+    //submit delete request to api
+    const confirmPostDelete = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/${clickId}/delete`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+            if (response.status === 200) {
+                fetchData();
+            } else {
+                alert('Something went wrong, try again...');
+            }
+            setClickId(null);
+            setDeletePopUpFlag(false);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //cancel post delete
+    const cancelPostDelete = () => {
+        setClickId(null);
+        setDeletePopUpFlag(false);
     };
 
     if (currUser) {
@@ -111,11 +147,11 @@ const DashboardPage = ({ currUser }) => {
                         {postList.map((post, i) => {
                             if (!listViewFlag) {
                                 return (
-                                    <PostRow key={i} post={post} privatePublicClick={privatePublicClick} />
+                                    <PostRow key={i} post={post} postPrivacyClick={postPrivacyClick} deletePostClick={deletePostClick} />
                                 );
                             } else {
                                 return (
-                                    <PostListRow key={i} post={post} privatePublicClick={privatePublicClick} />
+                                    <PostListRow key={i} post={post} postPrivacyClick={postPrivacyClick} deletePostClick={deletePostClick} />
                                 );
                             }
                         })}
@@ -125,8 +161,11 @@ const DashboardPage = ({ currUser }) => {
                 {postList.length === 0 &&
                     <p>There are no posts to show :(</p>
                 }
-                {popUpFlag &&
+                {privacyPopUpFlag &&
                     <ConfirmPopUp cancelClick={cancelPrivatePublic} confirmClick={confirmPrivatePublic} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}"`} message1={'Are you sure you wish to make post'} message2={postList[postList.findIndex(post => post._id === clickId)].private ? 'public?' : 'private?'} />
+                }
+                {deletePopUpFlag &&
+                    <ConfirmPopUp cancelClick={cancelPostDelete} confirmClick={confirmPostDelete} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}"`} message1={'Are you sure you wish to delete post'} message2={'This is a permanent action.'} />
                 }
             </div>
         );
