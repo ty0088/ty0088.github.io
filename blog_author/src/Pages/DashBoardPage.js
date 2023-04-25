@@ -4,13 +4,9 @@ import { Link, useSearchParams } from 'react-router-dom';
 
 import logOut from '../Javascript/logOut'
 import PostRow from '../Components/PostRow';
+import PostListRow from '../Components/PostListRow';
 import PageNavRow from '../Components/PageNavRow';
 import PageNavSpan from '../Components/PageNavSpan';
-
-//----------------------------------------------------------------------------------------
-// Management bar on post row - Edit / Delete / Comments / Private - Public
-// Toggle view between list view and row view
-//----------------------------------------------------------------------------------------
 
 const DashboardPage = ({ currUser }) => {
     const [postList, setPostList] = useState([]);
@@ -18,15 +14,16 @@ const DashboardPage = ({ currUser }) => {
     const [pageNum, setPageNum] = useState(null);
     const [sortOrd, setSortOrd] = useState(null);
     const [limitVal, setLimitVal] = useState(null);
+    const [listViewFlag, setListViewFlag] = useState(true);
     const [searchParams] = useSearchParams();
 
-    //fetch user token and user's posts
+    //fetch user's posts
     useEffect(() => {
         //get query string values if any
         const getQueryVals = () => {
             setPageNum(searchParams.get('page') || '');
             setSortOrd(searchParams.get('sortOrd') || '');
-            setLimitVal(searchParams.get('limit') || '');   
+            setLimitVal(searchParams.get('limit') || '');
         };
 
         //function to get post data
@@ -70,13 +67,19 @@ const DashboardPage = ({ currUser }) => {
                     <Link className='button-link' to={`/blog_author/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
                     <button className='button-link' type='button' onClick={logOut}>Log Out</button>
                 </nav>
-                <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
+                <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
                 {postList.length > 0 &&
                     <> 
                         {postList.map((post, i) => {
-                            return (
-                                <PostRow key={i} post={post} />
-                            );
+                            if (!listViewFlag) {
+                                return (
+                                    <PostRow key={i} post={post} />
+                                );
+                            } else {
+                                return (
+                                    <PostListRow key={i} post={post} />
+                                );
+                            }
                         })}
                         <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
                     </>
