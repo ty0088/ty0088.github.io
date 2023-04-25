@@ -202,7 +202,7 @@ exports.post_update_put = [
                 if (req.body.post_title) {
                     post.title = req.body.post_title;
                 }
-                if (req.body.private) {
+                if (req.body.post_private !== undefined) {
                     post.private = req.body.post_private;
                 }
                 //update lastEditDate and lastEditBy
