@@ -14,21 +14,19 @@ const PostRow = ({ post }) => {
     return (
         <div className='post-row'>
             <h3><Link to={`/blog_author/post/${post._id}`}>{post.title}</Link></h3>
-            <div className='post-info'>
-                Created on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
-            </div>
+            <div className='post-info'>{new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</div>
             <div className='post-text'>{post.text}</div>
             <div className='post-footer'>
                 {post.private &&
                     <>
-                        <span><strong>Private</strong></span>&nbsp;
-                        (<button type='button' className='button-link'>Make Public</button>)&nbsp;-&nbsp;
+                        <button type='button' className='button-link'>Make Public</button>&nbsp;
+                        /&nbsp;<span><strong>Private</strong></span>&nbsp;-&nbsp;
                     </>
                 }
                 {!post.private &&
                     <>
                         <span><strong>Public</strong></span>&nbsp;
-                        (<button type='button' className='button-link'>Make Private</button>)&nbsp;-&nbsp;
+                        /&nbsp;<button type='button' className='button-link'>Make Private</button>&nbsp;-&nbsp;
                     </>
                 }
                 <button type='button' className='button-link'>EDIT</button>&nbsp;-&nbsp;

@@ -15,21 +15,23 @@ const PostListRow = ({ post }) => {
         <div className='post-row'>
             <h4>Blog Title: <Link to={`/blog_author/post/${post._id}`}>{post.title}</Link></h4>
             <div className='post-info'>
-                Created on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                Created on {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </div>
-            <div className='post-footer'>
+            <div className='post-info'>
                 {post.private &&
                     <>
-                        <span><strong>Private</strong></span>&nbsp;
-                        (<button type='button' className='button-link'>Make Public</button>)&nbsp;-&nbsp;
+                        <button type='button' className='button-link'>Make Public</button>&nbsp;
+                        / <span><strong>This post is Private</strong></span>
                     </>
                 }
                 {!post.private &&
                     <>
-                        <span><strong>Public</strong></span>&nbsp;
-                        (<button type='button' className='button-link'>Make Private</button>)&nbsp;-&nbsp;
+                        <span><strong>This post is Public</strong></span>&nbsp;
+                        / <button type='button' className='button-link'>Make Private</button>
                     </>
                 }
+            </div>
+            <div className='post-footer'>
                 <button type='button' className='button-link'>EDIT</button>&nbsp;-&nbsp;
                 <button type='button' className='button-link'>DELETE</button>&nbsp;-&nbsp;
                 <button type='button' className='button-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
