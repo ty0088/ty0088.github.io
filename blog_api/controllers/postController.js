@@ -241,9 +241,12 @@ exports.post_delete = [
                 err.status = 404;
                 return next(err);
             }
-            //if post belongs to req user or user is admin, delete post
+            //if post belongs to req user or user is admin, delete post and any related comments
             if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
+                //delete post from db
                 await Post.deleteOne({ _id: req.params.id });
+                //delete any related comments from db
+                await Comment.deleteMany({ post: req.params.id });
                 return res.json({ message: 'Post deleted' });
             } else {
                 //if not blog post owner or admin, return error
