@@ -165,7 +165,7 @@ const DashboardPage = ({ currUser }) => {
                     <ConfirmPopUp cancelClick={cancelPrivatePublic} confirmClick={confirmPrivatePublic} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}"`} message1={'Are you sure you wish to make post'} message2={postList[postList.findIndex(post => post._id === clickId)].private ? 'public?' : 'private?'} />
                 }
                 {deletePopUpFlag &&
-                    <ConfirmPopUp cancelClick={cancelPostDelete} confirmClick={confirmPostDelete} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}"`} message1={'Are you sure you wish to delete post'} message2={'This is a permanent action.'} />
+                    <ConfirmPopUp cancelClick={cancelPostDelete} confirmClick={confirmPostDelete} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}"`} message1={'Are you sure you wish to delete post'} message2={'The post and any related comments will be permanently deleted.'} />
                 }
             </div>
         );
