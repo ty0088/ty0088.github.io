@@ -83,7 +83,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
                 },
                 body: JSON.stringify({ currPassword, display_name, email, password, passwordConfirm }),
             });
-            //if successful response, re log in to refresh token.
+            //if successful response, log user out and in to refresh token.
             if (response.status === 200) {
                 alert('Author successfully updated!')
                 //log user out to remove current token
