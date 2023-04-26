@@ -7,7 +7,9 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 <hr>
 
 <strong>My Favourite Projects</strong>
+
 <ul>
+
   <li><a href="https://ty0088.github.io/tom-pos/">Tom POS</a> - A web based POS terminal app for the hospitality industry (uses Firebase).  - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tom-pos">Github Code</a></li>
   
   <li><a href="https://members-message-board.ty0088.repl.co/">Members Message Board</a> - Message Board with user authentication. Admin/Mod roles have additional privileges. Made with Express and mongoDB, website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/members_message_board">Github Code</a></li>
@@ -16,7 +18,7 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
   
   <li><a href="https://ty0088.github.io/memory_game/">Memory Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/memory_game">Github Code</a></li>
 
-   <li><a href="https://ty0088.github.io/battleship/">Battleship Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/battleship">Github Code</a></li>
+  <li><a href="https://ty0088.github.io/battleship/">Battleship Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/battleship">Github Code</a></li>
    
   <li><a href="https://ty0088.github.io/weather_app/">Weather App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/weather_app">Github Code</a></li
    
@@ -27,6 +29,7 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 <hr>
 
 <strong>My Other Projects</strong>
+
 <ul>
 
   <li><a href="https://ty0088.github.io/shopping_cart/">Shopping Cart</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/shopping_cart">Github Code</a></li>
