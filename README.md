@@ -37,9 +37,7 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
   <li><a href="https://ty0088.github.io/calculator/">Calculator App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/calculator">Github Code</a></li>
    
  <li><a href="https://Inventory-App.ty0088.repl.co">Inventory App</a> - Inventory app for storing stock data made using Express and MongoDB, website may need time to load -<a href="https://github.com/ty0088/ty0088.github.io/tree/main/inventory_app">Github Code</a></li>
-  
-  <li><a href="https://ty0088.github.io/etch-a-sketch/">Etch-a-Sketch</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/etch-a-sketch">Github Code</a></li>
-  
+   
   <li><a href="https://ty0088.github.io/restaurant_page/">Restaurant Page</a>- <a href="https://github.com/ty0088/ty0088.github.io/tree/main/restaurant_page">Github Code</a></li>
 
  <li><a href="https://ty0088.github.io/image_slider/">Image Slider</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/image_slider">Github Code</a></li>
@@ -49,17 +47,19 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
   <li><a href="https://ty0088.github.io/dashboard_project/">Dashboard Project</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/dashboard_project">Github Code</a></li>
 
   <li><a href="https://ty0088.github.io/landing_page/">Landing Page</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/landing_page">Github Code</a></li>
+  
+  <li><a href="https://ty0088.github.io/tic_tac_toe/">Tic Tac Toe Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tic_tac_toe">Github Code</a></li>
 
   <li><a href="https://ty0088.github.io/rock_paper_scissors/">Rock, Paper, Scissors Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/rock_paper_scissors">Github Code</a></li>
   
-  <li><a href="https://ty0088.github.io/library/">Library</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/library">Github Code</a></li>
-
-  <li><a href="https://ty0088.github.io/cv_app_func/">CV App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/cv_app_func">Github Code</a></li>
-
-  <li><a href="https://basic-node-site.ty0088.repl.co/">Basic Node Website</a> - This is a basic website using the Express framework, website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/basic_node_site">Github Code</a></li>
+  <li><a href="https://ty0088.github.io/etch-a-sketch/">Etch-a-Sketch</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/etch-a-sketch">Github Code</a></li>
   
-  <li><a href="https://express-local-library.ty0088.repl.co/">Express Local Library</a> - MDN Express Local Library Tutorial (uses MongoDB), website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/express-locallibrary">Github Code</a></li>
+ <li><a href="https://ty0088.github.io/library/">Library</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/library">Github Code</a></li>
+
+ <li><a href="https://ty0088.github.io/cv_app_func/">CV App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/cv_app_func">Github Code</a></li>
   
-  <li><a href="https://ty0088.github.io/tic_tac_toe/">Tic Tac Toe Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tic_tac_toe">Github Code</a></li>
+ <li><a href="https://express-local-library.ty0088.repl.co/">Express Local Library</a> - MDN Express Local Library Tutorial (uses MongoDB), website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/express-locallibrary">Github Code</a></li>
+  
+ <li><a href="https://basic-node-site.ty0088.repl.co/">Basic Node Website</a> - This is a basic website using the Express framework, website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/basic_node_site">Github Code</a></li>
   
 </ul>
