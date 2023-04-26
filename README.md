@@ -20,7 +20,7 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
   <li><a href="https://ty0088.github.io/battleship/">Battleship Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/battleship">Github Code</a></li>
    
-  <li><a href="https://ty0088.github.io/weather_app/">Weather App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/weather_app">Github Code</a></li
+  <li><a href="https://ty0088.github.io/weather_app/">Weather App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/weather_app">Github Code</a></li>
    
   <li><a href="https://ty0088.github.io/catan_map_generator">Catan Map Generator</a> - My first try at a HTML/JS Project (prior to any learning), which generates the map for a game of Catan. Tile type and tile values are dynamically generated and balanced. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/catan_map_generator">Github Code</a></li>
 
