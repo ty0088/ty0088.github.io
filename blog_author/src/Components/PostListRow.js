@@ -2,6 +2,8 @@ import '../Styles/DashboardPage.css';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import decodeHtml from '../Javascript/decodeHtml';
+
 const PostListRow = ({ post, postPrivacyClick, deletePostClick }) => {
     const navigate = useNavigate();
 
@@ -13,7 +15,7 @@ const PostListRow = ({ post, postPrivacyClick, deletePostClick }) => {
 
     return (
         <div className='post-row'>
-            <h4>Blog Title: <Link to={`/blog_author/post/${post._id}`}>{post.title}</Link></h4>
+            <h4>Blog Title: <Link to={`/blog_author/post/${post._id}`}>{decodeHtml(post.title)}</Link></h4>
             <div className='post-info'>
                 Created on {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </div>
