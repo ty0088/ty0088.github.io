@@ -5,6 +5,7 @@ const logger = require('morgan');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('./passport');
 
 const userRoute = require('./routes/user');
@@ -31,20 +32,12 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
-app.use(function(req, res, next) {
-  const allowedOrigins = ['http://localhost:8000', 'http://localhost:8001'];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-       res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
-  if ('OPTIONS' == req.method) {
-    res.sendStatus(200);
-  } else {
-    next();
-}});
+const corsOptions = {
+  credentials: true,
+  origin: ['https://ty0088.github.io', 'http://localhost:8000', 'http://localhost:8001'],
+};
+
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to Blog API' });
