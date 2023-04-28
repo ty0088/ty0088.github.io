@@ -2,7 +2,7 @@ import '../Styles/formPages.css'
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
+const UserForm = ({ action, currUser, errorData, setErrorData }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             };
         }
     // eslint-disable-next-line
-    }, [action, user]);
+    }, [action, currUser]);
 
     //function to submit new user to api
     const submitNewUser = async (e) => {
@@ -48,9 +48,8 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
                     passwordConfirm,
                 }),
             });
-            //if successful response, refresh data and redirect to user page
+            //if successful response, redirect to log in
             if (response.status === 200) {
-                fetchData();
                 alert('Author successfully created, please continue and log in.')
                 navigate("/blog_author/log-in");
             } else {
@@ -74,7 +73,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
+            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/update`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -100,11 +99,10 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
                 });
                 if (response.status === 200) {
                     //if successful response, redirect to home page
-                    navigate(`/blog_author/user/${user.user_id}`);
+                    navigate(`/blog_author/user/${currUser.user_id}`);
                 } else {
-                    //if not successful response, set error data for rendering
-                    const responseData = await response.json();
-                    setErrorData(responseData.error);
+                    //if not re-log in not successful, redirect to log in page
+                    navigate('/blog_author/log-in');
                 }
             } else {
                 //if not successful response, set error data for rendering
@@ -133,12 +131,12 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             }
             <div className='input-row user'>
                 <label htmlFor='display_name'>Display Name: </label>
-                <input type='text' id='input-display-name' name='display_name' maxLength={20} defaultValue={user.display_name} required={action === 'create' ? true : false} />
+                <input type='text' id='input-display-name' name='display_name' maxLength={20} defaultValue={currUser ? currUser.display_name : ''} required={action === 'create' ? true : false} />
                 {action === 'create' && <span className='input-hint'> (required)</span>}
             </div>
             <div className='input-row user'>
                 <label htmlFor='email'>Email: </label>
-                <input type='email' id='input-email' name='email' defaultValue={user.email} required={action === 'create' ? true : false} />
+                <input type='email' id='input-email' name='email' defaultValue={currUser ? currUser.email : ''} required={action === 'create' ? true : false} />
                 {action === 'create' && <span className='input-hint'> (required)</span>}
             </div>
             <div className='input-row user'>

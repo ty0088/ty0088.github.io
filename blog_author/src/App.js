@@ -11,17 +11,18 @@ import NotFoundPage from './Pages/NotFoundPage';
 import UserDetailPage from './Pages/UserDetailPage';
 
 function App() {
-  const [currUser, setCurrUser] = useState();
+  const [currUser, setCurrUser] = useState(null);
   let location = useLocation();
   const navigate = useNavigate();
 
   //----------------------------------------------------------------------------------------
   //Log In Page ----------- done
   //Sign Up Page ----------- done
-  //Author Dashboard - page showing all author posts and CRUD mananagement of posts ---------- in progress
-  //User Account Page - for user detail management ------------ to do
+  //Author Dashboard - page showing all author posts and CRUD mananagement of posts ---------- done
+  //User Account Page - for user detail management ------------ done
   //Post Form Page - create/update posts --------------- to do
   //Post Detail Page - with comments ------------------- to do 
+  //narrow screen formatting ------------------- to do
   //----------------------------------------------------------------------------------------
 
   useEffect(() => {
@@ -55,9 +56,9 @@ function App() {
     <Routes>
         <Route path='/blog_author' element={<DashboardPage currUser={currUser} />} />
         <Route path='/blog_author/log-in' element={<LogInPage />} />
-        <Route path='/blog_author/sign-up' element={<UserFormPage action={'create'} />} />
+        <Route path='/blog_author/sign-up' element={<UserFormPage action={'create'} currUser={currUser} />} />
+        <Route path='/blog_author/user/update' element={<UserFormPage action={'update'} currUser={currUser} />} />
         <Route path='/blog_author/user/:userId' element={<UserDetailPage currUser={currUser} />} />
-        <Route path='/blog_author/user/update' element={<UserFormPage action={'update'} />} />
         <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );

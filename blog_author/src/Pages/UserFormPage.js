@@ -2,40 +2,25 @@ import '../Styles/formPages.css'
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import fetchUserToken from '../Javascript/fetchUserToken';
-import redirectReader from '../Javascript/redirectReader';
 import UserForm from '../Components/UserForm';
 
-const UserFormPage = ({ action }) => {
-    const [user, setUser] = useState({});
+const UserFormPage = ({ action, currUser }) => {
     const [errorData, setErrorData] = useState([]);
     const [formFlag, setFormFlag] = useState(true);
 
-    //on intial render call fetchData;
     useEffect(() => {
-        fetchData();
+        setForm();
     // eslint-disable-next-line
     }, []);
 
-    //function to fetch user token if any and set flags depending on user and action
-    const fetchData = async () => {
-        try {
-            const userData = await fetchUserToken();
-            //if user is a reader, redirect to reader site
-            redirectReader(userData.user);
-            if (userData.user !== null && action === 'create') {
-                //if user logged in and action is 'create', render log out message
-                setFormFlag(false);
-            } else if (userData.user !== null && action === 'update') {
-                //if user is logged in and action is 'update', set user state with user token data
-                setUser(userData.user);
-            } else if (userData.user === null && action === 'update') {
-                //if user is not logged in and action is 'update', set states to tell user to log in first
-                setFormFlag(false);
-                setUser(null);
-            }
-        } catch (error) {
-            console.log(error);
+    //function to set form off depending on action and state of user
+    const setForm = async () => {
+        if (currUser !== null && action === 'create') {
+            //if user logged in and action is 'create', render log out message
+            setFormFlag(false);
+        } else if (currUser === null && action === 'update') {
+            //if user is not logged in and action is 'update', set states to tell user to log in first
+            setFormFlag(false);
         }
     };
 
@@ -43,9 +28,9 @@ const UserFormPage = ({ action }) => {
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
             {formFlag &&
-                <UserForm action={action} user={user} fetchData={fetchData} errorData={errorData} setErrorData={setErrorData} />
+                <UserForm action={action} currUser={currUser} errorData={errorData} setErrorData={setErrorData} />
             }
-            {(!formFlag && user) &&
+            {(!formFlag && currUser) &&
                 <div>
                     <p>You are trying to sign up as a new author but you are already logged in. </p>
                     <p>Please try one of the links below: </p>
@@ -55,7 +40,7 @@ const UserFormPage = ({ action }) => {
                     </ul>
                 </div>
             }
-            {(!formFlag && !user) &&
+            {(!formFlag && !currUser) &&
                 <div>
                     <p>You are trying to update your details but you are not logged in. </p>
                     <p>Please try one of the links below: </p>
