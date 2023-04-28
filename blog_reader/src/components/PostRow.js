@@ -1,6 +1,9 @@
 import '../styles/BlogMainPage.css'
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import parse from 'html-react-parser';
+
+import decodeHtml from '../javascript/decodeHtml';
 
 const PostRow = ({ user, post, setScrollComFlag }) => {
     const navigate = useNavigate();
@@ -13,14 +16,14 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
 
     return (
         <div className='post-row'>
-            { user ? <h3><Link to={`/blog_reader/post/${post._id}`}>{post.title}</Link></h3> : <h3>{post.title}</h3> }
+            { user ? <h3><Link to={`/blog_reader/post/${post._id}`}>{decodeHtml(post.title)}</Link></h3> : <h3>{decodeHtml(post.title)}</h3> }
             <div className='post-info'>
                 {user &&
                     <span><a href={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</a>,&nbsp;</span>
                 }
                 Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </div>
-            <div className='post-text'>{post.text}</div>
+            <div className='post-text'>{parse(post.text)}</div>
             {user &&
                 <div className='post-footer'>
                     <span>
