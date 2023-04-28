@@ -16,7 +16,7 @@ const PostRow = ({ post, postPrivacyClick, deletePostClick }) => {
 
     return (
         <div className='post-row'>
-            <h3><Link to={`/blog_author/post/${post._id}`}>{decodeHtml( post.title)}</Link></h3>
+            <h3><Link to={`/blog_author/post/${post._id}`}>{decodeHtml(post.title)}</Link></h3>
             <div className='post-info'>{new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</div>
             <div className='post-text'>{parse(post.text)}</div>
             <div className='post-footer'>
