@@ -29,7 +29,7 @@ const PostRow = ({ post, postPrivacyClick, deletePostClick }) => {
                         /&nbsp;<button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Private</button>&nbsp;-&nbsp;
                     </>
                 }
-                <button type='button' className='button-link'>EDIT</button>&nbsp;-&nbsp;
+                <Link to={`/blog_author/post/${post._id}/update`}>EDIT</Link>&nbsp;-&nbsp;
                 <button type='button' className='button-link' onClick={() => deletePostClick(post._id)}>DELETE</button>&nbsp;-&nbsp;
                 <button type='button' className='button-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
                 {typeof post.lastEditBy == 'object' &&
