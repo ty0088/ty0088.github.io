@@ -2,6 +2,8 @@ require('dotenv').config();
 const { body, validationResult } = require('express-validator');
 const passport = require('passport');
 const async = require('async');
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
 
 //import models
 const Post = require('../models/post');
@@ -116,10 +118,9 @@ exports.post_create_post = [
         })(req, res);
     },
     //sanitise and validate inputs
-    body('post_text', 'Post text is required and be at least 10 characters long')
+    body('post_text', 'Post text is required')
         .trim()
-        .isLength({ min: 10 })
-        .escape(),
+        .isLength({ min: 1 }),
     body('post_title', 'Post title is required and be no longer than 30 characters')
         .trim()
         .isLength({ min: 1, max: 30 })
@@ -131,9 +132,13 @@ exports.post_create_post = [
         try {
             //extract the validation errors from a request.
             const errors = validationResult(req);
+            //sanitise post text content
+            const window = new JSDOM('').window;
+            const DOMPurify = createDOMPurify(window);
+            const cleanContent = DOMPurify.sanitize(req.body.post_text);
             const post = new Post({
                 user: req.user.user_id,
-                text: req.body.post_text,
+                text: cleanContent,
                 title: req.body.post_title,
                 private: req.body.post_private,
             });
@@ -164,8 +169,7 @@ exports.post_update_put = [
     body('post_text', 'Post text is required and be at least 10 characters long')
         .optional({ checkFalsy: true })
         .trim()
-        .isLength({ min: 10 })
-        .escape(),
+        .isLength({ min: 10 }),
     body('post_title', 'Post title is required and be no longer than 30 characters')
         .optional({ checkFalsy: true })
         .trim()
