@@ -223,6 +223,15 @@ exports.user_update_put = [
         })(req, res);
     },
     //sanitise and validate inputs - all optional
+    body('currPassword', 'Your current is required to make changes')
+        .isLength({ min: 1 })
+        .custom(async (value, { req }) => {
+            const user = await User.findById(req.user.user_id);
+            const response = await bcrypt.compare(value, user.password);
+            if (!response) {
+                throw new Error('Confirmation password is incorrect');
+            }
+        }),
     body('display_name', 'Display name is required and must be no longer than 30 characters.')
         .optional({ checkFalsy: true })
         .trim()
@@ -283,13 +292,6 @@ exports.user_update_put = [
                 err.status = 404;
                 return next(err);
             }
-            const passResult = await bcrypt.compare(req.body.currPassword, user.password);
-            if (!passResult) {
-                //if password re auth fails, send 401 error
-                const err = new Error("Unauthorized");
-                err.status = 401;
-                return next(err);
-            }
             //user re auth passed, set any changes to user
             if (req.body.display_name) {
                 user.display_name = req.body.display_name;
@@ -298,16 +300,23 @@ exports.user_update_put = [
                 user.email = req.body.email;
             }
             if (req.body.password) {
-                //if new password entered, hash new password
-                bcrypt.hash(req.body.password, 10, (error, hashedPassword) => {
-                    if (error) {
+                console.log(req.body.password);
+                //if new password entered, hash new password and save user to db
+                bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
+                    try {
+                        if (error) {
+                            return next(error);
+                        }
+                        user.password = hashedPassword;
+                        await user.save();
+                    } catch (error) {
                         return next(error);
                     }
-                    updateVals.password = hashedPassword;
                 });
+            } else {
+                //no password entered, save user to db
+                await user.save();
             }
-            //update db
-            await user.save();
             res.json({
                 msg: 'User updated successfully',
                 user,
