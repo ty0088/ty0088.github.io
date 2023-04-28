@@ -142,6 +142,7 @@ const DashboardPage = ({ currUser }) => {
                     <button className='button-link' type='button' onClick={logOut}>Log Out</button>
                 </nav>
                 <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
+                <Link to='/blog_author/post/create'>Create New Post</Link>
                 {postList.length > 0 &&
                     <> 
                         {postList.map((post, i) => {
