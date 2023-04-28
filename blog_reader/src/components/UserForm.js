@@ -114,7 +114,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
     return (
         <form action='' method=''>
             {action === 'create' &&
-                <p>Use the form below to sign up as a blog <strong>Reader</strong>. To sign up as an blog Author, please click <a href={process.env.NODE_ENV === 'production' ? 'https://ty0088.github.io/blog_author/' : process.env.REACT_APP_BLOG_AUTHOR_URL}>here</a>.</p>
+                <p>Use the form below to sign up as a blog <strong>Reader</strong>. To sign up as an blog Author, please click <Link to={process.env.NODE_ENV === 'production' ? 'https://ty0088.github.io/blog_author/' : process.env.REACT_APP_BLOG_AUTHOR_URL}>here</Link>.</p>
             }
             {action === 'update' &&
                 <p>Use the form below to update your details. Please re-enter your current password to make any changes.</p>

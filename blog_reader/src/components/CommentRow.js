@@ -1,5 +1,6 @@
 import '../styles/PostDetailPage.css'
 import React, { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import ConfirmPopUp from './ConfirmPopUp';
 
@@ -59,7 +60,7 @@ const CommentRow = ({ postId, fetchData, currUser, comment, scrollNewComFlag, se
         <div className='comment-row' ref={ref} data-commentid={comment._id}>
             <p>{comment.text}</p>
             <div className='comment-info'>
-                {comment.user ? <a href={`/blog_reader/user/${comment.user._id}`}>{comment.user.display_name} [{comment.user.user_type}]</a> : '(User not found) '}
+                {comment.user ? <Link to={`/blog_reader/user/${comment.user._id}`}>{comment.user.display_name} [{comment.user.user_type}]</Link> : '(User not found) '}
                 - Posted on: {new Date(comment.post_date).toLocaleString()}
                 {comment.lastEditBy &&
                     <span> - <i>Last edited: {new Date(comment.lastEditDate).toLocaleString()} by {comment.lastEditBy.display_name} ({comment.lastEditBy.user_type})</i></span>

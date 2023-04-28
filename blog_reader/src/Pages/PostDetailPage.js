@@ -80,7 +80,7 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
                     <>
                         <h3>{decodeHtml(postData.title)}</h3>
                         <div className='post-info'>
-                            <a href={`/blog_reader/user/${postData.user._id}`}>{postData.user.display_name}</a>,&nbsp;
+                            <Link to={`/blog_reader/user/${postData.user._id}`}>{postData.user.display_name}</Link>,&nbsp;
                             Posted on: {new Date(postData.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "numeric", hour12: true })}
                         </div>
                         <div className='post-text'>{parse(postData.text)}</div>

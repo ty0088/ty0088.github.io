@@ -92,7 +92,7 @@ const LogInPage = () => {
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_reader/sign-up'>here</Link>.</p>
-            <p>Are you a blog author? Click <a href={process.env.NODE_ENV === 'production' ? 'https://ty0088.github.io/blog_author/' : process.env.REACT_APP_BLOG_AUTHOR_URL}>here</a> to go to the authors' site.</p>
+            <p>Are you a blog author? Click <Link to={process.env.NODE_ENV === 'production' ? 'https://ty0088.github.io/blog_author/' : process.env.REACT_APP_BLOG_AUTHOR_URL}>here</Link> to go to the authors' site.</p>
         </div>
     );
 };

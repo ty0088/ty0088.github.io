@@ -19,7 +19,7 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
             { user ? <h3><Link to={`/blog_reader/post/${post._id}`}>{decodeHtml(post.title)}</Link></h3> : <h3>{decodeHtml(post.title)}</h3> }
             <div className='post-info'>
                 {user &&
-                    <span><a href={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</a>,&nbsp;</span>
+                    <span><Link to={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</Link>,&nbsp;</span>
                 }
                 Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </div>

@@ -156,7 +156,7 @@ const UserDetailPage = ({ setScrollComId }) => {
                 <nav>
                     <Link to='/blog_reader'>Blog Posts</Link>
                 </nav>
-                <p>You need to be logged in to see a user's details. Please <a href='/blog_reader/log-in'>click here</a> to log in.</p>
+                <p>You need to be logged in to see a user's details. Please <Link to='/blog_reader/log-in'>click here</Link> to log in.</p>
             </div>
         );
     }
