@@ -17,18 +17,21 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [limitVal, setLimitVal] = useState(null);
     const [searchParams] = useSearchParams();
 
-    //on initial render, get query string values, check if user is logged in, then get blog post list from api
     useEffect(() => {
-        //set scroll to comment states to false (reset to default behavior)
-        setScrollComFlag(false);
-        setScrollComId(null);
-
         //get query string values if any
         const getQueryVals = () => {
             setPageNum(searchParams.get('page') || '');
             setSortOrd(searchParams.get('sortOrd') || '');
             setLimitVal(searchParams.get('limit') || '');   
         };
+        getQueryVals();
+    });
+
+    //on initial render, get query string values, check if user is logged in, then get blog post list from api
+    useEffect(() => {
+        //set scroll to comment states to false (reset to default behavior)
+        setScrollComFlag(false);
+        setScrollComId(null);
 
         //get user token (if any) and get blog list
         const fetchData = async () => {
@@ -56,11 +59,9 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
                 console.log(error);
             }
         };
-
-        getQueryVals();
         fetchData();
     // eslint-disable-next-line
-    }, []);
+    }, [pageNum, sortOrd, limitVal]);
 
     return (
         <div id='main-container'>
