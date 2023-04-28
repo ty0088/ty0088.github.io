@@ -1,4 +1,4 @@
-import '../styles/formPages.css'
+import '../styles/UserFormPage.css'
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
