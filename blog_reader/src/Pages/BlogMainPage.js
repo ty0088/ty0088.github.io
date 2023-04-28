@@ -60,6 +60,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
             }
         };
         fetchData();
+        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
     // eslint-disable-next-line
     }, [pageNum, sortOrd, limitVal]);
 
