@@ -12,6 +12,10 @@
     grid-template-columns: 3.5em 10em 1fr;
 }
 
+.input-row.post {
+    grid-template-columns: fit-content(7em) 15em 1fr;
+}
+
 .input-row > input {
     margin-left: 1em;
 }
@@ -34,4 +38,9 @@
 
 .button-container.login {
     margin-left: 4em;
+}
+
+#error-span {
+    margin-left: 0.5em;
+    text-align: start;
 }
