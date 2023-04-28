@@ -57,7 +57,7 @@ function App() {
         <Route path='/blog_author/log-in' element={<LogInPage />} />
         <Route path='/blog_author/sign-up' element={<UserFormPage action={'create'} />} />
         <Route path='/blog_author/user/:userId' element={<UserDetailPage currUser={currUser} />} />
-        <Route path='/blog_author/user/:id/update' element={<UserFormPage action={'update'} />} />
+        <Route path='/blog_author/user/update' element={<UserFormPage action={'update'} />} />
         <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );

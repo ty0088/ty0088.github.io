@@ -113,7 +113,7 @@ const UserDetailPage = ({ currUser }) => {
                     {currUser.user_id === userId &&
                         <>
                             <span><b>Email: </b>{userData.email}</span>
-                            <Link to={`/blog_author/user/${userId}/update`}>Update my details</Link>
+                            <Link to={`/blog_author/user/update`}>Update my details</Link>
                             <button type='button' className='button-link' onClick={deleteClick}>Delete My Account</button>
                         </>
                     }
