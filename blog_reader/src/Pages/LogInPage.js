@@ -14,7 +14,7 @@ const LogInPage = () => {
             const { user } = await fetchUserToken();
             if (user) {
                 //if there is a user token, call api to log out (remove token)
-                await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+                await fetch(`${process.env.NODE_ENV === 'production' ? 'https://blogapi.ty0088.repl.co' : process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
             }
         } catch (error) {
             console.log(error);
@@ -28,7 +28,7 @@ const LogInPage = () => {
             const email = document.getElementById('input-email').value;
             const password = document.getElementById('input-password').value;
             //fetch post request to log in and get token
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {    
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -92,7 +92,7 @@ const LogInPage = () => {
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_reader/sign-up'>here</Link>.</p>
-            <p>Are you a blog author? Click <a href={process.env.REACT_APP_BLOG_AUTHOR_URL}>here</a> to go to the authors' site.</p>
+            <p>Are you a blog author? Click <a href={process.env.NODE_ENV === 'production' ? 'https://ty0088.github.io/blog_author/' : process.env.REACT_APP_BLOG_AUTHOR_URL}>here</a> to go to the authors' site.</p>
         </div>
     );
 };

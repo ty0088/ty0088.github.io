@@ -29,7 +29,7 @@ const CommentRow = ({ postId, fetchData, currUser, comment, scrollNewComFlag, se
     const confirmDelete = async () => {
         try {
             //request delete comment from api
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/${comment._id}/delete`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}/comment/${comment._id}/delete` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/${comment._id}/delete`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {

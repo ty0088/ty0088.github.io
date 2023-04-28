@@ -1,11 +1,13 @@
 import '../styles/PostDetailPage.css'
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import parse from 'html-react-parser';
 
 import logOut from '../javascript/logOut';
 import fetchUserToken from '../javascript/fetchUserToken';
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
+import decodeHtml from '../javascript/decodeHtml';
 
 const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
     const [currUser, setCurrUser] = useState({});
@@ -24,7 +26,7 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
             const tokenResponse = await fetchUserToken();
             setCurrUser(tokenResponse.user ? tokenResponse.user : {});
             //fetch post data from api
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}`, { credentials: "include" });
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}`, { credentials: "include" });
             if (response.status === 200) {
                 //if successful response, set data to state
                 const responseData = await response.json();
@@ -76,12 +78,12 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
             <div className='post-row'>
                 {Object.keys(postData).length > 0 &&
                     <>
-                        <h3>{postData.title}</h3>
+                        <h3>{decodeHtml(postData.title)}</h3>
                         <div className='post-info'>
                             <a href={`/blog_reader/user/${postData.user._id}`}>{postData.user.display_name}</a>,&nbsp;
                             Posted on: {new Date(postData.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "numeric", hour12: true })}
                         </div>
-                        <div className='post-text'>{postData.text}</div>
+                        <div className='post-text'>{parse(postData.text)}</div>
                         <div className='post-footer'>
                             {postData.lastEditBy &&
                                 <span><i>Last edited: {new Date(postData.lastEditDate).toLocaleString()} by {postData.lastEditBy.display_name} ({postData.lastEditBy.user_type})</i></span>

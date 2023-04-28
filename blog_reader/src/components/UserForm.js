@@ -35,7 +35,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/create` : `${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -69,8 +69,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            console.log(user);
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/${user.user_id}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -83,16 +82,16 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             if (response.status === 200) {
                 alert('User successfully updated!')
                 //log user out to remove current token
-                await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+                await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-out` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
                 //log in to get new token
-                const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email, password: currPassword }),
+                    body: JSON.stringify({ email, password: password ? password : currPassword }),
                 });
                 if (response.status === 200) {
                     //if successful response, redirect to home page
@@ -115,7 +114,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
     return (
         <form action='' method=''>
             {action === 'create' &&
-                <p>Use the form below to sign up as a blog <strong>Reader</strong>. To sign up as an blog Author, please click <a href={process.env.REACT_APP_BLOG_AUTHOR_URL}>here</a>.</p>
+                <p>Use the form below to sign up as a blog <strong>Reader</strong>. To sign up as an blog Author, please click <a href={process.env.NODE_ENV === 'production' ? 'https://ty0088.github.io/blog_author/' : process.env.REACT_APP_BLOG_AUTHOR_URL}>here</a>.</p>
             }
             {action === 'update' &&
                 <p>Use the form below to update your details. Please re-enter your current password to make any changes.</p>
