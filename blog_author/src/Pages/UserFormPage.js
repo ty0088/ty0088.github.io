@@ -10,7 +10,6 @@ const UserFormPage = ({ action }) => {
     const [user, setUser] = useState({});
     const [errorData, setErrorData] = useState([]);
     const [formFlag, setFormFlag] = useState(true);
-    // const [userAuthFlag, setUserAuthFlag] = useState(false);
 
     //on intial render call fetchData;
     useEffect(() => {
