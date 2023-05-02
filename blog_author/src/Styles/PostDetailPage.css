@@ -1,0 +1,33 @@
+#comment-container {
+    padding: 0 0 0 1em;
+}
+
+.comment-row {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em 0 0.5em 0;
+    padding: 0 0 0.5em 0.5em;
+    font-size: 0.8em;
+    border: 1px solid grey;
+}
+
+.comment-info {
+    font-size: 0.8em;
+}
+
+#comment-form {
+    margin: 0 0 0.75em 0;
+}
+
+#comment-form > button {
+    font-size: 0.9em
+}
+
+#input-comment-text {
+    width: 100%;
+}
+
+ul {
+    margin: 0.5em 0 0.5em 0;
+    padding-left: 1em;
+}
