@@ -12,13 +12,12 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
   <li><a href="https://ty0088.github.io/tom-pos/">Tom POS</a> - A web based POS terminal app for the hospitality industry (uses Firebase).  - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tom-pos">Github Code</a></li>
   
-  <li><a href="https://ty0088.github.io/blog_reader">The Blog Spot - Reader</a> - A react frontend only blog website for <strong>readers</strong> of "The Blog Spot". Only registered users can see and make comments on the blog posts. 
-  "The Blog Spot" backend API is built using Express/Node and Mongoose/Mongodb. The API is accessed through https://blogapi.ty0088.repl.co and the code for the backend API can be found on <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_api">Github</a>
+  <li><a href="https://ty0088.github.io/blog_reader">The Blog Spot - Reader</a> - A react frontend only blog website for <strong>readers</strong> of "The Blog Spot" that accesses data through a seperate API backend. Only registered users can see and make comments on the blog posts. It may take a small amount of time for the backend to boot up and return any posts and comments.
 </li>
 
-  <li><a href="https://ty0088.github.io/blog_author">The Blog Spot - Author</a> - A react frontend only blog website for <strong>authors</strong> of "The Blog Spot". Authors have access to a rich text editor to create blog posts. 
-  "The Blog Spot" backend API is built using Express/Node and Mongoose/Mongodb. The API is accessed through https://blogapi.ty0088.repl.co and the code for the backend API can be found on <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_api">Github</a>
-</li>
+  <li><a href="https://ty0088.github.io/blog_author">The Blog Spot - Author</a> - A react frontend only blog website for <strong>authors</strong> of "The Blog Spot" that accesses data through a separate API backend. Authors have access to a rich text editor to create blog posts.</li>
+
+  <li>"The Blog Spot" backend API is built using Express/Node and Mongoose/Mongodb. The API is accessed through https://blogapi.ty0088.repl.co and the code for the backend API can be found on <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_api">Github</a></li>
       
   <li><a href="https://top-to-do-d45c1.web.app/">To Do App</a> - Uses Firebase to store data. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/todo-Firebase">Github Code</a></li>
   
