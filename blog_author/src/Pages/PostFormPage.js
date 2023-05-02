@@ -8,7 +8,6 @@ import ConfirmPopUp from '../Components/ConfirmPopUp';
 
 const PostFormPage = ({ action, currUser }) => {
     const [postData, setPostData] = useState(null);
-    const [commentData, setCommentData] = useState(null);
     const [postPrivate, setPostPrivate] = useState(false);
     const [errorData, setErrorData] = useState(null);
     const [submitPopUpFlag, setSubmitPopUpFlag] = useState(false);
@@ -25,7 +24,6 @@ const PostFormPage = ({ action, currUser }) => {
                     //if successful response, set data to state
                     const responseData = await response.json();
                     setPostData(responseData.post);
-                    setCommentData(responseData.comments);
                     setPostPrivate(responseData.post.private);
                 } else {
                     //otherwise log response status and text
@@ -107,7 +105,7 @@ const PostFormPage = ({ action, currUser }) => {
                 }
                 //if successful response, redirect to dashboard
                 if (response.status === 200) {
-                    alert('Post successfully submitted!')
+                    alert('Post successfully submitted!');
                     navigate('/blog_author');
                 } else {
                     //if not successful response, set error data for rendering
