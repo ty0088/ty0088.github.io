@@ -1,26 +1,46 @@
 import '../Styles/formPages.css';
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
 
 import logOut from '../Javascript/logOut';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 
 const PostFormPage = ({ action, currUser }) => {
-    const [postData, setPostData] = useState('');
+    const [postData, setPostData] = useState(null);
+    const [commentData, setCommentData] = useState(null);
     const [postPrivate, setPostPrivate] = useState(false);
     const [errorData, setErrorData] = useState(null);
     const [submitPopUpFlag, setSubmitPopUpFlag] = useState(false);
     const editorRef = useRef(null);
     const navigate = useNavigate();
+    const { postId } = useParams();
 
     useEffect(() => {
+        const fetchPost = async () => {
+            try {
+                //fetch post data from api
+                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}`, { credentials: "include" });
+                if (response.status === 200) {
+                    //if successful response, set data to state
+                    const responseData = await response.json();
+                    setPostData(responseData.post);
+                    setCommentData(responseData.comments);
+                    setPostPrivate(responseData.post.private);
+                } else {
+                    //otherwise log response status and text
+                    console.log(response.status + ' : ' + response.statusText);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
         //if action is update, then get post data
         if (action === 'update') {
-            //get post data from db ---------------------------------
-            setPostData('<p>Previous Text</p>');
+            //get post data from db
+            fetchPost();
         }
-    }, []);
+    }, [action, postId]);
 
     //prompt confirmation on click
     const submitClick = () => {
@@ -53,20 +73,38 @@ const PostFormPage = ({ action, currUser }) => {
                 //get title and post content from editor
                 const post_title = document.getElementById('input-post-title').value;
                 const post_text = editorRef.current.getContent();
-                //request new post from api
-                const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        post_title,
-                        post_text,
-                        post_private: postPrivate,
-                    }),
-                });
+                let response = {};
+                if (action === 'create') {
+                    //request new post from api if action === 'create'
+                    response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            post_title,
+                            post_text,
+                            post_private: postPrivate,
+                        }),
+                    });
+                } else if (action === 'update') {
+                    //else request post update is action === 'update'
+                    response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/update`, {
+                        method: 'PUT',
+                        credentials: 'include',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            post_title,
+                            post_text,
+                            post_private: postPrivate,
+                        }),
+                    });
+                }
                 //if successful response, redirect to dashboard
                 if (response.status === 200) {
                     alert('Post successfully submitted!')
@@ -101,7 +139,7 @@ const PostFormPage = ({ action, currUser }) => {
             <div>
                 <div className='input-row post'>
                     <label htmlFor='postTitle'>Blog Post Title: </label>
-                    <input type='text' id='input-post-title' name='postTitle' required />
+                    <input type='text' id='input-post-title' name='postTitle' defaultValue={postData ? postData.title : ''} required />
                     <span className='error-message' id='error-span'></span>
                 </div>
                 {errorData &&
@@ -118,7 +156,7 @@ const PostFormPage = ({ action, currUser }) => {
                 <Editor
                     apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
                     onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue={postData}
+                    initialValue={postData ? postData.text : ''}
                     init={{
                     height: 500,
                     menubar: false,
