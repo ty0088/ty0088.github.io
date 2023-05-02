@@ -31,7 +31,6 @@ exports.user_detail_get = [
                 userComments: async () => Comment.find({ user: req.params.id }).sort({ post_date: -1 }).populate('post', 'title'),
             });
             // //query db for user
-            // const user = await User.findById(req.params.id);
             if (results.user === null) {
                 //if requested user not found, return error
                 const err = new Error("Requested user not found");
