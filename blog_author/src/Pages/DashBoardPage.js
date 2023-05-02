@@ -9,7 +9,7 @@ import PageNavRow from '../Components/PageNavRow';
 import PageNavSpan from '../Components/PageNavSpan';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 
-const DashboardPage = ({ currUser }) => {
+const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     const [postList, setPostList] = useState([]);
     const [paginateInfo, setPaginateInfo] = useState({});
     const [pageNum, setPageNum] = useState(null);
@@ -30,12 +30,17 @@ const DashboardPage = ({ currUser }) => {
             setLimitVal(searchParams.get('limit') || '');
         };
 
+        //set scroll to comment states to false (reset to default behavior)
+        setScrollComFlag(false);
+        setScrollComId(null);
+
         //if there is an verified user, fetch post data from db
         if (currUser) {
             getQueryVals();
             fetchData();
         }
-
+        //scroll to top of page on render
+        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
     // eslint-disable-next-line
     }, [currUser]);
 
@@ -148,11 +153,11 @@ const DashboardPage = ({ currUser }) => {
                         {postList.map((post, i) => {
                             if (!listViewFlag) {
                                 return (
-                                    <PostRow key={i} post={post} postPrivacyClick={postPrivacyClick} deletePostClick={deletePostClick} />
+                                    <PostRow key={i} post={post} postPrivacyClick={postPrivacyClick} deletePostClick={deletePostClick} setScrollComFlag={setScrollComFlag} />
                                 );
                             } else {
                                 return (
-                                    <PostListRow key={i} post={post} postPrivacyClick={postPrivacyClick} deletePostClick={deletePostClick} />
+                                    <PostListRow key={i} post={post} postPrivacyClick={postPrivacyClick} deletePostClick={deletePostClick} setScrollComFlag={setScrollComFlag}  />
                                 );
                             }
                         })}

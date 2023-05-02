@@ -10,19 +10,20 @@ import UserFormPage from './Pages/UserFormPage'
 import NotFoundPage from './Pages/NotFoundPage';
 import UserDetailPage from './Pages/UserDetailPage';
 import PostFormPage from './Pages/PostFormPage';
+import PostDetailPage from './Pages/PostDetailPage';
 
 function App() {
   const [currUser, setCurrUser] = useState(null);
+  const [scrollComFlag, setScrollComFlag] = useState(false);
+  const [scrollComId, setScrollComId] = useState(null);
   let location = useLocation();
   const navigate = useNavigate();
 
   //----------------------------------------------------------------------------------------
-  //Log In Page ----------- done
-  //Sign Up Page ----------- done
-  //Author Dashboard - page showing all author posts and CRUD mananagement of posts ---------- done
-  //User Account Page - for user detail management ------------ done
-  //Post Form Page - create/update posts --------------- to do
-  //Post Detail Page - with comments ------------------- to do 
+  //Should author site provide access to other author's blog posts?
+  //-could link to blog reader on click of someone elses blog
+  //-could not show any other blog links, only links to comments on authors own posts
+  //allow author to delete comments???? delete comments on own posts?
   //narrow screen formatting ------------------- to do
   //----------------------------------------------------------------------------------------
 
@@ -55,12 +56,13 @@ function App() {
 
   return (
     <Routes>
-        <Route path='/blog_author' element={<DashboardPage currUser={currUser} />} />
+        <Route path='/blog_author' element={<DashboardPage currUser={currUser} setScrollComFlag={setScrollComFlag} setScrollComId={setScrollComId} />} />
         <Route path='/blog_author/log-in' element={<LogInPage />} />
         <Route path='/blog_author/sign-up' element={<UserFormPage action={'create'} currUser={currUser} />} />
         <Route path='/blog_author/user/update' element={<UserFormPage action={'update'} currUser={currUser} />} />
-        <Route path='/blog_author/user/:userId' element={<UserDetailPage currUser={currUser} />} />
+        <Route path='/blog_author/user/:userId' element={<UserDetailPage currUser={currUser} setScrollComId={setScrollComId} />} />
         <Route path='/blog_author/post/create' element={<PostFormPage action={'create'} currUser={currUser} />} />
+        <Route path='/blog_author/post/:postId' element={<PostDetailPage currUser={currUser} scrollComFlag={scrollComFlag} setScrollComFlag={setScrollComFlag} scrollComId={scrollComId} />} />
         <Route path='/blog_author/post/:postId/update' element={<PostFormPage action={'update'} currUser={currUser} />} />
         <Route path='*' element={<NotFoundPage />} />
     </Routes>

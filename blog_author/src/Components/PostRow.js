@@ -5,13 +5,13 @@ import parse from 'html-react-parser';
 
 import decodeHtml from '../Javascript/decodeHtml';
 
-const PostRow = ({ post, postPrivacyClick, deletePostClick }) => {
+const PostRow = ({ post, postPrivacyClick, deletePostClick, setScrollComFlag }) => {
     const navigate = useNavigate();
 
-    //go to post detail page
+    //go to post detail page and scroll to comment
     const commentClick = () => {
+        setScrollComFlag(true);
         navigate(`/blog_author/post/${post._id}`);
-        //scroll to comment section ------------------------------ ??
     };
 
     return (

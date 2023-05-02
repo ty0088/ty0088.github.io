@@ -2,12 +2,11 @@ import '../Styles/UserDetailPage.css'
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-import fetchUserToken from '../Javascript/fetchUserToken';
 import logOut from '../Javascript/logOut';
 import UserContent from '../Components/UserContent';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 
-const UserDetailPage = ({ currUser }) => {
+const UserDetailPage = ({ currUser, setScrollComId }) => {
     const [userData, setUserData] = useState({});
     const [postData, setPostData] = useState({});
     const [commentData, setCommentData] = useState({});
@@ -19,24 +18,23 @@ const UserDetailPage = ({ currUser }) => {
     //on initial render and any new user id request, get user token and get specified user data
     useEffect(() => {
         try {
-            //get user token and get user data
+            //get user data
             const fetchData = async () => {
-                //fetch user token data from api
-                const tokenResponse = await fetchUserToken();
-                //if user token found, query db for specified user, posts and comments
-                if (tokenResponse.user !== null) {
-                    const dbResponse = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${userId}`, { credentials: "include" });
-                    const dbResponseData = await dbResponse.json();
-                    setUserData(dbResponseData.userDetails);
-                    setPostData(dbResponseData.userPosts);
-                    setCommentData(dbResponseData.userComments);
-                }
+                // query db for specified user, posts and comments
+                const dbResponse = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${userId}`, { credentials: "include" });
+                const dbResponseData = await dbResponse.json();
+                setUserData(dbResponseData.userDetails);
+                setPostData(dbResponseData.userPosts);
+                setCommentData(dbResponseData.userComments);
             };
-            fetchData();
+            //if user, fetch data
+            if (currUser !== null) {
+                fetchData();
+            }
         } catch (error) {
             console.log(error);
         }
-    }, [userId]);
+    }, [currUser, userId]);
 
     //prompt delete user password confirmation form
     const deleteClick = () => {
@@ -142,7 +140,7 @@ const UserDetailPage = ({ currUser }) => {
                         </form>
                     }
                 </div>
-                <UserContent userType={userData.user_type} userPosts={postData} userComments={commentData} />
+                <UserContent userType={userData.user_type} userPosts={postData} userComments={commentData} setScrollComId={setScrollComId} />
                 {popUpFlag &&
                     <ConfirmPopUp name={userData.display_name} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete account'} message2={'This is permenant and all your data (except your comments) will be lost.'} />
                 }

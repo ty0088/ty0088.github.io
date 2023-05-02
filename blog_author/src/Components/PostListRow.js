@@ -4,13 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import decodeHtml from '../Javascript/decodeHtml';
 
-const PostListRow = ({ post, postPrivacyClick, deletePostClick }) => {
+const PostListRow = ({ post, postPrivacyClick, deletePostClick, setScrollComFlag }) => {
     const navigate = useNavigate();
 
     //go to post detail page
     const commentClick = () => {
+        setScrollComFlag(true);
         navigate(`/blog_author/post/${post._id}`);
-        //scroll to comment section ------------------------------ ??
     };
 
     return (
