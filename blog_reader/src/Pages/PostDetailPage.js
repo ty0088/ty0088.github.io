@@ -34,7 +34,7 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
                 setCommentData(responseData.comments);
             } else if (response.status === 401) {
                 //if 401 Unauthorised error, redirect user to log in
-                navigate('/blog_reader/request-log-in');
+                navigate('/blog_reader/log-in');
             } else {
                 //otherwise log response status and text
                 console.log(response.status + ' : ' + response.statusText);
