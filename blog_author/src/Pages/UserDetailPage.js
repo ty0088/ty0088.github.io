@@ -140,7 +140,7 @@ const UserDetailPage = ({ currUser, setScrollComId }) => {
                         </form>
                     }
                 </div>
-                <UserContent userType={userData.user_type} userPosts={postData} userComments={commentData} setScrollComId={setScrollComId} />
+                <UserContent currUser={currUser} userId={userId} userType={userData.user_type} userPosts={postData} userComments={commentData} setScrollComId={setScrollComId} />
                 {popUpFlag &&
                     <ConfirmPopUp name={userData.display_name} cancelClick={cancelDelete} confirmClick={confirmDelete} message1={'Are you sure you want to delete account'} message2={'This is permenant and all your data (except your comments) will be lost.'} />
                 }
