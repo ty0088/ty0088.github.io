@@ -24,12 +24,13 @@ exports.user_detail_get = [
                         { user: req.user.user_id },
                     ] },
                 ],
-            }
+            };
             const results = await async.parallel({
                 user: async () => User.findById(req.params.id),
                 userPosts: async () => Post.find(userPostQuery).sort({ post_date: -1 }),
-                userComments: async () => Comment.find({ user: req.params.id }).sort({ post_date: -1 }).populate('post', 'title'),
+                userComments: async () => Comment.find({ user: req.params.id }).populate('post', 'title user').populate('user', 'display_name user_type').sort({ post_date: -1 }),
             });
+            console.log(results.userPosts);
             // //query db for user
             if (results.user === null) {
                 //if requested user not found, return error
