@@ -20,10 +20,7 @@ function App() {
   const navigate = useNavigate();
 
   //----------------------------------------------------------------------------------------
-  //Should author site provide access to other author's blog posts?
-  //-could link to blog reader on click of someone elses blog
-  //-could not show any other blog links, only links to comments on authors own posts
-  //allow author to delete comments???? delete comments on own posts?
+  //author to be able to delete comments on their own posts ------------- to do
   //narrow screen formatting ------------------- to do
   //----------------------------------------------------------------------------------------
 
