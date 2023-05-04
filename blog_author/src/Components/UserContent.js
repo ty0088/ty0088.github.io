@@ -38,7 +38,7 @@ const UserContent = ({ currUser, userId, userType, userPosts, userComments, setS
             navigate(`/blog_author/post/${comment.post._id}`);
         } else {
             //if comment is from another author's post, open new window to blog reader site
-            window.open(`${process.env.REACT_APP_BLOG_READER_URL}/post/${comment.post._id}`);
+            window.open(process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader/post/${comment.post._id}` : `${process.env.REACT_APP_BLOG_READER_URL}/post/${comment.post._id}`);
         }
 
     };
@@ -58,7 +58,7 @@ const UserContent = ({ currUser, userId, userType, userPosts, userComments, setS
                                     <Link to={`/blog_author/post/${post._id}`}>{post.title}</Link>
                                 }
                                 {currUser.user_id !== userId &&
-                                    <button type='button' className='button-link' onClick={() => window.open(`${process.env.REACT_APP_BLOG_READER_URL}/post/${post._id}`)}>{post.title}</button>
+                                    <button type='button' className='button-link' onClick={() => window.open(process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader/post/${post._id}` : `${process.env.REACT_APP_BLOG_READER_URL}/post/${post._id}`)}>{post.title}</button>
                                 }
                                 &nbsp;&nbsp;-&nbsp;&nbsp;({new Date(post.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})
                                 {post.private &&

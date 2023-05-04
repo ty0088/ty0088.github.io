@@ -32,7 +32,7 @@ const LogInPage = () => {
             const email = document.getElementById('input-email').value;
             const password = document.getElementById('input-password').value;
             //fetch post request to log in and get token
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -86,7 +86,7 @@ const LogInPage = () => {
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
-            <p>Are you a blog reader? Click <Link to={process.env.REACT_APP_BLOG_READER_URL}>here</Link> to go to the readers' site.</p>
+            <p>Are you a blog reader? Click <Link to={process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader/log-in` : process.env.REACT_APP_BLOG_READER_URL}>here</Link> to log in to the readers' site.</p>
         </div>
     );
 };

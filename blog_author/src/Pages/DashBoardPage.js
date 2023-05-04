@@ -48,7 +48,8 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     const fetchData = async () => {
         try {
             //request user's post list from api
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/post-list${window.location.search}`, { credentials: "include" });
+            
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/${currUser.user_id}/post-list${window.location.search}` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/post-list${window.location.search}`, { credentials: "include" });
             const responseData = await response.json();
             //once response is returned, set the post list and paginate data to state
             setPostList(responseData.docs);
@@ -80,7 +81,7 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
         try {
             //request update to post private value from api
             const changeBool = !postList[postList.findIndex(post => post._id === clickId)].private;
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/${clickId}/update`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${clickId}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${clickId}/update`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -116,7 +117,7 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     //submit delete request to api
     const confirmPostDelete = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/${clickId}/delete`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${clickId}/delete` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${clickId}/delete`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

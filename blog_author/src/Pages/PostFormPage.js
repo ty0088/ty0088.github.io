@@ -6,7 +6,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import logOut from '../Javascript/logOut';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 
-const PostFormPage = ({ action, currUser }) => {
+const PostFormPage = ({ action, currUser, tinyKey }) => {
     const [postData, setPostData] = useState(null);
     const [postPrivate, setPostPrivate] = useState(false);
     const [errorData, setErrorData] = useState(null);
@@ -15,6 +15,7 @@ const PostFormPage = ({ action, currUser }) => {
     const navigate = useNavigate();
     const { postId } = useParams();
 
+    //get post data if action is 'update'
     useEffect(() => {
         const fetchPost = async () => {
             try {
@@ -74,7 +75,7 @@ const PostFormPage = ({ action, currUser }) => {
                 let response = {};
                 if (action === 'create') {
                     //request new post from api if action === 'create'
-                    response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
+                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/create` : `${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
                         method: 'POST',
                         credentials: 'include',
                         headers: {
@@ -89,7 +90,7 @@ const PostFormPage = ({ action, currUser }) => {
                     });
                 } else if (action === 'update') {
                     //else request post update is action === 'update'
-                    response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/update`, {
+                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}/update` :`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/update`, {
                         method: 'PUT',
                         credentials: 'include',
                         headers: {
@@ -151,25 +152,26 @@ const PostFormPage = ({ action, currUser }) => {
                         }
                     </ul>
                 }
-                <Editor
-                    apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue={postData ? postData.text : ''}
-                    init={{
-                    height: 500,
-                    menubar: false,
-                    plugins: [
-                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                    ],
-                    toolbar: 'undo redo | blocks | ' +
-                        'bold italic forecolor | alignleft aligncenter ' +
-                        'alignright alignjustify | bullist numlist outdent indent | ' +
-                        'removeformat | help',
-                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                    }}
-                />
+                {tinyKey &&
+                    <Editor
+                        apiKey={process.env.NODE_ENV === 'production' ? tinyKey : process.env.REACT_APP_TINYMCE_API_KEY}
+                        initialValue={postData ? postData.text : ''}
+                        init={{
+                        height: 500,
+                        menubar: false,
+                        plugins: [
+                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | ' +
+                            'bold italic forecolor | alignleft aligncenter ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                            'removeformat | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        }}
+                    />
+                }
                 <div className='button-container'>
                     {!postPrivate &&
                         <span><strong>Public Post</strong> / <button type='button' className='button-link' onClick={() => setPostPrivate(true)}>Make Private</button></span>

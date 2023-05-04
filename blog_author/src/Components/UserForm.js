@@ -73,7 +73,7 @@ const UserForm = ({ action, currUser, errorData, setErrorData }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/update`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/${currUser.user_id}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/update`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -86,9 +86,9 @@ const UserForm = ({ action, currUser, errorData, setErrorData }) => {
             if (response.status === 200) {
                 alert('Author successfully updated!')
                 //log user out to remove current token
-                await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+                await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-out` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
                 //log in to get new token
-                const response = await fetch(`${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -117,7 +117,7 @@ const UserForm = ({ action, currUser, errorData, setErrorData }) => {
     return (
         <form action='' method=''>
             {action === 'create' &&
-                <p>Use the form below to sign up as a blog <strong>Author</strong>. To sign up as an blog Reader, please click <Link to={process.env.REACT_APP_BLOG_READER_URL}>here</Link>.</p>
+                <p>Use the form below to sign up as a blog <strong>Author</strong>. To sign up as an blog <strong>Reader</strong>, please click <Link to={process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader/sign-up` : `${process.env.REACT_APP_BLOG_READER_URL}/sign-up`}>here</Link>.</p>
             }
             {action === 'update' &&
                 <p>Use the form below to update your details. Please re-enter your current password to make any changes.</p>
