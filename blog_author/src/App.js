@@ -16,7 +16,7 @@ function App() {
   const [currUser, setCurrUser] = useState(null);
   const [scrollComFlag, setScrollComFlag] = useState(false);
   const [scrollComId, setScrollComId] = useState(null);
-  const [tinyKey, setTinyKey] = useState('');
+  const [tinyKey, setTinyKey] = useState(null);
   let location = useLocation();
   const navigate = useNavigate();
 
