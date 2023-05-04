@@ -16,6 +16,7 @@ function App() {
   const [currUser, setCurrUser] = useState(null);
   const [scrollComFlag, setScrollComFlag] = useState(false);
   const [scrollComId, setScrollComId] = useState(null);
+  const [tinyKey, setTinyKey] = useState('');
   let location = useLocation();
   const navigate = useNavigate();
 
@@ -43,10 +44,27 @@ function App() {
     checkUser();
   }, [location]);
 
-  //check if user is logged in, if not redirect to log in page
+  //check if user is logged in on render of web app
   useEffect(() => {
+    //fn to get tiny API key
+    const getTinyKey = async () => {
+      try {
+          const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/gettinykey` : `${process.env.REACT_APP_BLOGAPI_URL}/user/gettinykey`, { credentials: "include" });
+          if (response.status === 200) {
+              const key = await response.json();
+              setTinyKey(key.tinyKey);
+          }
+      } catch (error) {
+          console.log(error);
+      }
+    };
+
     if (!currUser) {
-        navigate('/blog_author/log-in');
+      //if no user, redirect to log in page
+      navigate('/blog_author/log-in');
+    } else {
+      //if user present, get tinyMCE api key
+      getTinyKey();
     }
   // eslint-disable-next-line
   }, [currUser]);
@@ -58,9 +76,9 @@ function App() {
         <Route path='/blog_author/sign-up' element={<UserFormPage action={'create'} currUser={currUser} />} />
         <Route path='/blog_author/user/update' element={<UserFormPage action={'update'} currUser={currUser} />} />
         <Route path='/blog_author/user/:userId' element={<UserDetailPage currUser={currUser} setScrollComId={setScrollComId} />} />
-        <Route path='/blog_author/post/create' element={<PostFormPage action={'create'} currUser={currUser} />} />
+        <Route path='/blog_author/post/create' element={<PostFormPage action={'create'} currUser={currUser} tinyKey={tinyKey} />} />
         <Route path='/blog_author/post/:postId' element={<PostDetailPage currUser={currUser} scrollComFlag={scrollComFlag} setScrollComFlag={setScrollComFlag} scrollComId={scrollComId} />} />
-        <Route path='/blog_author/post/:postId/update' element={<PostFormPage action={'update'} currUser={currUser} />} />
+        <Route path='/blog_author/post/:postId/update' element={<PostFormPage action={'update'} currUser={currUser} tinyKey={tinyKey} />} />
         <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
