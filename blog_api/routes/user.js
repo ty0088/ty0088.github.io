@@ -14,6 +14,9 @@ router.post('/log-out', authController.user_log_out_post)
 //GET Authenticate user - protected
 router.get('/me', authController.user_authenticate_GET);
 
+//GET TinyMCE API key - protected
+router.get('/gettinykey', authController.getTinyKey);
+
 //POST Create new user
 router.post('/create', userController.sign_up_post);
 

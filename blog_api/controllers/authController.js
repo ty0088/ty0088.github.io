@@ -33,7 +33,7 @@ exports.log_in_post = (req, res, next) => {
 //handle log out on POST 
 exports.user_log_out_post = (req, res, next) => {
     res.clearCookie('jwt', { httpOnly: true });
-    res.status(200).json({ message: 'User successfully logged out' })
+    res.status(200).json({ message: 'User successfully logged out' });
 };
 
 //handle user self authentication on GET
@@ -64,6 +64,19 @@ exports.user_authenticate_GET = [
                 //user validated, send user data
                 return res.json({ user: req.user });
             }
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+    },
+];
+
+//send tinyMCE key on req from auth user
+exports.getTinyKey = [
+    passport.authenticate('jwt', { session: false }),
+    async (req, res, next) => {
+        try {
+            res.status(200).json({ tinyKey: process.env.REACT_APP_TINYMCE_API_KEY });
         } catch (error) {
             console.log(error);
             return next(error);
