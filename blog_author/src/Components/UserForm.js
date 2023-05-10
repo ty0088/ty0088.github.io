@@ -73,7 +73,7 @@ const UserForm = ({ action, currUser, errorData, setErrorData }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/${currUser.user_id}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/update`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/${currUser.user_id}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/update`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -86,9 +86,9 @@ const UserForm = ({ action, currUser, errorData, setErrorData }) => {
             if (response.status === 200) {
                 alert('Author successfully updated!')
                 //log user out to remove current token
-                await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-out` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+                await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-out` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
                 //log in to get new token
-                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {

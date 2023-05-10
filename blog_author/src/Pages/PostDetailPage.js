@@ -20,7 +20,7 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
     const fetchData = async () => {
         try {
             //fetch post data from api
-            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}`, { credentials: "include" });
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}`, { credentials: "include" });
             if (response.status === 200) {
                 //if successful response, set data to state
                 const responseData = await response.json();

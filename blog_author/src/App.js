@@ -49,7 +49,7 @@ function App() {
     //fn to get tiny API key
     const getTinyKey = async () => {
       try {
-          const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/gettinykey` : `${process.env.REACT_APP_BLOGAPI_URL}/user/gettinykey`, { credentials: "include" });
+          const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/gettinykey` : `${process.env.REACT_APP_BLOGAPI_URL}/user/gettinykey`, { credentials: "include" });
           if (response.status === 200) {
               const key = await response.json();
               setTinyKey(key.tinyKey);

@@ -21,7 +21,7 @@ const UserDetailPage = ({ currUser, setScrollComId }) => {
             //get user data
             const fetchData = async () => {
                 // query db for specified user, posts and comments
-                const dbResponse = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/${userId}` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${userId}`, { credentials: "include" });
+                const dbResponse = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/${userId}` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${userId}`, { credentials: "include" });
                 const dbResponseData = await dbResponse.json();
                 setUserData(dbResponseData.userDetails);
                 setPostData(dbResponseData.userPosts);
@@ -54,7 +54,7 @@ const UserDetailPage = ({ currUser, setScrollComId }) => {
             //request delete user from api
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
-            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/${userId}/delete` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${userId}/delete`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/${userId}/delete` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${userId}/delete`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {

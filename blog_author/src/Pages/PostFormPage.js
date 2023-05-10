@@ -20,7 +20,7 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
         const fetchPost = async () => {
             try {
                 //fetch post data from api
-                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}`, { credentials: "include" });
+                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}`, { credentials: "include" });
                 if (response.status === 200) {
                     //if successful response, set data to state
                     const responseData = await response.json();
@@ -75,7 +75,7 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                 let response = {};
                 if (action === 'create') {
                     //request new post from api if action === 'create'
-                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/create` : `${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
+                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/create` : `${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
                         method: 'POST',
                         credentials: 'include',
                         headers: {
@@ -90,7 +90,7 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                     });
                 } else if (action === 'update') {
                     //else request post update is action === 'update'
-                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}/update` :`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/update`, {
+                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/update` :`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/update`, {
                         method: 'PUT',
                         credentials: 'include',
                         headers: {

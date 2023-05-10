@@ -32,7 +32,7 @@ const LogInPage = () => {
             const email = document.getElementById('input-email').value;
             const password = document.getElementById('input-password').value;
             //fetch post request to log in and get token
-            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -41,6 +41,7 @@ const LogInPage = () => {
                 },
                 body: JSON.stringify({ email, password }),
             });
+            console.log(response);
             if (response.status === 200) {
                 //if successful response, store user token and redirect to home page
                 const userData = await fetchUserToken();
