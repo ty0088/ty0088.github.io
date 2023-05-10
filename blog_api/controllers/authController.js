@@ -24,7 +24,7 @@ exports.log_in_post = (req, res, next) => {
             const options = { expiresIn: process.env.NODE_ENV === 'development' ? '30 days' : '10h' };
             const token = jwt.sign(payload, process.env.SESSION_SECRET, options);
             //save token to http only cookie and return success message
-            res.cookie('jwt', token, { httpOnly: true });
+            res.cookie('jwt', token, { httpOnly: true, sameSite: 'None', secure: true });
             return res.json({ message: "Log in successful" });
         });
     })(req, res);
