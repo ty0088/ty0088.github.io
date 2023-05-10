@@ -14,7 +14,7 @@ const LogInPage = () => {
             const { user } = await fetchUserToken();
             if (user) {
                 //if there is a user token, call api to log out (remove token)
-                await fetch(`${process.env.NODE_ENV === 'production' ? 'https://blogapi.ty0088.repl.co' : process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+                await fetch(`${process.env.NODE_ENV === 'production' ? 'https://blog-api.ty0088.co.uk' : process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
             }
         } catch (error) {
             console.log(error);
@@ -28,7 +28,7 @@ const LogInPage = () => {
             const email = document.getElementById('input-email').value;
             const password = document.getElementById('input-password').value;
             //fetch post request to log in and get token
-            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {    
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {    
                 method: 'POST',
                 credentials: 'include',
                 headers: {

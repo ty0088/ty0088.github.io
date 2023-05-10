@@ -35,7 +35,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/create` : `${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/create` : `${process.env.REACT_APP_BLOGAPI_URL}/user/create`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -69,7 +69,7 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             const password = document.getElementById('input-password').value;
             const passwordConfirm = document.getElementById('input-password-confirm').value;
             //request new user from api
-            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/${user.user_id}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/${user.user_id}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${user.user_id}/update`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -82,9 +82,9 @@ const UserForm = ({ action, user, fetchData, errorData, setErrorData }) => {
             if (response.status === 200) {
                 alert('User successfully updated!')
                 //log user out to remove current token
-                await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-out` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
+                await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-out` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-out`, { method: 'POST', credentials: 'include' });
                 //log in to get new token
-                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
+                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {

@@ -29,7 +29,7 @@ const CommentForm = ({ postId, commentText, fetchData, setNewComFlag, setScrollN
             //check whether new comment or update comment
             if (!editCommentId) {
                 //request new comment from api
-                response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}/comment/create` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/create`, {
+                response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/comment/create` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/create`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -40,7 +40,7 @@ const CommentForm = ({ postId, commentText, fetchData, setNewComFlag, setScrollN
                 });
             } else {
                 //request update comment from api
-                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blogapi.ty0088.repl.co/post/${postId}/comment/update` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/update`, {
+                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/comment/update` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/update`, {
                     method: 'PUT',
                     credentials: 'include',
                     headers: {
