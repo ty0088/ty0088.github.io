@@ -32,7 +32,7 @@ exports.log_in_post = (req, res, next) => {
 
 //handle log out on POST 
 exports.user_log_out_post = (req, res, next) => {
-    res.clearCookie('jwt', { httpOnly: true });
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
     res.status(200).json({ message: 'User successfully logged out' });
 };
 
