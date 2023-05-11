@@ -41,7 +41,6 @@ const LogInPage = () => {
                 },
                 body: JSON.stringify({ email, password }),
             });
-            console.log(response);
             if (response.status === 200) {
                 //if successful response, store user token and redirect to home page
                 const userData = await fetchUserToken();
