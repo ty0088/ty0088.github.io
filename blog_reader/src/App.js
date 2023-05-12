@@ -10,6 +10,7 @@ import UserFormPage from './Pages/UserFormPage';
 import UserDetailPage from './Pages/UserDetailPage';
 import NotFoundPage from './Pages/NotFoundPage';
 import RequestLogInPage from './Pages/RequestLogInPage';
+import RedirectToHome from './Pages/RedirectToHome';
 
 function App() {
   const [scrollComFlag, setScrollComFlag] = useState(false);
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path='/' element={<RedirectToHome />} />
       <Route path='/blog_reader' element={<BlogMainPage setScrollComFlag={setScrollComFlag} setScrollComId={setScrollComId} />} />
       <Route path='/blog_reader/post/:postId' element={<PostDetailPage scrollComFlag={scrollComFlag} setScrollComFlag={setScrollComFlag} scrollComId={scrollComId} />} />
       <Route path='/blog_reader/log-in' element={<LogInPage />}/>
