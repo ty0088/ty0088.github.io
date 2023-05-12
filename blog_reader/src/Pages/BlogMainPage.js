@@ -22,7 +22,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
         const getQueryVals = () => {
             setPageNum(searchParams.get('page') || '');
             setSortOrd(searchParams.get('sortOrd') || '');
-            setLimitVal(searchParams.get('limit') || '');   
+            setLimitVal(searchParams.get('limit') || '');
         };
         getQueryVals();
     });
@@ -40,7 +40,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
                 const userData = await fetchUserToken();
                 setUser(userData.user);
                 //request blog list from api
-                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post${window.location.search}` : `${process.env.REACT_APP_BLOGAPI_URL}/post${window.location.search}`, { credentials: "include" });
+                const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post?page=${pageNum}&sortOrd=${sortOrd}&limit=${limitVal}` : `${process.env.REACT_APP_BLOGAPI_URL}/post?page=${pageNum}&sortOrd=${sortOrd}&limit=${limitVal}`, { credentials: "include" });
                 const responseData = await response.json();
                 //once response is returned, set the post list and paginate data to state
                 setPostList(responseData.docs);
