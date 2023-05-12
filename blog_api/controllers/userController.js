@@ -30,7 +30,6 @@ exports.user_detail_get = [
                 userPosts: async () => Post.find(userPostQuery).sort({ post_date: -1 }),
                 userComments: async () => Comment.find({ user: req.params.id }).populate('post', 'title user').populate('user', 'display_name user_type').sort({ post_date: -1 }),
             });
-            console.log(results.userPosts);
             // //query db for user
             if (results.user === null) {
                 //if requested user not found, return error
@@ -171,7 +170,7 @@ exports.sign_up_post = [
             const user = new User({
                     display_name: req.body.display_name,
                     email: req.body.email,
-                    user_type: (req.get('Referer') === process.env.BLOG_AUTHOR_URL ? 'Author' : 'Reader'), //sign ups from author site default user to Author and reader site to Reader
+                    user_type: (req.get('Referer') === 'https://ty0088.github.io/blog_author' ? 'Author' : 'Reader'), //sign ups from author site default user to Author and reader site to Reader
             });
             //check if there are errors present
             if (!errors.isEmpty()) {
@@ -300,7 +299,6 @@ exports.user_update_put = [
                 user.email = req.body.email;
             }
             if (req.body.password) {
-                console.log(req.body.password);
                 //if new password entered, hash new password and save user to db
                 bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
                     try {
@@ -361,7 +359,6 @@ exports.user_delete = [
         try {
             //extract the validation errors from a request
             const errors = validationResult(req);
-            console.log(errors);
             //check if there are errors present
             if (!errors.isEmpty()) {
                 //error(s), send status and errors
