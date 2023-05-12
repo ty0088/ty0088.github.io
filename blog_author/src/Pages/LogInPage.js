@@ -86,7 +86,7 @@ const LogInPage = () => {
                 </div>
             </form>
             <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
-            <p>Are you a blog reader? Click <Link to={process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader/log-in` : process.env.REACT_APP_BLOG_READER_URL}>here</Link> to log in to the readers' site.</p>
+            <p>Are you a blog reader? Click <Link to={process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader#/blog_reader/log-in` : process.env.REACT_APP_BLOG_READER_URL}>here</Link> to log in to the readers' site.</p>
         </div>
     );
 };
