@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "devstart": "nodemon ./bin/www",
-    "serverstart": "SET DEBUG=inventory_app:* & npm run devstart"
+    "serverstart": "SET DEBUG=blog_api:* & npm run devstart"
   },
   "keywords": [],
   "author": "",
