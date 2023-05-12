@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('./passport');
+const secrets = require('./storage/blog-api-secrets.json'); //get secrets from s3 bucket
 
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
@@ -18,7 +19,7 @@ const app = express();
 // Set up mongoose connection
 (async () => {
     try {
-      const dbConn = await mongoose.connect( process.env.DB_CONN, { useUnifiedTopology: true, useNewUrlParser: true });
+      const dbConn = await mongoose.connect(secrets.DB_CONN, { useUnifiedTopology: true, useNewUrlParser: true });
       console.log(`MongoDB Connected: ${dbConn.connection.host}`);
     } 
     catch (error) {

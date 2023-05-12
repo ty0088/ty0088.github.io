@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
 const bcrypt = require('bcryptjs');
+const secrets = require('./storage/blog-api-secrets.json');
 
 const User = require('./models/user');
 
@@ -49,7 +50,7 @@ passport.use(new JWTStrategy(
     {
         //options
         jwtFromRequest: cookieExtractor,
-        secretOrKey : process.env.SESSION_SECRET,
+        secretOrKey : secrets.SESSION_SECRET,
     },
     async (jwtPayload, cb) => {
         try {

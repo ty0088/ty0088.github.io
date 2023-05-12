@@ -1,6 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const passport = require("passport");
+const secrets = require('../storage/blog-api-secrets.json');
 
 //log user in on POST
 exports.log_in_post = (req, res, next) => {
@@ -22,7 +23,7 @@ exports.log_in_post = (req, res, next) => {
                 user_type: user.user_type, 
             };
             const options = { expiresIn: process.env.NODE_ENV === 'development' ? '30 days' : '10h' };
-            const token = jwt.sign(payload, process.env.SESSION_SECRET, options);
+            const token = jwt.sign(payload, secrets.SESSION_SECRET, options);
             //save token to http only cookie and return success message
             res.cookie('jwt', token, { httpOnly: true, sameSite: 'None', secure: true });
             return res.json({ message: "Log in successful" });
@@ -76,7 +77,7 @@ exports.getTinyKey = [
     passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
-            res.status(200).json({ tinyKey: process.env.REACT_APP_TINYMCE_API_KEY });
+            res.status(200).json({ tinyKey: secrets.REACT_APP_TINYMCE_API_KEY });
         } catch (error) {
             console.log(error);
             return next(error);
