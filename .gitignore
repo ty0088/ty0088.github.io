@@ -16,4 +16,4 @@ members_message_board/node_modules/
 blog_api/.env
 blog_api/node_modules/
 
-blog_api/blog-api-secrets.json
+blog_api/storage/blog-api-secrets.json
