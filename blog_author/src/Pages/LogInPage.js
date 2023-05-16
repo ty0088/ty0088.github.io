@@ -5,9 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import fetchUserToken from '../Javascript/fetchUserToken';
 import logCurrUserOut from '../Javascript/logCurrUserOut';
 import redirectReader from '../Javascript/redirectReader';
+import ConfirmPopUp from '../Components/ConfirmPopUp';
 
 const LogInPage = () => {
     const [errorData, setErrorData] = useState(null);
+    const [popUpFlag, setPopUpFlag] = useState(false);
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -65,6 +67,41 @@ const LogInPage = () => {
         setErrorData(null);
     };
 
+    //prompt confirm pop up for demo log in
+    const demoLogInClick = () => {
+        setPopUpFlag(true);
+    };
+
+    //log into demo account
+    const confirmDemoLogin = async () => {
+        try {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {    
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: 'demo@demo', password: ' ' }),
+            });
+            if (response.status === 200) {
+                //if successful response, navigate to home page
+                navigate("/blog_author");
+            } else {
+                //if not successful response, set error data for rendering
+                const responseData = await response.json();
+                console.log(responseData.error);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //cancel demo log in and remove pop up
+    const cancelDemoLogin = () => {
+        setPopUpFlag(false);
+    };
+
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
@@ -85,8 +122,12 @@ const LogInPage = () => {
                     <button className='button-link' type='submit'>Log In</button>
                 </div>
             </form>
+            <p>Want to test out The Blog Spot - Author site? Log into the demo account. Click <button type='button' className='button-link' onClick={demoLogInClick}>here</button>.</p>
             <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
             <p>Are you a blog reader? Click <Link to={process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader#/blog_reader/log-in` : process.env.REACT_APP_BLOG_READER_URL}>here</Link> to log in to the readers' site.</p>
+                    {popUpFlag &&
+                <ConfirmPopUp name={'Demo Account'} cancelClick={cancelDemoLogin} confirmClick={confirmDemoLogin} message1={'You are logging into a'} message2={'You will be able to access all user areas and functions, however no data will be saved. If you wish to save any data, please create an account.'} />
+            }
         </div>
     );
 };
