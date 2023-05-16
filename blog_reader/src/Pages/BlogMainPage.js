@@ -7,6 +7,7 @@ import logOut from '../javascript/logOut';
 import PostRow from '../components/PostRow';
 import PageNavRow from '../components/PageNavRow';
 import PageNavSpan from '../components/PageNavSpan';
+import ConfirmPopUp from '../components/ConfirmPopUp';
 
 const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [postList, setPostList] = useState([]);
@@ -15,6 +16,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [pageNum, setPageNum] = useState('');
     const [sortOrd, setSortOrd] = useState('');
     const [limitVal, setLimitVal] = useState('');
+    const [popUpFlag, setPopUpFlag] = useState(false);
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -64,6 +66,41 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     // eslint-disable-next-line
     }, [pageNum, sortOrd, limitVal]);
 
+    //prompt confirm pop up for demo log in
+    const demoLogInClick = () => {
+        setPopUpFlag(true);
+    };
+
+    //log into demo account
+    const confirmDemoLogin = async () => {
+        try {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/log-in` : `${process.env.REACT_APP_BLOGAPI_URL}/user/log-in`, {    
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: 'demo@demo', password: ' ' }),
+            });
+            if (response.status === 200) {
+                //if successful response, refresh page
+                window.location.reload();
+            } else {
+                //if not successful response, set error data for rendering
+                const responseData = await response.json();
+                console.log(responseData.error);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //cancel demo log in and remove pop up
+    const cancelDemoLogin = () => {
+        setPopUpFlag(false);
+    };
+
     return (
         <div id='main-container'>
             <h1>The Blog Spot</h1>
@@ -71,6 +108,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
                 <nav>
                     <Link className='button-link' to='/blog_reader/log-in'>Log In</Link>
                     <Link className='button-link' to='/blog_reader/sign-up'>Sign Up</Link>
+                    <button type='button' className='button-link' onClick={demoLogInClick}>Demo Log In</button>
                 </nav>
             }
             {user &&
@@ -93,7 +131,10 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
             {postList.length === 0 &&
                 <p>There are no posts to show :(</p>
             }
-        </div>
+            {popUpFlag &&
+                <ConfirmPopUp name={'Demo Account'} cancelClick={cancelDemoLogin} confirmClick={confirmDemoLogin} message1={'You are logging into a'} message2={'You will be able to access all user areas and functions, however no data will be saved. If you wish to save any data, please create an account.'} />
+            }
+            </div>
     );
 };
 export default BlogMainPage;
