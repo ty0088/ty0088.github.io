@@ -12,9 +12,9 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [postList, setPostList] = useState([]);
     const [paginateInfo, setPaginateInfo] = useState({});
     const [user, setUser] = useState(null);
-    const [pageNum, setPageNum] = useState(null);
-    const [sortOrd, setSortOrd] = useState(null);
-    const [limitVal, setLimitVal] = useState(null);
+    const [pageNum, setPageNum] = useState('');
+    const [sortOrd, setSortOrd] = useState('');
+    const [limitVal, setLimitVal] = useState('');
     const [searchParams] = useSearchParams();
 
     useEffect(() => {

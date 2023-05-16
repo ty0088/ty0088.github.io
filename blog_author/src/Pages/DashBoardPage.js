@@ -12,10 +12,10 @@ import ConfirmPopUp from '../Components/ConfirmPopUp';
 const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     const [postList, setPostList] = useState([]);
     const [paginateInfo, setPaginateInfo] = useState({});
-    const [pageNum, setPageNum] = useState(null);
-    const [sortOrd, setSortOrd] = useState(null);
-    const [limitVal, setLimitVal] = useState(null);
-    const [clickId, setClickId] = useState(null);
+    const [pageNum, setPageNum] = useState('');
+    const [sortOrd, setSortOrd] = useState('');
+    const [limitVal, setLimitVal] = useState('');
+    const [clickId, setClickId] = useState('');
     const [listViewFlag, setListViewFlag] = useState(true);
     const [privacyPopUpFlag, setPrivacyPopUpFlag] = useState(false);
     const [deletePopUpFlag, setDeletePopUpFlag] = useState(false);
