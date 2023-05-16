@@ -48,7 +48,6 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     const fetchData = async () => {
         try {
             //request user's post list from api
-            
             const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/user/${currUser.user_id}/post-list${window.location.search}` : `${process.env.REACT_APP_BLOGAPI_URL}/user/${currUser.user_id}/post-list${window.location.search}`, { credentials: "include" });
             const responseData = await response.json();
             //once response is returned, set the post list and paginate data to state
@@ -149,7 +148,10 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
                 </nav>
                 <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
                 <Link to='/blog_author/post/create'>Create New Post</Link>
-                {postList.length > 0 &&
+                {(currUser && currUser.user_type === 'Demo') &&
+                    <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
+                }
+                {(postList && postList.length > 0) &&
                     <> 
                         {postList.map((post, i) => {
                             if (!listViewFlag) {
@@ -165,7 +167,7 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
                         <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
                     </>
                 }
-                {postList.length === 0 &&
+                {(!postList || postList.length === 0) &&
                     <p>There are no posts to show :(</p>
                 }
                 {privacyPopUpFlag &&

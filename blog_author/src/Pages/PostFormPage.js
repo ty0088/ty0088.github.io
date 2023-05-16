@@ -182,6 +182,9 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                     <button type='button' className='button-link' onClick={submitClick}>Submit Post</button>
                     <button type='button' className='button-link' onClick={() => navigate(-1)}>Cancel</button>
                 </div>
+                {(currUser && currUser.user_type === 'Demo') &&
+                    <span className='post-info'>*This is a read only Demo Account - No submitted data will be saved.*</span>
+                }
             </div>
             {submitPopUpFlag &&
                 <ConfirmPopUp name={postPrivate ? 'Private Post?' : 'Public Post?'} cancelClick={cancelSubmit} confirmClick={submitPost} message1={'Are you sure you want to submit this'} message2={postPrivate ? 'Private posts cannot be seen by anyone except you and the site admin.' : 'Public posts can be seen by anyone.'} />

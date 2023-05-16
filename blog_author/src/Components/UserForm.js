@@ -158,6 +158,9 @@ const UserForm = ({ action, currUser, errorData, setErrorData }) => {
                     })
                 }
             </ul>
+            {(currUser && currUser.user_type === 'Demo') &&
+                <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
+            }
             <div className='button-container user'>
                 <button className='button-link' type='submit'>{action === 'create' ? 'Sign Up' : 'Update'}</button>
                 <button type='button' className='button-link' onClick={() => navigate(-1)}>Cancel</button>
