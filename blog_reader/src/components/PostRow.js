@@ -25,6 +25,7 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
             </div>
             <hr></hr>
             <div className='post-text'>{parse(post.text)}</div>
+            <hr></hr>
             {user &&
                 <div className='post-footer'>
                     <span>
