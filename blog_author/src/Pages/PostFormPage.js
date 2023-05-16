@@ -44,25 +44,27 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
     //prompt confirmation on click
     const submitClick = () => {
         //check title and post input is not empty
-        const titleInputElem = document.getElementById('input-post-title');
-        const errorMsgElem = document.getElementById('error-span');
-        const postContent = editorRef.current.getContent();
-        if (titleInputElem.value.trim() === '') {
-            errorMsgElem.innerText = '*A title is required*';
-            titleInputElem.focus();
-        } 
-        if (postContent === '') {
-            errorMsgElem.innerText = '*Post is required*';
-            editorRef.current.focus();
-        }
-        if (titleInputElem.value.trim() === '' && postContent === '') {
-            errorMsgElem.innerText = '*A title and post is required*';
-            titleInputElem.focus();
-        }
-        if (titleInputElem.value.trim() !== '' && postContent !== '') {
-            //if both title and post inputs not empty, clear any error message and prompt confirmation pop up
-            errorMsgElem.innerText = '';
-            setSubmitPopUpFlag(true);
+        if (editorRef.current) {
+            const titleInputElem = document.getElementById('input-post-title');
+            const errorMsgElem = document.getElementById('error-span');
+            const postContent = editorRef.current.getContent();
+            if (titleInputElem.value.trim() === '') {
+                errorMsgElem.innerText = '*A title is required*';
+                titleInputElem.focus();
+            } 
+            if (postContent === '') {
+                errorMsgElem.innerText = '*Post is required*';
+                editorRef.current.focus();
+            }
+            if (titleInputElem.value.trim() === '' && postContent === '') {
+                errorMsgElem.innerText = '*A title and post is required*';
+                titleInputElem.focus();
+            }
+            if (titleInputElem.value.trim() !== '' && postContent !== '') {
+                //if both title and post inputs not empty, clear any error message and prompt confirmation pop up
+                errorMsgElem.innerText = '';
+                setSubmitPopUpFlag(true);
+            }
         }
     };
 
@@ -154,6 +156,7 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                 }
                 <Editor
                     apiKey={process.env.NODE_ENV === 'production' ? tinyKey : process.env.REACT_APP_TINYMCE_API_KEY}
+                    onInit={(evt, editor) => editorRef.current = editor}
                     initialValue={postData ? postData.text : ''}
                     init={{
                     height: 500,
