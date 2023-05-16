@@ -120,9 +120,9 @@ exports.post_create_post = [
     body('post_text', 'Post text is required')
         .trim()
         .isLength({ min: 1 }),
-    body('post_title', 'Post title is required and be no longer than 30 characters')
+    body('post_title', 'Post title is required and be no longer than 50 characters')
         .trim()
-        .isLength({ min: 1, max: 30 })
+        .isLength({ min: 1, max: 50 })
         .escape(),
     body('post_private', 'Post privacy option is required')
         .isBoolean(),
@@ -174,10 +174,10 @@ exports.post_update_put = [
         .optional({ checkFalsy: true })
         .trim()
         .isLength({ min: 10 }),
-    body('post_title', 'Post title is required and be no longer than 30 characters')
+    body('post_title', 'Post title is required and be no longer than 50 characters')
         .optional({ checkFalsy: true })
         .trim()
-        .isLength({ min: 1, max: 30 })
+        .isLength({ min: 1, max: 50 })
         .escape(),
     body('post_private', 'Post privacy option is required')
         .optional({ checkFalsy: true })
