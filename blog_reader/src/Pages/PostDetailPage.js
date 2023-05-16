@@ -96,6 +96,9 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
                 {!newComFlag &&
                     <button type='button' className='button-link' onClick={addCommentClick}>Add New Comment</button>
                 }
+                {(currUser.user_type === 'Demo') &&
+                    <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
+                }
                 {newComFlag &&
                     <CommentForm postId={postId} commentText={null} fetchData={fetchData} setNewComFlag={setNewComFlag} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag} editCommentId={editCommentId} setEditCommentId={setEditCommentId} />
                 }

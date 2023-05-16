@@ -105,6 +105,9 @@ const UserDetailPage = ({ setScrollComId }) => {
                     <Link className='button-link' to={`/blog_reader/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
                     <button className='button-link' type='button' onClick={logOut}>Log Out</button>
                 </nav>
+                {(currUser && currUser.user_type === 'Demo') &&
+                    <span className='post-info'> *This is a read only Demo Account - No submitted data or delete requests will be saved.*</span>
+                }
                 <div className='user-details'>
                     <h3>User Details</h3>
                     <span><b>User Name: </b>{userData.display_name}</span>

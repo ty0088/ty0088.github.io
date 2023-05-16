@@ -118,6 +118,9 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
                 </nav>
             }
             <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
+            {(user && user.user_type === 'Demo') &&
+                <span className='post-info'>*This is a read only Demo Account - No submitted data will be saved.*</span>
+            }
             {postList.length > 0 &&
                 <> 
                     {postList.map((post, i) => {
