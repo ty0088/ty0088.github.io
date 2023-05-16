@@ -83,6 +83,7 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
                             <Link to={`/blog_reader/user/${postData.user._id}`}>{postData.user.display_name}</Link>,&nbsp;
                             Posted on: {new Date(postData.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "numeric", hour12: true })}
                         </div>
+                        <hr></hr>
                         <div className='post-text'>{parse(postData.text)}</div>
                         <div className='post-footer'>
                             {postData.lastEditBy &&

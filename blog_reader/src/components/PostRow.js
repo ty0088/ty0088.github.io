@@ -23,6 +23,7 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
                 }
                 Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </div>
+            <hr></hr>
             <div className='post-text'>{parse(post.text)}</div>
             {user &&
                 <div className='post-footer'>
