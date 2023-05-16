@@ -141,4 +141,3 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     );
 };
 export default BlogMainPage;
-
