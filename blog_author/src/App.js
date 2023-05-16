@@ -36,6 +36,9 @@ function App() {
           redirectReader(userData.user);
           //if author/admin, set user state
           setCurrUser(userData.user);
+        } else {
+          //no user token, set currUser to null
+          setCurrUser(null);
         }
       } catch (error) {
         console.log(error);
@@ -58,7 +61,6 @@ function App() {
           console.log(error);
       }
     };
-
     if (!currUser) {
       //if no user, redirect to log in page
       navigate('/blog_author/log-in');
