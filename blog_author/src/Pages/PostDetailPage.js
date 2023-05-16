@@ -1,12 +1,13 @@
 import '../Styles/PostDetailPage.css'
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 
 import logOut from '../Javascript/logOut';
 import CommentList from '../Components/CommentList';
 import CommentForm from '../Components/CommentForm';
 import decodeHtml from '../Javascript/decodeHtml';
+import ConfirmPopUp from '../Components/ConfirmPopUp';
 
 const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId  }) => {
     const [postData, setPostData] = useState({});
@@ -14,7 +15,9 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
     const [newComFlag, setNewComFlag] = useState(false);
     const [editCommentId, setEditCommentId] = useState(null);
     const [scrollNewComFlag, setScrollNewComFlag] = useState(false);
+    const [deletePopUpFlag, setDeletePopUpFlag] = useState(false);
     const { postId } = useParams();
+    const navigate = useNavigate();
 
     //function to get post and related comments from api
     const fetchData = async () => {
@@ -58,6 +61,34 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
         setEditCommentId(null);
     };
 
+    //prompt confirmation to delete post
+    const deletePostClick = (postId) => {
+        setDeletePopUpFlag(true);
+    };
+
+    //submit delete request to api
+    const confirmPostDelete = async () => {
+        try {
+            const response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/delete` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/delete`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+            if (response.status === 200) {
+                navigate('/blog_author');
+            } else {
+                alert('Something went wrong, try again...');
+            }
+            setDeletePopUpFlag(false);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //cancel post delete
+    const cancelPostDelete = () => {
+        setDeletePopUpFlag(false);
+    };
+
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
@@ -75,9 +106,12 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                         </div>
                         <hr></hr>
                         <div className='post-text'>{parse(postData.text)}</div>
+                        <hr></hr>
                         <div className='post-footer'>
+                            <Link to={`/blog_author/post/${postId}/update`}>EDIT</Link>&nbsp;-&nbsp;
+                            <button type='button' className='button-link' onClick={() => deletePostClick(postId)}>DELETE</button>
                             {postData.lastEditBy &&
-                                <span><i>Last edited: {new Date(postData.lastEditDate).toLocaleString()} by {postData.lastEditBy.display_name} ({postData.lastEditBy.user_type})</i></span>
+                                <span> - <i>Last edited: {new Date(postData.lastEditDate).toLocaleString()} by {postData.lastEditBy.display_name} ({postData.lastEditBy.user_type})</i></span>
                             }
                         </div>
                     </>                    
@@ -95,6 +129,9 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                 }
                 <CommentList currUser={currUser} commentData={commentData} postId={postId} fetchData={fetchData} scrollNewComFlag={scrollNewComFlag} setNewComFlag={setNewComFlag} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag} editCommentId={editCommentId} setEditCommentId={setEditCommentId} />
             </div>
+            {deletePopUpFlag &&
+                <ConfirmPopUp cancelClick={cancelPostDelete} confirmClick={confirmPostDelete} name={postData.title} message1={'Are you sure you wish to delete post'} message2={'The post and any related comments will be permanently deleted.'} />
+            }
         </div>
     );
 };
