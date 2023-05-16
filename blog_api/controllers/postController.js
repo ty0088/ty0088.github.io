@@ -58,15 +58,14 @@ exports.post_list_get = [
             } else {
                 //if no user, do not populate
                 options = {
-                page: req.query.page || 1, //page value from query parameter or start from 1
-                limit: req.query.limit || 5,
-                sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
-                collation: {
-                    locale: 'en',
-                },
-            };
+                    page: req.query.page || 1, //page value from query parameter or start from 1
+                    limit: req.query.limit || 5,
+                    sort: { post_date: req.query.sortOrd || -1 }, //sort order from query parameter -1 by default
+                    collation: {
+                        locale: 'en',
+                    },
+                };
             }
-            
             //set query filter, if no user query only public posts
             //if there is a user include user's own private posts
             const query = req.user && req.user.user_type === 'Admin' ?
@@ -105,8 +104,8 @@ exports.post_create_post = [
                 err.status = 401;
                 return next(err);
             }
-            //if user is not an Author or Admin, send error
-            if (user.user_type === 'Author' || user.user_type === 'Admin') {
+            //if user is not an Author, Admin or Demo, send error
+            if (user.user_type === 'Author' || user.user_type === 'Admin' || user.user_type === 'Demo') {
             //user is appropriate type
                 req.user = user;
                 return next();
@@ -130,30 +129,35 @@ exports.post_create_post = [
     //process request after validation and sanitisation.
     async (req, res, next) => {
         try {
-            //extract the validation errors from a request.
-            const errors = validationResult(req);
-            //sanitise post text content
-            const window = new JSDOM('').window;
-            const DOMPurify = createDOMPurify(window);
-            const cleanContent = DOMPurify.sanitize(req.body.post_text);
-            const post = new Post({
-                user: req.user.user_id,
-                text: cleanContent,
-                title: req.body.post_title,
-                private: req.body.post_private,
-            });
-            //check if there are errors present
-            if (!errors.isEmpty()) {
-                //if errors, return error
-                return res.status(400).json({
-                    errors: errors.array(),
+            //if demo account, send 200 ok response without saving any data
+            if (req.user.user_type === 'Demo') {
+                return res.status(200).json({message: 'Demo data not saved'});
+            } else {
+                //if not demo account, extract the validation errors from a request.
+                const errors = validationResult(req);
+                //sanitise post text content
+                const window = new JSDOM('').window;
+                const DOMPurify = createDOMPurify(window);
+                const cleanContent = DOMPurify.sanitize(req.body.post_text);
+                const post = new Post({
+                    user: req.user.user_id,
+                    text: cleanContent,
+                    title: req.body.post_title,
+                    private: req.body.post_private,
+                });
+                //check if there are errors present
+                if (!errors.isEmpty()) {
+                    //if errors, return error
+                    return res.status(400).json({
+                        errors: errors.array(),
+                    });
+                }
+                //if no errors, save post to db
+                await post.save();
+                res.json({
+                    message: 'Blog post successfully saved'
                 });
             }
-            //if no errors, save post to db
-            await post.save();
-            res.json({
-                message: 'Blog post successfully saved'
-            })
         } catch (error) {
             console.log(error);
             return next(error);
@@ -180,49 +184,54 @@ exports.post_update_put = [
         .isBoolean(),
     async (req, res, next) => {
         try {
-            //extract and check for validation errors from request
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                //if errors, send status and errors
-                return res.status(400).json({ 
-                    errors: errors.array(),
-                });
-            }
-            //no validation errors, query db for post
-            const post = await Post.findById(req.params.id).populate('user', '_id');
-            //check if results were returned
-            if (post === null) {
-                //if post not found, return error
-                const err = new Error("Post not found");
-                err.status = 404;
-                return next(err);
-            }
-            //check user is post owner or admin to edit post
-            if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
-                //set any changes to post
-                if (req.body.post_text) {
-                    post.text = req.body.post_text;
-                }
-                if (req.body.post_title) {
-                    post.title = req.body.post_title;
-                }
-                if (req.body.post_private !== undefined) {
-                    post.private = req.body.post_private;
-                }
-                //update lastEditDate and lastEditBy
-                post.lastEditDate = new Date();
-                post.lastEditBy = req.user.user_id;
-                //update post in db
-                await post.save();
-                return res.json({
-                    msg: 'Post updated successfully',
-                    post,
-                });
+            //if demo account, send 200 ok response without saving any data
+            if (req.user.user_type === 'Demo') {
+                return res.status(200).json({message: 'Demo data not saved'});
             } else {
-                //else return error
-                let err = new Error("Forbidden");
-                err.status = 403;
-                return next(err);
+                //if not demo account, extract and check for validation errors from request
+                const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    //if errors, send status and errors
+                    return res.status(400).json({ 
+                        errors: errors.array(),
+                    });
+                }
+                //no validation errors, query db for post
+                const post = await Post.findById(req.params.id).populate('user', '_id');
+                //check if results were returned
+                if (post === null) {
+                    //if post not found, return error
+                    const err = new Error("Post not found");
+                    err.status = 404;
+                    return next(err);
+                }
+                //check user is post owner or admin to edit post
+                if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
+                    //set any changes to post
+                    if (req.body.post_text) {
+                        post.text = req.body.post_text;
+                    }
+                    if (req.body.post_title) {
+                        post.title = req.body.post_title;
+                    }
+                    if (req.body.post_private !== undefined) {
+                        post.private = req.body.post_private;
+                    }
+                    //update lastEditDate and lastEditBy
+                    post.lastEditDate = new Date();
+                    post.lastEditBy = req.user.user_id;
+                    //update post in db
+                    await post.save();
+                    return res.json({
+                        msg: 'Post updated successfully',
+                        post,
+                    });
+                } else {
+                    //else return error
+                    let err = new Error("Forbidden");
+                    err.status = 403;
+                    return next(err);
+                }
             }
         } catch (error) {
             console.log(error);
@@ -237,26 +246,31 @@ exports.post_delete = [
     passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
-            //query db for post
-            const post = await Post.findById(req.params.id).populate('user');
-            if (post === null) {
-                //if no post found, return error
-                const err = new Error("Post not found");
-                err.status = 404;
-                return next(err);
-            }
-            //if post belongs to req user or user is admin, delete post and any related comments
-            if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
-                //delete post from db
-                await Post.deleteOne({ _id: req.params.id });
-                //delete any related comments from db
-                await Comment.deleteMany({ post: req.params.id });
-                return res.json({ message: 'Post deleted' });
+            //if demo account, send 200 ok response without saving any data
+            if (req.user.user_type === 'Demo') {
+                return res.status(200).json({message: 'Demo data not saved'});
             } else {
-                //if not blog post owner or admin, return error
-                const err = new Error("Forbidden");
-                err.status = 403;
-                return next(err);
+                //if not demo account, query db for post
+                const post = await Post.findById(req.params.id).populate('user');
+                if (post === null) {
+                    //if no post found, return error
+                    const err = new Error("Post not found");
+                    err.status = 404;
+                    return next(err);
+                }
+                //if post belongs to req user or user is admin, delete post and any related comments
+                if (req.user.user_type === 'Admin' || (req.user.user_id === post.user._id.toString())) {
+                    //delete post from db
+                    await Post.deleteOne({ _id: req.params.id });
+                    //delete any related comments from db
+                    await Comment.deleteMany({ post: req.params.id });
+                    return res.json({ message: 'Post deleted' });
+                } else {
+                    //if not blog post owner or admin, return error
+                    const err = new Error("Forbidden");
+                    err.status = 403;
+                    return next(err);
+                }
             }
         } catch (error) {
             console.log(error);

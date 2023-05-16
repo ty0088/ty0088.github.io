@@ -274,50 +274,54 @@ exports.user_update_put = [
     //process request after validation and sanitisation.
     async (req, res, next) => {
         try {
-            //extract the validation errors from a request
-            const errors = validationResult(req);
-            //check if there are errors present
-            if (!errors.isEmpty()) {
-                //error(s), send status and errors
-                return res.status(400).json({ 
-                    errors: errors.array(),
-                });
-            }
-            //re-auth user by verifying current password before updating
-            const user = await User.findById(req.user.user_id);
-            if (user === null) {
-                //if no user found, return error
-                const err = new Error("User not found");
-                err.status = 404;
-                return next(err);
-            }
-            //user re auth passed, set any changes to user
-            if (req.body.display_name) {
-                user.display_name = req.body.display_name;
-            }
-            if (req.body.email) {
-                user.email = req.body.email;
-            }
-            if (req.body.password) {
-                //if new password entered, hash new password and save user to db
-                bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
-                    try {
-                        if (error) {
+            //if demo account, send 200 ok response without saving any data
+            if (req.user.user_type === 'Demo') {
+                return res.status(200).json({message: 'Demo data not saved'});
+            } else {
+                //if not demo account, extract the validation errors from a request
+                const errors = validationResult(req);
+                //check if there are errors present
+                if (!errors.isEmpty()) {
+                    //error(s), send status and errors
+                    return res.status(400).json({ 
+                        errors: errors.array(),
+                    });
+                }
+                //re-auth user by verifying current password before updating
+                const user = await User.findById(req.user.user_id);
+                if (user === null) {
+                    //if no user found, return error
+                    const err = new Error("User not found");
+                    err.status = 404;
+                    return next(err);
+                }
+                //user re auth passed, set any changes to user
+                if (req.body.display_name) {
+                    user.display_name = req.body.display_name;
+                }
+                if (req.body.email) {
+                    user.email = req.body.email;
+                }
+                if (req.body.password) {
+                    //if new password entered, hash new password and save user to db
+                    bcrypt.hash(req.body.password, 10, async (error, hashedPassword) => {
+                        try {
+                            if (error) {
+                                return next(error);
+                            }
+                            user.password = hashedPassword;
+                            await user.save();
+                        } catch (error) {
                             return next(error);
                         }
-                        user.password = hashedPassword;
-                        await user.save();
-                    } catch (error) {
-                        return next(error);
-                    }
-                });
-            } else {
-                //no password entered, save user to db
-                await user.save();
+                    });
+                } else {
+                    //no password entered, save user to db
+                    await user.save();
+                }
             }
             res.json({
                 msg: 'User updated successfully',
-                user,
             });
         } catch (error) {
             console.log(error);
@@ -357,34 +361,39 @@ exports.user_delete = [
     //process request after validation and sanitisation.
     async (req, res, next) => {
         try {
-            //extract the validation errors from a request
-            const errors = validationResult(req);
-            //check if there are errors present
-            if (!errors.isEmpty()) {
-                //error(s), send status and errors
-                return res.status(400).json({
-                    errors: errors.array(),
-                });
-            }
-            //no errors, query db for user
-            const user = await User.findById(req.params.id);
-            if (user == null) {
-                //if no user found, return error
-                const err = new Error("User not found");
-                err.status = 404;
-                return next(err);
-            }
-            //validate input password
-            const result = await bcrypt.compare(req.body.password, user.password);
-            if (result) {
-                // password correct, delete user from db
-                await User.deleteOne({ _id: req.params.id });
-                return res.json({ message: "User deleted"})
+            //if demo account, send 200 ok response without saving any data
+            if (req.user.user_type === 'Demo') {
+                return res.status(200).json({message: 'Demo data not saved'});
             } else {
-                // password not correct! return error message
-                return res.status(401).json({
-                    errors: [{  msg: 'Password incorrect. Please try again.' }]
-                });
+                //if not demo account, extract the validation errors from a request
+                const errors = validationResult(req);
+                //check if there are errors present
+                if (!errors.isEmpty()) {
+                    //error(s), send status and errors
+                    return res.status(400).json({
+                        errors: errors.array(),
+                    });
+                }
+                //no errors, query db for user
+                const user = await User.findById(req.params.id);
+                if (user == null) {
+                    //if no user found, return error
+                    const err = new Error("User not found");
+                    err.status = 404;
+                    return next(err);
+                }
+                //validate input password
+                const result = await bcrypt.compare(req.body.password, user.password);
+                if (result) {
+                    // password correct, delete user from db
+                    await User.deleteOne({ _id: req.params.id });
+                    return res.json({ message: "User deleted"})
+                } else {
+                    // password not correct! return error message
+                    return res.status(401).json({
+                        errors: [{  msg: 'Password incorrect. Please try again.' }]
+                    });
+                }
             }
         } catch (error) {
             return next(error);

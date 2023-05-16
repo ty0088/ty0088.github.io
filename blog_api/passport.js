@@ -15,14 +15,20 @@ passport.use(new LocalStrategy(
     },
     async (email, password, cb) => {
         try {
+            let res = null;
             //query db for user email
             const user = await User.findOne({ email });
             if (!user) {
-                //email not found
+                //email not found return false user
                 return cb(null, false, { message: "Email and/or password is incorrect, please try again." });
             }
-            //email found, compare password with hash
-            const res = await bcrypt.compare(password, user.password);
+            if (email === 'demo@demo') {
+                //if demo account, authenticate user without password check
+                res = true;
+            } else {
+                //email found and not demo account, compare password with hash
+                res = await bcrypt.compare(password, user.password);
+            }
             if (res) {
                 // passwords match, return user obj 
                 return cb(null, user, { message: 'Logged In Successfully' });
