@@ -10,11 +10,11 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
 <ul>
 
-  <li><a href="https://ty0088.github.io/tom-pos/">Tom POS</a> - A web based POS terminal app for the hospitality industry (uses Firebase).  - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tom-pos">Github Code</a></li>
+  <li><a href="https://ty0088.github.io/tom-pos/">Tom POS</a> - A web based POS terminal app for the hospitality industry (uses Firebase). Demo account available.  - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tom-pos">Github Code</a></li>
   
-  <li><a href="https://ty0088.github.io/blog_reader">The Blog Spot - Reader</a> - A react frontend only blog website for <strong>readers</strong> of "The Blog Spot" that accesses data through a seperate API backend. Only registered "Readers" can see and make comments on the blog posts.<a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_reader">Github Code</a></li>
+  <li><a href="https://ty0088.github.io/blog_reader">The Blog Spot - Reader</a> - A react frontend only blog website for <strong>readers</strong> of "The Blog Spot" that accesses data through a seperate API backend. Only registered "Readers" can see and make comments on the blog posts. Demo account available. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_reader">Github Code</a></li>
 
-  <li><a href="https://ty0088.github.io/blog_author">The Blog Spot - Author</a> - A react frontend only blog website for <strong>authors</strong> of "The Blog Spot" that accesses data through a separate API backend. Registered "Authors" have access to a rich text editor to create blog posts.<a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_author">Github Code</a></li>
+  <li><a href="https://ty0088.github.io/blog_author">The Blog Spot - Author</a> - A react frontend only blog website for <strong>authors</strong> of "The Blog Spot" that accesses data through a separate API backend. Registered "Authors" have access to a rich text editor to create blog posts. Demo account available. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_author">Github Code</a></li>
 
   <li>"The Blog Spot" backend API is built using Express/Node and Mongoose/Mongodb hosted on AWS through a custom domain. The API is accessed through https://blog-api.ty0088.co.uk and the code for the backend API can be found on <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_api">Github</a></li>
       
@@ -54,18 +54,10 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 
   <li><a href="https://ty0088.github.io/landing_page/">Landing Page</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/landing_page">Github Code</a></li>
   
+  <li><a href="https://ty0088.github.io/etch-a-sketch/">Etch-a-Sketch</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/etch-a-sketch">Github Code</a></li>
+  
   <li><a href="https://ty0088.github.io/tic_tac_toe/">Tic Tac Toe Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tic_tac_toe">Github Code</a></li>
 
   <li><a href="https://ty0088.github.io/rock_paper_scissors/">Rock, Paper, Scissors Game</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/rock_paper_scissors">Github Code</a></li>
-  
-  <li><a href="https://ty0088.github.io/etch-a-sketch/">Etch-a-Sketch</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/etch-a-sketch">Github Code</a></li>
-  
- <li><a href="https://ty0088.github.io/library/">Library</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/library">Github Code</a></li>
-
- <li><a href="https://ty0088.github.io/cv_app_func/">CV App</a> - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/cv_app_func">Github Code</a></li>
-  
- <li><a href="https://express-local-library.ty0088.repl.co/">Express Local Library</a> - MDN Express Local Library Tutorial (uses MongoDB), website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/express-locallibrary">Github Code</a></li>
-  
- <li><a href="https://basic-node-site.ty0088.repl.co/">Basic Node Website</a> - This is a basic website using the Express framework, website may need time to load - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/basic_node_site">Github Code</a></li>
   
 </ul>
