@@ -105,29 +105,31 @@ const LogInPage = () => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
-            <p>Please log in:</p>
-            <form action='' method=''>
-                <div className='input-row login'>
-                    <label htmlFor='email'>Email: </label>
-                    <input type='email' id='input-email' name='email' required />
-                </div>
-                <div className='input-row login'>
-                    <label htmlFor='password'>Password: </label>
-                    <input type='password' id='input-password' name='password' required />
-                </div>
-                {errorData &&
-                    <span className='error-message'>{errorData.message}</span>
+            <div className='form-border'>
+                <p>Please log in:</p>
+                <form action='' method=''>
+                    <div className='input-row login'>
+                        <label htmlFor='email'>Email: </label>
+                        <input type='email' id='input-email' name='email' required />
+                    </div>
+                    <div className='input-row login'>
+                        <label htmlFor='password'>Password: </label>
+                        <input type='password' id='input-password' name='password' required />
+                    </div>
+                    {errorData &&
+                        <span className='error-message'>{errorData.message}</span>
+                    }
+                    <div className='button-container login'>
+                        <button className='button-link' type='submit'>Log In</button>
+                        <button type='button' className='button-link' onClick={demoLogInClick}>Demo Log In</button>
+                    </div>
+                </form>
+                <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
+                <p>Are you a blog reader? Click <Link to={process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader#/blog_reader/log-in` : process.env.REACT_APP_BLOG_READER_URL}>here</Link> to log in to the readers' site.</p>
+                        {popUpFlag &&
+                    <ConfirmPopUp name={'Demo Account'} cancelClick={cancelDemoLogin} confirmClick={confirmDemoLogin} message1={'You are logging into a'} message2={'You will be able to access all user areas and functions, however no data will be saved. If you wish to save any data, please create an account.'} />
                 }
-                <div className='button-container login'>
-                    <button className='button-link' type='submit'>Log In</button>
-                </div>
-            </form>
-            <p>Want to test out The Blog Spot - Author site? Log into the demo account. Click <button type='button' className='button-link' onClick={demoLogInClick}>here</button>.</p>
-            <p>Not yet signed up? Click <Link to='/blog_author/sign-up'>here</Link>.</p>
-            <p>Are you a blog reader? Click <Link to={process.env.NODE_ENV === 'production' ? `https://ty0088.github.io/blog_reader#/blog_reader/log-in` : process.env.REACT_APP_BLOG_READER_URL}>here</Link> to log in to the readers' site.</p>
-                    {popUpFlag &&
-                <ConfirmPopUp name={'Demo Account'} cancelClick={cancelDemoLogin} confirmClick={confirmDemoLogin} message1={'You are logging into a'} message2={'You will be able to access all user areas and functions, however no data will be saved. If you wish to save any data, please create an account.'} />
-            }
+            </div>
         </div>
     );
 };

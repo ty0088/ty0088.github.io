@@ -23,7 +23,7 @@
 }
 
 .button-container {
-    margin: 0.5em 0 0 0;
+    margin: 0.5em 0;
     display: flex;
     column-gap: 1em;
 }
@@ -34,4 +34,32 @@
 
 .button-container.login {
     margin-left: 4em;
+}
+
+.form-border {
+    border: 1px solid black;
+    padding: 0 1em;
+}
+
+@media only screen and (max-width: 1000px)  {
+
+    .input-row.user {
+        text-align: start;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1.5em 2em 1fr;
+        margin-bottom: 0.5em;
+    }
+
+    .input-row.user > input {
+        margin-left: 0;
+    }
+
+    .input-hint {
+        margin-left: 0;
+    }
+
+    .button-container.user {
+        margin-left: 0;
+    }
+    
 }

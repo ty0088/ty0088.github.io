@@ -23,20 +23,22 @@ const PostRow = ({ post, postPrivacyClick, deletePostClick, setScrollComFlag }) 
             <hr></hr>
             <div className='post-footer'>
                 {post.private &&
-                    <>
-                        <button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Public</button>&nbsp;
-                        /&nbsp;<span><strong>Private</strong></span>&nbsp;-&nbsp;
-                    </>
+                    <div>
+                        <button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Public</button>
+                        &nbsp;/&nbsp;<span><strong>Private</strong></span>&nbsp;-&nbsp;
+                    </div>
                 }
                 {!post.private &&
-                    <>
-                        <span><strong>Public</strong></span>&nbsp;
-                        /&nbsp;<button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Private</button>&nbsp;-&nbsp;
-                    </>
+                    <div>
+                        <span><strong>Public</strong></span>
+                        &nbsp;/&nbsp;<button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Private</button>&nbsp;-&nbsp;
+                    </div>
                 }
-                <Link to={`/blog_author/post/${post._id}/update`}>EDIT</Link>&nbsp;-&nbsp;
-                <button type='button' className='button-link' onClick={() => deletePostClick(post._id)}>DELETE</button>&nbsp;-&nbsp;
-                <button type='button' className='button-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
+                <div>
+                    <Link to={`/blog_author/post/${post._id}/update`}>EDIT</Link>&nbsp;-&nbsp;
+                    <button type='button' className='button-link' onClick={() => deletePostClick(post._id)}>DELETE</button>&nbsp;-&nbsp;
+                    <button type='button' className='button-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
+                </div>
                 {typeof post.lastEditBy == 'object' &&
                     <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
                 }

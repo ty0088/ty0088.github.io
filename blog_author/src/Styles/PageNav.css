@@ -1,0 +1,26 @@
+.page-nav-bar {
+    font-size: 0.75em;
+    display: flex;
+    flex-direction: row;
+}
+
+.page-nav-bar .page-nav-span {
+    font-size: 1em;
+}
+
+.page-nav-span {
+    font-size: 0.75em;
+}
+
+@media only screen and (max-width: 1000px)  {
+
+    .page-nav-bar {
+        font-size: 0.9em;
+        flex-direction: column;
+    }
+    
+    .page-nav-span {
+        font-size: 1em;
+    }
+
+}

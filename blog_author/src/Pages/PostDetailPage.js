@@ -108,10 +108,12 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                         <div className='post-text'>{parse(postData.text)}</div>
                         <hr></hr>
                         <div className='post-footer'>
-                            <Link to={`/blog_author/post/${postId}/update`}>EDIT</Link>&nbsp;-&nbsp;
-                            <button type='button' className='button-link' onClick={() => deletePostClick(postId)}>DELETE</button>
+                            <div>
+                                <Link to={`/blog_author/post/${postId}/update`}>EDIT</Link>&nbsp;-&nbsp;
+                                <button type='button' className='button-link' onClick={() => deletePostClick(postId)}>DELETE</button>
+                            </div>
                             {postData.lastEditBy &&
-                                <span> - <i>Last edited: {new Date(postData.lastEditDate).toLocaleString()} by {postData.lastEditBy.display_name} ({postData.lastEditBy.user_type})</i></span>
+                                <span>&nbsp;- <i>Last edited: {new Date(postData.lastEditDate).toLocaleString()} by {postData.lastEditBy.display_name} ({postData.lastEditBy.user_type})</i></span>
                             }
                         </div>
                     </>                    

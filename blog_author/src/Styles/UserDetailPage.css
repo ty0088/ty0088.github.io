@@ -1,9 +1,12 @@
 .user-details {
     display: flex;
     flex-direction: column;
+    padding: 0 1em;
+    border: 1px solid black;
 }
 
 .user-content-container {
     display: flex;
     flex-direction: column;
+    margin: 1em 0;
 }

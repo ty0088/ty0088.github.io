@@ -11,10 +11,20 @@
 
 .post-text {
     margin: 1em 0 1em 0;
+    padding: 0 1em 0 1em;
 }
 
 .post-footer {
     display: flex;
     font-size: 0.75em;
     margin-bottom: 1.5em;
+}
+
+@media only screen and (max-width: 1000px)  {
+
+    .post-footer {
+        flex-direction: column;
+        row-gap: 0.5em;
+    }
+
 }

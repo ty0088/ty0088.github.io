@@ -1,3 +1,4 @@
+import '../Styles/PageNav.css';
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -11,7 +12,7 @@ const PageNavSpan = ({ paginateInfo, sortOrd, limitVal, classStr }) => {
     //format example 1 --- 1 total page, current page is 1
     //format example 1 > 2 --- 2 total pages, current page is 1
     return (
-        <span className={classStr}>
+        <span className='page-nav-span'>
             Page: {(paginateInfo.prevPage !== 1 && paginateInfo.page !== 1) && <Link to={`/blog_author?page=1&sortOrd=${sortOrd}&limit=${limitVal}`}>1</Link>}{(paginateInfo.prevPage !== 1 && paginateInfo.page !== 1) && ` / `}
             {paginateInfo.hasPrevPage && <Link to={`/blog_author?page=${paginateInfo.prevPage}&sortOrd=${sortOrd}&limit=${limitVal}`}>{paginateInfo.prevPage}</Link>}  
             {paginateInfo.hasPrevPage && ` < `} <strong>{paginateInfo.page}</strong> {paginateInfo.hasNextPage && ` > `}

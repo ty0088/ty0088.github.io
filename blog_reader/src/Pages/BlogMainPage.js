@@ -128,7 +128,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
                             <PostRow key={i} user={user} post={post} setScrollComFlag={setScrollComFlag}  />
                         );
                     })}
-                    <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
+                    <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal}/>
                 </>
             }
             {postList.length === 0 &&

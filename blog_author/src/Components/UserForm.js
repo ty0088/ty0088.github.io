@@ -126,28 +126,28 @@ const UserForm = ({ action, currUser, errorData, setErrorData }) => {
                 <div className='input-row user'>
                     <label htmlFor='password'>Current Password: </label>
                     <input type='password' id='input-curr-password' name='currPassword' required />
-                    <span className='input-hint'> (required)</span>
+                    <span className='input-hint'>(required)</span>
                 </div>
             }
             <div className='input-row user'>
                 <label htmlFor='display_name'>Display Name: </label>
                 <input type='text' id='input-display-name' name='display_name' maxLength={20} defaultValue={currUser ? currUser.display_name : ''} required={action === 'create' ? true : false} />
-                {action === 'create' && <span className='input-hint'> (required)</span>}
+                {action === 'create' && <span className='input-hint'>(required)</span>}
             </div>
             <div className='input-row user'>
                 <label htmlFor='email'>Email: </label>
                 <input type='email' id='input-email' name='email' defaultValue={currUser ? currUser.email : ''} required={action === 'create' ? true : false} />
-                {action === 'create' && <span className='input-hint'> (required)</span>}
+                {action === 'create' && <span className='input-hint'>(required)</span>}
             </div>
             <div className='input-row user'>
                 <label htmlFor='password'>Password: </label>
                 <input type='password' id='input-password' name='password' required={action === 'create' ? true : false} />
-                {action === 'create' && <span className='input-hint'> (required and must be between 8 and 18 characters long)</span>}
+                {action === 'create' && <span className='input-hint'>(required and must be between 8 and 18 characters long)</span>}
             </div>
             <div className='input-row user'>
                 <label htmlFor='passwordConfirm'>Confirm Password: </label>
                 <input type='password' id='input-password-confirm' name='passwordConfirm' required={action === 'create' ? true : false} />
-                {action === 'create' && <span className='input-hint'> (required and must be between 8 and 18 characters long)</span>}
+                {action === 'create' && <span className='input-hint'>(required and must be between 8 and 18 characters long)</span>}
             </div>
             <ul>
                 {errorData &&

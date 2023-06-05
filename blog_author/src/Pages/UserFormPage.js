@@ -27,29 +27,31 @@ const UserFormPage = ({ action, currUser }) => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
-            {formFlag &&
-                <UserForm action={action} currUser={currUser} errorData={errorData} setErrorData={setErrorData} />
-            }
-            {(!formFlag && currUser) &&
-                <div>
-                    <p>You are trying to sign up as a new author but you are already logged in. </p>
-                    <p>Please try one of the links below: </p>
-                    <ul>
-                        <li><Link to='/blog_author'>Home - Blog Posts</Link></li>
-                        <li><Link to='/blog_author/log-out'>Log Out</Link></li>
-                    </ul>
-                </div>
-            }
-            {(!formFlag && !currUser) &&
-                <div>
-                    <p>You are trying to update your details but you are not logged in. </p>
-                    <p>Please try one of the links below: </p>
-                    <ul>
-                        <li><Link to='/blog_author'>Home - Blog Posts</Link></li>
-                        <li><Link to='/blog_author/log-in'>Log In</Link></li>
-                    </ul>
-                </div>
-            }
+            <div className='form-border'>
+                {formFlag &&
+                    <UserForm action={action} currUser={currUser} errorData={errorData} setErrorData={setErrorData} />
+                }
+                {(!formFlag && currUser) &&
+                    <div>
+                        <p>You are trying to sign up as a new author but you are already logged in. </p>
+                        <p>Please try one of the links below: </p>
+                        <ul>
+                            <li><Link to='/blog_author'>Home - Blog Posts</Link></li>
+                            <li><Link to='/blog_author/log-out'>Log Out</Link></li>
+                        </ul>
+                    </div>
+                }
+                {(!formFlag && !currUser) &&
+                    <div>
+                        <p>You are trying to update your details but you are not logged in. </p>
+                        <p>Please try one of the links below: </p>
+                        <ul>
+                            <li><Link to='/blog_author'>Home - Blog Posts</Link></li>
+                            <li><Link to='/blog_author/log-in'>Log In</Link></li>
+                        </ul>
+                    </div>
+                }
+            </div>
         </div> 
     );
 };
