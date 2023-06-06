@@ -1,13 +1,13 @@
-import '../styles/BlogMainPage.css'
+import '../Styles/BlogMainPage.css'
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import fetchUserToken from '../javascript/fetchUserToken';
-import logOut from '../javascript/logOut';
-import PostRow from '../components/PostRow';
-import PageNavRow from '../components/PageNavRow';
-import PageNavSpan from '../components/PageNavSpan';
-import ConfirmPopUp from '../components/ConfirmPopUp';
+import fetchUserToken from '../Javascript/fetchUserToken';
+import logOut from '../Javascript/logOut';
+import PostRow from '../Components/PostRow';
+import PageNavRow from '../Components/PageNavRow';
+import PageNavSpan from '../Components/PageNavSpan';
+import ConfirmPopUp from '../Components/ConfirmPopUp';
 
 const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [postList, setPostList] = useState([]);

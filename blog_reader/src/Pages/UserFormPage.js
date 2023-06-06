@@ -1,9 +1,9 @@
-import '../styles/formPages.css'
+import '../Styles/formPages.css'
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import fetchUserToken from '../javascript/fetchUserToken';
-import UserForm from '../components/UserForm';
+import fetchUserToken from '../Javascript/fetchUserToken';
+import UserForm from '../Components/UserForm';
 
 const UserFormPage = ({ action }) => {
     const [user, setUser] = useState({});

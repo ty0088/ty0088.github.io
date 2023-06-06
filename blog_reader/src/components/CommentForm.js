@@ -1,4 +1,4 @@
-import '../styles/PostDetailPage.css'
+import '../Styles/PostDetailPage.css'
 import React, { useState, useEffect } from 'react';
 
 const CommentForm = ({ postId, commentText, fetchData, setNewComFlag, setScrollNewComFlag, setScrollComFlag, editCommentId, setEditCommentId }) => {

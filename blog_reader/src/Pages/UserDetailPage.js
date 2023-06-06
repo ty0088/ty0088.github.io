@@ -1,11 +1,11 @@
-import '../styles/UserDetailPage.css'
+import '../Styles/UserDetailPage.css'
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-import fetchUserToken from '../javascript/fetchUserToken';
-import logOut from '../javascript/logOut';
-import UserContent from '../components/UserContent';
-import ConfirmPopUp from '../components/ConfirmPopUp';
+import fetchUserToken from '../Javascript/fetchUserToken';
+import logOut from '../Javascript/logOut';
+import UserContent from '../Components/UserContent';
+import ConfirmPopUp from '../Components/ConfirmPopUp';
 
 const UserDetailPage = ({ setScrollComId }) => {
     const [currUser, setCurrUser] = useState(null);

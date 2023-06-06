@@ -1,13 +1,13 @@
-import '../styles/PostDetailPage.css'
+import '../Styles/PostDetailPage.css'
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 
-import logOut from '../javascript/logOut';
-import fetchUserToken from '../javascript/fetchUserToken';
-import CommentList from '../components/CommentList';
-import CommentForm from '../components/CommentForm';
-import decodeHtml from '../javascript/decodeHtml';
+import logOut from '../Javascript/logOut';
+import fetchUserToken from '../Javascript/fetchUserToken';
+import CommentList from '../Components/CommentList';
+import CommentForm from '../Components/CommentForm';
+import decodeHtml from '../Javascript/decodeHtml';
 
 const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
     const [currUser, setCurrUser] = useState({});

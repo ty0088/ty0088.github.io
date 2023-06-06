@@ -1,4 +1,4 @@
-import '../styles/ConfirmPopUp.css';
+import '../Styles/ConfirmPopUp.css';
 import React from 'react';
 
 //This renders a pop up so that a user can confirm or cancel an action

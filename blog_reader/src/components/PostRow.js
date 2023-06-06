@@ -1,9 +1,9 @@
-import '../styles/BlogMainPage.css'
+import '../Styles/BlogMainPage.css'
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 
-import decodeHtml from '../javascript/decodeHtml';
+import decodeHtml from '../Javascript/decodeHtml';
 
 const PostRow = ({ user, post, setScrollComFlag }) => {
     const navigate = useNavigate();

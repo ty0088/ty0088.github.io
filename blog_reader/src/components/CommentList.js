@@ -1,4 +1,4 @@
-import '../styles/PostDetailPage.css'
+import '../Styles/PostDetailPage.css'
 import React from 'react';
 
 import CommentRow from './CommentRow';

@@ -1,4 +1,4 @@
-import '../styles/PostDetailPage.css'
+import '../Styles/PostDetailPage.css'
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 

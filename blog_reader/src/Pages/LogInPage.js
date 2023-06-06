@@ -1,8 +1,8 @@
-import '../styles/formPages.css';
+import '../Styles/formPages.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
-import fetchUserToken from '../javascript/fetchUserToken';
+import fetchUserToken from '../Javascript/fetchUserToken';
 
 const LogInPage = () => {
     const [errorData, setErrorData] = useState(null);
