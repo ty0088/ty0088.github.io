@@ -9,7 +9,6 @@ import PostDetailPage from './Pages/PostDetailPage';
 import UserFormPage from './Pages/UserFormPage';
 import UserDetailPage from './Pages/UserDetailPage';
 import NotFoundPage from './Pages/NotFoundPage';
-import RequestLogInPage from './Pages/RequestLogInPage';
 import RedirectToHome from './Pages/RedirectToHome';
 
 function App() {
@@ -25,7 +24,6 @@ function App() {
       <Route path='/blog_reader/sign-up' element={<UserFormPage action={'create'} />} />
       <Route path='/blog_reader/user/:userId/update' element={<UserFormPage action={'update'} />} />
       <Route path='/blog_reader/user/:userId' element={<UserDetailPage setScrollComId={setScrollComId} />} />
-      <Route path='/blog_reader/request-log-in' element={<RequestLogInPage />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
