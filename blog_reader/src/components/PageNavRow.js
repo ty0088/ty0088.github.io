@@ -13,10 +13,10 @@ const PageNavRow = ({ paginateInfo, pageNum, sortOrd, limitVal }) => {
             </div>
             
             <div>
-                Sort: <Link to={`/blog_reader?page=${pageNum}&sortOrd=-1&limit=${limitVal}`}>{(sortOrd === '-1' || sortOrd === '') ? <strong>Newest First</strong> : 'Newest First'}</Link> / <Link to={`/blog_reader?page=${pageNum}&sortOrd=1&limit=${limitVal}`}>{sortOrd === '1' ? <strong>Oldest First</strong> : 'Oldest First'}</Link>&nbsp;-&nbsp;
+                Sort: {(sortOrd === '-1' || sortOrd === '') ? <strong>Newest First</strong> : <Link to={`/blog_reader?page=${pageNum}&sortOrd=-1&limit=${limitVal}`}>Newest First</Link>} / {sortOrd === '1' ? <strong>Oldest First</strong> : <Link to={`/blog_reader?page=${pageNum}&sortOrd=1&limit=${limitVal}`}>Oldest First</Link>}&nbsp;-&nbsp;
             </div>
             <div>
-                Posts: <Link to={`/blog_reader?page=1&sortOrd=${sortOrd}&limit=5`}>{(limitVal === '5' || limitVal === '') ? <strong>5</strong> : '5'}</Link> / <Link to={`/blog_reader?page=1&sortOrd=${sortOrd}&limit=10`}>{limitVal === '10' ? <strong>10</strong> : '10'}</Link> / <Link to={`/blog_reader?page=1&sortOrd=${sortOrd}&limit=20`}>{limitVal === '20' ? <strong>20</strong> : '20'}</Link>
+                Posts: {(limitVal === '5' || limitVal === '') ? <strong>5</strong> : <Link to={`/blog_reader?page=1&sortOrd=${sortOrd}&limit=5`}>5</Link>} / {limitVal === '10' ? <strong>10</strong> : <Link to={`/blog_reader?page=1&sortOrd=${sortOrd}&limit=10`}>10</Link>} / {limitVal === '20' ? <strong>20</strong> : <Link to={`/blog_reader?page=1&sortOrd=${sortOrd}&limit=20`}>20</Link>}
             </div>
         </div>
     );
