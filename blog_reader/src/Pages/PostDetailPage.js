@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 
-import logOut from '../Javascript/logOut';
 import fetchUserToken from '../Javascript/fetchUserToken';
 import CommentList from '../Components/CommentList';
 import CommentForm from '../Components/CommentForm';
 import decodeHtml from '../Javascript/decodeHtml';
+import NavBar from '../Components/NavBar';
 
 const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
     const [currUser, setCurrUser] = useState({});
@@ -70,11 +70,7 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot</h1>
-            <nav>
-                <Link className='button-link' to='/blog_reader'>Blog Posts</Link>
-                <Link className='button-link' to={`/blog_reader/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
-                <button className='button-link' type='button' onClick={logOut}>Log Out</button>
-            </nav>
+            <NavBar user={currUser} pageType={'post'} />
             <div className='post-row'>
                 {Object.keys(postData).length > 0 &&
                     <>
@@ -95,10 +91,10 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
             </div>
             <div id='comment-container'>
                 {!newComFlag &&
-                    <button type='button' className='button-link' onClick={addCommentClick}>Add New Comment</button>
+                    <button type='button' className='btn-link' onClick={addCommentClick}>Add New Comment</button>
                 }
                 {(currUser.user_type === 'Demo') &&
-                    <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
+                    <span className='post-info'>*This is a read only Demo Account - No submitted data will be saved.*</span>
                 }
                 {newComFlag &&
                     <CommentForm postId={postId} commentText={null} fetchData={fetchData} setNewComFlag={setNewComFlag} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag} editCommentId={editCommentId} setEditCommentId={setEditCommentId} />

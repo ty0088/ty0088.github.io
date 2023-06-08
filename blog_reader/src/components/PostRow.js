@@ -18,21 +18,19 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
         <div className='post-row'>
             { user ? <h3><Link to={`/blog_reader/post/${post._id}`}>{decodeHtml(post.title)}</Link></h3> : <h3>{decodeHtml(post.title)}</h3> }
             <div className='post-info'>
+                <span>Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span> 
                 {user &&
-                    <span><Link to={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</Link>&nbsp;-&nbsp;</span>
+                    <span>&nbsp;by <Link to={`/blog_reader/user/${post.user._id}`}>{post.user.display_name}</Link></span>
                 }
-                Posted on: {new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </div>
             <hr></hr>
             <div className='post-text'>{parse(post.text)}</div>
             <hr></hr>
             {user &&
                 <div className='post-footer'>
-                    <span>
-                        <button className='button-link' type='button' onClick={commentClick}>Comments ({post.commentCount})</button>
-                    </span>
+                    <button className='btn-link font-small' type='button' onClick={commentClick}>Comments ({post.commentCount})</button>
                     {typeof post.lastEditBy == 'object' &&
-                        <span>- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
+                        <span><i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
                     }
                 </div>
             }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import fetchUserToken from '../Javascript/fetchUserToken';
 import UserForm from '../Components/UserForm';
+import NavBar from '../Components/NavBar';
 
 const UserFormPage = ({ action }) => {
     const [user, setUser] = useState({});
@@ -39,6 +40,9 @@ const UserFormPage = ({ action }) => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot</h1>
+            {(formFlag && Object.keys(user).length > 0) &&
+                <NavBar user={user} pageType={'user'} />
+            }
             <div className='form-border'>
                 {formFlag &&
                     <UserForm action={action} user={user} fetchData={fetchData} errorData={errorData} setErrorData={setErrorData} />

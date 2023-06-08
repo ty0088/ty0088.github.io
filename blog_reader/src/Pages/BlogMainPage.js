@@ -1,13 +1,13 @@
 import '../Styles/BlogMainPage.css'
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import fetchUserToken from '../Javascript/fetchUserToken';
-import logOut from '../Javascript/logOut';
 import PostRow from '../Components/PostRow';
 import PageNavRow from '../Components/PageNavRow';
 import PageNavSpan from '../Components/PageNavSpan';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
+import NavBar from '../Components/NavBar';
 
 const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [postList, setPostList] = useState([]);
@@ -18,6 +18,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [limitVal, setLimitVal] = useState('');
     const [popUpFlag, setPopUpFlag] = useState(false);
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         //get query string values if any
@@ -106,16 +107,13 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
             <h1>The Blog Spot</h1>
             {!user &&
                 <nav>
-                    <Link className='button-link' to='/blog_reader/log-in'>Log In</Link>
-                    <Link className='button-link' to='/blog_reader/sign-up'>Sign Up</Link>
-                    <button type='button' className='button-link' onClick={demoLogInClick}>Demo Log In</button>
+                    <button type='button' className='btn-link' onClick={() => navigate('/blog_reader/log-in')}>Log In</button>
+                    <button type='button' className='btn-link' onClick={() => navigate('/blog_reader/sign-up')}>Sign Up</button>
+                    <button type='button' className='btn-link' onClick={demoLogInClick}>Demo Log In</button>
                 </nav>
             }
             {user &&
-                <nav>
-                    <Link className='button-link' to={`/blog_reader/user/${user.user_id}`}>My Account ({user.display_name})</Link>
-                    <button className='button-link' type='button' onClick={logOut}>Log Out</button>
-                </nav>
+                <NavBar user={user} pageType={'blogs'} />
             }
             <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
             {(user && user.user_type === 'Demo') &&

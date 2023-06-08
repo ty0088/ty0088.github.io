@@ -1,18 +1,26 @@
 #comment-container {
     padding: 0 0 0 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start
 }
 
 .comment-row {
     display: flex;
     flex-direction: column;
-    margin: 0.5em 0 0.5em 0;
-    padding: 0 0 0.5em 0.5em;
+    margin: 0.5em 0;
+    padding: 0.5em;
     font-size: 0.8em;
     border: 1px solid grey;
+    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
 }
 
 .comment-info {
     font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 0.25em;
 }
 
 #comment-form {

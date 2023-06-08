@@ -39,7 +39,7 @@ const UserContent = ({ userType, userPosts, userComments, setScrollComId }) => {
     if (contentType === 'posts') {
         return (
             <div className='user-content-container'>
-                <span><strong>User Blog Posts</strong> / <button className='button-link' type='button' onClick={toggleContent}>User Comments</button> :</span>
+                <span><button className='btn-link selected' type='button' >User Blog Posts</button> <button className='btn-link' type='button' onClick={toggleContent}>User Comments</button></span>
                 <ol>
                     {userPosts.length > 0 &&
                         userPosts.map((post, i) => {
@@ -63,7 +63,7 @@ const UserContent = ({ userType, userPosts, userComments, setScrollComId }) => {
     } else {
         return (
             <div className='user-content-container'>
-                <span><button className='button-link' type='button' onClick={toggleContent}>User Blog Posts</button> / <strong>User Comments</strong> :</span>
+                <span><button className='btn-link' type='button' onClick={toggleContent}>User Blog Posts</button> <button className='btn-link selected' type='button'>User Comments</button></span>
                 <ol>
                     {userComments.length > 0 &&
                         userComments.map((comment, i) => {

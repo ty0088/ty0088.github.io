@@ -11,7 +11,6 @@ const PageNavRow = ({ paginateInfo, pageNum, sortOrd, limitVal }) => {
             <div>
                 <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} />&nbsp;-&nbsp;
             </div>
-            
             <div>
                 Sort: {(sortOrd === '-1' || sortOrd === '') ? <strong>Newest First</strong> : <Link to={`/blog_reader?page=${pageNum}&sortOrd=-1&limit=${limitVal}`}>Newest First</Link>} / {sortOrd === '1' ? <strong>Oldest First</strong> : <Link to={`/blog_reader?page=${pageNum}&sortOrd=1&limit=${limitVal}`}>Oldest First</Link>}&nbsp;-&nbsp;
             </div>

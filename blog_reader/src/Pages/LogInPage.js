@@ -88,8 +88,8 @@ const LogInPage = () => {
                         <span className='error-message'>{errorData.message}</span>
                     }
                     <div className='button-container login'>
-                        <button className='button-link' type='submit'>Log In</button>
-                        <Link className='button-link' to='/blog_reader'>Cancel</Link>
+                        <button type='submit' className='btn-link'>Log In</button>
+                        <button type='button' className='btn-link' onClick={() => navigate('/blog_reader')}>Cancel</button>
                     </div>
                 </form>
                 <p>Not yet signed up? Click <Link to='/blog_reader/sign-up'>here</Link>.</p>

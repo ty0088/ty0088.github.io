@@ -75,7 +75,7 @@ const CommentForm = ({ postId, commentText, fetchData, setNewComFlag, setScrollN
     return (
         <form id='comment-form' action='' method=''>
             <div>
-                <label htmlFor='comment-text'>{editCommentId ? 'Edit Comment' : 'Add new comment: '}</label>
+                <label htmlFor='comment-text'>{editCommentId ? 'Edit Comment' : 'New comment:'}</label>
                 <textarea id='input-comment-text' name='comment-text' rows="4" defaultValue={commentText} required></textarea>
             </div>
             <ul>
@@ -88,8 +88,8 @@ const CommentForm = ({ postId, commentText, fetchData, setNewComFlag, setScrollN
                 }
             </ul>
             <div className='button-container'>
-                <button type='submit' className='button-link' onClick={submitComment}>Submit Comment</button>
-                <button type='button' className='button-link' onClick={cancelClick}>Cancel</button>
+                <button type='submit' className='btn-link' onClick={submitComment}>Submit Comment</button>
+                <button type='button' className='btn-link' onClick={cancelClick}>Cancel</button>
             </div>
         </form>
     );

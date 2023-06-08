@@ -1,11 +1,12 @@
 import '../Styles/UserDetailPage.css'
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 import fetchUserToken from '../Javascript/fetchUserToken';
 import logOut from '../Javascript/logOut';
 import UserContent from '../Components/UserContent';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
+import NavBar from '../Components/NavBar';
 
 const UserDetailPage = ({ setScrollComId }) => {
     const [currUser, setCurrUser] = useState(null);
@@ -16,6 +17,7 @@ const UserDetailPage = ({ setScrollComId }) => {
     const [formFlag, setFormFlag] = useState(false);
     const [popUpFlag, setPopUpFlag] = useState(false);
     const { userId } = useParams();
+    const navigate = useNavigate();
 
     //on initial render and any new user id request, get user token and get specified user data
     useEffect(() => {
@@ -42,7 +44,8 @@ const UserDetailPage = ({ setScrollComId }) => {
 
     //prompt delete user password confirmation form
     const deleteClick = () => {
-       setFormFlag(true);
+        document.getElementById('delete-user-btn').classList.add('selected');
+        setFormFlag(true);
     };
 
     //submit password and prompt final confirmation pop up
@@ -92,6 +95,7 @@ const UserDetailPage = ({ setScrollComId }) => {
     const cancelDelete = () => {
         setPopUpFlag(false);
         setFormFlag(false);
+        document.getElementById('delete-user-btn').classList.remove('selected');
     };
 
     //check for user
@@ -100,24 +104,26 @@ const UserDetailPage = ({ setScrollComId }) => {
         return (
             <div id='main-container'>
                 <h1>The Blog Spot</h1>
-                <nav>
-                    <Link className='button-link' to='/blog_reader'>Blog Posts</Link>
-                    <Link className='button-link' to={`/blog_reader/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
-                    <button className='button-link' type='button' onClick={logOut}>Log Out</button>
-                </nav>
+                <NavBar user={currUser} pageType={'account'} />
                 {(currUser && currUser.user_type === 'Demo') &&
                     <span className='post-info'> *This is a read only Demo Account - No submitted data or delete requests will be saved.*</span>
                 }
                 <div className='user-details'>
-                    <h3>User Details</h3>
+                    {currUser.user_id !== userId &&
+                        <h3>User Details</h3>
+                    }
+                    {currUser.user_id === userId &&
+                        <h3>My Details</h3>
+                    }
                     <span><b>User Name: </b>{userData.display_name}</span>
                     <span><b>Join Date: </b>{new Date(userData.join_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })}</span>
                     <span><b>User Type: </b>{userData.user_type}</span>
                     {currUser.user_id === userId &&
                         <>
                             <span><b>Email: </b>{userData.email}</span>
-                            <Link to={`/blog_reader/user/${userId}/update`}>Update my details</Link>
-                            <button type='button' className='button-link' onClick={deleteClick}>Delete My Account</button>
+                            <br></br>
+                            <button type='button' className='btn-link' onClick={() => navigate(`/blog_reader/user/${userId}/update`)}>Update my details</button>
+                            <button type='button' className='btn-link' id='delete-user-btn' onClick={deleteClick}>Delete My Account</button>
                         </>
                     }
                     {formFlag &&
@@ -132,8 +138,8 @@ const UserDetailPage = ({ setScrollComId }) => {
                                 <input type='password' id='input-password-confirm' name='passwordConfirm' required />
                             </div>
                             <div className='button-container user'>
-                                <button className='button-link' type='submit' onClick={submitDelete}>Submit</button>
-                                <button className='button-link' type='button' onClick={cancelDelete}>Cancel</button>    
+                                <button className='btn-link' type='submit' onClick={submitDelete}>Submit</button>
+                                <button className='btn-link' type='button' onClick={cancelDelete}>Cancel</button>    
                             </div>
                             {errorData &&
                                 errorData.map((error, i) => {
@@ -144,6 +150,7 @@ const UserDetailPage = ({ setScrollComId }) => {
                             }
                         </form>
                     }
+                    <hr></hr>
                     <UserContent userType={userData.user_type} userPosts={postData} userComments={commentData} setScrollComId={setScrollComId} />
                 </div>
                 {popUpFlag &&
@@ -157,7 +164,7 @@ const UserDetailPage = ({ setScrollComId }) => {
             <div id='main-container'>
                 <h1>The Blog Spot</h1>
                 <nav>
-                    <Link to='/blog_reader'>Blog Posts</Link>
+                    <button type='button' className='btn-link' onClick={() => navigate('/blog_reader')}>Blogs</button>
                 </nav>
                 <p>You need to be logged in to see a user's details. Please <Link to='/blog_reader/log-in'>click here</Link> to log in.</p>
             </div>
