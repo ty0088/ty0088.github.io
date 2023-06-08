@@ -51,6 +51,10 @@ ol {
     padding: 0 0 0 1em;
 }
 
+li {
+    margin-bottom: 0.5em;
+}
+
 #main-container{
     width: 1000px;
     min-height: 100vh;

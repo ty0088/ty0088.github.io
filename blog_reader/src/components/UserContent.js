@@ -69,10 +69,13 @@ const UserContent = ({ userType, userPosts, userComments, setScrollComId }) => {
                         userComments.map((comment, i) => {
                             return (
                                 <li key={i} >
-                                    <div className='comment-list'>
-                                        <span>{comment.text}</span>
-                                        <span>&nbsp;-&nbsp;({new Date(comment.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})&nbsp;-&nbsp;</span>
-                                        <span>Post: <button type='button' className='button-link' onClick={() => commentPostClick(comment.post._id, comment._id)}>{comment.post.title}</button></span>
+                                    <div className='user-content-list-element'>
+                                        {comment.text}&nbsp;&nbsp;-&nbsp;&nbsp;
+                                        <div className='user-content-info'>
+                                            ({new Date(comment.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})
+                                            &nbsp;&nbsp;-&nbsp;&nbsp;
+                                            <Link onClick={() => commentPostClick(comment)}>{comment.post.title}</Link>
+                                        </div>
                                     </div>
                                 </li>
                             );
