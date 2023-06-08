@@ -40,7 +40,7 @@ const CommentForm = ({ postId, commentText, fetchData, setNewComFlag, setScrollN
                 });
             } else {
                 //request update comment from api
-                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/comment/update` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/update`, {
+                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/comment/${editCommentId}/update` : `${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/comment/${editCommentId}/update`, {
                     method: 'PUT',
                     credentials: 'include',
                     headers: {
