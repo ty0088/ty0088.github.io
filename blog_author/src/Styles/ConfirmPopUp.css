@@ -16,8 +16,9 @@
 .confirm-popup {
     max-width: 20em;
     padding: 1em;
-    border: 2px solid Black;
-    border-radius: 5px;
+    border: 1px solid Black;
+    border-radius: 3px;
+    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
     background-color: white;
     display: flex;
     flex-direction: column;

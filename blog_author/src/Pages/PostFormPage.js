@@ -1,10 +1,10 @@
 import '../Styles/formPages.css';
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
 
-import logOut from '../Javascript/logOut';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
+import NavBar from '../Components/NavBar';
 
 const PostFormPage = ({ action, currUser, tinyKey }) => {
     const [postData, setPostData] = useState(null);
@@ -129,15 +129,9 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
-            {currUser &&
-                <nav>
-                    <Link className='button-link' to='/blog_author'>Dashboard</Link>
-                    <Link className='button-link' to={`/blog_author/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
-                    <button className='button-link' type='button' onClick={logOut}>Log Out</button>
-                </nav>            
-            }
-            <h3>New Post</h3>
-            <div>
+            <NavBar user={currUser} pageType={''} />
+            <button type='button' className='btn-link selected'>Create New Post</button>
+            <div className='form-border'>
                 <div className='input-row post'>
                     <label htmlFor='postTitle'>Blog Post Title: </label>
                     <input type='text' id='input-post-title' name='postTitle' defaultValue={postData ? postData.title : ''} required />
@@ -175,15 +169,21 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                 />
                 <div className='button-container'>
                     {!postPrivate &&
-                        <span><strong>Public Post</strong> / <button type='button' className='button-link' onClick={() => setPostPrivate(true)}>Make Private</button></span>
+                        <div>
+                            <span>Post is <strong>Public</strong></span>&nbsp;-&nbsp;
+                            <button type='button' className='btn-link' onClick={() => setPostPrivate(true)}>Make Private</button>
+                        </div>
                     }
                     {postPrivate &&
-                        <span><button type='button' className='button-link' onClick={() => setPostPrivate(false)}>Make Public</button> / <strong>Private Post</strong></span>
+                        <div>
+                            <button type='button' className='btn-link' onClick={() => setPostPrivate(false)}>Make Public</button>-&nbsp;
+                            <span>Post is <strong>Private</strong></span>
+                        </div>
                     }
                 </div>
                 <div className='button-container'>
-                    <button type='button' className='button-link' onClick={submitClick}>Submit Post</button>
-                    <button type='button' className='button-link' onClick={() => navigate(-1)}>Cancel</button>
+                    <button type='button' className='btn-link' onClick={submitClick}>Submit Post</button>
+                    <button type='button' className='btn-link' onClick={() => navigate(-1)}>Cancel</button>
                 </div>
                 {(currUser && currUser.user_type === 'Demo') &&
                     <span className='post-info'>*This is a read only Demo Account - No submitted data will be saved.*</span>

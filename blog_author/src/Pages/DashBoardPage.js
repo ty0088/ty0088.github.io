@@ -1,13 +1,13 @@
 import '../Styles/DashboardPage.css';
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
-import logOut from '../Javascript/logOut'
 import PostRow from '../Components/PostRow';
 import PostListRow from '../Components/PostListRow';
 import PageNavRow from '../Components/PageNavRow';
 import PageNavSpan from '../Components/PageNavSpan';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
+import NavBar from '../Components/NavBar';
 
 const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     const [postList, setPostList] = useState([]);
@@ -20,6 +20,7 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     const [privacyPopUpFlag, setPrivacyPopUpFlag] = useState(false);
     const [deletePopUpFlag, setDeletePopUpFlag] = useState(false);
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     //fetch user's posts
     useEffect(() => {
@@ -142,12 +143,9 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
         return (
             <div id='main-container'>
                 <h1>The Blog Spot - Author Dashboard</h1>
-                <nav>
-                    <Link className='button-link' to={`/blog_author/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
-                    <button className='button-link' type='button' onClick={logOut}>Log Out</button>
-                </nav>
+                <NavBar user={currUser} pageType={'blogs'} />
+                <button type='button' className='btn-link' onClick={() => navigate('/blog_author/post/create')}>Create New Post</button>
                 <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
-                <Link to='/blog_author/post/create'>Create New Post</Link>
                 {(currUser && currUser.user_type === 'Demo') &&
                     <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
                 }

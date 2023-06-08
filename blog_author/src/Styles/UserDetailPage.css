@@ -3,10 +3,31 @@
     flex-direction: column;
     padding: 0 1em;
     border: 1px solid black;
+    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
 }
 
 .user-content-container {
     display: flex;
     flex-direction: column;
-    margin: 1em 0;
+}
+
+.user-content-list-element {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-content-info {
+    font-size: inherit;
+}
+
+@media only screen and (max-width: 1000px)  {
+
+    .user-content-list-element {
+        flex-direction: column;
+    }
+
+    .user-content-info {
+        font-size: 0.9em;
+    }
+    
 }

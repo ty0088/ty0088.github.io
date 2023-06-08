@@ -10,8 +10,8 @@ const ConfirmPopUp = ({name, cancelClick, confirmClick, message1, message2}) => 
                 <span><strong>{name}</strong></span>
                 <span className='confirm-message2'>{message2}</span>
                 <div className='popup-btn-container'>
-                    <button type='button' className='button-link' onClick={confirmClick}>Confirm</button>
-                    <button type='button' className='button-link' onClick={cancelClick}>Cancel</button>
+                    <button type='button' className='btn-link' onClick={confirmClick}>Confirm</button>
+                    <button type='button' className='btn-link' onClick={cancelClick}>Cancel</button>
                 </div> 
             </div>
         </div>

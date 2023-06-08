@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import UserForm from '../Components/UserForm';
+import NavBar from '../Components/NavBar';
 
 const UserFormPage = ({ action, currUser }) => {
     const [errorData, setErrorData] = useState([]);
@@ -27,6 +28,9 @@ const UserFormPage = ({ action, currUser }) => {
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
+            {(formFlag && (currUser && Object.keys(currUser).length > 0)) &&
+                <NavBar user={currUser} pageType={'user'} />
+            }
             <div className='form-border'>
                 {formFlag &&
                     <UserForm action={action} currUser={currUser} errorData={errorData} setErrorData={setErrorData} />

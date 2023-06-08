@@ -46,7 +46,10 @@ const UserContent = ({ currUser, userId, userType, userPosts, userComments, setS
     if (contentType === 'posts') {
         return (
             <div className='user-content-container'>
-                <span><strong>User Blog Posts</strong> / <button className='button-link' type='button' onClick={toggleContent}>User Comments</button></span>
+                <span>
+                    <button className='btn-link selected' type='button' >User Blog Posts</button>&nbsp;
+                    <button className='btn-link' type='button' onClick={toggleContent}>User Comments</button>
+                </span>
                 {currUser.user_id !== userId &&
                     <span className='post-info'>(Links to other author's posts will redirect you to The Blog Spot - <strong>Reader</strong> web site)</span>
                 }
@@ -78,7 +81,10 @@ const UserContent = ({ currUser, userId, userType, userPosts, userComments, setS
     } else {
         return (
             <div className='user-content-container'>
-                <span><button className='button-link' type='button' onClick={toggleContent}>User Blog Posts</button> / <strong>User Comments</strong></span>
+                <span>
+                    <button className='btn-link' type='button' onClick={toggleContent}>User Blog Posts</button>&nbsp;
+                    <button className='btn-link selected' type='button'>User Comments</button>
+                </span>
                 <ol>
                     {currUser.user_id !== userId &&
                         <span className='post-info'>(Links to comments in other author's posts will redirect you to The Blog Spot - <strong>Reader</strong> web site)</span>
@@ -87,9 +93,14 @@ const UserContent = ({ currUser, userId, userType, userPosts, userComments, setS
                         userComments.map((comment, i) => {
                             return (
                                 <li key={i}>
-                                    {comment.text}
-                                    &nbsp;&nbsp;-&nbsp;&nbsp;({new Date(comment.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})
-                                    &nbsp;&nbsp;-&nbsp;&nbsp;Post: <button type='button' className='button-link' onClick={() => commentPostClick(comment)}>{comment.post.title}</button>
+                                    <div className='user-content-list-element'>
+                                        {comment.text}&nbsp;&nbsp;-&nbsp;&nbsp;
+                                        <div className='user-content-info'>
+                                            ({new Date(comment.post_date).toLocaleString('en-GB', {day: "numeric", month: "long", year: "numeric" })})
+                                            &nbsp;&nbsp;-&nbsp;&nbsp;
+                                            <Link onClick={() => commentPostClick(comment)}>{comment.post.title}</Link>
+                                        </div>
+                                    </div>
                                 </li>
                             );
                         })

@@ -1,13 +1,13 @@
 import '../Styles/PostDetailPage.css'
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 
-import logOut from '../Javascript/logOut';
 import CommentList from '../Components/CommentList';
 import CommentForm from '../Components/CommentForm';
 import decodeHtml from '../Javascript/decodeHtml';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
+import NavBar from '../Components/NavBar';
 
 const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId  }) => {
     const [postData, setPostData] = useState({});
@@ -92,11 +92,7 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
-            <nav>
-                <Link className='button-link' to='/blog_author'>Dashboard</Link>
-                <Link className='button-link' to={`/blog_author/user/${currUser.user_id}`}>My Account ({currUser.display_name})</Link>
-                <button className='button-link' type='button' onClick={logOut}>Log Out</button>
-            </nav>     
+            <NavBar user={currUser} pageType={'post'} />   
             <div className='post-row'>
                 {Object.keys(postData).length > 0 &&
                     <>
@@ -109,8 +105,8 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                         <hr></hr>
                         <div className='post-footer'>
                             <div>
-                                <Link to={`/blog_author/post/${postId}/update`}>EDIT</Link>&nbsp;-&nbsp;
-                                <button type='button' className='button-link' onClick={() => deletePostClick(postId)}>DELETE</button>
+                                <button type='button' className='btn-link' onClick={() => navigate(`/blog_author/post/${postId}/update`)}>Edit</button>
+                                <button type='button' className='btn-link' onClick={() => deletePostClick(postId)}>Delete</button>
                             </div>
                             {postData.lastEditBy &&
                                 <span>&nbsp;- <i>Last edited: {new Date(postData.lastEditDate).toLocaleString()} by {postData.lastEditBy.display_name} ({postData.lastEditBy.user_type})</i></span>
@@ -121,10 +117,10 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
             </div>
             <div id='comment-container'>
                 {!newComFlag &&
-                    <button type='button' className='button-link' onClick={addCommentClick}>Add New Comment</button>
+                    <button type='button' className='btn-link' onClick={addCommentClick}>Add New Comment</button>
                 }
                 {(currUser && currUser.user_type === 'Demo') &&
-                    <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
+                    <span className='post-info'>*This is a read only Demo Account - No submitted data will be saved.*</span>
                 }
                 {newComFlag &&
                     <CommentForm postId={postId} commentText={null} fetchData={fetchData} setNewComFlag={setNewComFlag} setScrollNewComFlag={setScrollNewComFlag} setScrollComFlag={setScrollComFlag} editCommentId={editCommentId} setEditCommentId={setEditCommentId} />

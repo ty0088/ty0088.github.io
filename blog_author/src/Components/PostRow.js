@@ -24,23 +24,23 @@ const PostRow = ({ post, postPrivacyClick, deletePostClick, setScrollComFlag }) 
             <div className='post-footer'>
                 {post.private &&
                     <div>
-                        <button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Public</button>
-                        &nbsp;/&nbsp;<span><strong>Private</strong></span>&nbsp;-&nbsp;
+                        <span>Post is <strong>Private</strong></span>&nbsp;-&nbsp;
+                        <button type='button' className='btn-link' onClick={() => postPrivacyClick(post._id)}>Make Public</button>
                     </div>
                 }
                 {!post.private &&
                     <div>
-                        <span><strong>Public</strong></span>
-                        &nbsp;/&nbsp;<button type='button' className='button-link' onClick={() => postPrivacyClick(post._id)}>Make Private</button>&nbsp;-&nbsp;
+                        <span>Post is <strong>Public</strong></span>&nbsp;-&nbsp;
+                        <button type='button' className='btn-link' onClick={() => postPrivacyClick(post._id)}>Make Private</button>
                     </div>
                 }
                 <div>
-                    <Link to={`/blog_author/post/${post._id}/update`}>EDIT</Link>&nbsp;-&nbsp;
-                    <button type='button' className='button-link' onClick={() => deletePostClick(post._id)}>DELETE</button>&nbsp;-&nbsp;
-                    <button type='button' className='button-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
+                    <button type='button' className='btn-link' onClick={() => navigate(`/blog_author/post/${post._id}/update`)}>Edit</button>
+                    <button type='button' className='btn-link' onClick={() => deletePostClick(post._id)}>Delete</button>
+                    <button type='button' className='btn-link'  onClick={commentClick}>Comments ({post.commentCount})</button>
                 </div>
                 {typeof post.lastEditBy == 'object' &&
-                    <span>&nbsp;- <i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
+                    <span><i>Last edited: {new Date(post.lastEditDate).toLocaleString()} by {post.lastEditBy.display_name} ({post.lastEditBy.user_type})</i></span>
                 }
             </div>
         </div>
