@@ -33,7 +33,12 @@ const PageNavSpan = ({ paginateInfo, sortOrd, limitVal }) => {
                     <Link to={`/blog_reader?page=${paginateInfo.nextPage}&sortOrd=${sortOrd}&limit=${limitVal}`}>{paginateInfo.nextPage}</Link>
                 </>
             }
-            {(paginateInfo.nextPage !== paginateInfo.totalPages && paginateInfo.page !== paginateInfo.totalPages) && ` / `} {(paginateInfo.nextPage !== paginateInfo.totalPages && paginateInfo.page !== paginateInfo.totalPages) && <Link to={`/blog_reader?page=${paginateInfo.totalPages}&sortOrd=${sortOrd}&limit=${limitVal}`}>{paginateInfo.totalPages}</Link>}
+            {(paginateInfo.nextPage !== paginateInfo.totalPages && paginateInfo.page !== paginateInfo.totalPages) &&
+                <>
+                    &nbsp;/&nbsp;
+                    <Link to={`/blog_reader?page=${paginateInfo.totalPages}&sortOrd=${sortOrd}&limit=${limitVal}`}>{paginateInfo.totalPages}</Link>
+                </>
+            }
         </span>
     );
 };
