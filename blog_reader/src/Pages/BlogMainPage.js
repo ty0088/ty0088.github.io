@@ -4,8 +4,8 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import fetchUserToken from '../Javascript/fetchUserToken';
 import PostRow from '../Components/PostRow';
-import PageNavRow from '../Components/PageNavRow';
-import PageNavSpan from '../Components/PageNavSpan';
+import PageViewBar from '../Components/PageViewBar';
+import PageNavBar from '../Components/PageNavBar';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import NavBar from '../Components/NavBar';
 
@@ -17,6 +17,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
     const [sortOrd, setSortOrd] = useState('');
     const [limitVal, setLimitVal] = useState('');
     const [popUpFlag, setPopUpFlag] = useState(false);
+    const [viewBarFlag, setViewBarFlag] = useState(false);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
@@ -102,6 +103,11 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
         setPopUpFlag(false);
     };
 
+    const toggleViewBar = () => {
+        setViewBarFlag(!viewBarFlag);
+        document.getElementById('post-view-bar-btn').classList.toggle('selected');
+    };
+
     return (
         <div id='main-container'>
             <h1>The Blog Spot</h1>
@@ -115,7 +121,13 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
             {user &&
                 <NavBar user={user} pageType={'blogs'} />
             }
-            <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
+            <div className='post-nav-view-bar'>
+                <button type='button' className='btn-link' id='post-view-bar-btn' onClick={toggleViewBar}>Toggle View</button>
+                <PageNavBar paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal}/>
+                {viewBarFlag &&
+                    <PageViewBar paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} />
+                }
+            </div>
             {(user && user.user_type === 'Demo') &&
                 <span className='post-info'>*This is a read only Demo Account - No submitted data will be saved.*</span>
             }
@@ -126,7 +138,7 @@ const BlogMainPage = ({ setScrollComFlag, setScrollComId }) => {
                             <PostRow key={i} user={user} post={post} setScrollComFlag={setScrollComFlag}  />
                         );
                     })}
-                    <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal}/>
+                    <PageNavBar paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal}/>
                 </>
             }
             {postList.length === 0 &&
