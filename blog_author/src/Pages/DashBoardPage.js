@@ -4,8 +4,8 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import PostRow from '../Components/PostRow';
 import PostListRow from '../Components/PostListRow';
-import PageNavRow from '../Components/PageNavRow';
-import PageNavSpan from '../Components/PageNavSpan';
+import PageViewBar from '../Components/PageViewBar';
+import PageNavBar from '../Components/PageNavBar';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import NavBar from '../Components/NavBar';
 
@@ -19,6 +19,7 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
     const [listViewFlag, setListViewFlag] = useState(true);
     const [privacyPopUpFlag, setPrivacyPopUpFlag] = useState(false);
     const [deletePopUpFlag, setDeletePopUpFlag] = useState(false);
+    const [viewBarFlag, setViewBarFlag] = useState(false);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
@@ -139,13 +140,26 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
         setDeletePopUpFlag(false);
     };
 
+    const toggleViewBar = () => {
+        setViewBarFlag(!viewBarFlag);
+        document.getElementById('post-view-bar-btn').classList.toggle('selected');
+    };
+
     if (currUser) {
         return (
             <div id='main-container'>
                 <h1>The Blog Spot - Author Dashboard</h1>
                 <NavBar user={currUser} pageType={'blogs'} />
-                <button type='button' className='btn-link' onClick={() => navigate('/blog_author/post/create')}>Create New Post</button>
-                <PageNavRow paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
+                <div>
+                    <button type='button' className='btn-link' onClick={() => navigate('/blog_author/post/create')}>Create New Post</button>
+                    <button type='button' className='btn-link' id='post-view-bar-btn' onClick={toggleViewBar}>Toggle View</button>
+                </div>
+                <div>
+                    <PageNavBar paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} />
+                    {viewBarFlag &&
+                        <PageViewBar paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
+                    }
+                </div>
                 {(currUser && currUser.user_type === 'Demo') &&
                     <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
                 }
@@ -162,7 +176,7 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
                                 );
                             }
                         })}
-                        <PageNavSpan paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} classStr={'post-info'}/>
+                        <PageNavBar paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} />
                     </>
                 }
                 {(!postList || postList.length === 0) &&

@@ -1,25 +1,29 @@
-.page-nav-bar {
+.page-view-bar {
     font-size: 0.75em;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    row-gap: 0.5em;
 }
 
-.page-nav-bar .page-nav-span {
-    font-size: 1em;
+.page-view-bar > div {
+    display: flex;
+    align-items: center;
 }
 
-.page-nav-span {
+.page-nav-bar {
     font-size: 0.75em;
+    margin: 0.4em 0;
+    display: flex;
+    align-items: center;
 }
 
 @media only screen and (max-width: 1000px)  {
 
-    .page-nav-bar {
-        font-size: 0.9em;
-        flex-direction: column;
+    .page-view-bar {
+        font-size: 1em;
     }
     
-    .page-nav-span {
+    .page-nav-bar {
         font-size: 1em;
     }
 

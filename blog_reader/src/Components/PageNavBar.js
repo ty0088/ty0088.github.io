@@ -1,8 +1,8 @@
 import '../Styles/PageNav.css';
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const PageNavSpan = ({ paginateInfo, sortOrd, limitVal, classStr }) => {
+const PageNavBar = ({ paginateInfo, sortOrd, limitVal }) => {
     //return a dashboard page navigation element
     //format: first page if not previous page or current page "/" previous page if available "<" current page ">" next page if available "/" last page if not next page or current page
     //format example 1 / 3 < 4 > 5 / 10 --- 10 total pages, current page is 4
@@ -12,35 +12,37 @@ const PageNavSpan = ({ paginateInfo, sortOrd, limitVal, classStr }) => {
     //format example 1 --- 1 total page, current page is 1
     //format example 1 > 2 --- 2 total pages, current page is 1
 
+    const navigate = useNavigate();
+
     return (
-        <span className='page-nav-span'>
-            Page:&nbsp;
+        <div className='page-nav-bar'>
+            <strong>Page:</strong>&nbsp;
             {(paginateInfo.prevPage !== 1 && paginateInfo.page !== 1) && 
                 <>
-                    <Link to={`/blog_author?page=1&sortOrd=${sortOrd}&limit=${limitVal}`}>1</Link>
+                    <button type='button' className='btn-link' onClick={() => navigate(`/blog_reader?page=1&sortOrd=${sortOrd}&limit=${limitVal}`)}>1</button>
                     &nbsp;/&nbsp;
                 </>
             }
             {paginateInfo.hasPrevPage &&
                 <>
-                    <Link to={`/blog_author?page=${paginateInfo.prevPage}&sortOrd=${sortOrd}&limit=${limitVal}`}>{paginateInfo.prevPage}</Link>
+                    <button type='button' className='btn-link' onClick={() => navigate(`/blog_reader?page=${paginateInfo.prevPage}&sortOrd=${sortOrd}&limit=${limitVal}`)}>{paginateInfo.prevPage}</button>
                     &nbsp;&lt;&nbsp;
                 </>
-            }  
-            <strong>{paginateInfo.page}</strong>
+            }
+            <button type='button' className='btn-link selected'>{paginateInfo.page}</button>
             {paginateInfo.hasNextPage &&
                 <>
                     &nbsp;&gt;&nbsp;
-                    <Link to={`/blog_author?page=${paginateInfo.nextPage}&sortOrd=${sortOrd}&limit=${limitVal}`}>{paginateInfo.nextPage}</Link>
+                    <button type='button' className='btn-link' onClick={() => navigate(`/blog_reader?page=${paginateInfo.nextPage}&sortOrd=${sortOrd}&limit=${limitVal}`)}>{paginateInfo.nextPage}</button>
                 </>
             }
             {(paginateInfo.nextPage !== paginateInfo.totalPages && paginateInfo.page !== paginateInfo.totalPages) &&
                 <>
                     &nbsp;/&nbsp;
-                    <Link to={`/blog_author?page=${paginateInfo.totalPages}&sortOrd=${sortOrd}&limit=${limitVal}`}>{paginateInfo.totalPages}</Link>
+                    <button type='button' className='btn-link' onClick={() => navigate(`/blog_reader?page=${paginateInfo.totalPages}&sortOrd=${sortOrd}&limit=${limitVal}`)}>{paginateInfo.totalPages}</button>
                 </>
             }
-        </span>
+        </div>
     );
 };
-export default PageNavSpan;
+export default PageNavBar;
