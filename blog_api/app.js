@@ -12,6 +12,7 @@ const secrets = require('./storage/blog-api-secrets.json'); //get secrets from s
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
 const commentRoute = require('./routes/comment');
+const awsRoute = require('./routes/aws');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -30,7 +31,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' })); //limit req body size to 10MB
 app.use(helmet());
 
 const corsOptions = {
@@ -47,6 +48,7 @@ app.get('/', (req, res) => {
 app.use('/user', userRoute);
 app.use('/post', postRoute);
 app.use('/post', commentRoute); // comment routes - '/post/:postId/comment'
+app.use('/aws', awsRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
