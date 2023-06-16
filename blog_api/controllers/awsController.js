@@ -4,20 +4,25 @@ const passport = require('passport');
 
 //return a s3 put presigned url for relevant bucket, expires in 300s
 exports.get_s3_put_url = [
-    //authenticate user token and verify user is author or admin
+    //authenticate user token and verify user type is author or admin or demo
     (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, (err, user, info) => {
-            //if auth error, return error
-            if (err) {
+        passport.authenticate('jwt', { session: false }, (err, user) => {
+            //if error or no token, send error
+            if (err || !user) {
                 const err = new Error("Unauthorized");
                 err.status = 401;
                 return next(err);
             }
-            //if user token valid then set user to req
-            if (user) {
+            //if user is not an Author, Admin or Demo, send error
+            if (user.user_type === 'Author' || user.user_type === 'Admin' || user.user_type === 'Demo') {
+                //user is appropriate type, continue
                 req.user = user;
+                return next();
+            } else {
+                const err = new Error("Forbidden");
+                err.status = 403;
+                return next(err);
             }
-            next();
         })(req, res, next);
     },
     //process request for presigned url
