@@ -155,7 +155,8 @@ exports.post_create_post = [
                 //if no errors, save post to db
                 await post.save();
                 res.json({
-                    message: 'Blog post successfully saved'
+                    message: 'Blog post successfully saved',
+                    postId: post._id,
                 });
             }
         } catch (error) {
