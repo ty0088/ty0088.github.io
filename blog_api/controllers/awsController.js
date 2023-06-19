@@ -52,7 +52,7 @@ exports.get_s3_get_url = [
             const createGetPresignedUrl = ({ key }) => {
                 const client = new S3Client({ region: 'eu-west-2' });
                 const command = new GetObjectCommand({ Bucket: 'blog-api-images', Key: key });
-                return getSignedUrl(client, command, { expiresIn: 300 });
+                return getSignedUrl(client, command, { expiresIn: 3600 });
             };
             const presignedGetUrl = await createGetPresignedUrl({ key: `${req.params.postId}.jpg` });
             res.json({ presignedGetUrl });
