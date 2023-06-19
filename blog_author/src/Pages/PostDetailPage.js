@@ -9,11 +9,14 @@ import decodeHtml from '../Javascript/decodeHtml';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import NavBar from '../Components/NavBar';
 
+import getS3ImageUrl from '../Javascript/getS3ImageUrl';
+
 const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId  }) => {
     const [postData, setPostData] = useState({});
     const [commentData, setCommentData] = useState([]);
     const [newComFlag, setNewComFlag] = useState(false);
     const [editCommentId, setEditCommentId] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
     const [scrollNewComFlag, setScrollNewComFlag] = useState(false);
     const [deletePopUpFlag, setDeletePopUpFlag] = useState(false);
     const { postId } = useParams();
@@ -29,6 +32,8 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                 const responseData = await response.json();
                 setPostData(responseData.post);
                 setCommentData(responseData.comments);
+                //get image url and set to state
+                setImageUrl(await getS3ImageUrl(postId));
             } else {
                 //otherwise log response status and text
                 console.log(response.status + ' : ' + response.statusText);
@@ -101,6 +106,9 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                             Posted on: {new Date(postData.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "numeric", hour12: true })}
                         </div>
                         <hr></hr>
+                        {imageUrl &&
+                            <img src={imageUrl} alt={`${postId} img`} className='post-image'/>
+                        }
                         <div className='post-text'>{parse(postData.text)}</div>
                         <hr></hr>
                         <div className='post-footer'>

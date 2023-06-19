@@ -1,12 +1,27 @@
 import '../Styles/DashboardPage.css';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 
 import decodeHtml from '../Javascript/decodeHtml';
+import getS3ImageUrl from '../Javascript/getS3ImageUrl';
 
 const PostRow = ({ post, postPrivacyClick, deletePostClick, setScrollComFlag }) => {
+    const [imageUrl, setImageUrl] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        //get and set s3 image url to state. State will be set to null if no image available
+        const setS3Url = async (postId) => {
+            try {
+                const s3Url = await getS3ImageUrl(postId);
+                setImageUrl(s3Url);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        setS3Url(post._id);
+    }, [post]);
 
     //go to post detail page and scroll to comment
     const commentClick = () => {
@@ -19,6 +34,9 @@ const PostRow = ({ post, postPrivacyClick, deletePostClick, setScrollComFlag }) 
             <h3><Link to={`/blog_author/post/${post._id}`}>{decodeHtml(post.title)}</Link></h3>
             <div className='post-info'>{new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</div>
             <hr></hr>
+            {imageUrl &&
+                <img src={imageUrl} alt={`${post._id} img`} className='post-image'/>
+            }
             <div className='post-text'>{parse(post.text)}</div>
             <hr></hr>
             <div className='post-footer'>

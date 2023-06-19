@@ -150,16 +150,21 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
             <div id='main-container'>
                 <h1>The Blog Spot - Author Dashboard</h1>
                 <NavBar user={currUser} pageType={'blogs'} />
-                <div>
-                    <button type='button' className='btn-link' onClick={() => navigate('/blog_author/post/create')}>Create New Post</button>
-                    <button type='button' className='btn-link' id='post-view-bar-btn' onClick={toggleViewBar}>Toggle View</button>
-                </div>
-                <div>
-                    <PageNavBar paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} />
-                    {viewBarFlag &&
-                        <PageViewBar paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
+                <div className='post-util-row'>
+                    <div>
+                        <button type='button' className='btn-link' onClick={() => navigate('/blog_author/post/create')}>Create New Post</button>
+                        <button type='button' className='btn-link' id='post-view-bar-btn' onClick={toggleViewBar}>Toggle View</button>
+                    </div>
+                    {!viewBarFlag &&
+                        <PageNavBar paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} />
                     }
                 </div>
+                {viewBarFlag &&
+                    <>
+                        <PageNavBar paginateInfo={paginateInfo} sortOrd={sortOrd} limitVal={limitVal} />
+                        <PageViewBar paginateInfo={paginateInfo} pageNum={pageNum} sortOrd={sortOrd} limitVal={limitVal} listViewFlag={listViewFlag} setListViewFlag={setListViewFlag} />
+                    </>
+                }
                 {(currUser && currUser.user_type === 'Demo') &&
                     <span className='post-info'> *This is a read only Demo Account - No submitted data will be saved.*</span>
                 }
