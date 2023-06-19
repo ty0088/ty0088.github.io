@@ -21,11 +21,31 @@
     margin-bottom: 1.5em;
 }
 
+.post-util-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.post-image-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.post-image {
+    max-height: 100vh;
+    max-width: 100%;
+}
+
 @media only screen and (max-width: 1000px)  {
 
     .post-footer {
         flex-direction: column;
         row-gap: 0.5em;
+    }
+
+    .post-util-row {
+        flex-direction: column;
     }
 
 }

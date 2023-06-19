@@ -107,7 +107,9 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                         </div>
                         <hr></hr>
                         {imageUrl &&
-                            <img src={imageUrl} alt={`${postId} img`} className='post-image'/>
+                            <div className='post-image-container'>
+                                <img src={imageUrl} alt={`${postId} img`} className='post-image' />
+                            </div>
                         }
                         <div className='post-text'>{parse(postData.text)}</div>
                         <hr></hr>

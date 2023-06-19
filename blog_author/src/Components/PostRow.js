@@ -35,7 +35,9 @@ const PostRow = ({ post, postPrivacyClick, deletePostClick, setScrollComFlag }) 
             <div className='post-info'>{new Date(post.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</div>
             <hr></hr>
             {imageUrl &&
-                <img src={imageUrl} alt={`${post._id} img`} className='post-image'/>
+                <div className='post-image-container'>
+                    <img src={imageUrl} alt={`${post._id} img`} className='post-image' />
+                </div>
             }
             <div className='post-text'>{parse(post.text)}</div>
             <hr></hr>
