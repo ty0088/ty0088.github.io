@@ -6,10 +6,13 @@ import { Editor } from '@tinymce/tinymce-react';
 import ConfirmPopUp from '../Components/ConfirmPopUp';
 import NavBar from '../Components/NavBar';
 
+import getS3ImageUrl from '../Javascript/getS3ImageUrl';
+
 const PostFormPage = ({ action, currUser, tinyKey }) => {
     const [postData, setPostData] = useState(null);
     const [postPrivate, setPostPrivate] = useState(false);
     const [errorData, setErrorData] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
     const [submitPopUpFlag, setSubmitPopUpFlag] = useState(false);
     const editorRef = useRef(null);
     const navigate = useNavigate();
@@ -26,6 +29,8 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                     const responseData = await response.json();
                     setPostData(responseData.post);
                     setPostPrivate(responseData.post.private);
+                    //get image url and set to state
+                    setImageUrl(await getS3ImageUrl(postId));
                 } else {
                     //otherwise log response status and text
                     console.log(response.status + ' : ' + response.statusText);
@@ -45,13 +50,19 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
     const submitClick = () => {
         //check title and post input is not empty
         if (editorRef.current) {
-            const titleInputElem = document.getElementById('input-post-title');
             const errorMsgElem = document.getElementById('error-span');
+            //get post title and content
+            const titleInputElem = document.getElementById('input-post-title');
             const postContent = editorRef.current.getContent();
+            //get uploaded image if any
+            const imageFileElem = document.getElementById('input-post-picture');
+            const imageFile = imageFileElem.files[0];
+            //get file size in MB file present
+            const imageFileSizeMb = imageFile ? imageFile.size / 1024 ** 2 : 0;
             if (titleInputElem.value.trim() === '') {
                 errorMsgElem.innerText = '*A title is required*';
                 titleInputElem.focus();
-            } 
+            }
             if (postContent === '') {
                 errorMsgElem.innerText = '*Post is required*';
                 editorRef.current.focus();
@@ -59,11 +70,30 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
             if (titleInputElem.value.trim() === '' && postContent === '') {
                 errorMsgElem.innerText = '*A title and post is required*';
                 titleInputElem.focus();
+            } 
+            if (imageFileSizeMb > 10) {
+                //if filesize exceeds 10MB show error
+                errorMsgElem.innerText = '*Image file is over 10MB limit, please use a smaller image*';
+                imageFileElem.focus();
             }
-            if (titleInputElem.value.trim() !== '' && postContent !== '') {
-                //if both title and post inputs not empty, clear any error message and prompt confirmation pop up
-                errorMsgElem.innerText = '';
-                setSubmitPopUpFlag(true);
+            if (imageFile && imageFile.type !== 'image/jpeg'){
+                //if image is not jpeg show error
+                errorMsgElem.innerText = '*Image file is not type jpeg, please choose an appropriate image*';
+                imageFileElem.focus();
+            }
+            if ((titleInputElem.value.trim() !== '' && postContent !== '')) {
+                //if both title and post inputs not empty check if image is being uploaded
+                if (imageFile) {
+                    //if image is uploaded and image is jpeg and <= 10MB, clear any error message and prompt confirmation pop up
+                    if (imageFileSizeMb <= 10 && imageFile.type === 'image/jpeg') {
+                        errorMsgElem.innerText = '';
+                        setSubmitPopUpFlag(true);
+                    }
+                } else {
+                    //if no image uploaded, clear any error message and prompt confirmation pop up
+                    errorMsgElem.innerText = '';
+                    setSubmitPopUpFlag(true);
+                }
             }
         }
     };
@@ -71,13 +101,13 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
     const submitPost = async () => {
         try {
             if (editorRef.current) {
-                //get title and post content from editor
+                let postResponse = {};
+                //get title, post content from editor
                 const post_title = document.getElementById('input-post-title').value;
                 const post_text = editorRef.current.getContent();
-                let response = {};
                 if (action === 'create') {
                     //request new post from api if action === 'create'
-                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/create` : `${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
+                    postResponse = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/create` : `${process.env.REACT_APP_BLOGAPI_URL}/post/create`, {
                         method: 'POST',
                         credentials: 'include',
                         headers: {
@@ -92,7 +122,7 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                     });
                 } else if (action === 'update') {
                     //else request post update is action === 'update'
-                    response = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/update` :`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/update`, {
+                    postResponse = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/post/${postId}/update` :`${process.env.REACT_APP_BLOGAPI_URL}/post/${postId}/update`, {
                         method: 'PUT',
                         credentials: 'include',
                         headers: {
@@ -106,13 +136,30 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                         }),
                     });
                 }
-                //if successful response, redirect to dashboard
-                if (response.status === 200) {
+                if (postResponse.status === 200) {
+                    //on successful post submission, upload picture if any
+                    const imageFile = document.getElementById('input-post-picture').files[0];
+                    if (imageFile) {
+                        //get post id from response
+                        const responseData = await postResponse.json();
+                        const responsePostId = responseData.postId;
+                        //request AWS S3 presigned put URL
+                        const urlResponse = await fetch(`https://blog-api.ty0088.co.uk/aws/putS3Url/${responsePostId}`, { credentials: 'include' });
+                        const { presignedPutUrl } = await urlResponse.json();
+                        console.log(presignedPutUrl);
+                        //upload image to s3 bucket
+                        const uploadResponse = await fetch(presignedPutUrl, {
+                            method: 'PUT',
+                            headers: { "Content-Type": "image/jpeg" },
+                            body: imageFile
+                        });
+                        console.log(uploadResponse);
+                    }
                     alert('Post successfully submitted!');
                     navigate('/blog_author');
                 } else {
                     //if not successful response, set error data for rendering
-                    const responseData = await response.json();
+                    const responseData = await postResponse.json();
                     setErrorData(responseData.errors);
                 }
             }
@@ -137,6 +184,24 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                     <input type='text' id='input-post-title' name='postTitle' defaultValue={postData ? postData.title : ''} required />
                     <span className='error-message' id='error-span'></span>
                 </div>
+                {!imageUrl &&
+                    <div className='input-row post'>
+                        <label htmlFor='postPicture'>Upload Picture:</label>
+                        <input type='file' id='input-post-picture' name='postPicture' accept='image/jpeg' />
+                        <span className='input-hint'>*jpeg file &le; 10MB only</span>
+                    </div>
+                }
+                {imageUrl &&
+                    <div className='post-image-container form'>
+                        <div className='input-row post'>
+                            <label htmlFor='postPicture'>Upload New Picture:</label>
+                            <input type='file' id='input-post-picture' name='postPicture' accept='image/jpeg' />
+                            <span className='input-hint'>*jpeg file &le; 10MB only</span>
+                        </div>
+                        <span>Current Image: </span>
+                        <img src={imageUrl} alt={`${postId} img`} className='post-image form' />
+                    </div>
+                }
                 {errorData &&
                     <ul>
                         {errorData &&

@@ -13,10 +13,12 @@
 }
 
 .input-row.post {
-    grid-template-columns: fit-content(7em) 15em 1fr;
+    grid-template-columns: fit-content(8em) 12em 1fr;
+    align-items: end;
 }
 
 .input-row > input {
+    height: 1.75em;
     margin-left: 1em;
 }
 
@@ -51,6 +53,16 @@
     padding: 1em 1em;
 }
 
+.post-image-container.form {
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 1em;
+}
+
+.post-image.form {
+    width: 30%;
+}
+
 @media only screen and (max-width: 1000px)  {
 
     .input-row.user, .input-row.login {
@@ -67,6 +79,7 @@
     .input-row.post {
         grid-template-columns: 1fr;
         grid-template-rows: 1.5em 2em 1fr;
+        align-items: center;
     }
 
     .input-row.post > input, .input-row.user > input, .input-row.login > input {
