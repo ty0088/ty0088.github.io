@@ -30,7 +30,15 @@ exports.get_s3_put_url = [
     async (req, res, next) => {
         try {
             const getPresignedPutUrl = ({ key }) => {
-                const client = new S3Client({ region: 'eu-west-2' });
+                const client = new S3Client(process.env.NODE_ENV === 'production' ? { region: 'eu-west-2' } :
+                    {
+                        credentials: {
+                            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+                        },
+                        region: 'eu-west-2',
+                    }
+                );
                 const command = new PutObjectCommand({ Bucket: 'blog-api-images', Key: key });
                 return getSignedUrl(client, command, { expiresIn: 300 });
             };
