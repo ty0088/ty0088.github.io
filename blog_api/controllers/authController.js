@@ -25,7 +25,7 @@ exports.log_in_post = (req, res, next) => {
             const options = { expiresIn: process.env.NODE_ENV === 'development' ? '30 days' : '10h' };
             const token = jwt.sign(payload, secrets.SESSION_SECRET, options);
             //save token to http only cookie and return success message
-            res.cookie('jwt', token, { httpOnly: true, sameSite: 'None', secure: true });
+            res.cookie('jwt', token, { httpOnly: true, sameSite: 'None', secure: process.env.NODE_ENV === 'production' ? true : false });
             return res.json({ message: "Log in successful" });
         });
     })(req, res);
@@ -33,7 +33,7 @@ exports.log_in_post = (req, res, next) => {
 
 //handle log out on POST 
 exports.user_log_out_post = (req, res, next) => {
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: process.env.NODE_ENV === 'production' ? true : false });
     res.status(200).json({ message: 'User successfully logged out' });
 };
 
