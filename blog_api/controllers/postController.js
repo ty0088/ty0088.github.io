@@ -225,7 +225,7 @@ exports.post_update_put = [
                     await post.save();
                     return res.json({
                         msg: 'Post updated successfully',
-                        post,
+                        postId: post._id,
                     });
                 } else {
                     //else return error
