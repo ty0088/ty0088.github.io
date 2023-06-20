@@ -21,11 +21,6 @@ function App() {
   let location = useLocation();
   const navigate = useNavigate();
 
-  //----------------------------------------------------------------------------------------
-  //author to be able to delete comments on their own posts ------------- to do
-  //narrow screen formatting ------------------- to do
-  //----------------------------------------------------------------------------------------
-
   useEffect(() => {
     //on each location change check user type and set user state
     const checkUser = async () => {
