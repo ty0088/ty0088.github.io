@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/blog_author/static/css/main.2cf0ad04.css",
-    "main.js": "/blog_author/static/js/main.0ee5193a.js",
+    "main.css": "/blog_author/static/css/main.14bcabc0.css",
+    "main.js": "/blog_author/static/js/main.508aed3c.js",
     "static/js/787.b078a5b5.chunk.js": "/blog_author/static/js/787.b078a5b5.chunk.js",
     "static/media/Oswald-VariableFont_wght.ttf": "/blog_author/static/media/Oswald-VariableFont_wght.46d7853f0185f6bf0c93.ttf",
     "index.html": "/blog_author/index.html",
-    "main.2cf0ad04.css.map": "/blog_author/static/css/main.2cf0ad04.css.map",
-    "main.0ee5193a.js.map": "/blog_author/static/js/main.0ee5193a.js.map",
+    "main.14bcabc0.css.map": "/blog_author/static/css/main.14bcabc0.css.map",
+    "main.508aed3c.js.map": "/blog_author/static/js/main.508aed3c.js.map",
     "787.b078a5b5.chunk.js.map": "/blog_author/static/js/787.b078a5b5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2cf0ad04.css",
-    "static/js/main.0ee5193a.js"
+    "static/css/main.14bcabc0.css",
+    "static/js/main.508aed3c.js"
   ]
 }
