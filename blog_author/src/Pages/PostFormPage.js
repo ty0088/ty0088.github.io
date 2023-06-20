@@ -14,6 +14,7 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
     const [errorData, setErrorData] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [submitPopUpFlag, setSubmitPopUpFlag] = useState(false);
+    const [delImgFlag, setDelImgFlag] = useState(false);
     const editorRef = useRef(null);
     const navigate = useNavigate();
     const { postId } = useParams();
@@ -144,16 +145,16 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                         const responseData = await postResponse.json();
                         const responsePostId = responseData.postId;
                         //request AWS S3 presigned put URL
-                        const urlResponse = await fetch(`https://blog-api.ty0088.co.uk/aws/putS3Url/${responsePostId}`, { credentials: 'include' });
+                        const urlResponse = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/aws/putS3Url/${responsePostId}` : `${process.env.REACT_APP_BLOGAPI_URL}/aws/putS3Url/${responsePostId}`, { credentials: 'include' });
                         const { presignedPutUrl } = await urlResponse.json();
-                        console.log(presignedPutUrl);
-                        //upload image to s3 bucket
-                        const uploadResponse = await fetch(presignedPutUrl, {
-                            method: 'PUT',
-                            headers: { "Content-Type": "image/jpeg" },
-                            body: imageFile
-                        });
-                        console.log(uploadResponse);
+                        if (presignedPutUrl) {                      
+                            //if appropriate url returned, upload image to s3 bucket
+                            await fetch(presignedPutUrl, {
+                                method: 'PUT',
+                                headers: { "Content-Type": "image/jpeg" },
+                                body: imageFile
+                            });
+                        }
                     }
                     alert('Post successfully submitted!');
                     navigate('/blog_author');
@@ -173,11 +174,31 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
         setSubmitPopUpFlag(false);
     };
 
+    const confirmDelImg = async () => {
+        try {
+            await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/aws/deleteS3Image/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/aws/deleteS3Image/${postId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+            setImageUrl(null);
+            setDelImgFlag(false);
+        } catch (error) {
+            setDelImgFlag(false);
+            console.log(error);
+        }
+    };
+
+    const cancelImgDel = () => {
+        setDelImgFlag(false);
+    };
+
     return (
         <div id='main-container'>
             <h1>The Blog Spot - Author</h1>
             <NavBar user={currUser} pageType={''} />
-            <button type='button' className='btn-link selected'>Create New Post</button>
+            {action === 'create' &&
+                <button type='button' className='btn-link selected'>Create New Post</button>
+            }
             <div className='form-border'>
                 <div className='input-row post'>
                     <label htmlFor='postTitle'>Blog Post Title: </label>
@@ -186,7 +207,7 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                 </div>
                 {!imageUrl &&
                     <div className='input-row post'>
-                        <label htmlFor='postPicture'>Upload Picture:</label>
+                        <label htmlFor='postPicture'>Upload Image:</label>
                         <input type='file' id='input-post-picture' name='postPicture' accept='image/jpeg' />
                         <span className='input-hint'>*jpeg file &le; 10MB only</span>
                     </div>
@@ -194,11 +215,14 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
                 {imageUrl &&
                     <div className='post-image-container form'>
                         <div className='input-row post'>
-                            <label htmlFor='postPicture'>Upload New Picture:</label>
+                            <label htmlFor='postPicture' >Upload New Image:</label>
                             <input type='file' id='input-post-picture' name='postPicture' accept='image/jpeg' />
                             <span className='input-hint'>*jpeg file &le; 10MB only</span>
                         </div>
-                        <span>Current Image: </span>
+                        <div className='input-row post'>
+                            <span>Current Image:&nbsp;</span>
+                            <button type='button' className='btn-link small-font' onClick={() => setDelImgFlag(true)}>Delete Current Image</button>
+                        </div>
                         <img src={imageUrl} alt={`${postId} img`} className='post-image form' />
                     </div>
                 }
@@ -256,6 +280,9 @@ const PostFormPage = ({ action, currUser, tinyKey }) => {
             </div>
             {submitPopUpFlag &&
                 <ConfirmPopUp name={postPrivate ? 'Private Post?' : 'Public Post?'} cancelClick={cancelSubmit} confirmClick={submitPost} message1={'Are you sure you want to submit this'} message2={postPrivate ? 'Private posts cannot be seen by anyone except you and the site admin.' : 'Public posts can be seen by anyone.'} />
+            }
+            {delImgFlag &&
+                <ConfirmPopUp name={''} cancelClick={cancelImgDel} confirmClick={confirmDelImg} message1={'Are you sure you want to delete the current image. The image will be permanently deleted.'} message2={'You can overwrite the current image by uploading a new image and submitting the post.'} />
             }
         </div>
     );
