@@ -7,7 +7,9 @@ import fetchUserToken from '../Javascript/fetchUserToken';
 import CommentList from '../Components/CommentList';
 import CommentForm from '../Components/CommentForm';
 import decodeHtml from '../Javascript/decodeHtml';
+import getS3ImageUrl from '../Javascript/getS3ImageUrl';
 import NavBar from '../Components/NavBar';
+
 
 const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
     const [currUser, setCurrUser] = useState({});
@@ -15,6 +17,7 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
     const [commentData, setCommentData] = useState([]);
     const [newComFlag, setNewComFlag] = useState(false);
     const [editCommentId, setEditCommentId] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
     const [scrollNewComFlag, setScrollNewComFlag] = useState(false);
     const { postId } = useParams();
     const navigate = useNavigate();
@@ -31,7 +34,9 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
                 //if successful response, set data to state
                 const responseData = await response.json();
                 setPostData(responseData.post);
-                setCommentData(responseData.comments);
+                setCommentData(responseData.comments);                
+                //get image url and set to state
+                setImageUrl(await getS3ImageUrl(postId));
             } else if (response.status === 401) {
                 //if 401 Unauthorised error, redirect user to log in
                 navigate('/blog_reader/log-in');
@@ -80,6 +85,11 @@ const PostDetailPage = ({ scrollComFlag, setScrollComFlag, scrollComId }) => {
                             Posted on: {new Date(postData.post_date).toLocaleString('en-GB', { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "numeric", hour12: true })}
                         </div>
                         <hr></hr>
+                        {imageUrl &&
+                            <div className='post-image-container'>
+                                <img src={imageUrl} alt={`${postId} img`} className='post-image' />
+                            </div>
+                        }
                         <div className='post-text'>{parse(postData.text)}</div>
                         <div className='post-footer'>
                             {postData.lastEditBy &&

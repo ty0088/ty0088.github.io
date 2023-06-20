@@ -1,12 +1,27 @@
 import '../Styles/BlogMainPage.css'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 
 import decodeHtml from '../Javascript/decodeHtml';
+import getS3ImageUrl from '../Javascript/getS3ImageUrl';
 
 const PostRow = ({ user, post, setScrollComFlag }) => {
+    const [imageUrl, setImageUrl] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        //get and set s3 image url to state. State will be set to null if no image available
+        const setS3Url = async (postId) => {
+            try {
+                const s3Url = await getS3ImageUrl(postId);
+                setImageUrl(s3Url);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        setS3Url(post._id);
+    }, [post]);
 
     //go to post detail page and call to scroll to comment section
     const commentClick = () => {
@@ -24,6 +39,11 @@ const PostRow = ({ user, post, setScrollComFlag }) => {
                 }
             </div>
             <hr></hr>
+            {imageUrl &&
+                <div className='post-image-container'>
+                    <img src={imageUrl} alt={`${post._id} img`} className='post-image' />
+                </div>
+            }
             <div className='post-text'>{parse(post.text)}</div>
             <hr></hr>
             {user &&
