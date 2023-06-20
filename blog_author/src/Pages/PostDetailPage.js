@@ -78,7 +78,15 @@ const PostDetailPage = ({ currUser, scrollComFlag, setScrollComFlag, scrollComId
                 method: 'DELETE',
                 credentials: 'include',
             });
-            if (response.status === 200) {
+            if (response.status === 200) {                
+                //on successful response of post delete, delete image from S3 bucket
+                const imageResponse = await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/aws/deleteS3Image/${postId}` : `${process.env.REACT_APP_BLOGAPI_URL}/aws/deleteS3Image/${postId}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                });
+                console.log(imageResponse);
+                console.log(await imageResponse.json());
+                //navigate to home page
                 navigate('/blog_author');
             } else {
                 alert('Something went wrong, try again...');

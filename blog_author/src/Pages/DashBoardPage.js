@@ -123,6 +123,12 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
                 credentials: 'include',
             });
             if (response.status === 200) {
+                //on successful response of post delete, delete image from S3 bucket
+                await fetch(process.env.NODE_ENV === 'production' ? `https://blog-api.ty0088.co.uk/aws/deleteS3Image/${clickId}` : `${process.env.REACT_APP_BLOGAPI_URL}/aws/deleteS3Image/${clickId}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                });
+                //refresh data
                 fetchData();
             } else {
                 alert('Something went wrong, try again...');
@@ -191,7 +197,7 @@ const DashboardPage = ({ currUser, setScrollComFlag, setScrollComId }) => {
                     <ConfirmPopUp cancelClick={cancelPrivatePublic} confirmClick={confirmPrivatePublic} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}"`} message1={'Are you sure you wish to make post'} message2={postList[postList.findIndex(post => post._id === clickId)].private ? 'public?' : 'private?'} />
                 }
                 {deletePopUpFlag &&
-                    <ConfirmPopUp cancelClick={cancelPostDelete} confirmClick={confirmPostDelete} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}"`} message1={'Are you sure you wish to delete post'} message2={'The post and any related comments will be permanently deleted.'} />
+                    <ConfirmPopUp cancelClick={cancelPostDelete} confirmClick={confirmPostDelete} name={`"${postList[postList.findIndex(post => post._id === clickId)].title}".`} message1={'Are you sure you wish to delete post'} message2={'The post and any related comments will be permanently deleted.'} />
                 }
             </div>
         );

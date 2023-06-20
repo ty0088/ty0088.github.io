@@ -1,7 +1,7 @@
 .input-row {
     display: grid;
     text-align: end;
-    margin: 0 0 0.25em 0;
+    margin: 0 0 0.5em 0;
 }
 
 .input-row.user {
@@ -14,7 +14,7 @@
 
 .input-row.post {
     grid-template-columns: fit-content(8em) 12em 1fr;
-    align-items: end;
+    align-items: center;
 }
 
 .input-row > input {
@@ -26,6 +26,10 @@
     font-size: 0.75em;
     text-align: start;
     margin-left: 0.5em;
+}
+
+input[type=file] {
+    height: auto;
 }
 
 .button-container {
@@ -60,7 +64,7 @@
 }
 
 .post-image.form {
-    width: 30%;
+    width: 40%;
 }
 
 @media only screen and (max-width: 1000px)  {
