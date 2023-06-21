@@ -9,14 +9,14 @@ All code available for web apps below - https://github.com/ty0088/ty0088.github.
 <strong>My Favourite Projects</strong>
 
 <ul>
-
-  <li><a href="https://ty0088.github.io/tom-pos/">Tom POS</a> - A web based POS terminal app for the hospitality industry (uses Firebase). Demo account available.  - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tom-pos">Github Code</a></li>
   
   <li><a href="https://ty0088.github.io/blog_reader">The Blog Spot - Reader</a> - A react frontend only blog website for <strong>readers</strong> of "The Blog Spot" that accesses data through a seperate API backend. Only registered "Readers" can see and make comments on the blog posts. Demo account available. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_reader">Github Code</a></li>
 
   <li><a href="https://ty0088.github.io/blog_author">The Blog Spot - Author</a> - A react frontend only blog website for <strong>authors</strong> of "The Blog Spot" that accesses data through a separate API backend. Registered "Authors" have access to a rich text editor to create blog posts. Demo account available. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_author">Github Code</a></li>
 
   <li>"The Blog Spot" backend RESTful API is built using Express/Node and Mongoose/Mongodb hosted on AWS through a custom domain. The API is accessed through https://blog-api.ty0088.co.uk and the code for the backend API can be found on <a href="https://github.com/ty0088/ty0088.github.io/tree/main/blog_api">Github</a></li>
+
+  <li><a href="https://ty0088.github.io/tom-pos/">Tom POS</a> - A web based POS terminal app for the hospitality industry (uses Firebase). Demo account available.  - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/tom-pos">Github Code</a></li>
       
   <li><a href="https://top-to-do-d45c1.web.app/">To Do App</a> - Uses Firebase to store data. - <a href="https://github.com/ty0088/ty0088.github.io/tree/main/todo-Firebase">Github Code</a></li>
   
