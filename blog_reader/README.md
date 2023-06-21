@@ -12,7 +12,7 @@ A live implementation of this web app can be found at https://ty0088.github.io/b
 * User management and authentication - The web app allows users to sign up and manage their account details (update/delete). Authentication of users is done using through the backend API using passportJS and jwt cookie.
 * Blog list navigation - The home page blog list is paginated with a default view of 5 pages and newest shown first; these can be toggled.
 * Blog post reading - Users can read individual posts which also provides a list of comments beneath the blog post. Users can also create and edit their own comments here. 
-* Demo account - A demo account is available for visitors to access user features. The demo account is read only, although the demo user can access everything a registered user can, any data submitted by the demo account will not be written to the backend.
+* Demo account - A demo account is available for visitors to access user features. The demo account is read only, although the demo user can access everything a registered user can, any data submitted by the demo account will not be saved.
 * Responsiveness - The web app has been designed to allow for narrow screen mobile access.
 
 ## Purpose
