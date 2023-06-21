@@ -13,7 +13,7 @@
 * Responsiveness - The web app has been designed to allow for narrow screen mobile access.
 
 ## Purpose
-This web app was created as part of my self-learning on [The Odin Project](https://www.theodinproject.com/), specifically on the use and creation of APIs. The seperation of the frontend and backend and use of an API increases the flexibility of the code and it's use. As demonstrated, several different frontends can take advantage of the backend API, such as different frontends for different users and also different types of frontend codes using the one backend. For example, both a web app or mobile app can use the same backend.
+This web app was created as part of my self-learning on [The Odin Project](https://www.theodinproject.com/), specifically on the use and creation of APIs. The seperation of the frontend and backend and use of an API increases the flexibility and usability of the code and it's use. As demonstrated, several different frontends can take advantage of the backend API, such as different frontends for different users and also different types of frontend codes using the one backend. For example, both a web app or mobile app can use the same backend.
 
 ## Future
 In it's current state, there are no further plans to develop this web app. For the purposes of learning and this portfolio, it is simply not necessary.
