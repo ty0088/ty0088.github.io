@@ -1,4 +1,4 @@
-# The Blog Spot - Reader
+# The Blog Spot - Author
 
 ## Live Access
 A live implementation of this web app can be found at https://ty0088.github.io/blog_author.
