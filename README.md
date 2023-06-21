@@ -2,7 +2,7 @@
 
 A repository for my projects :)
 
-All code available for web apps below - https://github.com/ty0088/ty0088.github.io
+All code available for web apps below - <a href="https://ty0088.github.io/blog_reader">https://github.com/ty0088/ty0088.github.io</a>
 
 <hr>
 
