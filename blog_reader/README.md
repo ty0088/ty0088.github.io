@@ -10,7 +10,7 @@
 * Blog list navigation - The home page blog list is paginated with a default view of 5 pages and newest shown first; these can be toggled.
 * Blog post reading - Users can read individual posts which also provides a list of comments beneath the blog post. Users can also create and edit their own comments here. 
 * Demo account - A demo account is available for visitors to access user features. The demo account is read only, although the demo user can access everything a registered user can, any data submitted by the demo account will not be written to the backend.
-* Responsiveness - The web app has been designed to allow for narrow screen access i.e. smartphones.
+* Responsiveness - The web app has been designed to allow for narrow screen mobile access.
 
 ## Purpose
 This web app was created as part of my self-learning on [The Odin Project](https://www.theodinproject.com/), specifically on the use and creation of APIs. The seperation of the frontend and backend and use of an API increases the flexibility of the code and it's use. As demonstrated, several different frontends can take advantage of the backend API, such as different frontends for different users and also different types of frontend codes using the one backend. For example, both a web app or mobile app can use the same backend.
