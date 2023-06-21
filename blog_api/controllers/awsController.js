@@ -58,37 +58,32 @@ exports.get_s3_put_url = [
 ];
 
 //return a presigned get url for specific image in s3 blog-api-images bucket, valid for 1hr
-exports.get_s3_get_url = [
-    //authenticate user token
-    passport.authenticate('jwt', { session: false }),
-    //process request for presigned url
-    async (req, res, next) => {
-        try {
-            //set up s3 client and commands
-            const client = new S3Client(process.env.NODE_ENV === 'production' ? { region: 'eu-west-2' } :
-                {
-                    credentials: {
-                        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-                    },
-                    region: 'eu-west-2',
-                }
-            );
-            const commandParams = { Bucket: 'blog-api-images', Key: `${req.params.postId}.jpg` };
-            const getObjectCommand = new GetObjectCommand(commandParams);
-            const getHeadCommand = new HeadObjectCommand(commandParams);
-            //get header response to check if file exists in s3 bucket
-            await client.send(getHeadCommand);
-            //if file exists then get presigned url and respond with url
-            const presignedGetUrl = await getSignedUrl(client, getObjectCommand, { expiresIn: 3600 });
-            res.json({ presignedGetUrl });
-        } catch (error) {
-            //if file doesnt exist, log error and respond with null
-            console.log(error);
-            res.json({ presignedGetUrl: null });
-        }
-    },
-];
+exports.get_s3_get_url = async (req, res, next) => {
+    try {
+        //set up s3 client and commands
+        const client = new S3Client(process.env.NODE_ENV === 'production' ? { region: 'eu-west-2' } :
+            {
+                credentials: {
+                    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+                },
+                region: 'eu-west-2',
+            }
+        );
+        const commandParams = { Bucket: 'blog-api-images', Key: `${req.params.postId}.jpg` };
+        const getObjectCommand = new GetObjectCommand(commandParams);
+        const getHeadCommand = new HeadObjectCommand(commandParams);
+        //get header response to check if file exists in s3 bucket
+        await client.send(getHeadCommand);
+        //if file exists then get presigned url and respond with url
+        const presignedGetUrl = await getSignedUrl(client, getObjectCommand, { expiresIn: 3600 });
+        res.json({ presignedGetUrl });
+    } catch (error) {
+        //if file doesnt exist, log error and respond with null
+        console.log(error);
+        res.json({ presignedGetUrl: null });
+    }
+};
 
 //delete an image from s3 bucket
 exports.s3_image_delete = [
