@@ -8,7 +8,7 @@
 * Registered user privileges - Registered users are able to see post details such as the blog author, if the post has been edited and read and create post comments. Registered users can also see other users' details and access a list of user's posts and comments.
 * User management and authentication - The web app allows users to sign up and manage their account details (update/delete). Authentication of users is done using through the backend API using passportJS and jwt cookie.
 * Blog list navigation - The home page blog list is paginated with a default view of 5 pages and newest shown first; these can be toggled.
-* Blog post reading - Users can 
+* Blog post reading - Users can read individual posts which also provides a list of comments beneath the blog post. Users can also create and edit their own comments here. 
 * Demo account - A demo account is available for visitors to access user features. The demo account is read only, although the demo user can access everything a registered user can, any data submitted by the demo account will not be written to the backend.
 * Responsiveness - The web app has been designed to allow for narrow screen access i.e. smartphones.
 
