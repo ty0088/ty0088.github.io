@@ -8,7 +8,7 @@ A live implementation of this web app can be found at https://ty0088.github.io/t
 
 ## Project Features
 * User authentication - user authentication is built using [Firebase Authentication](https://firebase.google.com/docs/auth).
-* Database - Order, inventory and user data is stored on non-relational [Firestore database](https://firebase.google.com/docs/database) 
+* Database - Order, inventory and user data is stored on non-relational [Firestore database](https://firebase.google.com/docs/database).
 * Order creation and management - Orders can be created, closed/tendered or parked (in the case of ongoing orders). Multiple orders can be opened and closed at different time. Closed orders can be re-opened and edited if necessary. Order history is preserved and listed under either open or closed orders.
 * Order tendering - Orders can be tendered with adjustable discounts and tips. Tendering can take into account amount paid via cash and/or card. The change due back to the customer is also automatically worked out and displayed to the user. Orders cannot be closed if the full amount due is not tendered.
 * Receipts - Both customer and kitchen (for food) receipts can be printed. Kitchen receipts are automatically printed at tendering if food items are present in the order, whilst customer receipt printing is optional although a prompt is given at tendering. Both kinds of receipts can be manually printed at any time with an open or closed order.
