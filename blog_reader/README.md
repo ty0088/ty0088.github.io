@@ -3,6 +3,8 @@
 ## Live Access
 A live implementation of this web app can be found at https://ty0088.github.io/blog_reader.
 
+![Blog Spot Reader screenshot](https://raw.githubusercontent.com/ty0088/ty0088.github.io/main/blog_reader/screenshot/blog_spot_reader.png)
+
 ## Project Description
 "The Blog Spot - Reader" is a React frontend only web app that allows users (Readers) or visitors to read a list of blog posts from various blog Authors. A separate frontend web app is used by Authors to create and manage their blog posts ([The Blog Spot - Author](https://github.com/ty0088/ty0088.github.io/tree/main/blog_author)). This frontend web app uses a separate restful backend API to access and edit data ([The Blog Spot API](https://github.com/ty0088/ty0088.github.io/tree/main/blog_author)).
 
