@@ -3,6 +3,8 @@
 ## Live Access
 A live implementation of this web app can be found at https://ty0088.github.io/tom-pos.
 
+![TOM POS screenshot](https://raw.githubusercontent.com/ty0088/ty0088.github.io/main/tom-pos/screenshots/tom_pos_screenshot.png)
+
 ## Project Description
 "TOM POS" is a web based Point of Sale (POS) terminal built using React for use in the hospitality (restaurants, bars, etc) industry. 
 
