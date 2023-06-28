@@ -3,6 +3,8 @@
 ## Live Access
 A live implementation of this web app can be found at https://ty0088.github.io/blog_author.
 
+![Blog Spot Author screenshot](https://raw.githubusercontent.com/ty0088/ty0088.github.io/main/blog_author/screenshots/blog_spot_author.png)
+
 ## Project Description
 "The Blog Spot - Author" is a React frontend only web app that allows users (Authors) to create and manage their own blog posts. A separate frontend web app is used by Readers of the blog posts to read the blog posts ([The Blog Spot - Reader](https://github.com/ty0088/ty0088.github.io/tree/main/blog_reader)). This frontend web app uses a separate restful backend API to access and edit data ([The Blog Spot API](https://github.com/ty0088/ty0088.github.io/tree/main/blog_author)).
 
