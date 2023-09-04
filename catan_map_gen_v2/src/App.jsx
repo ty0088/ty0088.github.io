@@ -1,13 +1,22 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import './Styles/App.css';
 
-function App() {
-  const [, ] = useState();
+const App = () => {
+    const [, ] = useState();
 
-  return (
-    <>
-      <h1>Catan Map Generator</h1>
-    </>
-  )
-}
+    return (
+        <>
+            <header>
+                <h1>Catan Map Generator</h1>
+            </header>
+            <aside>
 
-export default App
+            </aside>
+            <main>
+                
+            </main>
+        </>
+    ); 
+};
+
+export default App;
