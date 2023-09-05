@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Styles/App.css';
+import './styles/App.css';
 
 const App = () => {
     const [, ] = useState();
@@ -13,7 +13,29 @@ const App = () => {
 
             </aside>
             <main>
-                
+                <div className='hex-tile row-one'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <br />
+                <div className='hex-tile row-two'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <br />
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <br />
+                <div className='hex-tile row-two'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
+                <br />
+                <div className='hex-tile row-one'></div>
+                <div className='hex-tile'></div>
+                <div className='hex-tile'></div>
             </main>
         </>
     ); 
