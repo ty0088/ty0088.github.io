@@ -1,5 +1,5 @@
 html {
-    --factor: 1.3px;
+    --factor: 1px;
 }
 
 .hex-tile {
@@ -12,10 +12,11 @@ html {
     display: inline-block;
     margin-left: calc(var(--factor) * 3);
     margin-bottom: calc(var(--factor) * -1);
+    color: white;
     /* background: url('/assets/images/Pasture.jpg') center center; */
 }
 
-.hex-tile:before {
+/* .hex-tile:before {
     content: " ";
     width: 0; height: 0;
     border-bottom: calc(var(--factor) * 30) solid;
@@ -35,7 +36,7 @@ html {
     border-color: inherit;
     border-left: calc(var(--factor) * 52) solid transparent;
     border-right: calc(var(--factor) * 52) solid transparent;
-}
+} */
 
 .hex-tile.row-one {
     margin-left: calc(var(--factor) * 110);
