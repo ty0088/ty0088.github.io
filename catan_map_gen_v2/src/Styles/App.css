@@ -1,9 +1,15 @@
-html {
+* {
     --factor: 1px;
 }
 
+#main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .hex-tile {
-    margin-top: calc(var(--factor) * 30);
+    margin-top: calc(var(--factor) * 33); /* 30 */
     width: calc(var(--factor) * 104);
     height: calc(var(--factor) * 60);
     background-color: black;
@@ -12,31 +18,34 @@ html {
     display: inline-block;
     margin-left: calc(var(--factor) * 3);
     margin-bottom: calc(var(--factor) * -1);
-    color: white;
-    /* background: url('/assets/images/Pasture.jpg') center center; */
+    color: white; /* - */
+    text-align: center; /* - */
 }
 
-/* .hex-tile:before {
-    content: " ";
-    width: 0; height: 0;
+.hex-tile:before {
+    content: "";
+    width: 0;
+    height: 0;
     border-bottom: calc(var(--factor) * 30) solid;
     border-color: inherit;
     border-left: calc(var(--factor) * 52) solid transparent;
     border-right: calc(var(--factor) * 52) solid transparent;
     position: absolute;
+    left: 0; /* - */
     top: calc(var(--factor) * -30);
 }
 
 .hex-tile:after {
     content: "";
     width: 0;
-    position: absolute;
     bottom: calc(var(--factor) * -30);
     border-top: calc(var(--factor) * 30) solid;
     border-color: inherit;
     border-left: calc(var(--factor) * 52) solid transparent;
     border-right: calc(var(--factor) * 52) solid transparent;
-} */
+    position: absolute;
+    left: 0; /* - */
+}
 
 .hex-tile.row-one {
     margin-left: calc(var(--factor) * 110);
@@ -44,17 +53,6 @@ html {
 
 .hex-tile.row-two {
     margin-left: calc(var(--factor) * 56);
-}
-
-.picture-tile {
-    width: calc(var(--factor) * 104);
-    height: calc(var(--factor) * 120);
-    background: url('/assets/images/Pasture.jpg') center center;
-    position: relative;
-    display: inline-block;
-    top: calc(var(--factor) * 30);
-    margin-left: calc(var(--factor) * 3);
-    margin-bottom: calc(var(--factor) * -1);
 }
 
 /* .hex-tile {
