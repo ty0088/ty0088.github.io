@@ -1,24 +1,24 @@
 // map properties
 const dfMapTiles = { // default map tile data
-    1: {q: 0, r: -2, tileType: null, tokenValue: null},
-    2: {q: 1, r: -2, tileType: null, tokenValue: null},
-    3: {q: 2, r: -2, tileType: null, tokenValue: null},
-    4: {q: -1, r: -1, tileType: null, tokenValue: null},
-    5: {q: 0, r: -1, tileType: null, tokenValue: null},
-    6: {q: 1, r: -1, tileType: null, tokenValue: null},
-    7: {q: 2, r: -1, tileType: null, tokenValue: null},
-    8: {q: -2, r: 0, tileType: null, tokenValue: null},
-    9: {q: -1, r: 0, tileType: null, tokenValue: null},
-    10: {q: 0, r: 0, tileType: null, tokenValue: null},
-    11: {q: 1, r: 0, tileType: null, tokenValue: null},
-    12: {q: 2, r: 0, tileType: null, tokenValue: null},
-    13: {q: -2, r: 1, tileType: null, tokenValue: null},
-    14: {q: -1, r: 1, tileType: null, tokenValue: null},
-    15: {q: 0, r: 1, tileType: null, tokenValue: null},
-    16: {q: 1, r: 1, tileType: null, tokenValue: null},
-    17: {q: -2, r: 2, tileType: null, tokenValue: null},
-    18: {q: -1, r: 2, tileType: null, tokenValue: null},
-    19: {q: 0, r: 2, tileType: null, tokenValue: null},
+    1: {q: 0, r: -2, tileType: null, tokenValue: null, sameType: 0},
+    2: {q: 1, r: -2, tileType: null, tokenValue: null, sameType: 0},
+    3: {q: 2, r: -2, tileType: null, tokenValue: null, sameType: 0},
+    4: {q: -1, r: -1, tileType: null, tokenValue: null, sameType: 0},
+    5: {q: 0, r: -1, tileType: null, tokenValue: null, sameType: 0},
+    6: {q: 1, r: -1, tileType: null, tokenValue: null, sameType: 0},
+    7: {q: 2, r: -1, tileType: null, tokenValue: null, sameType: 0},
+    8: {q: -2, r: 0, tileType: null, tokenValue: null, sameType: 0},
+    9: {q: -1, r: 0, tileType: null, tokenValue: null, sameType: 0},
+    10: {q: 0, r: 0, tileType: null, tokenValue: null, sameType: 0},
+    11: {q: 1, r: 0, tileType: null, tokenValue: null, sameType: 0},
+    12: {q: 2, r: 0, tileType: null, tokenValue: null, sameType: 0},
+    13: {q: -2, r: 1, tileType: null, tokenValue: null, sameType: 0},
+    14: {q: -1, r: 1, tileType: null, tokenValue: null, sameType: 0},
+    15: {q: 0, r: 1, tileType: null, tokenValue: null, sameType: 0},
+    16: {q: 1, r: 1, tileType: null, tokenValue: null, sameType: 0},
+    17: {q: -2, r: 2, tileType: null, tokenValue: null, sameType: 0},
+    18: {q: -1, r: 2, tileType: null, tokenValue: null, sameType: 0},
+    19: {q: 0, r: 2, tileType: null, tokenValue: null, sameType: 0},
 };
 const dfTileTypeQty = { // default number of tile types available
     1: 4,
@@ -67,28 +67,63 @@ const groupOffsets = [ // offset coords (q, r) to 2 other adjacent tiles for int
 //          if no token works, all tokens will need to be reset ??
 
 const generateMap = () => {
-    //reset map properties
+    //init default map properties
     let mapTiles = {...dfMapTiles};
+    console.log(mapTiles);
     let tileTypeQty = {...dfTileTypeQty};
     let tokenValQty = {...dfTokenValQty};
     let tileCount = 0;
 
     while (tileCount < totalTiles) {
-        console.log(`tileCount: ${tileCount}`);
+        console.log(`- ${tileCount} -`);
         // get a random tile num that is still available
         const currTileNum = pickTileNum(mapTiles);
+        console.log(`tileNum: ${currTileNum}`);
+        
         // chose a random tile type and check its valid
         let currTileType = minMaxRandom(1, 6);
-
+        // keep track of any checked tile types
+        let checkedTypes = [currTileType];
+        let checkedNums = [];
+        console.log(`currentTileType: ${currTileType}`);
+        // if tile type is not allowed, pick and check another random tile type
         while (!checkTileType(currTileType, currTileNum, tileTypeQty, mapTiles)) {
-            currTileType = minMaxRandom(1, 6);
-            // need to remember choices to stop any infinite loops --------------------
+            console.log(`currentTileType: ${currTileType}`);
+            if (checkedTypes.length === 6) {   
+                // if we have checked all types, no more left to check, will need to reorder some tiles or just reset map???? 
+                // ---------------------------
+                // reset map
+                console.log('- RESET -');
+                mapTiles = {...dfMapTiles};
+                console.log(mapTiles);
+                tileTypeQty = {...dfTileTypeQty};
+                checkedNums = [];
+                checkedTypes = [];
+                tileCount = 0;
+                currTileType = minMaxRandom(1, 6);
+                continue;
+            } else if (checkedTypes.includes(currTileType)) {
+                // if tile type has already been checked, get a new tile type and check again
+                currTileType = minMaxRandom(1, 6);
+            } else {
+                // if tile type has not been checked, add it to checked list
+                checkedTypes.push(currTileType);
+                currTileType = minMaxRandom(1, 6);
+            }
         }
-         
-        mapTiles = {...mapTiles, [currTileNum]: {...mapTiles[currTileNum], tileType: currTileType}}
+
+        console.log(`tile type to store: ${currTileType}`);
+        if (currTileType) {
+            // update tile qty
+            tileTypeQty[currTileType]--;
+            // update mapTile sameType value for all connected tiles
+            updateSameType(currTileNum, currTileType, mapTiles, checkedNums);
+            // add new tile to mapTiles
+            mapTiles = {...mapTiles, [currTileNum]: {...mapTiles[currTileNum], tileType: currTileType}};
+        }
         tileCount++;
+        console.log(mapTiles);
     }
-    console.log(mapTiles);
     return mapTiles;
 };
 
@@ -102,47 +137,95 @@ const pickTileNum = (mapTiles) => {
     while (true) {
         // pick a random tile number
         const tileNum = minMaxRandom(1, totalTiles);
-        if (!mapTiles[tileNum].tileType) {
+        if (mapTiles[tileNum].tileType === null) {
             //if tile is not yet assigned a type, return tile num
             return tileNum;
         }
     }
 };
 
-// function to check if tile and surrounding tiles remain within adjacency limit
+// function to check if tile is available and will not exceed adj limit
 const checkTileType = (tileType, tileNum, tileTypeQty, mapTiles) => {
     // check tile type not available, return false
+    console.log(`tile type amount left: ${tileTypeQty[tileType]}`);
     if (tileTypeQty[tileType] < 1) {
+        console.log('tile not available');
         return false;
     }
-    // check tile type does not go over adj limit
+
+    // iterate around outer adj tiles in group
+    let groupCount = 1;
     for (let offset of groupOffsets) {
-        // start count at 1 for current tile type
-        let count = 1;
-        // find the number of the first and second adjacent tiles. If offset tile is same as current tile add to count
-        const tileOffset0 = Object.keys(mapTiles).find(tile => mapTiles[tile].q === mapTiles[tileNum].q + offset[0][0] && mapTiles[tile].r === mapTiles[tileNum].r + offset[0][1]);
-        if (tileOffset0 == tileType) {
-            count++;
-        }
-        const tileOffset1 = Object.keys(mapTiles).find(tile => mapTiles[tile].q === mapTiles[tileNum].q + offset[1][0] && mapTiles[tile].r === mapTiles[tileNum].r + offset[1][1]);
-        if (tileOffset1 == tileType) {
-            count++;
-        }
-        console.log(`count: ${count}`);
-        // if adj limit exceeded return false
-        if (count > tileAdjLimit) {
+        const adjTileNum0 = Object.keys(mapTiles).find(tile => mapTiles[tile].q === (mapTiles[tileNum].q + offset[0][0]) && mapTiles[tile].r === (mapTiles[tileNum].r + offset[0][1]));
+        // check adj limit not exceeded for connected tiles to current adj tile
+        if ((adjTileNum0 && mapTiles[adjTileNum0].tileType == tileType) && (mapTiles[adjTileNum0].sameType + 1 > tileAdjLimit)) {
+            console.log('connected tiles exceed adj limit');
             return false;
         }
+        // check if adj tile is same type as current tile, add to group count if it is
+        if (adjTileNum0 && mapTiles[adjTileNum0].tileType == tileType) {
+            groupCount++;
+        }
+    }        
+    // check group does not exceed adj limit
+    if (groupCount > tileAdjLimit) {
+        console.log('group adj limit exceeded');
+        return false;
     }
-    // if tile type ok, minus 1 from qty and return true
-    tileTypeQty[tileType]--;
+
     return true;
+};
+
+// function to update adj tiles sameType value if tile type is same
+const updateSameType = (tileNum, tileType, mapTiles, checkedNums) => {
+    console.log(`! checking tile: ${tileNum}`);
+    console.log(checkedNums);
+    for (let offset of groupOffsets) {
+        const adjTileNum = parseInt(Object.keys(mapTiles).find(tile => mapTiles[tile].q === (mapTiles[tileNum].q + offset[0][0]) && mapTiles[tile].r === (mapTiles[tileNum].r + offset[0][1])));
+        // console.log(adjTileNum);
+        if (adjTileNum && mapTiles[adjTileNum].tileType == tileType) {
+            console.log(`check adj - tileType: ${tileType} & adjTileType: ${mapTiles[adjTileNum].tileType}`);
+            // update sameType +1 and call updateSameType with adjTileNum
+            if (!checkedNums.includes(tileNum)) {
+                mapTiles[tileNum].sameType++;
+            }
+            if (!checkedNums.includes(adjTileNum)) {
+                mapTiles[adjTileNum].sameType++;
+                checkedNums.push(adjTileNum);
+                updateSameType(adjTileNum, tileType, mapTiles, checkedNums);
+            }
+        }
+    } 
 };
 
 // function checkProbLimit(currQ, currR, tileVal, map) return true/false
 //  for each of the 6 intersecting tile groups
 //      if tile value doesnt exceed limit in group return true;
 //      else return false;
+
+// // start count at 1 for current tile type
+// let count = 1;
+// for (let offset of groupOffsets) {
+//     // find the number of the first and second adjacent tiles. If offset tile is same as current tile add to count
+//     // console.log(`mapTiles[tileNum].q: ${mapTiles[tileNum].q} + offset[0][0]: ${offset[0][0]} = ${mapTiles[tileNum].q + offset[0][0]}`);
+//     const adjTileNum0 = Object.keys(mapTiles).find(tile => mapTiles[tile].q === (mapTiles[tileNum].q + offset[0][0]) && mapTiles[tile].r === (mapTiles[tileNum].r + offset[0][1]));
+//     if (adjTileNum0 && mapTiles[adjTileNum0].tileType == tileType) {
+//         console.log(`tile 0 offset num: ${adjTileNum0}`);
+//         console.log(`Offset0 type: ${mapTiles[adjTileNum0].tileType} & tileType: ${tileType}`);
+//         count++;
+//     }
+//     const adjTileNum1 = Object.keys(mapTiles).find(tile => mapTiles[tile].q === mapTiles[tileNum].q + offset[1][0] && mapTiles[tile].r === mapTiles[tileNum].r + offset[1][1]);
+//     if (adjTileNum1 && mapTiles[adjTileNum1].tileType == tileType) {
+//         console.log(`tile 1 offset num: ${adjTileNum1}`);
+//         console.log(`Offset1 type: ${mapTiles[adjTileNum1].tileType} & tileType: ${tileType}`);
+//         count++;
+//     }
+//     console.log(`count: ${count}`);
+// }        
+// // if adj limit exceeded return false
+// if (count > tileAdjLimit) {
+//     return false;
+// }
 
 // generateMap();
 
