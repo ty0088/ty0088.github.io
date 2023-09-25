@@ -1,3 +1,5 @@
+import deepClone from 'just-clone';
+
 // map properties
 const dfMapTiles = { // default map tile data
     1: {q: 0, r: -2, tileType: null, tokenValue: null, sameType: 0},
@@ -68,10 +70,10 @@ const groupOffsets = [ // offset coords (q, r) to 2 other adjacent tiles for int
 
 const generateMap = () => {
     //init default map properties
-    let mapTiles = {...dfMapTiles};
-    console.log(mapTiles);
-    let tileTypeQty = {...dfTileTypeQty};
-    let tokenValQty = {...dfTokenValQty};
+    let mapTiles = deepClone(dfMapTiles);
+    console.log(deepClone(mapTiles));
+    let tileTypeQty = deepClone(dfTileTypeQty);
+    let tokenValQty = deepClone(dfTokenValQty);
     let tileCount = 0;
 
     while (tileCount < totalTiles) {
@@ -94,9 +96,9 @@ const generateMap = () => {
                 // ---------------------------
                 // reset map
                 console.log('- RESET -');
-                mapTiles = {...dfMapTiles};
-                console.log(mapTiles);
-                tileTypeQty = {...dfTileTypeQty};
+                mapTiles = deepClone(dfMapTiles);
+                console.log(deepClone(mapTiles));
+                tileTypeQty = deepClone(dfTileTypeQty);
                 checkedNums = [];
                 checkedTypes = [];
                 tileCount = 0;
@@ -122,7 +124,7 @@ const generateMap = () => {
             mapTiles = {...mapTiles, [currTileNum]: {...mapTiles[currTileNum], tileType: currTileType}};
         }
         tileCount++;
-        console.log(mapTiles);
+        console.log(deepClone(mapTiles));
     }
     return mapTiles;
 };
@@ -158,7 +160,7 @@ const checkTileType = (tileType, tileNum, tileTypeQty, mapTiles) => {
     for (let offset of groupOffsets) {
         const adjTileNum0 = Object.keys(mapTiles).find(tile => mapTiles[tile].q === (mapTiles[tileNum].q + offset[0][0]) && mapTiles[tile].r === (mapTiles[tileNum].r + offset[0][1]));
         // check adj limit not exceeded for connected tiles to current adj tile
-        if ((adjTileNum0 && mapTiles[adjTileNum0].tileType == tileType) && (mapTiles[adjTileNum0].sameType + 1 > tileAdjLimit)) {
+        if ((adjTileNum0 && mapTiles[adjTileNum0].tileType == tileType) && (mapTiles[adjTileNum0].sameType + 1 >= tileAdjLimit)) {
             console.log('connected tiles exceed adj limit');
             return false;
         }
@@ -182,18 +184,21 @@ const updateSameType = (tileNum, tileType, mapTiles, checkedNums) => {
     console.log(checkedNums);
     for (let offset of groupOffsets) {
         const adjTileNum = parseInt(Object.keys(mapTiles).find(tile => mapTiles[tile].q === (mapTiles[tileNum].q + offset[0][0]) && mapTiles[tile].r === (mapTiles[tileNum].r + offset[0][1])));
-        // console.log(adjTileNum);
         if (adjTileNum && mapTiles[adjTileNum].tileType == tileType) {
             console.log(`check adj - tileType: ${tileType} & adjTileType: ${mapTiles[adjTileNum].tileType}`);
-            // update sameType +1 and call updateSameType with adjTileNum
+            // update sameTypeof tiles not yet checked and call updateSameType on any adj tile not yet checked
             if (!checkedNums.includes(tileNum)) {
+                checkedNums.push(tileNum);
                 mapTiles[tileNum].sameType++;
             }
             if (!checkedNums.includes(adjTileNum)) {
+                console.log(`same type found on new adj tile: ${adjTileNum}`);
                 mapTiles[adjTileNum].sameType++;
                 checkedNums.push(adjTileNum);
                 updateSameType(adjTileNum, tileType, mapTiles, checkedNums);
             }
+            console.log(`update mapTiles`);
+            console.log(deepClone(mapTiles));
         }
     } 
 };
@@ -227,6 +232,6 @@ const updateSameType = (tileNum, tileType, mapTiles, checkedNums) => {
 //     return false;
 // }
 
-// generateMap();
+generateMap();
 
 export default generateMap;
