@@ -92,9 +92,8 @@ const generateMap = () => {
         while (!checkTileType(currTileType, currTileNum, tileTypeQty, mapTiles)) {
             console.log(`currentTileType: ${currTileType}`);
             if (checkedTypes.length === 6) {   
-                // if we have checked all types, no more left to check, will need to reorder some tiles or just reset map???? 
                 // ---------------------------
-                // reset map
+                // if no valid types left, reset map tiles
                 console.log('- RESET -');
                 mapTiles = deepClone(dfMapTiles);
                 console.log(deepClone(mapTiles));
@@ -115,15 +114,13 @@ const generateMap = () => {
         }
 
         console.log(`tile type to store: ${currTileType}`);
-        if (currTileType) {
-            // update tile qty
-            tileTypeQty[currTileType]--;
-            // update mapTile sameType value for all connected tiles
-            updateSameType(currTileNum, currTileType, mapTiles, checkedNums);
-            // add new tile to mapTiles
-            mapTiles = {...mapTiles, [currTileNum]: {...mapTiles[currTileNum], tileType: currTileType}};
-        }
+
+        // update tile qty, sameType value and add current tile to map
+        tileTypeQty[currTileType]--;
+        updateSameType(currTileNum, currTileType, mapTiles, checkedNums);
+        mapTiles = {...mapTiles, [currTileNum]: {...mapTiles[currTileNum], tileType: currTileType}};
         tileCount++;
+
         console.log(deepClone(mapTiles));
     }
     return mapTiles;
@@ -180,19 +177,20 @@ const checkTileType = (tileType, tileNum, tileTypeQty, mapTiles) => {
 
 // function to update adj tiles sameType value if tile type is same
 const updateSameType = (tileNum, tileType, mapTiles, checkedNums) => {
-    console.log(`! checking tile: ${tileNum}`);
+    console.log(`! checking tile ${tileNum} for adj same types`);
     console.log(checkedNums);
     for (let offset of groupOffsets) {
         const adjTileNum = parseInt(Object.keys(mapTiles).find(tile => mapTiles[tile].q === (mapTiles[tileNum].q + offset[0][0]) && mapTiles[tile].r === (mapTiles[tileNum].r + offset[0][1])));
         if (adjTileNum && mapTiles[adjTileNum].tileType == tileType) {
             console.log(`check adj - tileType: ${tileType} & adjTileType: ${mapTiles[adjTileNum].tileType}`);
-            // update sameTypeof tiles not yet checked and call updateSameType on any adj tile not yet checked
+            // update sameType of tiles not yet checked and call updateSameType on any adj tile not yet checked
             if (!checkedNums.includes(tileNum)) {
+                console.log(`+1 CURRENT tile sameType: ${tileNum}`);
                 checkedNums.push(tileNum);
                 mapTiles[tileNum].sameType++;
             }
             if (!checkedNums.includes(adjTileNum)) {
-                console.log(`same type found on new adj tile: ${adjTileNum}`);
+                console.log(`+1 ADJACENT tile sameType: ${adjTileNum}`);
                 mapTiles[adjTileNum].sameType++;
                 checkedNums.push(adjTileNum);
                 updateSameType(adjTileNum, tileType, mapTiles, checkedNums);
