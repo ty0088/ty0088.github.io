@@ -22,7 +22,7 @@ const dfMapTiles = { // default map tile data
     18: {q: -1, r: 2, tileType: null, tokenValue: null, sameType: 0},
     19: {q: 0, r: 2, tileType: null, tokenValue: null, sameType: 0},
 };
-const dfTileTypeQty = { // default number of tile types available - 1. Forest, 2. Pasture, 3. Field, 4. Hill, 5. Mountain, 6. Desert
+export const dfTileTypeQty = { // default number of tile types available - 1. Forest, 2. Pasture, 3. Field, 4. Hill, 5. Mountain, 6. Desert
     1: 4,
     2: 4,
     3: 4,
@@ -30,8 +30,8 @@ const dfTileTypeQty = { // default number of tile types available - 1. Forest, 2
     5: 3,
     6: 1,
 };
-const totalTiles = Object.keys(dfTileTypeQty).reduce((acc, currKey) => acc += dfTileTypeQty[currKey], 0); // total number of tiles
-const dfTokenValQty = { // default number of token values available
+export const totalTiles = Object.keys(dfTileTypeQty).reduce((acc, currKey) => acc += dfTileTypeQty[currKey], 0); // total number of tiles
+export const dfTokenValQty = { // default number of token values available
     2: 1,
     3: 2,
     4: 2,
@@ -209,6 +209,7 @@ const getRandom = (obj) => {
 
 // function to pick a random available tile number
 const pickTileNum = (mapTiles, keyName) => {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         // pick a random tile number
         const tileNum = Math.floor(Math.random() * totalTiles + 1);
