@@ -1,0 +1,46 @@
+sort1 uses: bubble sort
+
+How do you know?: best case O(n) for sorted (linear increase for sorted) and worst case O(n^2) for reversed
+random5000.txt  --> real 0.070s
+random10000.txt --> real 0.197
+random50000.txt --> real 5.339s
+
+sorted5000.txt   -->  real 0.050s
+sorted10000.txt  -->  real 0.048s
+sorted50000.txt  -->  real 0.258s
+
+reversed5000.txt  --> real 0.062s
+reversed10000.txt --> real 0.206s
+reversed50000.txt --> real 4.585s
+
+
+sort2 uses: merge sort
+
+How do you know?: O(nlogn) in all cases (i.e. not much increase between 10000 vs 50000 lines) and better than selection sort O(n^2)
+random5000.txt  -->  real 0.019s
+random10000.txt -->  real 0.044s
+random50000.txt -->  real 0.272s
+
+sorted5000.txt   -->  real 0.022s
+sorted10000.txt  -->  real 0.050s
+sorted50000.txt  -->  real 0.262s
+
+reversed5000.txt  --> real 0.017s
+reversed10000.txt --> real 0.055s
+reversed50000.txt --> real 0.365s
+
+
+sort3 uses: selection sort
+
+How do you know?: O(n^2) in all cases (i.e. larger increase between 10000 vs 50000 lines) and worse performance than merge sort O(nlogn)
+random5000.txt  -->  real 0.040s
+random10000.txt -->  real 0.108s
+random50000.txt -->  real 2.080s
+
+sorted5000.txt   -->  real 0.047s
+sorted10000.txt  -->  real 0.069s
+sorted50000.txt  -->  real 1.977s
+
+reversed5000.txt  --> real 0.061s
+reversed10000.txt --> real 0.162s
+reversed50000.txt --> real 2.355s
