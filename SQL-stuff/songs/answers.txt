@@ -1,0 +1,9 @@
+Purple aura with higher energy and danceability with a middle level of valence (positive/negative).
+
+The averages are based only on the top 100 songs, with each song having an equal share of the average.
+For example, we don't know how often each song is listened to. So a weight could be assigned to each song,
+depending on how much it is listened to. If a song is listened to more than others, it should have more effect.
+
+Also, the top 100 songs may not be a large enough sample size or just using just 3 characteristic values
+(energy, danceability and valence) may not be enough. You could base it on the top 25% of songs for example,
+so if a person has a very large library of songs, a larger sample would be taken. Or include more values such as tempo.
