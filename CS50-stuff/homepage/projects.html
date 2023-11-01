@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+        <link href="styles.css" rel="stylesheet">
+        <title>My Projects - A New Dev's Webpage</title>
+    </head>
+    <body>
+        <header>
+            <h1>A New Web Dev</h1>
+        </header>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav">
+                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="about.html">About me</a>
+                        <a class="nav-link active disabled" aria-current="page" href="#">My Projects</a>
+                        <a class="nav-link" href="future-projects.html">Future Projects</a>   
+                    </div>
+                </div>
+            </div>  
+        </nav>
+        <section>
+            <h3>My Projects</h3>
+            <p>Below is a selection of some of the projects that I have completed.</p>
+            <div class="accordion" id="projectsAccordion">
+                <article class="accordion-item">
+                    <h2 class="accordion-header" id="blogspotProject">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            The Blog Spot
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="blogspotProject" data-bs-parent="#projectsAccordion">
+                        <div class="accordion-body">
+                            <p>This is a blogging website, built from the ground up. It has the following features:</p>
+                            <ul>
+                                <li>Separate websites for author (<a href="https://ty0088.github.io/blog_author">Blog Spot Author</a>) and reader (<a href="https://ty0088.github.io/blog_reader">Blog Spot Reader</a>) users.</li>
+                                <li>User authentication/management and user privileges including reader, author, admin roles.</li>
+                                <li>Demo access available to give non-write access to user only areas.</li>
+                                <li>Rich text formatting for blog text.</li>
+                                <li>Ability to attach one image per blog post.</li>
+                                <li>Users can add comments to blog posts.</li>
+                                <li>Pagination and sorting of blog posts</li>
+                                <li>Built using React for frontend, Express/Node.js for backend and Mongoose/MongoDB for database.</li>
+                                <li>Website backend is built on a separate RESTFul API hosted using AWS EBS.</li>
+                            </ul>                        
+                            <p>Visit the <a href="https://ty0088.github.io/blog_reader">Blog Spot Reader</a> or <a href="https://ty0088.github.io/blog_author">Blog Spot Author</a> websites.</p> 
+                            <img class="screen-img" src="https://raw.githubusercontent.com/ty0088/ty0088.github.io/main/blog_reader/screenshot/blog_spot_reader.png" alt="screenshot of blog spot reader website">
+                        </div>                   
+                    </div>
+                </article>
+                <article class="accordion-item">
+                    <h2 class="accordion-header" id="tomposProject">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            TOM POS
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="tomposProject" data-bs-parent="#projectsAccordion">
+                        <div class="accordion-body">
+                            <p>This is a Point of Sale web app for use in the hospitality industry, built from the ground up. It has the following features:</p>
+                            <ul>
+                                <li>User authentication - user authentication is built using <a href="https://firebase.google.com/docs/auth">Google Firebase Authentication</a>.</li>
+                                <li>Database - Order, inventory and user data is stored in <a href="https://firebase.google.com/docs/database">Firestore non-relational database</a>.</li>
+                                <li>Order creation and management - Orders can be created, closed/tendered or parked (in the case of ongoing orders). Multiple orders can be opened and closed at different time. Closed orders can be re-opened and edited if necessary. Order history is preserved and listed under either open or closed orders.</li>
+                                <li>Order tendering - Orders can be tendered with adjustable discounts and tips. Tendering can take into account amount paid via cash and/or card. The change due back to the customer is also automatically worked out and displayed to the user. Orders cannot be closed if the full amount due is not tendered.</li>
+                                <li>Receipts - Both customer and kitchen (for food) receipts can be printed. Kitchen receipts are automatically printed at tendering if food items are present in the order, whilst customer receipt printing is optional although a prompt is given at tendering. Both kinds of receipts can be manually printed at any time with an open or closed order.</li>
+                                <li>Menu management - Items are grouped together by sub-menus. Items belonging to the same sub-menu are displayed in the terminal together when the sub-menu is selected. Sub-menus can be root level, parents and children. For example Food (root) -> Mains -> Veg Options / Non-Veg Options.</li>
+                                <li>VAT/Sales tax - Items incorporate VAT/sales tax. VAT are managed under different "bands" which the user sets i.e. Band "S" for standard rate @ 20%. VAT bands are then attached to items.</li>
+                                <li>Item management - Items are created by the user. Items must belong to a sub-menu, have a price and a VAT band. Optionally items can have a description, Modifications (Mods) and Options. Mods and Options are preset at the item level and allow the user to adjust the item (both physically and cost-wise) at the order stage. For example, an Modification to a "Burger" item may be "No salad" at zero cost, whilst an Option to the "Burger" could be "Add cheese" for an addition cost of £2.00. If an item has Mods/Options available, on adding to an order, a prompt will appear allowing the user to select which options/mods to select or not select. Items without mods/options will be added to the order without such a prompt. Users can also adjust whether an item will print to a kitchen receipt.</li>
+                                <li>Cash up - TOM POS includes a feature to allow the user to carry out a daily cash up to account for the days takings. The cash up feature requires the user to input the total cash takings and card takings of the day and the system will indicate whether this matches the orders taken for the day. The day time settings can be adjusted to take into account the fact that an operating day may spread pass the calendar day i.e. 10am to 2am (next day).</li>
+                            </ul>
+                            <p>Visit <a href="https://ty0088.github.io/tom-pos/">TOM POS</a>.</p>
+                            <img class="screen-img" src="https://raw.githubusercontent.com/ty0088/ty0088.github.io/main/tom-pos/screenshots/tom_pos_screenshot.png" alt="screenshot of TOM POS website">
+                        </div>
+                    </div>
+                </article>
+                <article class="accordion-item">
+                    <h2 class="accordion-header" id="memoryProject">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Memory Game
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="memoryProject" data-bs-parent="#projectsAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                This is a fun little browser based game that tests the memory of the player. The player must click all of the 20 images such that they do not click the same image twice. 
+                                The catch? Each time an image is clicked, all images will be randomly shuffled. What is your high score?
+                            </p>
+                            <p>Visit <a href="https://ty0088.github.io/memory_game/">Memory Game</a>.</p>
+                            <img class="screen-img" src="mem-game.jpg" alt="screenshot of memory game website">                            
+                        </div>
+                    </div>
+                </article>
+                <article class="accordion-item">
+                    <h2 class="accordion-header" id="battleshipProject">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Battleship Game
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="battleshipProject" data-bs-parent="#projectsAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                This is a browser based recreation of the class Battleship game. The game can be played as a 1 or 2 player game (it can even actually be played as a 0 player game... 
+                                watch as the computer plays itself!)
+                            </p>
+                            <p>Visit <a href="https://ty0088.github.io/battleship/">Battleship game</a>.</p>
+                            <img class="screen-img" src="battleship.jpg" alt="screenshot of battleship game website">
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <p>You can see all my projects at <a href="https://ty0088.github.io/">ty0088.github.io</a>.</p>
+        </section>
+    </body>
+</html>

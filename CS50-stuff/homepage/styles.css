@@ -1,0 +1,35 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+header {
+    margin: 20px;
+}
+
+section {
+    margin: 0 10px 20px 20px;
+}
+
+h1 {
+    font-weight: 600;
+}
+
+#cat-img:hover {
+    cursor: pointer;
+}
+
+.profile-img {
+    width: 30vw;
+}
+
+.screen-img {
+    width: 50vw;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+}
